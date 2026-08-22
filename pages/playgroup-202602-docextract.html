@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="UK charity document extraction benchmark across OpenRouter, Doubleword, and V7 Go — playgroup Feb 2026.">
+  <title>UK Charity Doc Extract · playgroup_202602_docextract</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <style>
+    .content { max-width: 52rem; }
+    .content h1 { margin-top: 0; font-family: var(--font-display); font-size: clamp(1.75rem, 3vw, 2.25rem); }
+    .content h2 { margin: 2rem 0 0.75rem; font-family: var(--font-display); font-size: 1.25rem; }
+    .content p, .content li { color: var(--text-secondary); }
+    .content ul { padding-left: 1.25rem; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0 1.5rem; }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1.5rem 0 2rem; }
+    .table-wrap { overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid var(--border-subtle); border-radius: var(--radius); }
+    table.data { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    table.data th, table.data td { padding: 0.55rem 0.75rem; text-align: left; border-bottom: 1px solid var(--border-subtle); }
+    table.data th { background: var(--bg-elevated); font-weight: 600; white-space: nowrap; }
+    table.data tr:last-child td { border-bottom: none; }
+    table.data td.num { font-family: var(--font-mono); font-size: 0.8125rem; }
+    .callout {
+      margin: 1.25rem 0;
+      padding: 1rem 1.125rem;
+      border-left: 3px solid var(--cta);
+      background: var(--bg-surface);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+    }
+    .field-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); gap: 0.5rem; margin: 0.75rem 0 1.25rem; }
+    .field-grid span {
+      padding: 0.4rem 0.65rem;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      background: var(--bg-surface);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .snapshot { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../">
+      neomatrix369
+      <small>github.io</small>
+    </a>
+    <nav class="site-nav">
+      <a href="../">Home</a>
+      <a href="../pages/projects.html">Projects</a>
+      <a href="https://github.com/neomatrix369/playgroup_202602_docextract" rel="noopener">GitHub repo</a>
+    </nav>
+  </header>
+
+  <main class="site-main content">
+    <p><span class="tag">benchmark</span> <span class="tag tag--interactive">playgroup</span></p>
+    <h1>UK Charity Document Extraction — Multi-Model Benchmark</h1>
+    <p>
+      Extract structured fields from UK charity financial PDFs using LLMs via
+      <a href="https://openrouter.ai/" rel="noopener">OpenRouter</a>,
+      the <a href="https://docs.doubleword.ai/batches/getting-started-with-batched-api" rel="noopener">Doubleword Batch API</a>, or
+      <a href="https://docs.go.v7labs.com/" rel="noopener">V7 Go</a>, then score and rank results across every run in <code>data/</code>.
+    </p>
+
+    <div class="meta-row">
+      <span class="tag">repo: playgroup_202602_docextract</span>
+      <span class="tag">dataset: Kleister Charity (11 PDFs)</span>
+      <span class="tag">fields: 8</span>
+    </div>
+
+    <div class="cta-row">
+      <a class="button button--primary" href="../demos/playgroup-202602-docextract/2026-08-22T2100Z-which-models-extracted-playground.html">Open interactive playground</a>
+      <a class="button" href="https://github.com/neomatrix369/playgroup_202602_docextract" rel="noopener">View on GitHub</a>
+      <a class="button" href="https://github.com/neomatrix369/playgroup_202602_docextract/blob/main/QUICKSTART.md" rel="noopener">QUICKSTART</a>
+    </div>
+
+    <p class="snapshot">Results snapshot: <strong>2026-08-22</strong> · 111 scored runs · playground published <code>2026-08-22T2100Z</code></p>
+
+    <h2>Who is this for?</h2>
+    <ul>
+      <li><strong>Playgroup attendees</strong> — start with <a href="https://github.com/neomatrix369/playgroup_202602_docextract/blob/main/QUICKSTART.md" rel="noopener">QUICKSTART.md</a>, then run extraction and scoring locally.</li>
+      <li><strong>Curious explorers</strong> — read the key findings below and open the <a href="../demos/playgroup-202602-docextract/2026-08-22T2100Z-which-models-extracted-playground.html">interactive playground</a> (no code required).</li>
+      <li><strong>Contributors</strong> — see the <a href="https://github.com/neomatrix369/playgroup_202602_docextract#whats-in-this-repo" rel="noopener">repo file map</a> for scripts, registries, and workflow.</li>
+      <li><strong>Doubleword / V7 teams</strong> — provider tables and timing notes mirror <code>python score.py</code> output in the repo README.</li>
+    </ul>
+
+    <h2>Key findings</h2>
+    <p>
+      Provider aggregates match <code>python score.py</code> over every <code>data/*_dev_extracted__*.tsv</code> file on
+      <strong>2026-08-22</strong>: <strong>111</strong> scored runs
+      (40 OpenRouter, 38 Doubleword, 33 V7 Go). Registries: 33 OpenRouter keys, 31 Doubleword models, 32 V7 keys.
+    </p>
+
+    <div class="table-wrap">
+      <table class="data" aria-label="Provider summary">
+        <thead>
+          <tr>
+            <th>Provider</th>
+            <th>Models</th>
+            <th>Active</th>
+            <th>Failed</th>
+            <th>Avg F1</th>
+            <th>Best F1</th>
+            <th>Best model</th>
+            <th>Avg fields</th>
+            <th>Avg time</th>
+            <th>Avg cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Doubleword</td>
+            <td class="num">38</td>
+            <td class="num">36</td>
+            <td class="num">2</td>
+            <td class="num">0.812</td>
+            <td class="num">0.943</td>
+            <td>dw-qwen3.8-27b</td>
+            <td class="num">63.5/85 (75%)</td>
+            <td class="num">763s</td>
+            <td class="num">$0.036</td>
+          </tr>
+          <tr>
+            <td>OpenRouter</td>
+            <td class="num">40</td>
+            <td class="num">27</td>
+            <td class="num">13</td>
+            <td class="num">0.753</td>
+            <td class="num">0.946</td>
+            <td>gemini-3-pro</td>
+            <td class="num">56.0/85 (66%)</td>
+            <td class="num">1314s</td>
+            <td class="num">$0.092</td>
+          </tr>
+          <tr>
+            <td>V7 Go</td>
+            <td class="num">33</td>
+            <td class="num">33</td>
+            <td class="num">0</td>
+            <td class="num">0.833</td>
+            <td class="num">0.852</td>
+            <td>gpt4-1</td>
+            <td class="num">62.8/85 (74%)</td>
+            <td class="num">124s</td>
+            <td class="num">$0.000</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      Doubleword’s average F1 among active models (0.812) edges OpenRouter (0.753); OpenRouter still holds the highest
+      single-model F1 (<code>gemini-3-pro</code>, 0.946). <code>dw-qwen3.8-27b</code> ranks 2nd at 0.943.
+      V7 averages <strong>0.833</strong> F1 with no failed runs in this snapshot. V7 cost stays at zero until
+      <code>price_in</code> / <code>price_out</code> are set in <code>config_models_v7.py</code>.
+    </p>
+
+    <h2>Top 5 models by F1</h2>
+    <div class="table-wrap">
+      <table class="data" aria-label="Top models">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Model</th>
+            <th>Provider</th>
+            <th>F1</th>
+            <th>Precision</th>
+            <th>Recall</th>
+            <th>Fields found</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">1</td><td>gemini-3-pro</td><td>OpenRouter</td><td class="num">0.946</td><td class="num">0.975</td><td class="num">0.918</td><td class="num">78/85</td></tr>
+          <tr><td class="num">2</td><td>dw-qwen3.8-27b</td><td>Doubleword</td><td class="num">0.943</td><td class="num">0.987</td><td class="num">0.903</td><td class="num">77/85</td></tr>
+          <tr><td class="num">3=</td><td>dw-qwen3-5-397b-a17b-dottxt</td><td>Doubleword</td><td class="num">0.942</td><td class="num">0.975</td><td class="num">0.911</td><td class="num">77/85</td></tr>
+          <tr><td class="num">3=</td><td>dw-kimi-k3</td><td>Doubleword</td><td class="num">0.942</td><td class="num">0.975</td><td class="num">0.911</td><td class="num">77/85</td></tr>
+          <tr><td class="num">5</td><td>qwen3-235b</td><td>OpenRouter</td><td class="num">0.937</td><td class="num">0.975</td><td class="num">0.902</td><td class="num">77/85</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Takeaways</h2>
+    <ul>
+      <li><strong>Doubleword holds 8 of the global top 10.</strong> Best DW models outperform all OpenRouter models except <code>gemini-3-pro</code>.</li>
+      <li><strong>36 of 38 Doubleword models</strong> produced usable results (F1 0.812–0.943 for standard text LLMs).</li>
+      <li><strong>Free-tier models universally failed</strong> — all 14 zero-score models are free-tier or had context/format issues.</li>
+      <li><strong>Precision is consistently high</strong> (0.96–0.97); recall differentiates leaders.</li>
+      <li><strong>Hardest fields:</strong> <code>income_annually_in_british_pounds</code> and <code>spending_annually_in_british_pounds</code>.</li>
+    </ul>
+
+    <h2>Interactive playground</h2>
+    <p>
+      The hosted playground is a static snapshot generated by <code>python playground.py</code> in the repo.
+      Eight tabs: Rankings, Field Heatmap, Document Analysis, Error Breakdown, Deep Dive, Recommendations,
+      Provider Analysis, and Project Evolution.
+    </p>
+    <div class="callout">
+      <strong>Two scoring views:</strong> Rankings and Provider Analysis use semantic <strong>F1</strong> from
+      <code>score.py</code>; heatmaps and error tabs use <strong>exact-match</strong> vs expected TSV. F1 can exceed
+      exact-match when values are close but not identical — that is expected.
+    </div>
+    <p>
+      <a class="button button--primary" href="../demos/playgroup-202602-docextract/2026-08-22T2100Z-which-models-extracted-playground.html">Open playground (2026-08-22T2100Z snapshot)</a>
+    </p>
+
+    <h2>Dataset &amp; fields</h2>
+    <p>
+      Small export from the <a href="https://github.com/applicaai/kleister-charity" rel="noopener">Kleister Charity dataset</a>
+      (<code>dev-0</code>): <strong>11 UK charity financial PDFs</strong> (up to 200 pages each) with pre-extracted OCR text.
+      Data is UK open data — see <a href="https://github.com/applicaai/kleister-charity/issues/2" rel="noopener">Kleister license</a>.
+    </p>
+    <div class="field-grid" aria-label="Extracted fields">
+      <span>charity_number</span>
+      <span>charity_name</span>
+      <span>report_date</span>
+      <span>income_annually_in_british_pounds</span>
+      <span>spending_annually_in_british_pounds</span>
+      <span>address__postcode</span>
+      <span>address__post_town</span>
+      <span>address__street_line</span>
+    </div>
+
+    <h2>Workflow (local)</h2>
+    <pre class="code-block"><code># Smoke test
+python llm_openrouter.py
+
+# Extract (auto-detects OpenRouter / Doubleword / V7 from registries)
+python extractor.py gemini-2.0-flash
+python extractor.py --all-doubleword
+python extractor.py --all-v7
+
+# Score and regenerate playground
+python score.py
+python playground.py</code></pre>
+
+    <h2>Repo essentials</h2>
+    <ul>
+      <li><code>extractor.py</code> — unified runner with checkpoint/resume for async backends</li>
+      <li><code>score.py</code> — F1 / precision / recall leaderboard</li>
+      <li><code>playground.py</code> — generates <code>which-models-extracted-playground.html</code></li>
+      <li><code>config_models_*.py</code> — OpenRouter, Doubleword, and V7 model registries</li>
+      <li><code>data/extraction_stats.csv</code> — per-run stats (time, cost, field hits)</li>
+      <li><code>docs/v7-go.md</code> — focused V7 Go setup guide</li>
+    </ul>
+
+    <div class="cta-row">
+      <a class="button button--primary" href="https://github.com/neomatrix369/playgroup_202602_docextract" rel="noopener">github.com/neomatrix369/playgroup_202602_docextract</a>
+      <a class="button" href="../">Back to home</a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    Benchmark data snapshot 2026-08-22 ·
+    <a href="https://github.com/neomatrix369/playgroup_202602_docextract" rel="noopener">source repo</a>
+  </footer>
+</body>
+</html>
