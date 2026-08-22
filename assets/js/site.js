@@ -1,15 +1,15 @@
 const FALLBACK_PAGES = [
   {
-    title: "Example static page",
-    description: "A simple standalone HTML page with shared site styling.",
-    href: "pages/example-static.html",
+    title: "UK Charity Doc Extract",
+    description: "Multi-model PDF extraction benchmark — 111 scored runs across OpenRouter, Doubleword, and V7 Go.",
+    href: "pages/playgroup-202602-docextract.html",
     kind: "static",
   },
   {
-    title: "Example interactive page",
-    description: "Canvas demo with keyboard and pointer controls.",
-    href: "demos/example-interactive.html",
-    kind: "interactive",
+    title: "Projects",
+    description: "Open source repos with links to live demos on this site.",
+    href: "pages/projects.html",
+    kind: "static",
   },
 ];
 

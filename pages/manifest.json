@@ -35,18 +35,6 @@
       "description": "Pan/zoom map of Claude Code extension points, hooks, and APIs.",
       "href": "demos/claude-code-concept-map.html",
       "kind": "interactive"
-    },
-    {
-      "title": "Example static page",
-      "description": "Starter template for simple standalone pages on this site.",
-      "href": "pages/example-static.html",
-      "kind": "static"
-    },
-    {
-      "title": "Example interactive page",
-      "description": "Canvas demo with keyboard and pointer controls.",
-      "href": "demos/example-interactive.html",
-      "kind": "interactive"
     }
   ]
 }
