@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="py-bug-trace sweep one-pager — Laguna-XS.2 ranks 12/29 overall, 2nd on Level 3.">
+  <title>One-pager · py-bug-trace sweep</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <style>
+    .content { max-width: 52rem; }
+    .content h1 { margin-top: 0; font-family: var(--font-display); }
+    .content h2 { margin: 1.75rem 0 0.65rem; font-family: var(--font-display); font-size: 1.15rem; }
+    .content p, .content li { color: var(--text-secondary); }
+    .table-wrap { overflow-x: auto; margin: 1rem 0; border: 1px solid var(--border-subtle); border-radius: var(--radius); }
+    table.data { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    table.data th, table.data td { padding: 0.5rem 0.7rem; text-align: left; border-bottom: 1px solid var(--border-subtle); }
+    table.data th { background: var(--bg-elevated); }
+    table.data td.num { font-family: var(--font-mono); font-size: 0.8125rem; }
+    .snapshot { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-muted); }
+    .hf-link { font-size: 0.875rem; margin-bottom: 1.25rem; }
+    .hf-link a { color: var(--cta-ink); }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../../">neomatrix369<small>github.io</small></a>
+    <nav class="site-nav">
+      <a href="index.html">All reports</a>
+      <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/fragments/onepager.md" rel="noopener" target="_blank">View on HF ↗</a>
+    </nav>
+  </header>
+
+  <main class="site-main content">
+    <p class="snapshot">matrix 2026-06-04 · generated 2026-07-17 · target poolside/laguna-xs.2</p>
+    <p class="hf-link">
+      <strong>Canonical source:</strong>
+      <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/fragments/onepager.md" rel="noopener" target="_blank">fragments/onepager.md on Hugging Face</a>
+      · <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/README.md" rel="noopener" target="_blank">reports guide</a>
+    </p>
+
+    <h1>py-bug-trace sweep — one-pager</h1>
+    <p>
+      <strong>Target Laguna-XS.2</strong> ranks <strong>12 of 29</strong> at 79.0% mean overall.
+      <strong>Front-runner:</strong> GPT-5-Nano at 93.3% (+14.3% vs target).
+      4 warnings, 7 level cliffs — biggest: Claude-Haiku-4.5 drops 40.0% between L1 (100.0%) and L3 (60.0%).
+    </p>
+
+    <h2>Top 5</h2>
+    <div class="table-wrap">
+      <table class="data">
+        <thead>
+          <tr><th>Rank</th><th>Model</th><th>Mean overall</th><th>Trend</th><th>L1</th><th>L2</th><th>L3</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">1</td><td>GPT-5-Nano</td><td class="num">93.3%</td><td>██▇</td><td class="num">100.0%</td><td class="num">100.0%</td><td class="num">80.0%</td></tr>
+          <tr><td class="num">2</td><td>GPT-5.3-Codex</td><td class="num">88.9%</td><td>█▆█</td><td class="num">100.0%</td><td class="num">66.7%</td><td class="num">100.0%</td></tr>
+          <tr><td class="num">3</td><td>Claude-Haiku-4.5</td><td class="num">86.7%</td><td>██▅</td><td class="num">100.0%</td><td class="num">100.0%</td><td class="num">60.0%</td></tr>
+          <tr><td class="num">3</td><td>DeepSeek-V4-Pro</td><td class="num">86.7%</td><td>█▇▇</td><td class="num">100.0%</td><td class="num">80.0%</td><td class="num">80.0%</td></tr>
+          <tr><td class="num">4</td><td>Claude-Sonnet-4.5</td><td class="num">84.5%</td><td>█▇▆</td><td class="num">100.0%</td><td class="num">86.7%</td><td class="num">66.7%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>What needs attention</h2>
+    <ul>
+      <li><strong>warning</strong> · L1: 6 cells have no recorded rollouts — scores biased until <code>sweep.py --rerun-missing</code> fills them.</li>
+      <li><strong>warning</strong> · L2: 3 cells missing rollouts (including Laguna-XS.2×timer-execution-order).</li>
+      <li><strong>warning</strong> · L3: 5 cells missing rollouts.</li>
+      <li><strong>warning</strong> · 6 cells exceed integrity thresholds — infrastructure errors, not model quality.</li>
+      <li><strong>notable</strong> · GPT-5.3-Codex scores +33.3pp better on L3 than L2 — harder-level inversion.</li>
+    </ul>
+  </main>
+
+  <footer class="site-footer">
+    <p>Source: <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments" rel="noopener" target="_blank">poolside-laguna-hackathon/laguna-eval-experiments</a></p>
+  </footer>
+  <script src="hf-sources.js"></script>
+  <script src="archive-chrome.js" data-source="onepager" data-source-label="fragments/onepager.md"></script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="py-bug-trace technical report — executive summary and Laguna-XS.2 target read.">
+  <title>Technical report · py-bug-trace sweep</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <style>
+    .content { max-width: 52rem; }
+    .content h1 { margin-top: 0; font-family: var(--font-display); }
+    .content h2 { margin: 1.75rem 0 0.65rem; font-family: var(--font-display); font-size: 1.15rem; }
+    .content p, .content li { color: var(--text-secondary); }
+    .table-wrap { overflow-x: auto; margin: 1rem 0; border: 1px solid var(--border-subtle); border-radius: var(--radius); }
+    table.data { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    table.data th, table.data td { padding: 0.5rem 0.7rem; text-align: left; border-bottom: 1px solid var(--border-subtle); }
+    table.data th { background: var(--bg-elevated); }
+    .snapshot { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-muted); }
+    .hf-link { font-size: 0.875rem; margin-bottom: 1.25rem; }
+    .hf-link a { color: var(--cta-ink); }
+    .callout { margin: 1.25rem 0; padding: 1rem 1.1rem; border-left: 3px solid var(--cta); background: var(--bg-surface); border-radius: 0 var(--radius) var(--radius) 0; font-size: 0.9375rem; color: var(--text-secondary); }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../../">neomatrix369<small>github.io</small></a>
+    <nav class="site-nav">
+      <a href="index.html">All reports</a>
+      <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/narrative/report.md" rel="noopener" target="_blank">Full report on HF ↗</a>
+    </nav>
+  </header>
+
+  <main class="site-main content">
+    <p class="snapshot">analyst claude-opus-4-6 · matrix 2026-06-04 · generated 2026-07-17</p>
+    <p class="hf-link">
+      <strong>Canonical source:</strong>
+      <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/narrative/report.md" rel="noopener" target="_blank">narrative/report.md on Hugging Face</a>
+      (includes field patterns, caveats, and appendix)
+    </p>
+
+    <h1>Sweep report narrative</h1>
+
+    <div class="callout">
+      Narrative written by the analyst model from the stats digest — verify surprising claims against the appendix on Hugging Face.
+    </div>
+
+    <h2>Executive summary</h2>
+    <p>
+      The most impactful finding is that <strong>difficulty levels in this benchmark do not form a monotonic hierarchy</strong>: 13 of 28 detected anomalies are <em>inverted</em> (models scoring better on harder levels), driven primarily by two specific L2 tasks — <code>asyncio-yield-before-finish</code> and <code>thread-race-counter</code> — that act as bottlenecks unrelated to the intended difficulty gradient. Laguna-XS.2 lands at rank 12/29 overall (0.790), but its profile is distinctive: it is the <strong>second-best model on Level 3</strong> (0.867) while lagging on Levels 1–2.
+    </p>
+
+    <h2>Target model read</h2>
+    <div class="table-wrap">
+      <table class="data">
+        <thead>
+          <tr><th>Metric</th><th>L1</th><th>L2</th><th>L3</th><th>Overall</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Score</strong></td><td>0.771</td><td>0.733</td><td><strong>0.867</strong></td><td>0.790</td></tr>
+          <tr><td><strong>Rank (within level cohort)</strong></td><td>3/8</td><td>4/8</td><td><strong>2/8</strong></td><td>12/29</td></tr>
+          <tr><td><strong>Percentile</strong></td><td>25th</td><td>54th</td><td><strong>79th</strong></td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Where it wins.</strong> Laguna-XS.2 excels on Level 3 (bug-explanation / fix tasks), ranking 2nd. It solved <code>flatten-iterable-trap</code> and <code>find-first-with-duplicates</code> perfectly.</p>
+    <p><strong>Where it loses.</strong> On L1 it sits at 0.771 with a zero-rollout cell on <code>late-binding-closure</code>. On L2 it scores 0.733 with a zero-rollout cell on <code>timer-execution-order</code>, but did solve the hardest L2 task (<code>asyncio-yield-before-finish</code>).</p>
+    <p><strong>vs Laguna-M.1</strong> (rank 17, 0.733 overall): XS.2 is +5.7 pp overall, driven by +26.7 pp on L3 (0.867 vs 0.600). M.1 edges ahead on L2 (0.867 vs 0.733).</p>
+
+    <p>
+      <a class="button" href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/narrative/report.md" rel="noopener" target="_blank">Read full technical report on Hugging Face</a>
+      · <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/matrix/stats.md" rel="noopener" target="_blank">stats digest</a>
+    </p>
+  </main>
+
+  <footer class="site-footer">
+    <p>Source: <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments" rel="noopener" target="_blank">poolside-laguna-hackathon/laguna-eval-experiments</a></p>
+  </footer>
+  <script src="hf-sources.js"></script>
+  <script src="archive-chrome.js" data-source="report" data-source-label="narrative/report.md"></script>
+</body>
+</html>

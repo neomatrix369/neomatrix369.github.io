@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="py-bug-trace level scorecards — L1, L2, L3 per-level breakdown for Laguna-XS.2.">
+  <title>Level scorecards · py-bug-trace sweep</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <style>
+    .content { max-width: 52rem; }
+    .content h1 { margin-top: 0; font-family: var(--font-display); }
+    .content h2 { margin: 2rem 0 0.65rem; font-family: var(--font-display); font-size: 1.15rem; }
+    .content p, .content li { color: var(--text-secondary); }
+    .table-wrap { overflow-x: auto; margin: 0.75rem 0 1.5rem; border: 1px solid var(--border-subtle); border-radius: var(--radius); }
+    table.data { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    table.data th, table.data td { padding: 0.5rem 0.7rem; text-align: left; border-bottom: 1px solid var(--border-subtle); }
+    table.data th { background: var(--bg-elevated); }
+    table.data td.num { font-family: var(--font-mono); font-size: 0.8125rem; }
+    .snapshot { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-muted); }
+    .hf-link { font-size: 0.875rem; margin-bottom: 1.25rem; }
+    .hf-link a { color: var(--cta-ink); }
+    .level-source { font-size: 0.8125rem; margin: -0.25rem 0 0.75rem; }
+    .level-source a { color: var(--cta-ink); }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../../">neomatrix369<small>github.io</small></a>
+    <nav class="site-nav">
+      <a href="index.html">All reports</a>
+      <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/tree/main/environments/py_bug_trace/reports/fragments" rel="noopener" target="_blank">HF fragments ↗</a>
+    </nav>
+  </header>
+
+  <main class="site-main content">
+    <p class="snapshot">matrix 2026-06-04 · target poolside/laguna-xs.2</p>
+    <p class="hf-link">
+      <strong>Canonical sources:</strong>
+      <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/fragments/level-L1.md" rel="noopener" target="_blank">level-L1.md</a> ·
+      <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/fragments/level-L2.md" rel="noopener" target="_blank">level-L2.md</a> ·
+      <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/fragments/level-L3.md" rel="noopener" target="_blank">level-L3.md</a>
+    </p>
+
+    <h1>Level scorecards</h1>
+    <p>Per-level breakdown from the py-bug-trace sweep. Each level has 5 tasks; 8 models scored per level cohort.</p>
+
+    <h2>Coding Task Difficulty Level 1</h2>
+    <p class="level-source"><a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/fragments/level-L1.md" rel="noopener" target="_blank">View level-L1.md on Hugging Face ↗</a></p>
+    <p><strong>Models:</strong> 8 · <strong>Tasks:</strong> 5 · <strong>Target:</strong> Laguna-XS.2 at 77.1% (rank 3)</p>
+    <div class="table-wrap">
+      <table class="data">
+        <thead><tr><th>Hardest task</th><th>Mean score</th><th>Fully solved by</th></tr></thead>
+        <tbody>
+          <tr><td><code>string-lexicographic-max</code></td><td class="num">94.0%</td><td>GLM-5.1, GPT-5-Mini, GPT-5-Nano, Qwen3.5-35B-A3B, Qwen3.6-27B-Dense, Qwen3.6-35B-A3B</td></tr>
+          <tr><td><code>mutable-default-arg</code></td><td class="num">100.0%</td><td>Laguna-XS.2, GLM-5.1, GPT-5-Nano, Laguna-M.1, Qwen3.6-35B-A3B</td></tr>
+          <tr><td><code>late-binding-closure</code></td><td class="num">100.0%</td><td>GLM-5.1, GPT-5-Mini, GPT-5-Nano, Laguna-M.1, Qwen3.5-35B-A3B, Qwen3.6-27B-Dense</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Coding Task Difficulty Level 2</h2>
+    <p class="level-source"><a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/fragments/level-L2.md" rel="noopener" target="_blank">View level-L2.md on Hugging Face ↗</a></p>
+    <p><strong>Models:</strong> 8 · <strong>Tasks:</strong> 5 · <strong>Target:</strong> Laguna-XS.2 at 73.3% (rank 4)</p>
+    <div class="table-wrap">
+      <table class="data">
+        <thead><tr><th>Hardest task</th><th>Mean score</th><th>Fully solved by</th></tr></thead>
+        <tbody>
+          <tr><td><code>asyncio-yield-before-finish</code></td><td class="num">51.8%</td><td>Laguna-XS.2, GPT-5-Nano, Qwen3.6-35B-A3B</td></tr>
+          <tr><td><code>thread-race-counter</code></td><td class="num">90.5%</td><td>GLM-5.1, GPT-5-Mini, GPT-5-Nano, Qwen3.5-35B-A3B, Qwen3.6-27B-Dense</td></tr>
+          <tr><td><code>timer-execution-order</code></td><td class="num">97.6%</td><td>GLM-5.1, GPT-5-Nano, Laguna-M.1, Qwen3.5-35B-A3B, Qwen3.6-35B-A3B</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Coding Task Difficulty Level 3</h2>
+    <p class="level-source"><a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/fragments/level-L3.md" rel="noopener" target="_blank">View level-L3.md on Hugging Face ↗</a></p>
+    <p><strong>Models:</strong> 8 · <strong>Tasks:</strong> 5 · <strong>Target:</strong> Laguna-XS.2 at <strong>86.7% (rank 2)</strong></p>
+    <div class="table-wrap">
+      <table class="data">
+        <thead><tr><th>Hardest task</th><th>Mean score</th><th>Fully solved by</th></tr></thead>
+        <tbody>
+          <tr><td><code>chunked-eager-materialization</code></td><td class="num">50.0%</td><td>GPT-5-Mini, GPT-5-Nano</td></tr>
+          <tr><td><code>flatten-iterable-trap</code></td><td class="num">100.0%</td><td>Laguna-XS.2, GLM-5.1, GPT-5-Nano, Laguna-M.1, Qwen3.6-27B-Dense, Qwen3.6-35B-A3B</td></tr>
+          <tr><td><code>find-first-with-duplicates</code></td><td class="num">100.0%</td><td>Laguna-XS.2, GLM-5.1, GPT-5-Mini, GPT-5-Nano, Qwen3.5-35B-A3B, Qwen3.6-27B-Dense, Qwen3.6-35B-A3B</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>Source: <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments" rel="noopener" target="_blank">poolside-laguna-hackathon/laguna-eval-experiments</a></p>
+  </footer>
+  <script src="hf-sources.js"></script>
+  <script src="archive-chrome.js" data-source="levelL1" data-source-label="fragments/level-L*.md"></script>
+</body>
+</html>

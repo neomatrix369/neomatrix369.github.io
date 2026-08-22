@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Poolside Laguna hackathon py-bug-trace benchmark — Laguna-XS.2 ranks 2nd on Level 3, 12th overall.">
+  <title>Laguna py-bug-trace · Poolside hackathon benchmark</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <style>
+    .content { max-width: 52rem; }
+    .content h1 { margin-top: 0; font-family: var(--font-display); font-size: clamp(1.75rem, 3vw, 2.25rem); }
+    .content h2 { margin: 2rem 0 0.75rem; font-family: var(--font-display); font-size: 1.25rem; }
+    .content p, .content li { color: var(--text-secondary); }
+    .content ul { padding-left: 1.25rem; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0 1.5rem; }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1.5rem 0 2rem; }
+    .table-wrap { overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid var(--border-subtle); border-radius: var(--radius); }
+    table.data { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    table.data th, table.data td { padding: 0.55rem 0.75rem; text-align: left; border-bottom: 1px solid var(--border-subtle); }
+    table.data th { background: var(--bg-elevated); font-weight: 600; }
+    .callout {
+      margin: 1.25rem 0;
+      padding: 1rem 1.125rem;
+      border-left: 3px solid var(--cta);
+      background: var(--bg-surface);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+    }
+    .hf-provenance {
+      margin: 1.5rem 0 2rem;
+      padding: 1rem 1.15rem;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      background: var(--bg-elevated);
+      font-size: 0.875rem;
+      line-height: 1.55;
+      color: var(--text-secondary);
+    }
+    .hf-provenance strong { color: var(--text-primary); }
+    .hf-provenance ul { margin: 0.5rem 0 0; padding-left: 1.2rem; }
+    .hf-provenance a { color: var(--cta-ink); }
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); gap: 0.85rem; margin: 1rem 0 1.5rem; }
+    .card-grid a.card {
+      display: block; padding: 0.9rem 1rem;
+      border: 1px solid var(--border-subtle); border-radius: var(--radius);
+      background: var(--bg-surface); text-decoration: none; color: inherit;
+    }
+    .card-grid a.card:hover { border-color: var(--cta); }
+    .card-grid a.card strong { display: block; margin-bottom: 0.3rem; color: var(--text-primary); font-size: 0.9375rem; }
+    .card-grid a.card span { font-size: 0.8125rem; color: var(--text-muted); }
+    .snapshot { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../">
+      neomatrix369
+      <small>github.io</small>
+    </a>
+    <nav class="site-nav">
+      <a href="../">Home</a>
+      <a href="projects.html">Projects</a>
+      <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments" rel="noopener" target="_blank">HF dataset</a>
+    </nav>
+  </header>
+
+  <main class="site-main content">
+    <p><span class="tag">benchmark</span> <span class="tag tag--interactive">poolside laguna hackathon</span></p>
+    <h1>py-bug-trace — Laguna model sweep</h1>
+    <p>
+      Evaluation of <strong>poolside/laguna-xs.2</strong> against 28 comparison models on the
+      <strong>py-bug-trace</strong> environment from the Poolside Laguna hackathon.
+      Models predict outputs of subtly broken Python (L1–L2) or fix buggy code (L3).
+      All artifacts originate from the
+      <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments" rel="noopener" target="_blank">laguna-eval-experiments</a>
+      dataset on Hugging Face.
+    </p>
+
+    <div class="meta-row">
+      <span class="tag">target: poolside/laguna-xs.2</span>
+      <span class="tag">29 models</span>
+      <span class="tag">matrix: 2026-06-04</span>
+      <span class="tag">reports: 2026-07-17</span>
+    </div>
+
+    <div class="callout">
+      <strong>Headline finding:</strong> Laguna-XS.2 ranks <strong>12th of 29</strong> overall (79.0%) but
+      <strong>2nd on Level 3</strong> (86.7%) — an inverted difficulty profile where the target is weak on easy tasks and strong on hard code-fix problems. Thirteen of 28 flagged anomalies are level inversions across the field.
+    </div>
+
+    <div class="hf-provenance">
+      <strong>Credit &amp; source of truth (Hugging Face)</strong>
+      <p style="margin:0.35rem 0 0.5rem">
+        Pages on this site are hosted mirrors for navigation and readability.
+        When citing results, link to the canonical Hugging Face artifacts below.
+      </p>
+      <ul>
+        <li><a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments" rel="noopener" target="_blank">poolside-laguna-hackathon/laguna-eval-experiments</a> — main dataset repo</li>
+        <li><a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/README.md" rel="noopener" target="_blank">environments/py_bug_trace/README.md</a> — environment docs</li>
+        <li><a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/README.md" rel="noopener" target="_blank">reports/README.md</a> — pick-your-path guide</li>
+        <li><a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/tree/main/environments/py_bug_trace/reports" rel="noopener" target="_blank">reports/</a> — full reports tree</li>
+        <li><a href="https://huggingface.co/poolside-laguna-hackathon/datasets" rel="noopener" target="_blank">poolside-laguna-hackathon/datasets</a> — rollout datasets</li>
+      </ul>
+    </div>
+
+    <div class="cta-row">
+      <a class="button button--primary" href="../demos/laguna-py-bug-trace/explorer.html">Open interactive explorer</a>
+      <a class="button" href="../demos/laguna-py-bug-trace/">All hosted reports</a>
+    </div>
+
+    <h2>Target model at a glance</h2>
+    <div class="table-wrap">
+      <table class="data">
+        <thead>
+          <tr><th>Level</th><th>Score</th><th>Rank (cohort)</th><th>Percentile</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>L1 — Python gotchas</td><td>77.1%</td><td>3 / 8</td><td>25th</td></tr>
+          <tr><td>L2 — Concurrency / asyncio</td><td>73.3%</td><td>4 / 8</td><td>54th</td></tr>
+          <tr><td><strong>L3 — Code fix</strong></td><td><strong>86.7%</strong></td><td><strong>2 / 8</strong></td><td><strong>79th</strong></td></tr>
+          <tr><td><strong>Overall</strong></td><td><strong>79.0%</strong></td><td><strong>12 / 29</strong></td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Hosted reports</h2>
+    <p>Each page links back to its canonical Hugging Face artifact.</p>
+    <div class="card-grid">
+      <a class="card" href="../demos/laguna-py-bug-trace/explorer.html">
+        <strong>Interactive explorer</strong>
+        <span>Filter models, levels, tasks</span>
+      </a>
+      <a class="card" href="../demos/laguna-py-bug-trace/onepager.html">
+        <strong>One-pager</strong>
+        <span>30-second summary</span>
+      </a>
+      <a class="card" href="../demos/laguna-py-bug-trace/writeup.html">
+        <strong>Write-up</strong>
+        <span>5-minute narrative</span>
+      </a>
+      <a class="card" href="../demos/laguna-py-bug-trace/report.html">
+        <strong>Technical report</strong>
+        <span>Executive summary</span>
+      </a>
+      <a class="card" href="../demos/laguna-py-bug-trace/levels.html">
+        <strong>Level scorecards</strong>
+        <span>L1, L2, L3 breakdown</span>
+      </a>
+    </div>
+
+    <h2>HF-only artifacts</h2>
+    <ul>
+      <li><a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/matrix/stats.md" rel="noopener" target="_blank">matrix/stats.md</a> — stats digest</li>
+      <li><a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/matrix/report.md" rel="noopener" target="_blank">matrix/report.md</a> — full matrix report</li>
+      <li><a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/matrix/stats.json" rel="noopener" target="_blank">stats.json</a> ·
+          <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/matrix/comparison.csv" rel="noopener" target="_blank">comparison.csv</a></li>
+    </ul>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      Artifacts mirrored from
+      <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments" rel="noopener" target="_blank">poolside-laguna-hackathon/laguna-eval-experiments</a>
+      on Hugging Face · Poolside Laguna hackathon
+    </p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="py-bug-trace sweep write-up — Laguna-XS.2 ranks 2nd on Level 3 despite mid-pack overall.">
+  <title>Write-up · py-bug-trace sweep</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <style>
+    .content { max-width: 52rem; }
+    .content h1 { margin-top: 0; font-family: var(--font-display); }
+    .content h2 { margin: 1.75rem 0 0.65rem; font-family: var(--font-display); font-size: 1.15rem; }
+    .content p, .content li { color: var(--text-secondary); }
+    .snapshot { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-muted); }
+    .hf-link { font-size: 0.875rem; margin-bottom: 1.25rem; }
+    .hf-link a { color: var(--cta-ink); }
+    .callout { margin: 1.25rem 0; padding: 1rem 1.1rem; border-left: 3px solid var(--cta); background: var(--bg-surface); border-radius: 0 var(--radius) var(--radius) 0; font-size: 0.9375rem; color: var(--text-secondary); }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../../">neomatrix369<small>github.io</small></a>
+    <nav class="site-nav">
+      <a href="index.html">All reports</a>
+      <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/narrative/writeup.md" rel="noopener" target="_blank">Full write-up on HF ↗</a>
+    </nav>
+  </header>
+
+  <main class="site-main content">
+    <p class="snapshot">analyst claude-opus-4-6 · matrix 2026-06-04 · generated 2026-07-17</p>
+    <p class="hf-link">
+      <strong>Canonical source:</strong>
+      <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/narrative/writeup.md" rel="noopener" target="_blank">narrative/writeup.md on Hugging Face</a>
+      (includes full appendix — this page is an abridged mirror)
+    </p>
+
+    <h1>Sweep write-up narrative</h1>
+    <p class="snapshot">Target: poolside/laguna-xs.2 · Stats digest 2026-07-17</p>
+
+    <div class="callout">
+      Narrative written by the analyst model from the stats digest — verify surprising claims against the appendix on Hugging Face.
+    </div>
+
+    <h2>TL;DR</h2>
+    <p>
+      Poolside's <strong>Laguna-XS.2</strong> lands 12th of 29 models overall (0.790 mean score), but its real story is an unusual strength on the hardest tasks: it ranks <strong>2nd on Level 3</strong> (0.867) while sitting at only 25th-percentile on Level 1 — the opposite of most competitors. Meanwhile, the benchmark's difficulty levels are so scrambled that 13 of 28 flagged anomalies are <em>inversions</em> where models score better on harder problems, suggesting L2 and L3 test meaningfully different skills rather than a clean difficulty gradient.
+    </p>
+
+    <h2>The setup</h2>
+    <p>
+      We swept 29 models across <strong>py-bug-trace</strong>, a benchmark with three difficulty levels (L1–L3, 5 tasks each) that asks models to predict the exact output of subtly broken Python snippets (L1–L2) or fix buggy code (L3). Each cell was scored 0–1 across multiple rollouts. The target model is <strong>Laguna-XS.2</strong> (<code>poolside/laguna-xs.2</code>); everything else serves as comparison.
+    </p>
+
+    <h2>The story across levels</h2>
+    <p><strong>Level 1</strong> (classic Python gotchas): Laguna-XS.2 scored 0.771, ranking 3rd in its cohort but only 25th-percentile across the full leaderboard.</p>
+    <p><strong>Level 2</strong> (concurrency and asyncio): The <code>asyncio-yield-before-finish</code> task had a mean score of just 0.518. <strong>Laguna-XS.2 was one of only three models that solved it.</strong> Its 0.733 score placed it 4th (53rd percentile).</p>
+    <p><strong>Level 3</strong> (code-fix tasks): Laguna-XS.2 jumped to <strong>0.867, rank 2</strong>, beaten only by Qwen3.6-35B-A3B (0.933).</p>
+
+    <h2>Surprises and anomalies</h2>
+    <p>
+      <strong>Difficulty levels don't behave like a ladder.</strong> Thirteen anomalies are inverted — models doing better on nominally harder levels. L2's concurrency tasks are a different kind of hard: <code>thread-race-counter</code> tripped up GPT-5.3-Codex, GPT-5.4, GPT-5.5, and Claude-Opus-4.6, while those same models nailed L3 code-fix tasks.
+    </p>
+
+    <h2>How the target did</h2>
+    <p>
+      Laguna-XS.2's profile is distinctive: <strong>weak-easy, strong-hard.</strong> Its L1→L3 trajectory (0.771 → 0.733 → 0.867) runs counter to the field's typical decay. Sibling <strong>Laguna-M.1</strong> (rank 17, 0.733 overall) showed the opposite pattern — stronger on L2 (0.867) but weaker on L3 (0.600).
+    </p>
+
+    <p>
+      <a class="button" href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/narrative/writeup.md" rel="noopener" target="_blank">Read full write-up with appendix on Hugging Face</a>
+    </p>
+  </main>
+
+  <footer class="site-footer">
+    <p>Source: <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments" rel="noopener" target="_blank">poolside-laguna-hackathon/laguna-eval-experiments</a></p>
+  </footer>
+  <script src="hf-sources.js"></script>
+  <script src="archive-chrome.js" data-source="writeup" data-source-label="narrative/writeup.md"></script>
+</body>
+</html>

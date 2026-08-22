@@ -1,5 +1,30 @@
 const FALLBACK_PAGES = [
   {
+    title: "Laguna py-bug-trace",
+    description: "Poolside Laguna hackathon benchmark — hosted from HF laguna-eval-experiments.",
+    kind: "group",
+    children: [
+      {
+        title: "Project page",
+        description: "Headline findings and Hugging Face source links.",
+        href: "pages/laguna-py-bug-trace.html",
+        kind: "static",
+      },
+      {
+        title: "Interactive explorer",
+        description: "Filter models, levels, and tasks.",
+        href: "demos/laguna-py-bug-trace/explorer.html",
+        kind: "interactive",
+      },
+      {
+        title: "All reports hub",
+        description: "One-pager, write-up, report, level scorecards.",
+        href: "demos/laguna-py-bug-trace/",
+        kind: "static",
+      },
+    ],
+  },
+  {
     title: "UK Charity Doc Extract",
     description: "Multi-model PDF extraction benchmark.",
     kind: "group",

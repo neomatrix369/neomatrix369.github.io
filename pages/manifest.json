@@ -1,6 +1,55 @@
 {
   "pages": [
     {
+      "title": "py-bug-trace · Laguna eval",
+      "description": "29-model Python benchmark from HF laguna-eval-experiments — hosted reports with canonical Hugging Face backlinks.",
+      "kind": "group",
+      "children": [
+        {
+          "title": "Project page",
+          "description": "Headline results, Laguna-XS.2 scorecard, and Hugging Face source links.",
+          "href": "pages/laguna-py-bug-trace.html",
+          "kind": "static"
+        },
+        {
+          "title": "All reports hub",
+          "description": "Index of hosted mirrors — explorer, narratives, scorecards, and HF provenance.",
+          "href": "demos/laguna-py-bug-trace/",
+          "kind": "static"
+        },
+        {
+          "title": "Interactive sweep explorer",
+          "description": "Heatmap, Pareto frontier, and anomaly flags — browse the full 29-model matrix.",
+          "href": "demos/laguna-py-bug-trace/explorer.html",
+          "kind": "interactive"
+        },
+        {
+          "title": "Sweep one-pager",
+          "description": "30-second summary — top 5 leaderboard, warnings, and data-quality flags.",
+          "href": "demos/laguna-py-bug-trace/onepager.html",
+          "kind": "static"
+        },
+        {
+          "title": "Plain-language write-up",
+          "description": "~5 min narrative — weak-easy strong-hard profile, level inversions, and caveats.",
+          "href": "demos/laguna-py-bug-trace/writeup.html",
+          "kind": "static"
+        },
+        {
+          "title": "Technical report",
+          "description": "~10 min analyst report — target read, field patterns, and recommended next runs.",
+          "href": "demos/laguna-py-bug-trace/report.html",
+          "kind": "static"
+        },
+        {
+          "title": "Per-level scorecards",
+          "description": "L1, L2, and L3 hardest tasks with solve rates and Laguna-XS.2 ranks.",
+          "href": "demos/laguna-py-bug-trace/levels.html",
+          "kind": "static"
+        }
+      ]
+    },
+    {
       "title": "UK Charity Doc Extract",
       "description": "Multi-model PDF extraction benchmark — 111 scored runs across OpenRouter, Doubleword, and V7 Go.",
       "kind": "group",
