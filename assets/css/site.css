@@ -99,6 +99,15 @@ a:hover {
   margin-bottom: 2.5rem;
 }
 
+.hero-eyebrow {
+  margin: 0 0 0.5rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 .hero h1 {
   margin: 0 0 0.75rem;
   font-family: var(--font-display);
@@ -106,18 +115,96 @@ a:hover {
   line-height: 1.15;
 }
 
-.hero p {
-  max-width: 42rem;
-  margin: 0;
+.hero-dot {
+  color: var(--cta);
+  font-weight: 400;
+}
+
+.hero-lead {
+  max-width: 44rem;
+  margin: 0 0 1.25rem;
   color: var(--text-secondary);
   font-size: 1.0625rem;
 }
 
-.hero-links {
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.75rem;
+}
+
+.cred-tag {
+  display: inline-flex;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.hero-featured {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.hero-panel {
+  padding: 1rem 1.125rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  background: var(--bg-surface);
+  box-shadow: var(--shadow);
+}
+
+.hero-panel-title {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.hero-links-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hero-links-list li {
+  padding: 0.55rem 0;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.hero-links-list li:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+.hero-links-list a {
+  color: var(--cta-ink);
+  font-size: 0.9375rem;
+}
+
+.hero-links-list a strong {
+  font-weight: 600;
+}
+
+.hero-links-list span {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.hero-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  margin-top: 1.25rem !important;
+  margin: 0;
 }
 
 .section-lead {
