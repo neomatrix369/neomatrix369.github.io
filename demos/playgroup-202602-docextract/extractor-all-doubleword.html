@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="How to run python extractor.py --all-doubleword for batch extraction across every Doubleword model in the UK Charity Doc Extract playgroup.">
+  <title>Doubleword batch extraction · playgroup_202602_docextract</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <style>
+    .content { max-width: 46rem; }
+    .content h1 { margin-top: 0; font-family: var(--font-display); font-size: clamp(1.75rem, 3vw, 2.25rem); }
+    .content h2 { margin: 2rem 0 0.75rem; font-family: var(--font-display); font-size: 1.2rem; }
+    .content h3 { margin: 1.25rem 0 0.5rem; font-size: 1rem; font-weight: 600; }
+    .content p, .content li { color: var(--text-secondary); }
+    .content ul, .content ol { padding-left: 1.25rem; }
+    .content li { margin-bottom: 0.35rem; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0 1.5rem; }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1.25rem 0 1.75rem; }
+    .video-wrap {
+      margin: 1.25rem 0 1.75rem;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: #1c1915;
+      box-shadow: var(--shadow);
+    }
+    .video-wrap video { display: block; width: 100%; height: auto; vertical-align: top; }
+    .video-caption {
+      padding: 0.65rem 0.9rem;
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border-subtle);
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+    .section-card {
+      margin: 1rem 0 1.25rem;
+      padding: 1rem 1.125rem;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      background: var(--bg-surface);
+    }
+    .section-card h3 { margin-top: 0; }
+    .section-card p:last-child { margin-bottom: 0; }
+    table.data { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin: 0.75rem 0; }
+    table.data th, table.data td { padding: 0.5rem 0.65rem; text-align: left; border-bottom: 1px solid var(--border-subtle); }
+    table.data th { background: var(--bg-elevated); font-weight: 600; }
+    table.data tr:last-child td { border-bottom: none; }
+    table.data td code { font-size: 0.8rem; }
+    .callout {
+      margin: 1.25rem 0;
+      padding: 1rem 1.125rem;
+      border-left: 3px solid var(--cta);
+      background: var(--bg-surface);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+    }
+    .phase-list { list-style: none; padding: 0; margin: 0.75rem 0 0; }
+    .phase-list li {
+      display: grid;
+      grid-template-columns: 2rem 1fr;
+      gap: 0.75rem;
+      padding: 0.65rem 0;
+      border-top: 1px solid var(--border-subtle);
+    }
+    .phase-list li:first-child { border-top: none; padding-top: 0; }
+    .phase-num {
+      display: flex; align-items: center; justify-content: center;
+      width: 2rem; height: 2rem;
+      border-radius: 50%;
+      background: var(--bg-elevated);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--cta-ink);
+    }
+    .phase-list strong { color: var(--text-primary); }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../../">
+      neomatrix369
+      <small>github.io</small>
+    </a>
+    <nav class="site-nav">
+      <a href="../../">Home</a>
+      <a href="index.html">Playground archive</a>
+      <a href="../../pages/playgroup-202602-docextract.html">Project page</a>
+      <a href="https://github.com/neomatrix369/playgroup_202602_docextract" rel="noopener">GitHub repo</a>
+    </nav>
+  </header>
+
+  <main class="site-main content">
+    <p><span class="tag">guide</span> <span class="tag tag--interactive">doubleword</span></p>
+    <h1>Batch extraction with <code>--all-doubleword</code></h1>
+    <p>
+      Run every Doubleword model in the registry against the Kleister Charity dev set (11 UK financial PDFs, 8 fields).
+      The extractor submits async batch jobs, polls for completion, checkpoints progress, and writes one TSV per model under <code>data/</code>.
+    </p>
+
+    <div class="meta-row">
+      <span class="tag">command: extractor.py</span>
+      <span class="tag">provider: Doubleword Batch API</span>
+      <span class="tag">~38 models</span>
+    </div>
+
+    <div class="cta-row">
+      <a class="button button--primary" href="https://github.com/neomatrix369/playgroup_202602_docextract/blob/main/QUICKSTART.md" rel="noopener">QUICKSTART</a>
+      <a class="button" href="index.html">Playground snapshots</a>
+      <a class="button" href="https://github.com/neomatrix369/playgroup_202602_docextract" rel="noopener">Source repo</a>
+    </div>
+
+    <h2>Demo recording</h2>
+    <p>Terminal walkthrough of a full <code>--all-doubleword</code> run — run plan, batch submit, polling, and per-model status.</p>
+    <figure class="video-wrap">
+      <video controls playsinline preload="metadata" poster="" aria-label="Demo of python extractor.py --all-doubleword">
+        <source src="assets/extractor-all-doubleword-demo.mp4" type="video/mp4">
+        Your browser does not support embedded video. <a href="assets/extractor-all-doubleword-demo.mp4">Download the MP4</a>.
+      </video>
+      <figcaption class="video-caption">Screen recording · <code>python extractor.py --all-doubleword</code></figcaption>
+    </figure>
+
+    <h2>Before you run</h2>
+    <div class="section-card">
+      <h3>1. Environment</h3>
+      <ul>
+        <li>Python 3.13 · <code>pip install -r requirements.txt</code> (see <a href="https://github.com/neomatrix369/playgroup_202602_docextract/blob/main/QUICKSTART.md" rel="noopener">QUICKSTART</a>)</li>
+        <li><code>DOUBLEWORD_API_KEY</code> in <code>.env</code></li>
+        <li><code>SKIP_DOUBLEWORD_SYNC=1</code> recommended — preserves manual model-id corrections in the registry</li>
+      </ul>
+    </div>
+    <div class="section-card">
+      <h3>2. Smoke test (optional)</h3>
+      <pre class="code-block"><code>python llm_openrouter.py   # confirms API keys &amp; JSON parsing</code></pre>
+    </div>
+
+    <h2>The command</h2>
+    <pre class="code-block"><code># All Doubleword registry models (default 1h completion window)
+python extractor.py --all-doubleword
+
+# Cheaper / slower — 24h batch window
+python extractor.py --all-doubleword --completion-window 24h
+
+# One model only
+python extractor.py dw-qwen3.8-27b</code></pre>
+
+    <h2>What happens</h2>
+    <p>Each model runs sequentially. Already-completed outputs are skipped (idempotent). Ctrl-C preserves checkpoints — re-run the same command to resume.</p>
+    <ol class="phase-list">
+      <li>
+        <span class="phase-num">1</span>
+        <span><strong>Run plan</strong> — lists Doubleword models to run, skip (done), or resume from checkpoint.</span>
+      </li>
+      <li>
+        <span class="phase-num">2</span>
+        <span><strong>Batch submit</strong> — OCR text for 11 documents sent to the Doubleword Batch API per model.</span>
+      </li>
+      <li>
+        <span class="phase-num">3</span>
+        <span><strong>Poll &amp; checkpoint</strong> — async status updates; progress saved to <code>data/.doubleword_checkpoints.json</code>.</span>
+      </li>
+      <li>
+        <span class="phase-num">4</span>
+        <span><strong>TSV output</strong> — structured fields written to <code>data/playgroup_dev_extracted__doubleword__&lt;model&gt;.tsv</code>.</span>
+      </li>
+      <li>
+        <span class="phase-num">5</span>
+        <span><strong>Summary</strong> — completed / skipped / interrupted / failed counts per model.</span>
+      </li>
+    </ol>
+
+    <div class="callout">
+      <strong>Partial failures:</strong> rejected rows are logged and stored in <code>data/.doubleword_failed_rows.json</code>.
+      Re-run with <code>python extractor.py --retry-failed</code> (or add model names) to merge fixes back into existing TSVs.
+    </div>
+
+    <h2>Output files</h2>
+    <table class="data" aria-label="Doubleword output files">
+      <thead>
+        <tr><th>File</th><th>Purpose</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>data/playgroup_dev_extracted__doubleword__*.tsv</code></td><td>Per-model extraction results</td></tr>
+        <tr><td><code>data/extraction_stats.csv</code></td><td>Time, cost, field hits per run</td></tr>
+        <tr><td><code>data/.doubleword_checkpoints.json</code></td><td>Resume state for in-flight batches</td></tr>
+        <tr><td><code>data/.doubleword_failed_rows.json</code></td><td>Row indices for <code>--retry-failed</code></td></tr>
+        <tr><td><code>data/.doubleword_unavailable_models.json</code></td><td>Models that failed on submit (skipped next run)</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Related commands</h2>
+    <div class="section-card">
+      <h3>Other providers</h3>
+      <pre class="code-block"><code>python extractor.py --all-openrouter   # OpenRouter models (sync)
+python extractor.py --all-v7           # V7 Go agents
+python extractor.py                    # everything in all registries</code></pre>
+    </div>
+    <div class="section-card">
+      <h3>After extraction</h3>
+      <pre class="code-block"><code>python score.py          # F1 leaderboard across all TSVs
+python playground.py     # regenerate which-models-extracted-playground.html</code></pre>
+      <p>View results on this site via the <a href="index.html">playground archive</a> or the <a href="../../pages/playgroup-202602-docextract.html">project findings page</a>.</p>
+    </div>
+
+    <h2>Flags reference</h2>
+    <table class="data" aria-label="Extractor flags">
+      <thead>
+        <tr><th>Flag</th><th>Effect</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>--all-doubleword</code></td><td>Run only <code>config_models_doubleword.py</code> keys</td></tr>
+        <tr><td><code>--completion-window 1h|24h</code></td><td>Doubleword batch SLA (default <code>1h</code>)</td></tr>
+        <tr><td><code>--retry-failed</code></td><td>Re-submit failed rows and merge into existing TSVs</td></tr>
+        <tr><td><code>&lt;model&gt;</code></td><td>Run one or more named models (any provider)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="cta-row">
+      <a class="button button--primary" href="https://github.com/neomatrix369/playgroup_202602_docextract/blob/main/README.md#3-extract" rel="noopener">Full README workflow</a>
+      <a class="button" href="index.html">Back to playground archive</a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <a href="../../pages/playgroup-202602-docextract.html">Project page</a> ·
+    <a href="https://github.com/neomatrix369/playgroup_202602_docextract" rel="noopener">source repo</a>
+  </footer>
+</body>
+</html>

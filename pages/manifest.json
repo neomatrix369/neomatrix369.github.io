@@ -16,6 +16,12 @@
           "description": "Latest snapshot plus 20 historic versions — rankings, heatmaps, provider analysis.",
           "href": "demos/playgroup-202602-docextract/",
           "kind": "interactive"
+        },
+        {
+          "title": "Doubleword extraction guide",
+          "description": "Video walkthrough of python extractor.py --all-doubleword — setup, batch run, outputs.",
+          "href": "demos/playgroup-202602-docextract/extractor-all-doubleword.html",
+          "kind": "static"
         }
       ]
     },
