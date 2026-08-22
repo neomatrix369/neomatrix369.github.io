@@ -9,6 +9,7 @@
     "models": 40,
     "f1": 0,
     "tabs": [
+      "Rankings",
       "Field Heatmap",
       "Document Analysis",
       "Error Breakdown",
@@ -19,7 +20,7 @@
     "providers": {
       "?": 40
     },
-    "tab_count": 5
+    "tab_count": 6
   },
   {
     "stamp": "2026-03-06T2327Z",
@@ -31,6 +32,7 @@
     "models": 33,
     "f1": 0,
     "tabs": [
+      "Rankings",
       "Field Heatmap",
       "Document Analysis",
       "Error Breakdown",
@@ -42,7 +44,7 @@
     "providers": {
       "?": 33
     },
-    "tab_count": 6
+    "tab_count": 7
   },
   {
     "stamp": "2026-03-07T0632Z",
@@ -54,6 +56,7 @@
     "models": 40,
     "f1": 0,
     "tabs": [
+      "Rankings",
       "Field Heatmap",
       "Document Analysis",
       "Error Breakdown",
@@ -66,7 +69,7 @@
       "doubleword": 7,
       "openrouter": 33
     },
-    "tab_count": 6
+    "tab_count": 7
   },
   {
     "stamp": "2026-03-07T2104Z",
@@ -78,6 +81,7 @@
     "models": 47,
     "f1": 47,
     "tabs": [
+      "Rankings",
       "Field Heatmap",
       "Document Analysis",
       "Error Breakdown",
@@ -94,7 +98,7 @@
       "doubleword": 0.888,
       "openrouter": 0.753
     },
-    "tab_count": 6
+    "tab_count": 7
   },
   {
     "stamp": "2026-03-07T2116Z",
@@ -106,6 +110,7 @@
     "models": 47,
     "f1": 47,
     "tabs": [
+      "Rankings",
       "Field Heatmap",
       "Document Analysis",
       "Error Breakdown",
@@ -123,7 +128,7 @@
       "doubleword": 0.888,
       "openrouter": 0.753
     },
-    "tab_count": 7
+    "tab_count": 8
   },
   {
     "stamp": "2026-03-19T2208Z",
@@ -135,6 +140,7 @@
     "models": 47,
     "f1": 47,
     "tabs": [
+      "Rankings",
       "Field Heatmap",
       "Document Analysis",
       "Error Breakdown",
@@ -152,7 +158,7 @@
       "doubleword": 0.888,
       "openrouter": 0.753
     },
-    "tab_count": 7
+    "tab_count": 8
   },
   {
     "stamp": "2026-03-20T2359Z",
@@ -164,6 +170,7 @@
     "models": 49,
     "f1": 49,
     "tabs": [
+      "Rankings",
       "Field Heatmap",
       "Document Analysis",
       "Error Breakdown",
@@ -181,7 +188,7 @@
       "doubleword": 0.889,
       "openrouter": 0.753
     },
-    "tab_count": 7
+    "tab_count": 8
   },
   {
     "stamp": "2026-03-31T1827Z",
@@ -193,6 +200,7 @@
     "models": 52,
     "f1": 52,
     "tabs": [
+      "Rankings",
       "Field Heatmap",
       "Document Analysis",
       "Error Breakdown",
@@ -210,7 +218,7 @@
       "doubleword": 0.775,
       "openrouter": 0.753
     },
-    "tab_count": 7
+    "tab_count": 8
   },
   {
     "stamp": "2026-04-11T1748Z",
@@ -222,6 +230,7 @@
     "models": 85,
     "f1": 85,
     "tabs": [
+      "Rankings",
       "Field Heatmap",
       "Document Analysis",
       "Error Breakdown",
@@ -241,7 +250,7 @@
       "openrouter": 0.753,
       "v7": 0.833
     },
-    "tab_count": 7
+    "tab_count": 8
   },
   {
     "stamp": "2026-04-11T1800Z",
@@ -253,6 +262,7 @@
     "models": 85,
     "f1": 85,
     "tabs": [
+      "Rankings",
       "Field Heatmap",
       "Document Analysis",
       "Error Breakdown",
@@ -272,7 +282,7 @@
       "openrouter": 0.753,
       "v7": 0.833
     },
-    "tab_count": 7
+    "tab_count": 8
   },
   {
     "stamp": "2026-04-11T1940Z",
@@ -284,6 +294,7 @@
     "models": 85,
     "f1": 85,
     "tabs": [
+      "Rankings",
       "Field Heatmap",
       "Document Analysis",
       "Error Breakdown",
@@ -303,7 +314,7 @@
       "openrouter": 0.753,
       "v7": 0.833
     },
-    "tab_count": 7
+    "tab_count": 8
   },
   {
     "stamp": "2026-04-11T1958Z",
@@ -315,6 +326,7 @@
     "models": 85,
     "f1": 85,
     "tabs": [
+      "Rankings",
       "Field Heatmap",
       "Document Analysis",
       "Error Breakdown",
@@ -334,7 +346,7 @@
       "openrouter": 0.753,
       "v7": 0.833
     },
-    "tab_count": 7
+    "tab_count": 8
   },
   {
     "stamp": "2026-05-04T0031Z",
@@ -346,6 +358,7 @@
     "models": 98,
     "f1": 98,
     "tabs": [
+      "Rankings",
       "Field Heatmap",
       "Document Analysis",
       "Error Breakdown",
@@ -365,7 +378,7 @@
       "openrouter": 0.753,
       "v7": 0.833
     },
-    "tab_count": 7
+    "tab_count": 8
   },
   {
     "stamp": "2026-05-04T0100Z",
@@ -377,6 +390,7 @@
     "models": 98,
     "f1": 98,
     "tabs": [
+      "Rankings",
       "Field Heatmap",
       "Document Analysis",
       "Error Breakdown",
@@ -396,7 +410,7 @@
       "openrouter": 0.753,
       "v7": 0.833
     },
-    "tab_count": 7
+    "tab_count": 8
   },
   {
     "stamp": "2026-07-22T1349Z",
@@ -408,6 +422,7 @@
     "models": 103,
     "f1": 103,
     "tabs": [
+      "Rankings",
       "Field Heatmap",
       "Document Analysis",
       "Error Breakdown",
@@ -427,7 +442,7 @@
       "openrouter": 0.753,
       "v7": 0.833
     },
-    "tab_count": 7
+    "tab_count": 8
   },
   {
     "stamp": "2026-07-22T1532Z",
@@ -439,6 +454,7 @@
     "models": 105,
     "f1": 105,
     "tabs": [
+      "Rankings",
       "Field Heatmap",
       "Document Analysis",
       "Error Breakdown",
@@ -458,7 +474,7 @@
       "openrouter": 0.753,
       "v7": 0.833
     },
-    "tab_count": 7
+    "tab_count": 8
   },
   {
     "stamp": "2026-07-29T1317Z",
@@ -470,6 +486,7 @@
     "models": 107,
     "f1": 107,
     "tabs": [
+      "Rankings",
       "Field Heatmap",
       "Document Analysis",
       "Error Breakdown",
@@ -489,7 +506,7 @@
       "openrouter": 0.753,
       "v7": 0.833
     },
-    "tab_count": 7
+    "tab_count": 8
   },
   {
     "stamp": "2026-08-09T0746Z",
@@ -501,6 +518,7 @@
     "models": 109,
     "f1": 109,
     "tabs": [
+      "Rankings",
       "Field Heatmap",
       "Document Analysis",
       "Error Breakdown",
@@ -520,7 +538,7 @@
       "openrouter": 0.753,
       "v7": 0.833
     },
-    "tab_count": 7
+    "tab_count": 8
   },
   {
     "stamp": "2026-08-21T2145Z",
@@ -532,6 +550,7 @@
     "models": 109,
     "f1": 109,
     "tabs": [
+      "Rankings",
       "Field Heatmap",
       "Document Analysis",
       "Error Breakdown",
@@ -551,7 +570,7 @@
       "openrouter": 0.753,
       "v7": 0.833
     },
-    "tab_count": 7
+    "tab_count": 8
   },
   {
     "stamp": "2026-08-21T2219Z",
@@ -563,6 +582,7 @@
     "models": 111,
     "f1": 111,
     "tabs": [
+      "Rankings",
       "Field Heatmap",
       "Document Analysis",
       "Error Breakdown",
@@ -582,7 +602,7 @@
       "openrouter": 0.753,
       "v7": 0.833
     },
-    "tab_count": 7
+    "tab_count": 8
   },
   {
     "stamp": "2026-08-22T0830Z",
@@ -594,6 +614,7 @@
     "models": 111,
     "f1": 111,
     "tabs": [
+      "Rankings",
       "Field Heatmap",
       "Document Analysis",
       "Error Breakdown",
@@ -613,6 +634,6 @@
       "openrouter": 0.753,
       "v7": 0.833
     },
-    "tab_count": 7
+    "tab_count": 8
   }
 ]
