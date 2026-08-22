@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Example static page · neomatrix369</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <style>
+    .content {
+      max-width: 42rem;
+    }
+
+    .content h1 {
+      margin-top: 0;
+      font-family: var(--font-display);
+    }
+
+    .content ul {
+      padding-left: 1.25rem;
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../">
+      neomatrix369
+      <small>github.io</small>
+    </a>
+    <nav class="site-nav">
+      <a href="../">Home</a>
+    </nav>
+  </header>
+
+  <main class="site-main content">
+    <p><span class="tag">static</span></p>
+    <h1>Example static page</h1>
+    <p>
+      Use this template for notes, write-ups, or any HTML that does not need a build step.
+      Copy the file, rename it, and add an entry to <code>pages/manifest.json</code>.
+    </p>
+    <ul>
+      <li>Keep assets in <code>assets/</code> or colocated next to the page.</li>
+      <li>Use relative paths so pages work locally and on GitHub Pages.</li>
+      <li>Add <code>.nojekyll</code> at the repo root (already included).</li>
+    </ul>
+    <p>
+      <a class="button button--primary" href="../">Back to index</a>
+    </p>
+  </main>
+</body>
+</html>

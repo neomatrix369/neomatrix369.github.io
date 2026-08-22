@@ -1,0 +1,34 @@
+{
+  "pages": [
+    {
+      "title": "Projects",
+      "description": "Open source repos with links to live demos on this site.",
+      "href": "pages/projects.html",
+      "kind": "static"
+    },
+    {
+      "title": "Tripwire dashboard",
+      "description": "Interactive FolderGate-style dashboard prototype (mock data on GitHub Pages).",
+      "href": "demos/tripwire-dashboard/",
+      "kind": "interactive"
+    },
+    {
+      "title": "Claude Code concept map",
+      "description": "Pan/zoom concept map of Claude Code extension points and APIs.",
+      "href": "demos/claude-code-concept-map.html",
+      "kind": "interactive"
+    },
+    {
+      "title": "Example static page",
+      "description": "Template for simple standalone HTML pages.",
+      "href": "pages/example-static.html",
+      "kind": "static"
+    },
+    {
+      "title": "Example interactive page",
+      "description": "Canvas demo with keyboard and pointer controls.",
+      "href": "demos/example-interactive.html",
+      "kind": "interactive"
+    }
+  ]
+}

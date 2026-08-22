@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code Concept Map</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0d1117; --surface: #161b22; --surface2: #1c2128; --border: #30363d;
+    --text: #e6edf3; --text2: #8b949e; --text3: #6e7681;
+    --ext: #58a6ff;       /* Extension Points - blue */
+    --api: #bc8cff;       /* API Features - purple */
+    --power: #3fb950;     /* Power User - green */
+    --core: #f85149;      /* Core Claude - red */
+    --edge: #444c56;
+    --selected: #ffa657;
+    --hover: rgba(255,255,255,0.06);
+  }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+
+  /* Header */
+  header { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+  header h1 { font-size: 14px; font-weight: 600; color: var(--text); }
+  .badge { font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 500; }
+  .badge-ext { background: rgba(88,166,255,0.15); color: var(--ext); border: 1px solid rgba(88,166,255,0.3); }
+  .badge-api { background: rgba(188,140,255,0.15); color: var(--api); border: 1px solid rgba(188,140,255,0.3); }
+  .badge-power { background: rgba(63,185,80,0.15); color: var(--power); border: 1px solid rgba(63,185,80,0.3); }
+  .badge-core { background: rgba(248,81,73,0.15); color: var(--core); border: 1px solid rgba(248,81,73,0.3); }
+  .header-spacer { flex: 1; }
+  .header-actions { display: flex; gap: 8px; }
+
+  /* Main layout */
+  .main { display: flex; flex: 1; overflow: hidden; }
+
+  /* Canvas area */
+  .canvas-wrap { flex: 1; position: relative; overflow: hidden; }
+  canvas { display: block; cursor: grab; }
+  canvas.dragging { cursor: grabbing; }
+  canvas.connecting { cursor: crosshair; }
+
+  /* Sidebar */
+  .sidebar { width: 260px; background: var(--surface); border-left: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; }
+  .sidebar-section { border-bottom: 1px solid var(--border); }
+  .sidebar-header { padding: 10px 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text2); display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; }
+  .sidebar-header:hover { background: var(--hover); }
+  .sidebar-content { padding: 8px; }
+
+  /* Controls */
+  .search-wrap { padding: 8px; border-bottom: 1px solid var(--border); }
+  input[type=search] { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; color: var(--text); font-size: 12px; outline: none; }
+  input[type=search]:focus { border-color: var(--ext); }
+  input[type=search]::placeholder { color: var(--text3); }
+
+  .filter-group { display: flex; flex-direction: column; gap: 4px; padding: 8px; }
+  .filter-btn { display: flex; align-items: center; gap: 8px; padding: 5px 8px; border-radius: 5px; border: none; background: transparent; color: var(--text2); cursor: pointer; font-size: 12px; text-align: left; width: 100%; }
+  .filter-btn:hover { background: var(--hover); }
+  .filter-btn.active { background: var(--hover); color: var(--text); }
+  .filter-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .filter-count { margin-left: auto; color: var(--text3); font-size: 11px; }
+
+  .action-group { display: flex; flex-direction: column; gap: 4px; padding: 8px; }
+  .action-btn { padding: 7px 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface2); color: var(--text); cursor: pointer; font-size: 12px; text-align: left; width: 100%; transition: all 0.15s; }
+  .action-btn:hover { border-color: var(--ext); color: var(--ext); }
+  .action-btn.highlight { background: rgba(255,166,87,0.1); border-color: var(--selected); color: var(--selected); }
+
+  /* Node list */
+  .node-list { overflow-y: auto; flex: 1; }
+  .node-item { display: flex; align-items: center; gap: 8px; padding: 5px 10px; cursor: pointer; border-radius: 4px; margin: 1px 4px; }
+  .node-item:hover { background: var(--hover); }
+  .node-item.selected { background: rgba(255,166,87,0.1); }
+  .node-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .node-name { font-size: 12px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .know-btn { font-size: 10px; padding: 1px 6px; border-radius: 10px; border: 1px solid; cursor: pointer; flex-shrink: 0; }
+  .know-know { background: rgba(63,185,80,0.1); border-color: var(--power); color: var(--power); }
+  .know-fuzzy { background: rgba(255,166,87,0.1); border-color: var(--selected); color: var(--selected); }
+  .know-unknown { background: rgba(248,81,73,0.1); border-color: var(--core); color: var(--core); }
+
+  /* Bottom: prompt output */
+  .prompt-area { background: var(--surface); border-top: 1px solid var(--border); padding: 10px 14px; flex-shrink: 0; }
+  .prompt-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text2); margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; }
+  .copy-btn { font-size: 11px; padding: 3px 10px; border-radius: 5px; border: 1px solid var(--border); background: var(--surface2); color: var(--text2); cursor: pointer; transition: all 0.15s; }
+  .copy-btn:hover { border-color: var(--ext); color: var(--ext); }
+  .copy-btn.copied { border-color: var(--power); color: var(--power); }
+  .prompt-text { font-size: 12px; color: var(--text2); line-height: 1.5; max-height: 80px; overflow-y: auto; font-family: 'SF Mono', 'Cascadia Code', monospace; }
+
+  /* Tooltip */
+  #tooltip { position: fixed; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; max-width: 280px; pointer-events: none; display: none; z-index: 100; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+  #tooltip .tt-title { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
+  #tooltip .tt-cat { font-size: 10px; padding: 2px 6px; border-radius: 10px; display: inline-block; margin-bottom: 6px; }
+  #tooltip .tt-desc { font-size: 12px; color: var(--text2); line-height: 1.5; margin-bottom: 6px; }
+  #tooltip .tt-example { font-size: 11px; color: var(--text3); font-family: monospace; background: var(--bg); padding: 6px 8px; border-radius: 4px; border-left: 2px solid var(--border); white-space: pre-wrap; }
+
+  /* Detail panel */
+  #detail { position: absolute; top: 12px; left: 12px; width: 300px; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 14px; display: none; z-index: 50; box-shadow: 0 8px 32px rgba(0,0,0,0.6); }
+  #detail .detail-close { position: absolute; top: 10px; right: 10px; background: none; border: none; color: var(--text2); cursor: pointer; font-size: 16px; line-height: 1; }
+  #detail .detail-close:hover { color: var(--text); }
+  #detail h3 { font-size: 15px; margin-bottom: 4px; padding-right: 20px; }
+  #detail .detail-cat { font-size: 11px; margin-bottom: 10px; display: inline-block; padding: 2px 8px; border-radius: 10px; }
+  #detail .detail-desc { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 10px; }
+  #detail .detail-example { font-size: 11px; font-family: monospace; background: var(--bg); padding: 10px; border-radius: 6px; color: var(--text); white-space: pre-wrap; margin-bottom: 10px; overflow-x: auto; }
+  #detail .detail-links { font-size: 11px; color: var(--ext); }
+  #detail .detail-links span { display: block; padding: 2px 0; }
+
+  /* Legend */
+  .legend { position: absolute; bottom: 12px; left: 12px; background: rgba(22,27,34,0.9); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; font-size: 11px; color: var(--text2); display: flex; gap: 14px; backdrop-filter: blur(8px); }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* Zoom controls */
+  .zoom-controls { position: absolute; bottom: 12px; right: 12px; display: flex; flex-direction: column; gap: 4px; }
+  .zoom-btn { width: 28px; height: 28px; background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; color: var(--text2); cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+  .zoom-btn:hover { border-color: var(--ext); color: var(--ext); }
+
+  /* Mini instructions */
+  .mini-hint { position: absolute; top: 12px; right: 12px; background: rgba(22,27,34,0.8); border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; font-size: 11px; color: var(--text3); backdrop-filter: blur(8px); }
+
+  scrollbar-width: thin;
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Claude Code · Concept Map</h1>
+  <span class="badge badge-ext">Extension Points</span>
+  <span class="badge badge-api">API Features</span>
+  <span class="badge badge-power">Power User</span>
+  <span class="badge badge-core">Core Claude</span>
+  <div class="header-spacer"></div>
+</header>
+
+<div class="main">
+  <!-- Canvas -->
+  <div class="canvas-wrap">
+    <canvas id="map"></canvas>
+    <div id="tooltip">
+      <div class="tt-title"></div>
+      <div class="tt-cat"></div>
+      <div class="tt-desc"></div>
+      <div class="tt-example"></div>
+    </div>
+    <div id="detail">
+      <button class="detail-close" id="detailClose">×</button>
+      <h3 id="detailTitle"></h3>
+      <span class="detail-cat" id="detailCat"></span>
+      <div class="detail-desc" id="detailDesc"></div>
+      <div class="detail-example" id="detailExample"></div>
+      <div class="detail-links" id="detailLinks"></div>
+    </div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#58a6ff"></div>Extension Points</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#bc8cff"></div>API Features</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#3fb950"></div>Power User</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f85149"></div>Core Claude</div>
+    </div>
+    <div class="mini-hint">Scroll to zoom · Drag to pan · Click node for details</div>
+    <div class="zoom-controls">
+      <button class="zoom-btn" id="zoomIn">+</button>
+      <button class="zoom-btn" id="zoomFit">⊙</button>
+      <button class="zoom-btn" id="zoomOut">−</button>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="search-wrap">
+      <input type="search" id="searchInput" placeholder="Search concepts…">
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-header" id="filterToggle">Filter by Category <span>▾</span></div>
+      <div class="filter-group" id="filterGroup">
+        <button class="filter-btn active" data-cat="all">
+          <span class="filter-dot" style="background:var(--text2)"></span> All Concepts <span class="filter-count" id="countAll"></span>
+        </button>
+        <button class="filter-btn" data-cat="ext">
+          <span class="filter-dot" style="background:var(--ext)"></span> Extension Points <span class="filter-count" id="countExt"></span>
+        </button>
+        <button class="filter-btn" data-cat="api">
+          <span class="filter-dot" style="background:var(--api)"></span> API Features <span class="filter-count" id="countApi"></span>
+        </button>
+        <button class="filter-btn" data-cat="power">
+          <span class="filter-dot" style="background:var(--power)"></span> Power User <span class="filter-count" id="countPower"></span>
+        </button>
+        <button class="filter-btn" data-cat="core">
+          <span class="filter-dot" style="background:var(--core)"></span> Core Claude <span class="filter-count" id="countCore"></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-header">Actions</div>
+      <div class="action-group">
+        <button class="action-btn highlight" id="btnPowerPath">★ Power User Path</button>
+        <button class="action-btn" id="btnAutoLayout">Auto Layout</button>
+        <button class="action-btn" id="btnResetKnowledge">Reset Knowledge</button>
+        <button class="action-btn" id="btnExpandAll">Expand Clusters</button>
+      </div>
+    </div>
+
+    <div class="sidebar-section" style="flex:1; display:flex; flex-direction:column; overflow:hidden;">
+      <div class="sidebar-header">Concepts <span style="font-size:10px;color:var(--text3)">click to cycle: know→fuzzy→?</span></div>
+      <div class="node-list" id="nodeList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Prompt output -->
+<div class="prompt-area">
+  <div class="prompt-label">
+    Generated Learning Prompt
+    <button class="copy-btn" id="copyBtn">Copy</button>
+  </div>
+  <div class="prompt-text" id="promptText"></div>
+</div>
+
+<script>
+// ─── DATA ────────────────────────────────────────────────────────────────────
+const CATS = {
+  ext:   { label: 'Extension Point', color: '#58a6ff', bg: 'rgba(88,166,255,0.15)' },
+  api:   { label: 'API Feature',     color: '#bc8cff', bg: 'rgba(188,140,255,0.15)' },
+  power: { label: 'Power User Tool', color: '#3fb950', bg: 'rgba(63,185,80,0.15)' },
+  core:  { label: 'Core Claude',     color: '#f85149', bg: 'rgba(248,81,73,0.15)' },
+};
+
+const NODES_DATA = [
+  // CORE CLAUDE
+  { id:'claude', label:'Claude Models', cat:'core', r:36,
+    desc:'The AI models powering Claude Code. Choose based on task complexity and speed needs.',
+    example:'Opus 4.6  → complex reasoning\nSonnet 4.6 → balanced (default)\nHaiku 4.5  → fast, lightweight tasks',
+    links:['claude-opus-4-6','claude-sonnet-4-6','claude-haiku-4-5-20251001'] },
+  { id:'tools_api', label:'Tool Use', cat:'core', r:28,
+    desc:'Function calling — Claude can invoke tools you define. The foundation of all agentic behavior.',
+    example:'tools=[{"name":"get_weather","input_schema":{"type":"object","properties":{"location":{"type":"string"}}}}]',
+    links:['Anthropic Docs: Tool use'] },
+  { id:'thinking', label:'Extended Thinking', cat:'api', r:26,
+    desc:'Claude reasons step-by-step before answering. Dramatically improves complex problem solving.',
+    example:'thinking={"type":"enabled","budget_tokens":10000}',
+    links:['Requires claude-opus-4-6 or claude-sonnet-4-6'] },
+  { id:'caching', label:'Prompt Caching', cat:'api', r:24,
+    desc:'Cache large context (system prompts, documents) across requests. Reduces cost 90% + latency 85%.',
+    example:'{"type":"text","text":"<long doc>","cache_control":{"type":"ephemeral"}}',
+    links:['Min 1024 tokens for Sonnet; 2048 for Opus'] },
+  { id:'batches', label:'Batches API', cat:'api', r:22,
+    desc:'Process thousands of requests asynchronously at 50% cost. Ideal for bulk analysis/generation.',
+    example:'client.messages.batches.create(requests=[...])\n# Returns batch_id, poll for results',
+    links:['Up to 100k requests per batch'] },
+  { id:'files_api', label:'Files API', cat:'api', r:22,
+    desc:'Upload files once, reference by ID across multiple requests. No re-uploading large docs.',
+    example:'file = client.beta.files.upload(file=open("data.pdf","rb"))\n# Use file.id in messages',
+    links:['Beta feature as of 2025'] },
+  { id:'streaming', label:'Streaming', cat:'api', r:22,
+    desc:'Receive tokens as they generate. Essential for responsive UIs and long outputs.',
+    example:'with client.messages.stream(...) as s:\n  for text in s.text_stream:\n    print(text, end="")',
+    links:['SSE-based, works with all models'] },
+  { id:'computer_use', label:'Computer Use', cat:'api', r:24,
+    desc:'Claude controls a computer: screenshot, click, type, scroll. Automates any GUI task.',
+    example:'tools=[{"type":"computer_20241022","name":"computer","display_width_px":1280,...}]',
+    links:['Requires claude-opus-4-6 or claude-sonnet-4-6'] },
+
+  // EXTENSION POINTS
+  { id:'mcp', label:'MCP Servers', cat:'ext', r:34,
+    desc:'Model Context Protocol — extend Claude with custom tools, resources, and prompts via JSON-RPC.',
+    example:'# ~/.claude/settings.json\n{"mcpServers":{"github":{"command":"npx","args":["@modelcontextprotocol/server-github"]}}}',
+    links:['stdio transport (local)','SSE transport (remote)','Available: filesystem, github, slack, postgres…'] },
+  { id:'skills', label:'Skills', cat:'ext', r:28,
+    desc:'Slash commands that expand to rich prompts. Install from marketplace or write your own.',
+    example:'# Invoke a skill\n/commit\n/review-pr 123\n/learning-opportunity\n\n# Skill file: ~/.claude/skills/myskill/skill.md',
+    links:['~/.claude/skills/','MCP Marketplace'] },
+  { id:'hooks', label:'Hooks', cat:'ext', r:28,
+    desc:'Shell commands that fire on Claude Code events. Intercept, log, validate, or block tool calls.',
+    example:'# ~/.claude/settings.json\n"hooks":{\n  "PreToolUse":[{"matcher":"Bash","hooks":[{"type":"command","command":"echo [Bash] $CLAUDE_TOOL_INPUT"}]}],\n  "PostToolUse":[...],\n  "UserPromptSubmit":[...],\n  "Stop":[...]\n}',
+    links:['Events: PreToolUse, PostToolUse, UserPromptSubmit, Stop','Exit code 2 = block the action'] },
+  { id:'agents', label:'Agents / Subagents', cat:'ext', r:30,
+    desc:'Specialized agents spawned by the Task tool. Each has a defined role, tools, and context window.',
+    example:'# Use Task tool to spawn:\nBash       → git ops, terminal\nExplore    → codebase search\nPlan       → architecture design\ngeneral-purpose → research + web\nclaude-code-guide → Claude docs',
+    links:['task_tool(subagent_type="Bash", prompt="…")','run_in_background=True for parallel work'] },
+  { id:'claudemd', label:'CLAUDE.md', cat:'ext', r:30,
+    desc:'Instruction files loaded into every session. Hierarchical: global → project → local.',
+    example:'# Hierarchy (all merged):\n~/.claude/CLAUDE.md          ← global\n<project>/CLAUDE.md          ← project\n<project>/.claude/CLAUDE.md  ← local override\n\n# Content: rules, conventions, architecture notes',
+    links:['Loaded automatically on session start','Max ~200 lines shown in system prompt'] },
+  { id:'memory', label:'Memory', cat:'ext', r:28,
+    desc:'Persistent knowledge across sessions. MEMORY.md (auto-loaded text) + Graphiti MCP (knowledge graph).',
+    example:'# MEMORY.md: ~/.claude/projects/<path>/memory/MEMORY.md\n# Graphiti: search/add episodes, nodes, facts\nadd_memory(content="User prefers bun over npm")\nsearch_nodes("authentication pattern")',
+    links:['MEMORY.md: simple text, loaded in system prompt','Graphiti: semantic graph, richer queries'] },
+  { id:'permissions', label:'Permissions', cat:'ext', r:24,
+    desc:'Allow/deny lists controlling what tools Claude can use. Per-project or global.',
+    example:'# ~/.claude/settings.json\n{\n  "permissions":{\n    "allow":["Bash(git *)","Read","Glob"],\n    "deny":["Bash(rm -rf *)","WebSearch"]\n  }\n}',
+    links:['Modes: auto-approve safe, approval required, deny all','Tool patterns use glob matching'] },
+  { id:'keybindings', label:'Keybindings', cat:'ext', r:22,
+    desc:'Custom keyboard shortcuts and chord bindings for Claude Code.',
+    example:'# ~/.claude/keybindings.json\n[{"key":"ctrl+shift+c","command":"/commit"},\n {"key":"ctrl+k ctrl+p","command":"/review-pr"}]',
+    links:['Supports chord bindings (key sequences)','~/.claude/keybindings.json'] },
+
+  // POWER USER
+  { id:'slash_cmds', label:'/Commands', cat:'power', r:28,
+    desc:'Built-in and skill-based slash commands. The fastest way to invoke complex workflows.',
+    example:'Built-in:\n/help  /clear  /compact  /cost\n/model  /vim  /fast\n/memory  /settings\n\nSkill-based:\n/commit  /review-pr  /fix-issue\n/learning-opportunity',
+    links:['/help for full list','Install skills to add more'] },
+  { id:'worktrees', label:'Worktrees', cat:'power', r:24,
+    desc:'Isolated git branches in separate directories. Work on features without touching main.',
+    example:'# Claude Code creates automatically\nEnterWorktree(name="feature-auth")\n# → .claude/worktrees/feature-auth/\n# → new git branch from HEAD',
+    links:['Uses git worktree under the hood','Session exits → prompt to keep or remove'] },
+  { id:'plan_mode', label:'Plan Mode', cat:'power', r:24,
+    desc:'Explore and design before coding. Claude researches, proposes plan, waits for approval.',
+    example:'EnterPlanMode()      ← start planning\n# Claude uses Glob, Grep, Read\n# Writes plan to plan file\nExitPlanMode()       ← request approval\n# User approves → implementation begins',
+    links:['Use for multi-file changes','Use for architectural decisions'] },
+  { id:'todo', label:'TodoWrite', cat:'power', r:22,
+    desc:'Structured task tracking within a session. Shows progress, prevents dropped tasks.',
+    example:'TodoWrite(todos=[\n  {"content":"Add auth","status":"in_progress","activeForm":"Adding auth"},\n  {"content":"Write tests","status":"pending","activeForm":"Writing tests"}\n])',
+    links:['Updates live in UI','One task in_progress at a time'] },
+  { id:'bg_tasks', label:'Background Tasks', cat:'power', r:22,
+    desc:'Run agents or commands in background while doing other work. True parallelism.',
+    example:'# Spawn background agent\nTask(prompt="run all tests", run_in_background=True)\n# → returns task_id\n# Check later: TaskOutput(task_id=…)',
+    links:['Use for: tests, builds, long searches','TaskOutput to retrieve results'] },
+  { id:'ide', label:'IDE Integration', cat:'power', r:24,
+    desc:'VSCode and JetBrains extensions. Selection context, clickable file links, inline suggestions.',
+    example:'# In VSCode:\n# Select code → Claude sees it as ide_selection\n# File refs render as clickable links\n# [filename.ts:42](src/filename.ts#L42)',
+    links:['VSCode: Claude Code extension','JetBrains: Claude Code plugin'] },
+  { id:'marketplace', label:'MCP Marketplace', cat:'power', r:26,
+    desc:'Discover and install MCP servers and skills. Hundreds of integrations available.',
+    example:'Popular MCP servers:\n@modelcontextprotocol/server-github\n@modelcontextprotocol/server-filesystem\n@modelcontextprotocol/server-postgres\n@modelcontextprotocol/server-slack',
+    links:['Install via: npx @modelcontextprotocol/…','claude.ai/marketplace or npm search mcp'] },
+  { id:'context7', label:'Context7 MCP', cat:'power', r:22,
+    desc:'Live library documentation fetched into context. Never work with stale docs again.',
+    example:'# Automatically resolves library IDs\nresolve-library-id("react")\n# → /facebook/react\nquery-docs("/facebook/react", "hooks")',
+    links:['MCP server: context7','Works with thousands of libraries'] },
+];
+
+const EDGES_DATA = [
+  // MCP Servers → core tools
+  { from:'mcp', to:'claude', label:'provides tools to', strength:3 },
+  { from:'mcp', to:'memory', label:'powers (Graphiti)', strength:2 },
+  { from:'mcp', to:'context7', label:'example server', strength:1 },
+  // Skills → Claude Code
+  { from:'skills', to:'slash_cmds', label:'installed as', strength:3 },
+  { from:'skills', to:'mcp', label:'can use tools from', strength:1 },
+  // Hooks → Tools
+  { from:'hooks', to:'tools_api', label:'intercepts', strength:2 },
+  { from:'hooks', to:'agents', label:'can intercept agent calls', strength:1 },
+  // Agents
+  { from:'agents', to:'claude', label:'powered by', strength:2 },
+  { from:'agents', to:'permissions', label:'governed by', strength:2 },
+  { from:'agents', to:'mcp', label:'can use MCP tools', strength:1 },
+  { from:'agents', to:'bg_tasks', label:'can run as', strength:2 },
+  // CLAUDE.md
+  { from:'claudemd', to:'claude', label:'instructs every session', strength:3 },
+  { from:'claudemd', to:'agents', label:'applies to subagents', strength:1 },
+  // Memory
+  { from:'memory', to:'claude', label:'persists context for', strength:2 },
+  { from:'memory', to:'claudemd', label:'MEMORY.md loaded like', strength:1 },
+  // API features → models
+  { from:'thinking', to:'claude', label:'feature of', strength:2 },
+  { from:'caching', to:'claude', label:'optimizes', strength:2 },
+  { from:'batches', to:'claude', label:'bulk calls to', strength:2 },
+  { from:'files_api', to:'claude', label:'sends files to', strength:2 },
+  { from:'streaming', to:'claude', label:'streams from', strength:2 },
+  { from:'computer_use', to:'claude', label:'capability of', strength:2 },
+  { from:'tools_api', to:'claude', label:'core capability of', strength:3 },
+  // Power user
+  { from:'plan_mode', to:'agents', label:'uses explore agents', strength:1 },
+  { from:'worktrees', to:'ide', label:'visible in', strength:1 },
+  { from:'slash_cmds', to:'skills', label:'expanded from', strength:2 },
+  { from:'marketplace', to:'mcp', label:'source for', strength:2 },
+  { from:'marketplace', to:'skills', label:'source for', strength:2 },
+  { from:'ide', to:'agents', label:'context for', strength:1 },
+  { from:'todo', to:'agents', label:'tracks agent tasks', strength:1 },
+  { from:'keybindings', to:'slash_cmds', label:'shortcuts to', strength:2 },
+  { from:'permissions', to:'mcp', label:'controls MCP access', strength:1 },
+  { from:'context7', to:'mcp', label:'is a', strength:3 },
+];
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+const state = {
+  filter: 'all',
+  search: '',
+  knowledge: {}, // node id → 'know'|'fuzzy'|'unknown'
+  selectedNode: null,
+  powerPath: false,
+  zoom: 1,
+  panX: 0,
+  panY: 0,
+};
+
+// Initialize knowledge
+NODES_DATA.forEach(n => { state.knowledge[n.id] = 'fuzzy'; });
+
+// ─── LAYOUT ───────────────────────────────────────────────────────────────────
+// Initial positions — hand-tuned clusters
+const INITIAL_POSITIONS = {
+  // Core center
+  claude:       { x: 0,    y: 0 },
+  tools_api:    { x: -200, y: -80 },
+  // API cluster (right)
+  thinking:     { x: 320,  y: -160 },
+  caching:      { x: 420,  y: -40 },
+  batches:      { x: 420,  y: 80 },
+  files_api:    { x: 340,  y: 160 },
+  streaming:    { x: 200,  y: 200 },
+  computer_use: { x: 300,  y: -240 },
+  // Extension cluster (left)
+  mcp:          { x: -320, y: -20 },
+  skills:       { x: -420, y: -160 },
+  hooks:        { x: -400, y: 80 },
+  agents:       { x: -180, y: 200 },
+  claudemd:     { x: -80,  y: -220 },
+  memory:       { x: 80,   y: -220 },
+  permissions:  { x: -300, y: 180 },
+  keybindings:  { x: -460, y: 10 },
+  // Power user (bottom)
+  slash_cmds:   { x: -300, y: 340 },
+  worktrees:    { x: -100, y: 360 },
+  plan_mode:    { x: 100,  y: 360 },
+  todo:         { x: 280,  y: 300 },
+  bg_tasks:     { x: 50,   y: 280 },
+  ide:          { x: 200,  y: -160 },
+  marketplace:  { x: -500, y: -100 },
+  context7:     { x: -460, y: 220 },
+};
+
+const nodes = NODES_DATA.map(d => ({
+  ...d,
+  x: (INITIAL_POSITIONS[d.id]?.x ?? 0),
+  y: (INITIAL_POSITIONS[d.id]?.y ?? 0),
+  vx: 0, vy: 0,
+  visible: true,
+  highlighted: false,
+}));
+
+const nodeMap = {};
+nodes.forEach(n => { nodeMap[n.id] = n; });
+
+const edges = EDGES_DATA.map(e => ({
+  ...e,
+  from: nodeMap[e.from],
+  to: nodeMap[e.to],
+}));
+
+// ─── CANVAS SETUP ─────────────────────────────────────────────────────────────
+const canvas = document.getElementById('map');
+const ctx = canvas.getContext('2d');
+let W, H;
+
+function resize() {
+  const wrap = canvas.parentElement;
+  W = canvas.width = wrap.clientWidth;
+  H = canvas.height = wrap.clientHeight;
+  if (state.panX === 0 && state.panY === 0) {
+    state.panX = W / 2;
+    state.panY = H / 2;
+  }
+  draw();
+}
+
+window.addEventListener('resize', resize);
+
+// ─── DRAW ─────────────────────────────────────────────────────────────────────
+function toScreen(wx, wy) {
+  return { x: wx * state.zoom + state.panX, y: wy * state.zoom + state.panY };
+}
+function toWorld(sx, sy) {
+  return { x: (sx - state.panX) / state.zoom, y: (sy - state.panY) / state.zoom };
+}
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Background grid
+  ctx.strokeStyle = 'rgba(48,54,61,0.3)';
+  ctx.lineWidth = 1;
+  const gridSize = 60 * state.zoom;
+  const offX = state.panX % gridSize;
+  const offY = state.panY % gridSize;
+  for (let x = offX; x < W; x += gridSize) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+  for (let y = offY; y < H; y += gridSize) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+  const visNodes = nodes.filter(n => n.visible);
+
+  // Draw edges
+  edges.forEach(e => {
+    if (!e.from.visible || !e.to.visible) return;
+    const a = toScreen(e.from.x, e.from.y);
+    const b = toScreen(e.to.x, e.to.y);
+
+    const bothHighlighted = e.from.highlighted && e.to.highlighted;
+    const eitherSelected = e.from === nodeMap[state.selectedNode] || e.to === nodeMap[state.selectedNode];
+
+    ctx.save();
+    ctx.beginPath();
+
+    // Curved edge
+    const mx = (a.x + b.x) / 2 + (b.y - a.y) * 0.08;
+    const my = (a.y + b.y) / 2 - (b.x - a.x) * 0.08;
+    ctx.moveTo(a.x, a.y);
+    ctx.quadraticCurveTo(mx, my, b.x, b.y);
+
+    let alpha = 0.25;
+    let lw = 1;
+    let color = '#444c56';
+
+    if (bothHighlighted || eitherSelected) {
+      alpha = 0.8; lw = 2;
+      color = CATS[e.from.cat]?.color ?? '#58a6ff';
+    }
+
+    ctx.strokeStyle = color;
+    ctx.globalAlpha = alpha;
+    ctx.lineWidth = lw * state.zoom;
+    ctx.stroke();
+
+    // Arrow head
+    const t = 0.85;
+    const tx = (1-t)*(1-t)*a.x + 2*(1-t)*t*mx + t*t*b.x;
+    const ty = (1-t)*(1-t)*a.y + 2*(1-t)*t*my + t*t*b.y;
+    const dx = b.x - tx, dy = b.y - ty;
+    const angle = Math.atan2(dy, dx);
+    const as = 7 * state.zoom;
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(b.x, b.y);
+    ctx.lineTo(b.x - as * Math.cos(angle - 0.4), b.y - as * Math.sin(angle - 0.4));
+    ctx.lineTo(b.x - as * Math.cos(angle + 0.4), b.y - as * Math.sin(angle + 0.4));
+    ctx.closePath();
+    ctx.fill();
+
+    // Edge label on selected
+    if (eitherSelected && state.zoom > 0.7) {
+      const lx = (a.x + b.x) / 2;
+      const ly = (a.y + b.y) / 2;
+      ctx.globalAlpha = 0.7;
+      ctx.font = `${10 * state.zoom}px -apple-system, sans-serif`;
+      ctx.fillStyle = '#8b949e';
+      ctx.textAlign = 'center';
+      ctx.fillText(e.label, lx, ly);
+    }
+
+    ctx.restore();
+  });
+
+  // Draw nodes
+  visNodes.forEach(n => {
+    const { x, y } = toScreen(n.x, n.y);
+    const r = n.r * state.zoom;
+    const cat = CATS[n.cat];
+    const isSelected = n.id === state.selectedNode;
+    const isHighlighted = n.highlighted;
+    const knowLevel = state.knowledge[n.id];
+
+    ctx.save();
+
+    // Glow for highlighted/selected
+    if (isSelected || isHighlighted) {
+      ctx.shadowColor = cat.color;
+      ctx.shadowBlur = isSelected ? 20 : 10;
+    }
+
+    // Node circle
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+
+    // Fill
+    const grad = ctx.createRadialGradient(x - r*0.3, y - r*0.3, 0, x, y, r);
+    const baseAlpha = isSelected ? 0.5 : isHighlighted ? 0.35 : 0.2;
+    grad.addColorStop(0, cat.color + '80');
+    grad.addColorStop(1, cat.color + '20');
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // Border
+    ctx.strokeStyle = cat.color;
+    ctx.lineWidth = isSelected ? 2.5 : isHighlighted ? 2 : 1.5;
+    ctx.globalAlpha = isSelected ? 1 : isHighlighted ? 0.85 : 0.6;
+    ctx.stroke();
+
+    ctx.shadowBlur = 0;
+
+    // Knowledge indicator ring
+    const kColor = knowLevel === 'know' ? '#3fb950' : knowLevel === 'unknown' ? '#f85149' : '#ffa657';
+    ctx.beginPath();
+    ctx.arc(x + r * 0.65, y - r * 0.65, 5 * state.zoom, 0, Math.PI * 2);
+    ctx.fillStyle = kColor;
+    ctx.globalAlpha = 0.9;
+    ctx.fill();
+
+    // Label
+    ctx.globalAlpha = isSelected || isHighlighted ? 1 : 0.85;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    const fontSize = Math.max(9, Math.min(13, (r * 0.35)));
+    ctx.font = `${isSelected ? 600 : 500} ${fontSize}px -apple-system, sans-serif`;
+    ctx.fillStyle = '#e6edf3';
+
+    // Word wrap label
+    const words = n.label.split(' ');
+    if (words.length > 1 && r > 20 * state.zoom) {
+      const mid = Math.ceil(words.length / 2);
+      const line1 = words.slice(0, mid).join(' ');
+      const line2 = words.slice(mid).join(' ');
+      ctx.fillText(line1, x, y - fontSize * 0.6);
+      ctx.fillText(line2, x, y + fontSize * 0.6);
+    } else {
+      ctx.fillText(n.label, x, y);
+    }
+
+    ctx.restore();
+  });
+}
+
+// ─── INTERACTION ──────────────────────────────────────────────────────────────
+let isDragging = false;
+let dragNode = null;
+let dragStart = { x: 0, y: 0 };
+let panStart = { x: 0, y: 0 };
+let lastMouse = { x: 0, y: 0 };
+let clickStart = { x: 0, y: 0 };
+
+function hitTest(sx, sy) {
+  const { x: wx, y: wy } = toWorld(sx, sy);
+  // Reverse order so top nodes are hit first
+  for (let i = nodes.length - 1; i >= 0; i--) {
+    const n = nodes[i];
+    if (!n.visible) continue;
+    const dx = n.x - wx, dy = n.y - wy;
+    if (Math.sqrt(dx*dx + dy*dy) < n.r) return n;
+  }
+  return null;
+}
+
+canvas.addEventListener('mousedown', e => {
+  clickStart = { x: e.clientX, y: e.clientY };
+  const hit = hitTest(e.offsetX, e.offsetY);
+  if (hit) {
+    dragNode = hit;
+    dragStart = { x: e.offsetX - toScreen(hit.x, hit.y).x, y: e.offsetY - toScreen(hit.x, hit.y).y };
+  } else {
+    panStart = { x: e.clientX - state.panX, y: e.clientY - state.panY };
+  }
+  isDragging = false;
+});
+
+canvas.addEventListener('mousemove', e => {
+  lastMouse = { x: e.offsetX, y: e.offsetY };
+  const dx = Math.abs(e.clientX - clickStart.x), dy = Math.abs(e.clientY - clickStart.y);
+  if (dx > 3 || dy > 3) isDragging = true;
+
+  if (dragNode && isDragging) {
+    canvas.classList.add('dragging');
+    const wx = (e.offsetX - dragStart.x - state.panX) / state.zoom;
+    const wy = (e.offsetY - dragStart.y - state.panY) / state.zoom;
+    dragNode.x = wx + dragStart.x / state.zoom;
+    dragNode.y = wy + dragStart.y / state.zoom;
+    // Recalculate properly
+    const wpos = toWorld(e.offsetX - dragStart.x, e.offsetY - dragStart.y);
+    dragNode.x = wpos.x;
+    dragNode.y = wpos.y;
+    draw();
+  } else if (!dragNode) {
+    state.panX = e.clientX - panStart.x;
+    state.panY = e.clientY - panStart.y;
+    draw();
+  }
+
+  // Tooltip
+  const hit = hitTest(e.offsetX, e.offsetY);
+  showTooltip(hit, e.clientX, e.clientY);
+});
+
+canvas.addEventListener('mouseup', e => {
+  canvas.classList.remove('dragging');
+  const wasDragging = isDragging;
+  isDragging = false;
+  dragNode = null;
+
+  if (!wasDragging) {
+    const hit = hitTest(e.offsetX, e.offsetY);
+    if (hit) {
+      if (state.selectedNode === hit.id) {
+        // Second click = show detail
+        showDetail(hit);
+      } else {
+        selectNode(hit.id);
+      }
+    } else {
+      selectNode(null);
+    }
+  }
+});
+
+canvas.addEventListener('mouseleave', () => {
+  isDragging = false; dragNode = null;
+  hideTooltip();
+});
+
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  const factor = e.deltaY < 0 ? 1.1 : 0.9;
+  const wx = (e.offsetX - state.panX) / state.zoom;
+  const wy = (e.offsetY - state.panY) / state.zoom;
+  state.zoom = Math.max(0.2, Math.min(3, state.zoom * factor));
+  state.panX = e.offsetX - wx * state.zoom;
+  state.panY = e.offsetY - wy * state.zoom;
+  draw();
+}, { passive: false });
+
+// ─── TOOLTIP ──────────────────────────────────────────────────────────────────
+const tooltip = document.getElementById('tooltip');
+let tooltipTimeout;
+
+function showTooltip(node, mx, my) {
+  if (!node) { hideTooltip(); return; }
+  clearTimeout(tooltipTimeout);
+  tooltipTimeout = setTimeout(() => {
+    const cat = CATS[node.cat];
+    tooltip.querySelector('.tt-title').textContent = node.label;
+    const catEl = tooltip.querySelector('.tt-cat');
+    catEl.textContent = cat.label;
+    catEl.style.background = cat.bg;
+    catEl.style.color = cat.color;
+    tooltip.querySelector('.tt-desc').textContent = node.desc;
+    const exEl = tooltip.querySelector('.tt-example');
+    if (node.example) { exEl.textContent = node.example; exEl.style.display = 'block'; }
+    else { exEl.style.display = 'none'; }
+
+    // Position
+    let tx = mx + 16, ty = my + 10;
+    tooltip.style.display = 'block';
+    const tw = tooltip.offsetWidth, th = tooltip.offsetHeight;
+    if (tx + tw > window.innerWidth - 10) tx = mx - tw - 10;
+    if (ty + th > window.innerHeight - 10) ty = my - th - 10;
+    tooltip.style.left = tx + 'px';
+    tooltip.style.top = ty + 'px';
+  }, 300);
+}
+
+function hideTooltip() {
+  clearTimeout(tooltipTimeout);
+  tooltip.style.display = 'none';
+}
+
+// ─── DETAIL PANEL ─────────────────────────────────────────────────────────────
+function showDetail(node) {
+  const cat = CATS[node.cat];
+  document.getElementById('detailTitle').textContent = node.label;
+  const catEl = document.getElementById('detailCat');
+  catEl.textContent = cat.label;
+  catEl.style.background = cat.bg;
+  catEl.style.color = cat.color;
+  document.getElementById('detailDesc').textContent = node.desc;
+  const exEl = document.getElementById('detailExample');
+  if (node.example) { exEl.textContent = node.example; exEl.style.display = 'block'; }
+  else { exEl.style.display = 'none'; }
+  const linksEl = document.getElementById('detailLinks');
+  if (node.links && node.links.length) {
+    linksEl.innerHTML = node.links.map(l => `<span>→ ${l}</span>`).join('');
+    linksEl.style.display = 'block';
+  } else linksEl.style.display = 'none';
+  document.getElementById('detail').style.display = 'block';
+}
+
+document.getElementById('detailClose').addEventListener('click', () => {
+  document.getElementById('detail').style.display = 'none';
+});
+
+// ─── SELECT / HIGHLIGHT ────────────────────────────────────────────────────────
+function selectNode(id) {
+  state.selectedNode = id;
+  // Highlight connected nodes
+  nodes.forEach(n => { n.highlighted = false; });
+  if (id) {
+    nodeMap[id].highlighted = true;
+    edges.forEach(e => {
+      if (e.from.id === id) { e.to.highlighted = true; }
+      if (e.to.id === id) { e.from.highlighted = true; }
+    });
+    // Update list selection
+    document.querySelectorAll('.node-item').forEach(el => {
+      el.classList.toggle('selected', el.dataset.id === id);
+    });
+    // Animate to center
+    const n = nodeMap[id];
+    const target = { panX: W/2 - n.x * state.zoom, panY: H/2 - n.y * state.zoom };
+    animatePan(target);
+  } else {
+    document.querySelectorAll('.node-item').forEach(el => el.classList.remove('selected'));
+  }
+  draw();
+  updatePrompt();
+}
+
+function animatePan(target) {
+  const startX = state.panX, startY = state.panY;
+  const dur = 400, start = performance.now();
+  function step(t) {
+    const p = Math.min(1, (t - start) / dur);
+    const e = 1 - Math.pow(1 - p, 3); // ease out cubic
+    state.panX = startX + (target.panX - startX) * e;
+    state.panY = startY + (target.panY - startY) * e;
+    draw();
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// ─── FILTER ───────────────────────────────────────────────────────────────────
+function applyFilter() {
+  const { filter, search } = state;
+  nodes.forEach(n => {
+    let vis = filter === 'all' || n.cat === filter;
+    if (search) vis = vis && n.label.toLowerCase().includes(search.toLowerCase());
+    n.visible = vis;
+    if (n.id === state.selectedNode && !vis) selectNode(null);
+  });
+  updateNodeList();
+  draw();
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    state.filter = btn.dataset.cat;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilter();
+  });
+});
+
+document.getElementById('searchInput').addEventListener('input', e => {
+  state.search = e.target.value;
+  applyFilter();
+  if (state.search) {
+    const match = nodes.find(n => n.visible && n.label.toLowerCase().includes(state.search.toLowerCase()));
+    if (match) selectNode(match.id);
+  }
+});
+
+// ─── POWER USER PATH ──────────────────────────────────────────────────────────
+const POWER_PATH = ['claudemd', 'mcp', 'skills', 'hooks', 'agents', 'memory', 'plan_mode', 'marketplace'];
+let powerPathActive = false;
+
+document.getElementById('btnPowerPath').addEventListener('click', () => {
+  powerPathActive = !powerPathActive;
+  document.getElementById('btnPowerPath').style.background = powerPathActive ? 'rgba(255,166,87,0.2)' : '';
+  nodes.forEach(n => { n.highlighted = powerPathActive && POWER_PATH.includes(n.id); });
+  state.selectedNode = null;
+  draw();
+  if (powerPathActive) updatePromptPowerPath();
+  else updatePrompt();
+});
+
+function updatePromptPowerPath() {
+  const know = POWER_PATH.filter(id => state.knowledge[id] === 'know').map(id => nodeMap[id].label);
+  const fuzzy = POWER_PATH.filter(id => state.knowledge[id] === 'fuzzy').map(id => nodeMap[id].label);
+  const unknown = POWER_PATH.filter(id => state.knowledge[id] === 'unknown').map(id => nodeMap[id].label);
+
+  let prompt = `I want to become a Claude Code power user. Walk me through the key extension points in order of impact.`;
+  if (know.length) prompt += ` I already understand: ${know.join(', ')}.`;
+  if (fuzzy.length) prompt += ` I'm fuzzy on: ${fuzzy.join(', ')}.`;
+  if (unknown.length) prompt += ` I have no idea about: ${unknown.join(', ')}.`;
+  prompt += ` Start with what I don't know, use concrete examples and code snippets.`;
+  document.getElementById('promptText').textContent = prompt;
+}
+
+// ─── AUTO LAYOUT (force-directed) ────────────────────────────────────────────
+function autoLayout() {
+  const vis = nodes.filter(n => n.visible);
+  for (let iter = 0; iter < 200; iter++) {
+    // Repulsion
+    for (let i = 0; i < vis.length; i++) {
+      for (let j = i+1; j < vis.length; j++) {
+        const a = vis[i], b = vis[j];
+        const dx = b.x - a.x, dy = b.y - a.y;
+        const dist = Math.sqrt(dx*dx+dy*dy) + 0.01;
+        const force = 8000 / (dist * dist);
+        const fx = dx/dist * force, fy = dy/dist * force;
+        a.vx -= fx; a.vy -= fy;
+        b.vx += fx; b.vy += fy;
+      }
+    }
+    // Attraction
+    edges.forEach(e => {
+      if (!e.from.visible || !e.to.visible) return;
+      const dx = e.to.x - e.from.x, dy = e.to.y - e.from.y;
+      const dist = Math.sqrt(dx*dx+dy*dy) + 0.01;
+      const ideal = (e.from.r + e.to.r) * 4;
+      const force = (dist - ideal) * 0.02;
+      const fx = dx/dist * force, fy = dy/dist * force;
+      e.from.vx += fx; e.from.vy += fy;
+      e.to.vx -= fx; e.to.vy -= fy;
+    });
+    // Center gravity
+    vis.forEach(n => { n.vx -= n.x * 0.01; n.vy -= n.y * 0.01; });
+    // Apply + dampen
+    vis.forEach(n => {
+      n.x += n.vx * 0.3; n.y += n.vy * 0.3;
+      n.vx *= 0.7; n.vy *= 0.7;
+    });
+  }
+  draw();
+}
+
+document.getElementById('btnAutoLayout').addEventListener('click', autoLayout);
+
+// ─── ZOOM CONTROLS ────────────────────────────────────────────────────────────
+document.getElementById('zoomIn').addEventListener('click', () => {
+  const cx = W/2, cy = H/2;
+  const wx = (cx - state.panX) / state.zoom, wy = (cy - state.panY) / state.zoom;
+  state.zoom = Math.min(3, state.zoom * 1.2);
+  state.panX = cx - wx * state.zoom;
+  state.panY = cy - wy * state.zoom;
+  draw();
+});
+document.getElementById('zoomOut').addEventListener('click', () => {
+  const cx = W/2, cy = H/2;
+  const wx = (cx - state.panX) / state.zoom, wy = (cy - state.panY) / state.zoom;
+  state.zoom = Math.max(0.2, state.zoom / 1.2);
+  state.panX = cx - wx * state.zoom;
+  state.panY = cy - wy * state.zoom;
+  draw();
+});
+document.getElementById('zoomFit').addEventListener('click', fitAll);
+
+function fitAll() {
+  const vis = nodes.filter(n => n.visible);
+  if (!vis.length) return;
+  const xs = vis.map(n => n.x), ys = vis.map(n => n.y);
+  const minX = Math.min(...xs) - 60, maxX = Math.max(...xs) + 60;
+  const minY = Math.min(...ys) - 60, maxY = Math.max(...ys) + 60;
+  const scaleX = W / (maxX - minX), scaleY = H / (maxY - minY);
+  state.zoom = Math.min(scaleX, scaleY, 2) * 0.9;
+  state.panX = W/2 - (minX + maxX)/2 * state.zoom;
+  state.panY = H/2 - (minY + maxY)/2 * state.zoom;
+  draw();
+}
+
+// ─── NODE LIST ────────────────────────────────────────────────────────────────
+const KNOWLEDGE_CYCLE = ['fuzzy', 'know', 'unknown'];
+const KNOWLEDGE_LABELS = { know: 'know', fuzzy: 'fuzzy', unknown: '???' };
+
+function updateNodeList() {
+  const list = document.getElementById('nodeList');
+  const vis = nodes.filter(n => n.visible);
+  list.innerHTML = '';
+  vis.forEach(n => {
+    const cat = CATS[n.cat];
+    const k = state.knowledge[n.id];
+    const item = document.createElement('div');
+    item.className = 'node-item' + (n.id === state.selectedNode ? ' selected' : '');
+    item.dataset.id = n.id;
+    item.innerHTML = `
+      <div class="node-dot" style="background:${cat.color}"></div>
+      <span class="node-name" title="${n.label}">${n.label}</span>
+      <button class="know-btn know-${k}">${KNOWLEDGE_LABELS[k]}</button>
+    `;
+    item.querySelector('.know-btn').addEventListener('click', ev => {
+      ev.stopPropagation();
+      const idx = KNOWLEDGE_CYCLE.indexOf(state.knowledge[n.id]);
+      state.knowledge[n.id] = KNOWLEDGE_CYCLE[(idx + 1) % 3];
+      updateNodeList();
+      updatePrompt();
+      draw();
+    });
+    item.addEventListener('click', () => {
+      selectNode(n.id);
+      updateNodeList();
+    });
+    list.appendChild(item);
+  });
+
+  // Update counts
+  document.getElementById('countAll').textContent = nodes.filter(n => {
+    return state.search ? n.label.toLowerCase().includes(state.search.toLowerCase()) : true;
+  }).length;
+  document.getElementById('countExt').textContent = nodes.filter(n => n.cat === 'ext').length;
+  document.getElementById('countApi').textContent = nodes.filter(n => n.cat === 'api').length;
+  document.getElementById('countPower').textContent = nodes.filter(n => n.cat === 'power').length;
+  document.getElementById('countCore').textContent = nodes.filter(n => n.cat === 'core').length;
+}
+
+// ─── RESET ────────────────────────────────────────────────────────────────────
+document.getElementById('btnResetKnowledge').addEventListener('click', () => {
+  nodes.forEach(n => { state.knowledge[n.id] = 'fuzzy'; });
+  updateNodeList();
+  updatePrompt();
+  draw();
+});
+
+document.getElementById('btnExpandAll').addEventListener('click', () => {
+  state.filter = 'all';
+  state.search = '';
+  document.getElementById('searchInput').value = '';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('[data-cat=all]').classList.add('active');
+  nodes.forEach(n => { n.visible = true; });
+  updateNodeList();
+  draw();
+  setTimeout(fitAll, 50);
+});
+
+// ─── PROMPT OUTPUT ────────────────────────────────────────────────────────────
+function updatePrompt() {
+  if (powerPathActive) { updatePromptPowerPath(); return; }
+
+  const vis = nodes.filter(n => n.visible);
+  const know = vis.filter(n => state.knowledge[n.id] === 'know').map(n => n.label);
+  const fuzzy = vis.filter(n => state.knowledge[n.id] === 'fuzzy').map(n => n.label);
+  const unknown = vis.filter(n => state.knowledge[n.id] === 'unknown').map(n => n.label);
+
+  const selected = state.selectedNode ? nodeMap[state.selectedNode] : null;
+
+  let prompt = 'I\'m learning the Claude Code ecosystem.';
+
+  if (selected) {
+    prompt += ` I want to focus on: ${selected.label}.`;
+    const connected = edges
+      .filter(e => e.from.id === selected.id || e.to.id === selected.id)
+      .map(e => e.from.id === selected.id ? `${selected.label} ${e.label} ${e.to.label}` : `${e.from.label} ${e.label} ${selected.label}`);
+    if (connected.length) prompt += ` Key relationships: ${connected.slice(0,3).join('; ')}.`;
+  }
+
+  if (know.length) prompt += ` I already understand: ${know.join(', ')}.`;
+  if (fuzzy.length) prompt += ` I'm fuzzy on: ${fuzzy.join(', ')}.`;
+  if (unknown.length) prompt += ` I have no idea about: ${unknown.join(', ')}.`;
+
+  if (fuzzy.length || unknown.length) {
+    prompt += ` Please explain the concepts I don't fully understand, using concrete code examples and showing how they connect.`;
+  }
+
+  document.getElementById('promptText').textContent = prompt;
+}
+
+// ─── COPY ────────────────────────────────────────────────────────────────────
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const text = document.getElementById('promptText').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+
+// ─── ANIMATION LOOP ───────────────────────────────────────────────────────────
+let animFrame;
+function startPulse() {
+  // Subtle pulse animation for selected node
+  let t = 0;
+  function pulse() {
+    t += 0.05;
+    if (state.selectedNode || powerPathActive) {
+      draw();
+    }
+    animFrame = requestAnimationFrame(pulse);
+  }
+  pulse();
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+resize();
+updateNodeList();
+updatePrompt();
+setTimeout(fitAll, 100);
+startPulse();
+</script>
+</body>
+</html>

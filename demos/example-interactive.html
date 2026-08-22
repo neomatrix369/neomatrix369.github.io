@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Example interactive page · neomatrix369</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <style>
+    .demo-shell {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .demo-shell h1 {
+      margin: 0;
+      font-family: var(--font-display);
+    }
+
+    .demo-panel {
+      padding: 1rem;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      background: var(--bg-surface);
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      max-width: 640px;
+      height: auto;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius);
+      background: #111;
+      touch-action: none;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      margin-top: 0.75rem;
+      color: var(--text-secondary);
+      font-size: 0.9375rem;
+    }
+
+    output {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../">
+      neomatrix369
+      <small>github.io</small>
+    </a>
+    <nav class="site-nav">
+      <a href="../">Home</a>
+    </nav>
+  </header>
+
+  <main class="site-main demo-shell">
+    <div>
+      <p><span class="tag tag--interactive">interactive</span></p>
+      <h1>Example interactive page</h1>
+      <p>Move the pointer over the canvas or press arrow keys to shift the orb.</p>
+    </div>
+
+    <section class="demo-panel">
+      <canvas id="demo-canvas" width="640" height="360" aria-label="Interactive orb demo"></canvas>
+      <div class="controls">
+        <button class="button" id="reset-btn" type="button">Reset</button>
+        <output id="coords" for="demo-canvas">x: 320, y: 180</output>
+      </div>
+    </section>
+
+    <p>
+      <a class="button button--primary" href="../">Back to index</a>
+    </p>
+  </main>
+
+  <script>
+    const canvas = document.getElementById("demo-canvas");
+    const coords = document.getElementById("coords");
+    const resetBtn = document.getElementById("reset-btn");
+    const ctx = canvas.getContext("2d");
+
+    const state = {
+      x: canvas.width / 2,
+      y: canvas.height / 2,
+      targetX: canvas.width / 2,
+      targetY: canvas.height / 2,
+    };
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "rgba(0, 217, 255, 0.08)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.beginPath();
+      ctx.arc(state.x, state.y, 28, 0, Math.PI * 2);
+      ctx.fillStyle = "#00D9FF";
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(state.x, state.y, 42, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(196, 165, 116, 0.8)";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      coords.textContent = `x: ${Math.round(state.x)}, y: ${Math.round(state.y)}`;
+    }
+
+    function tick() {
+      state.x += (state.targetX - state.x) * 0.12;
+      state.y += (state.targetY - state.y) * 0.12;
+      draw();
+      requestAnimationFrame(tick);
+    }
+
+    function setTarget(clientX, clientY) {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      state.targetX = (clientX - rect.left) * scaleX;
+      state.targetY = (clientY - rect.top) * scaleY;
+    }
+
+    canvas.addEventListener("pointermove", (event) => {
+      canvas.setPointerCapture(event.pointerId);
+      setTarget(event.clientX, event.clientY);
+    });
+
+    window.addEventListener("keydown", (event) => {
+      const step = event.shiftKey ? 24 : 12;
+      if (event.key === "ArrowLeft") state.targetX -= step;
+      if (event.key === "ArrowRight") state.targetX += step;
+      if (event.key === "ArrowUp") state.targetY -= step;
+      if (event.key === "ArrowDown") state.targetY += step;
+      state.targetX = Math.max(0, Math.min(canvas.width, state.targetX));
+      state.targetY = Math.max(0, Math.min(canvas.height, state.targetY));
+    });
+
+    resetBtn.addEventListener("click", () => {
+      state.x = canvas.width / 2;
+      state.y = canvas.height / 2;
+      state.targetX = state.x;
+      state.targetY = state.y;
+    });
+
+    tick();
+  </script>
+</body>
+</html>
