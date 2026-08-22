@@ -20,31 +20,31 @@
         {
           "title": "Interactive sweep explorer",
           "description": "Heatmap, Pareto frontier, and anomaly flags — browse the full 29-model matrix.",
-          "href": "demos/laguna-py-bug-trace/explorer.html",
+          "href": "demos/laguna-py-bug-trace/?view=explorer.html",
           "kind": "interactive"
         },
         {
           "title": "Sweep one-pager",
           "description": "30-second summary — top 5 leaderboard, warnings, and data-quality flags.",
-          "href": "demos/laguna-py-bug-trace/onepager.html",
+          "href": "demos/laguna-py-bug-trace/?view=onepager.html",
           "kind": "static"
         },
         {
           "title": "Plain-language write-up",
           "description": "~5 min narrative — weak-easy strong-hard profile, level inversions, and caveats.",
-          "href": "demos/laguna-py-bug-trace/writeup.html",
+          "href": "demos/laguna-py-bug-trace/?view=writeup.html",
           "kind": "static"
         },
         {
           "title": "Technical report",
           "description": "~10 min analyst report — target read, field patterns, and recommended next runs.",
-          "href": "demos/laguna-py-bug-trace/report.html",
+          "href": "demos/laguna-py-bug-trace/?view=report.html",
           "kind": "static"
         },
         {
           "title": "Per-level scorecards",
           "description": "L1, L2, and L3 hardest tasks with solve rates and Laguna-XS.2 ranks.",
-          "href": "demos/laguna-py-bug-trace/levels.html",
+          "href": "demos/laguna-py-bug-trace/?view=levels.html",
           "kind": "static"
         }
       ]

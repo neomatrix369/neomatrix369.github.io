@@ -1,17 +1,32 @@
 (function () {
-  const HF = window.LAGUNA_HF;
-  if (!HF) return;
+  const ARCHIVE = 'index.html';
+  const PROJECT = '../../pages/laguna-py-bug-trace.html';
+  const EXPLORER = 'explorer.html';
+  const HF = window.LAGUNA_HF || {};
 
   const path = location.pathname;
   if (/\/laguna-py-bug-trace\/index\.html$/.test(path) || /\/laguna-py-bug-trace\/?$/.test(path)) {
     return;
   }
-  if (new URLSearchParams(location.search).get('embed') === '1') return;
+
+  const embed = new URLSearchParams(location.search).get('embed') === '1';
+  if (embed) {
+    const embedStyle = document.createElement('style');
+    embedStyle.textContent = `
+      .site-header, .site-footer { display: none !important; }
+      .site-main { padding-top: 0.5rem; }
+      body { margin: 0; }
+    `;
+    document.head.appendChild(embedStyle);
+    return;
+  }
 
   const script = document.currentScript;
   const sourceKey = script && script.getAttribute('data-source');
-  const sourceUrl = sourceKey && HF.artifacts[sourceKey] ? HF.artifacts[sourceKey] : HF.reportsGuide;
+  const sourceUrl = sourceKey && HF.artifacts && HF.artifacts[sourceKey] ? HF.artifacts[sourceKey] : HF.reportsGuide;
   const sourceLabel = script && script.getAttribute('data-source-label');
+  const pageTitle = script && script.getAttribute('data-page-title');
+  const isExplorer = /\/explorer\.html$/.test(path);
 
   const style = document.createElement('style');
   style.textContent = `
@@ -42,6 +57,7 @@
       font-size: 11px; color: #6b645a;
     }
     #laguna-archive-chrome .sep { color: rgba(28,25,21,.25); }
+    #laguna-archive-chrome .featured { color: #7a5c2e; font-weight: 600; }
     #laguna-hf-credit {
       margin: 1.5rem 0 0;
       padding: 0.85rem 1rem;
@@ -54,26 +70,55 @@
     }
     #laguna-hf-credit a { color: #7a5c2e; }
     #laguna-hf-credit strong { color: #1c1915; }
+    body.laguna-report-open .site-header { display: none; }
   `;
   document.head.appendChild(style);
+  document.body.classList.add('laguna-report-open');
 
   const bar = document.createElement('nav');
   bar.id = 'laguna-archive-chrome';
-  bar.setAttribute('aria-label', 'Laguna py-bug-trace archive');
-  bar.innerHTML = [
-    '<a class="pg-back" href="../../pages/laguna-py-bug-trace.html">← Project hub</a>',
-    '<span class="sep">·</span>',
-    '<a href="index.html">All reports</a>',
-    '<span class="sep">·</span>',
-    '<a href="explorer.html">Explorer</a>',
-    '<span class="sep">·</span>',
-    '<a href="' + HF.reportsGuide + '" rel="noopener" target="_blank">HF source</a>',
-    sourceLabel ? '<span class="sep">·</span><span class="stamp">' + sourceLabel + '</span>' : '',
-  ].join('');
+  bar.setAttribute('aria-label', 'Laguna py-bug-trace reports');
+
+  const parts = [
+    '<a class="pg-back" href="' + ARCHIVE + '">← Reports archive</a>',
+  ];
+
+  if (isExplorer) {
+    parts.push(
+      '<span class="sep">·</span>',
+      '<a href="' + EXPLORER + '">Primary explorer</a>',
+      '<span class="sep">·</span>',
+      '<a href="' + PROJECT + '">Project findings</a>'
+    );
+    if (sourceLabel) {
+      parts.push('<span class="sep">·</span>', '<span class="stamp">' + sourceLabel + '</span>');
+    }
+  } else {
+    parts.push(
+      '<span class="sep">·</span>',
+      '<a href="' + EXPLORER + '">Interactive explorer</a>',
+      '<span class="sep">·</span>',
+      '<a href="' + PROJECT + '">Project findings</a>'
+    );
+    if (pageTitle) {
+      parts.push('<span class="sep">·</span>', '<span class="stamp">' + pageTitle + '</span>');
+    } else if (sourceLabel) {
+      parts.push('<span class="sep">·</span>', '<span class="stamp">' + sourceLabel + '</span>');
+    }
+  }
+
+  if (HF.reportsGuide) {
+    parts.push(
+      '<span class="sep">·</span>',
+      '<a href="' + HF.reportsGuide + '" rel="noopener" target="_blank">HF source</a>'
+    );
+  }
+
+  bar.innerHTML = parts.join('');
   document.body.insertBefore(bar, document.body.firstChild);
 
   function injectCredit() {
-    if (document.getElementById('laguna-hf-credit')) return;
+    if (!HF.repo || document.getElementById('laguna-hf-credit')) return;
     const footer = document.querySelector('.site-footer') || document.body;
     const credit = document.createElement('aside');
     credit.id = 'laguna-hf-credit';
@@ -81,11 +126,13 @@
     credit.innerHTML =
       '<strong>Source &amp; license.</strong> Artifacts are mirrored from the ' +
       '<a href="' + HF.repo + '" rel="noopener" target="_blank">poolside-laguna-hackathon/laguna-eval-experiments</a> ' +
-      'dataset on Hugging Face (py-bug-trace environment). ' +
-      'Canonical copy of this page: <a href="' + sourceUrl + '" rel="noopener" target="_blank">view on Hugging Face</a>. ' +
-      'Reports guide: <a href="' + HF.reportsGuide + '" rel="noopener" target="_blank">reports/README.md</a> · ' +
-      '<a href="' + HF.reportsTree + '" rel="noopener" target="_blank">full reports tree</a> · ' +
-      '<a href="' + HF.datasets + '" rel="noopener" target="_blank">rollout datasets</a>.';
+      'dataset on Hugging Face (py-bug-trace environment).' +
+      (sourceUrl
+        ? ' Canonical copy of this page: <a href="' + sourceUrl + '" rel="noopener" target="_blank">view on Hugging Face</a>.'
+        : '') +
+      (HF.reportsGuide
+        ? ' Reports guide: <a href="' + HF.reportsGuide + '" rel="noopener" target="_blank">reports/README.md</a>.'
+        : '');
     if (footer.classList && footer.classList.contains('site-footer')) {
       footer.parentNode.insertBefore(credit, footer);
     } else {

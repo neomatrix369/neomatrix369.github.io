@@ -21,6 +21,21 @@
     .project-list h2 { margin: 0 0 0.35rem; font-size: 1.05rem; }
     .project-list p { margin: 0; color: var(--text-secondary); font-size: 0.9375rem; }
     .project-list a.repo { font-family: var(--font-mono); font-size: 0.8125rem; }
+    .project-list .deps {
+      margin: 0.85rem 0 0;
+      padding: 0.75rem 0.85rem;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      background: var(--bg-elevated);
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+    .project-list .deps strong { color: var(--text-primary); font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.03em; }
+    .project-list .deps ul { margin: 0.5rem 0 0; padding-left: 1.15rem; }
+    .project-list .deps li { margin: 0.35rem 0; }
+    .project-list .deps a { color: var(--cta-ink); }
+    .project-list .deps .dep-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.4rem; }
+    .project-list .card-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
   </style>
 </head>
 <body>
@@ -47,8 +62,8 @@
         <p><a class="repo" href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/tree/main/environments/py_bug_trace">HF: laguna-eval-experiments / py_bug_trace</a></p>
         <p>
           <a class="button" href="laguna-py-bug-trace.html">Project page</a>
-          <a class="button" href="../demos/laguna-py-bug-trace/explorer.html">Sweep explorer</a>
-          <a class="button" href="../demos/laguna-py-bug-trace/">All reports</a>
+          <a class="button" href="../demos/laguna-py-bug-trace/?view=explorer.html">Sweep explorer</a>
+          <a class="button" href="../demos/laguna-py-bug-trace/">Reports archive</a>
         </p>
       </li>
       <li>
@@ -62,19 +77,50 @@
       </li>
       <li>
         <h2>Tripwire</h2>
-        <p>Security and quality scanning for AI-assisted development workflows.</p>
+        <p>Security and quality scanning for AI-assisted development workflows — tiered routing uses <a href="#sie">SIE</a> before Model Studio escalation.</p>
         <p><a class="repo" href="https://github.com/neomatrix369/tripwire">github.com/neomatrix369/tripwire</a></p>
-        <p><a class="button" href="../demos/tripwire-dashboard/">Open dashboard demo</a></p>
+        <p class="card-actions">
+          <a class="button" href="../demos/tripwire-dashboard/">Open dashboard demo</a>
+          <a class="button" href="#sie">SIE hub ↓</a>
+        </p>
       </li>
       <li>
         <h2>Skills Scanner</h2>
         <p>Scan and review agent skill packages for quality and safety signals.</p>
         <p><a class="repo" href="https://github.com/neomatrix369/skills_scanner">github.com/neomatrix369/skills_scanner</a></p>
       </li>
-      <li>
+      <li id="sie">
         <h2>SIE</h2>
-        <p>Structured Intelligence Engine — examples and SDKs for document and agent workflows.</p>
+        <p>
+          <strong>Superlinked Inference Engine (SIE)</strong> — open-source inference server and production cluster for the models your agents need.
+          Several projects on this site depend on SIE for embeddings, routing, or arbitration.
+        </p>
         <p><a class="repo" href="https://github.com/neomatrix369/sie">github.com/neomatrix369/sie</a></p>
+        <p class="card-actions">
+          <a class="button button--primary" href="https://github.com/neomatrix369/sie" rel="noopener">SIE repo</a>
+        </p>
+        <div class="deps">
+          <strong>SIE-enabled dependent projects</strong>
+          <ul>
+            <li>
+              <a href="https://github.com/neomatrix369/tripwire" rel="noopener"><strong>Tripwire</strong></a>
+              — sandboxed security scanning for AI skills and MCP servers; SIE handles tiered triage before Model Studio escalation.
+              <div class="dep-actions">
+                <a class="button" href="https://github.com/neomatrix369/tripwire" rel="noopener">GitHub</a>
+                <a class="button" href="../demos/tripwire-dashboard/">Dashboard demo</a>
+              </div>
+            </li>
+            <li>
+              <a href="https://github.com/neomatrix369/rag-params-finder" rel="noopener"><strong>rag-params-finder</strong></a>
+              — RAG parameter sweep toolkit (embeddings, chunking, retrieval); supports SIE open-source embeddings via remote gateway or self-hosted Docker.
+              <div class="dep-actions">
+                <a class="button" href="https://github.com/neomatrix369/rag-params-finder" rel="noopener">GitHub</a>
+                <a class="button" href="https://github.com/neomatrix369/rag-params-finder/blob/main/docs/user-guide/sie-setup.md" rel="noopener">SIE setup guide</a>
+                <a class="button" href="https://github.com/neomatrix369/rag-params-finder/tree/main/configs/mongodb" rel="noopener">SIE sweep configs</a>
+              </div>
+            </li>
+          </ul>
+        </div>
       </li>
     </ul>
 

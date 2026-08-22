@@ -10,22 +10,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../assets/css/site.css">
   <style>
-    .content { max-width: 52rem; }
+    .content { max-width: min(76rem, 100%); }
+    .site-main.content { width: min(76rem, calc(100% - 2rem)); }
     .content h1 { margin-top: 0; font-family: var(--font-display); font-size: clamp(1.75rem, 3vw, 2.25rem); }
     .content h2 { margin: 2rem 0 0.75rem; font-family: var(--font-display); font-size: 1.2rem; }
     .content p, .content li { color: var(--text-secondary); }
-    .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 0.85rem; margin: 1.25rem 0 2rem; }
-    .card-grid a.card {
-      display: block; padding: 1rem 1.1rem;
-      border: 1px solid var(--border-subtle); border-radius: var(--radius);
-      background: var(--bg-surface); text-decoration: none; color: inherit;
-      transition: border-color 0.12s ease, box-shadow 0.12s ease;
-    }
-    .card-grid a.card:hover { border-color: var(--cta); box-shadow: 0 2px 8px rgba(28,25,21,.06); }
-    .card-grid a.card strong { display: block; margin-bottom: 0.35rem; color: var(--text-primary); }
-    .card-grid a.card span { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.45; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1.25rem 0 1.75rem; }
     .hf-provenance {
-      margin: 1.5rem 0 2rem;
+      margin: 1.25rem 0 1.75rem;
       padding: 1rem 1.15rem;
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius);
@@ -37,9 +29,71 @@
     .hf-provenance strong { color: var(--text-primary); }
     .hf-provenance ul { margin: 0.5rem 0 0; padding-left: 1.2rem; }
     .hf-provenance a { color: var(--cta-ink); }
-    .meta-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0 1.5rem; }
-    .cta-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1.25rem 0 1.75rem; }
-    .snapshot { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-muted); }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0 1.25rem; }
+    .callout {
+      margin: 1.25rem 0;
+      padding: 1rem 1.125rem;
+      border-left: 3px solid var(--cta);
+      background: var(--bg-surface);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+    }
+    .section-subtitle { margin: 0 0 0.75rem; color: var(--text-muted); font-size: 0.9rem; }
+    .table-wrap { overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid var(--border-subtle); border-radius: var(--radius); -webkit-overflow-scrolling: touch; }
+    .table-wrap--featured { border-color: var(--cta); box-shadow: 0 0 0 1px rgba(196, 165, 116, 0.25); }
+    table.reports { width: 100%; min-width: 44rem; border-collapse: collapse; font-size: 0.875rem; }
+    table.reports th, table.reports td { padding: 0.65rem 0.85rem; text-align: left; border-bottom: 1px solid var(--border-subtle); vertical-align: middle; }
+    table.reports th { background: var(--bg-elevated); font-weight: 600; white-space: nowrap; }
+    table.reports tr:last-child td { border-bottom: none; }
+    table.reports tbody tr.report-row {
+      cursor: pointer;
+      transition: background 0.12s ease, box-shadow 0.12s ease;
+    }
+    table.reports tbody tr.report-row:hover,
+    table.reports tbody tr.report-row:focus-visible {
+      background: rgba(196, 165, 116, 0.18);
+      outline: none;
+      box-shadow: inset 3px 0 0 var(--cta);
+    }
+    table.reports tbody tr.report-row--featured { background: rgba(196, 165, 116, 0.1); }
+    table.reports tbody tr.report-row--featured:hover,
+    table.reports tbody tr.report-row--featured:focus-visible { background: rgba(196, 165, 116, 0.22); }
+    table.reports a.hf-link {
+      position: relative; z-index: 2;
+      color: var(--cta-ink);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+    }
+    table.reports a.hf-link:hover { text-decoration: underline; }
+    .pill { display: inline-block; padding: 0.15rem 0.45rem; margin-right: 0.35rem; border-radius: 999px; border: 1px solid var(--border-subtle); background: var(--bg-surface); font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); }
+    .pill--featured { border-color: var(--cta); color: var(--cta-ink); }
+    .open-hint { margin-left: 0.35rem; color: var(--text-muted); font-size: 0.75rem; opacity: 0; transition: opacity 0.12s ease; }
+    table.reports tbody tr.report-row:hover .open-hint,
+    table.reports tbody tr.report-row:focus-visible .open-hint { opacity: 1; }
+    .empty { padding: 2rem; text-align: center; color: var(--text-muted); }
+    #laguna-viewer {
+      position: fixed; inset: 0; z-index: 1000;
+      display: flex; flex-direction: column;
+      background: var(--bg-base);
+    }
+    #laguna-viewer[hidden] { display: none !important; }
+    body.laguna-viewer-open { overflow: hidden; }
+    .laguna-viewer-bar {
+      flex: 0 0 auto;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem;
+      padding: 0.55rem 1rem;
+      border-bottom: 1px solid var(--border-default);
+      background: var(--bg-surface);
+    }
+    .laguna-viewer-bar .pg-back-btn { font-weight: 600; }
+    .laguna-viewer-title { font-size: 0.9375rem; color: var(--text-secondary); }
+    #laguna-viewer-frame {
+      flex: 1 1 auto;
+      width: 100%;
+      border: none;
+      background: #fff;
+    }
   </style>
 </head>
 <body>
@@ -47,81 +101,228 @@
     <a class="brand" href="../../">neomatrix369<small>github.io</small></a>
     <nav class="site-nav">
       <a href="../../">Home</a>
-      <a href="../../pages/laguna-py-bug-trace.html">Project hub</a>
+      <a href="../../pages/laguna-py-bug-trace.html">Project page</a>
       <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments" rel="noopener" target="_blank">HF dataset</a>
     </nav>
   </header>
 
   <main class="site-main content">
-    <p><span class="tag">benchmark</span> <span class="tag tag--interactive">laguna hackathon</span></p>
-    <h1>py-bug-trace sweep reports</h1>
+    <p><span class="tag">interactive</span> <span class="tag tag--interactive">archive</span></p>
+    <h1>py-bug-trace sweep — reports archive</h1>
     <p>
-      Hosted copies of the Poolside Laguna hackathon evaluation artifacts for the
-      <strong>py-bug-trace</strong> environment. Canonical source is the
+      Hosted copies of evaluation artifacts from the
       <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments" rel="noopener" target="_blank">laguna-eval-experiments</a>
-      dataset on Hugging Face.
+      dataset on Hugging Face. Target model: <strong>poolside/laguna-xs.2</strong> · matrix 2026-06-04 · reports 2026-07-17.
     </p>
 
     <div class="meta-row">
-      <span class="tag">target: poolside/laguna-xs.2</span>
-      <span class="tag">matrix: 2026-06-04</span>
-      <span class="tag">reports: 2026-07-17</span>
+      <span class="tag">29 models</span>
+      <span class="tag">L1–L3 tasks</span>
+      <span class="tag">rank 12/29 overall</span>
+      <span class="tag">rank 2/8 on L3</span>
     </div>
 
-    <div class="hf-provenance" id="hf-provenance">
+    <div class="hero-actions">
+      <a class="button button--primary" href="?view=explorer.html">Open explorer</a>
+      <a class="button" href="../../pages/laguna-py-bug-trace.html">Project findings</a>
+    </div>
+
+    <div class="callout">
+      <strong>How to use:</strong> Click any row to open the report here (embedded viewer). Use <strong>← Reports archive</strong> to return to this list. HF links open Hugging Face in a new tab. Open in a new tab: right-click a row or <kbd>⌘</kbd>/<kbd>Ctrl</kbd>+click.
+    </div>
+
+    <div class="hf-provenance">
       <strong>Hugging Face source of truth</strong>
-      <p class="snapshot" style="margin:0.35rem 0 0.5rem">
-        These pages are mirrors for readability and navigation. Always cite the HF repo when sharing results.
-      </p>
       <ul>
         <li><a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments" rel="noopener" target="_blank">laguna-eval-experiments</a> — main dataset repo</li>
-        <li><a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/README.md" rel="noopener" target="_blank">py_bug_trace/README.md</a> — environment overview</li>
         <li><a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/README.md" rel="noopener" target="_blank">reports/README.md</a> — pick-your-path guide</li>
         <li><a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/tree/main/environments/py_bug_trace/reports" rel="noopener" target="_blank">reports/</a> — full reports tree</li>
-        <li><a href="https://huggingface.co/poolside-laguna-hackathon/datasets" rel="noopener" target="_blank">poolside-laguna-hackathon/datasets</a> — rollout datasets</li>
       </ul>
     </div>
 
-    <h2>Hosted reports</h2>
-    <div class="card-grid">
-      <a class="card" href="explorer.html">
-        <strong>Interactive explorer</strong>
-        <span>Filter models, levels, and tasks — self-contained HTML from HF.</span>
-      </a>
-      <a class="card" href="onepager.html">
-        <strong>One-pager</strong>
-        <span>30-second summary — rank 12/29 overall, L3 strength.</span>
-      </a>
-      <a class="card" href="writeup.html">
-        <strong>Write-up narrative</strong>
-        <span>5-minute story — inverted difficulty ladder, analyst narrative.</span>
-      </a>
-      <a class="card" href="report.html">
-        <strong>Technical report</strong>
-        <span>Executive summary and target-model read for analysts.</span>
-      </a>
-      <a class="card" href="levels.html">
-        <strong>Level scorecards</strong>
-        <span>L1, L2, L3 per-level breakdown with hardest tasks.</span>
-      </a>
+    <h2>Primary report</h2>
+    <p class="section-subtitle">Interactive explorer — browse the full 29-model matrix</p>
+    <div class="table-wrap table-wrap--featured">
+      <table class="reports" aria-label="Primary explorer report">
+        <thead>
+          <tr>
+            <th>Report</th>
+            <th>Type</th>
+            <th>Summary</th>
+            <th>HF artifact</th>
+          </tr>
+        </thead>
+        <tbody id="featured-body">
+          <tr><td colspan="4" class="empty">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>All hosted reports <span id="count-label" style="font-weight:400;color:var(--text-muted);font-size:0.95rem"></span></h2>
+    <p class="section-subtitle">Narratives and scorecards — click a row to open</p>
+    <div class="table-wrap">
+      <table class="reports" id="reports-table" aria-label="Hosted py-bug-trace reports">
+        <thead>
+          <tr>
+            <th>Report</th>
+            <th>Type</th>
+            <th>Summary</th>
+            <th>HF artifact</th>
+          </tr>
+        </thead>
+        <tbody id="reports-body">
+          <tr><td colspan="4" class="empty">Loading reports…</td></tr>
+        </tbody>
+      </table>
     </div>
 
     <h2>Data on Hugging Face (link only)</h2>
     <ul>
-      <li><a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/matrix/stats.md" rel="noopener" target="_blank">matrix/stats.md</a> — stats digest</li>
-      <li><a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/matrix/report.md" rel="noopener" target="_blank">matrix/report.md</a> — full matrix report</li>
-      <li><a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/matrix/stats.json" rel="noopener" target="_blank">matrix/stats.json</a> ·
+      <li><a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/matrix/stats.md" rel="noopener" target="_blank">matrix/stats.md</a></li>
+      <li><a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/matrix/report.md" rel="noopener" target="_blank">matrix/report.md</a></li>
+      <li><a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/matrix/stats.json" rel="noopener" target="_blank">stats.json</a> ·
           <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/reports/matrix/comparison.csv" rel="noopener" target="_blank">comparison.csv</a></li>
     </ul>
-
-    <div class="cta-row">
-      <a class="button button--primary" href="explorer.html">Open explorer</a>
-      <a class="button" href="../../pages/laguna-py-bug-trace.html">← Project hub</a>
-    </div>
   </main>
 
+  <div id="laguna-viewer" hidden>
+    <div class="laguna-viewer-bar">
+      <button type="button" class="button pg-back-btn" id="laguna-viewer-close">← Reports archive</button>
+      <span class="laguna-viewer-title" id="laguna-viewer-title"></span>
+      <a class="button" id="laguna-viewer-newtab" href="#" target="_blank" rel="noopener" style="margin-left:auto">Open in new tab</a>
+    </div>
+    <iframe id="laguna-viewer-frame" title="Hosted report" loading="lazy"></iframe>
+  </div>
+
   <footer class="site-footer">
-    <p>Mirrored from <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments" rel="noopener" target="_blank">poolside-laguna-hackathon/laguna-eval-experiments</a> on Hugging Face.</p>
+    <a href="../../pages/laguna-py-bug-trace.html">Project page</a> ·
+    <a href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments" rel="noopener" target="_blank">HF source</a>
   </footer>
+
+  <script>
+    const HF_BASE = 'https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/blob/main/environments/py_bug_trace/';
+    let reports = [];
+
+    function hfUrl(path) {
+      return HF_BASE + path;
+    }
+
+    function rowHtml(r, { featured = false } = {}) {
+      const featuredPill = featured ? ' <span class="pill pill--featured">primary</span>' : '';
+      const openHint = '<span class="open-hint" aria-hidden="true">↗ open</span>';
+      const rowClass = 'report-row' + (featured ? ' report-row--featured' : '');
+      const tagClass = r.kind === 'interactive' ? 'tag tag--interactive' : 'tag';
+      return `<tr class="${rowClass}" tabindex="0" role="link" data-href="${r.file}" aria-label="Open ${r.title}">
+        <td><strong>${r.title}</strong>${featuredPill}${openHint}</td>
+        <td><span class="${tagClass}">${r.kind}</span></td>
+        <td>${r.summary}</td>
+        <td><a class="hf-link" href="${hfUrl(r.hf_path)}" rel="noopener" target="_blank" tabindex="-1">${r.hf_path}</a></td>
+      </tr>`;
+    }
+
+    function openRow(row, { newTab = false } = {}) {
+      const href = row.dataset.href;
+      if (!href) return;
+      if (newTab) {
+        window.open(href, '_blank', 'noopener');
+        return;
+      }
+      openViewer(href, row.getAttribute('aria-label') || href);
+    }
+
+    function openViewer(href, title) {
+      const viewer = document.getElementById('laguna-viewer');
+      const iframe = document.getElementById('laguna-viewer-frame');
+      const sep = href.includes('?') ? '&' : '?';
+      iframe.src = href + sep + 'embed=1';
+      document.getElementById('laguna-viewer-title').textContent = title ? title.replace(/^Open /, '') : href;
+      document.getElementById('laguna-viewer-newtab').href = href;
+      viewer.hidden = false;
+      document.body.classList.add('laguna-viewer-open');
+    }
+
+    function bindRowNavigation(root) {
+      root.addEventListener('click', (e) => {
+        if (e.target.closest('a.hf-link')) return;
+        const row = e.target.closest('tr.report-row');
+        if (!row) return;
+        const newTab = e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1;
+        if (newTab) {
+          e.preventDefault();
+          openRow(row, { newTab: true });
+          return;
+        }
+        e.preventDefault();
+        const url = new URL(location.href);
+        url.searchParams.set('view', row.dataset.href);
+        history.pushState({ view: row.dataset.href }, '', url);
+        openRow(row);
+      });
+      root.addEventListener('keydown', (e) => {
+        const row = e.target.closest('tr.report-row');
+        if (!row) return;
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          if (!(e.metaKey || e.ctrlKey)) {
+            const url = new URL(location.href);
+            url.searchParams.set('view', row.dataset.href);
+            history.pushState({ view: row.dataset.href }, '', url);
+          }
+          openRow(row, { newTab: e.metaKey || e.ctrlKey });
+        }
+      });
+    }
+
+    function render() {
+      const featured = reports.find(r => r.featured) || reports[0];
+      const rest = reports.filter(r => r !== featured);
+
+      document.getElementById('featured-body').innerHTML = featured ? rowHtml(featured, { featured: true }) : '<tr><td colspan="4" class="empty">No reports.</td></tr>';
+      const body = document.getElementById('reports-body');
+      if (!rest.length) {
+        body.innerHTML = '<tr><td colspan="4" class="empty">No additional reports.</td></tr>';
+      } else {
+        body.innerHTML = rest.map(r => rowHtml(r)).join('');
+      }
+      document.getElementById('count-label').textContent = `(${rest.length})`;
+    }
+
+    fetch('reports.json')
+      .then(r => r.json())
+      .then(data => {
+        reports = data.reports || [];
+        render();
+        const initialView = new URLSearchParams(location.search).get('view');
+        if (initialView) {
+          const r = reports.find(x => x.file === initialView);
+          openViewer(initialView, r ? r.title : initialView);
+        }
+      })
+      .catch(() => {
+        document.getElementById('featured-body').innerHTML = '<tr><td colspan="4" class="empty">Could not load reports.json.</td></tr>';
+        document.getElementById('reports-body').innerHTML = '<tr><td colspan="4" class="empty">Could not load reports.json.</td></tr>';
+      });
+
+    bindRowNavigation(document.getElementById('featured-body'));
+    bindRowNavigation(document.getElementById('reports-body'));
+
+    document.getElementById('laguna-viewer-close').addEventListener('click', () => {
+      history.back();
+    });
+    window.addEventListener('popstate', () => {
+      const view = new URLSearchParams(location.search).get('view');
+      if (view) {
+        const r = reports.find(x => x.file === view);
+        openViewer(view, r ? r.title : view);
+      } else {
+        const viewer = document.getElementById('laguna-viewer');
+        if (!viewer.hidden) {
+          viewer.hidden = true;
+          document.getElementById('laguna-viewer-frame').src = 'about:blank';
+          document.body.classList.remove('laguna-viewer-open');
+        }
+      }
+    });
+  </script>
 </body>
 </html>

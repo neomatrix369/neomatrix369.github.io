@@ -1,0 +1,40 @@
+{
+  "reports": [
+    {
+      "file": "explorer.html",
+      "title": "Interactive explorer",
+      "kind": "interactive",
+      "featured": true,
+      "summary": "29 models · heatmap, Pareto frontier, anomaly flags",
+      "hf_path": "reports/explorer/latest.html"
+    },
+    {
+      "file": "onepager.html",
+      "title": "Sweep one-pager",
+      "kind": "static",
+      "summary": "30-second summary · top 5 leaderboard · rank 12/29 overall",
+      "hf_path": "reports/fragments/onepager.md"
+    },
+    {
+      "file": "writeup.html",
+      "title": "Plain-language write-up",
+      "kind": "static",
+      "summary": "~5 min narrative · weak-easy strong-hard · level inversions",
+      "hf_path": "reports/narrative/writeup.md"
+    },
+    {
+      "file": "report.html",
+      "title": "Technical report",
+      "kind": "static",
+      "summary": "Executive summary · target read · field patterns",
+      "hf_path": "reports/narrative/report.md"
+    },
+    {
+      "file": "levels.html",
+      "title": "Per-level scorecards",
+      "kind": "static",
+      "summary": "L1, L2, L3 hardest tasks · Laguna-XS.2 ranks per level",
+      "hf_path": "reports/fragments/level-L1.md"
+    }
+  ]
+}
