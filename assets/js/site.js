@@ -1,9 +1,22 @@
 const FALLBACK_PAGES = [
   {
     title: "UK Charity Doc Extract",
-    description: "Multi-model PDF extraction benchmark — 111 scored runs across OpenRouter, Doubleword, and V7 Go.",
-    href: "pages/playgroup-202602-docextract.html",
-    kind: "static",
+    description: "Multi-model PDF extraction benchmark.",
+    kind: "group",
+    children: [
+      {
+        title: "Project page",
+        description: "Findings and methodology.",
+        href: "pages/playgroup-202602-docextract.html",
+        kind: "static",
+      },
+      {
+        title: "Model extraction playground",
+        description: "Latest and historic snapshots.",
+        href: "demos/playgroup-202602-docextract/",
+        kind: "interactive",
+      },
+    ],
   },
   {
     title: "Projects",
@@ -13,9 +26,33 @@ const FALLBACK_PAGES = [
   },
 ];
 
+function renderSubCard(child) {
+  const tagClass = child.kind === "interactive" ? "tag tag--interactive" : "tag";
+  return `
+    <article class="page-card-sub">
+      <span class="${tagClass}">${child.kind}</span>
+      <h4>${child.title}</h4>
+      <p>${child.description}</p>
+      <a class="button" href="${child.href}">Open</a>
+    </article>
+  `;
+}
+
 function renderPageCard(page) {
-  const tagClass =
-    page.kind === "interactive" ? "tag tag--interactive" : "tag";
+  if (page.kind === "group" && Array.isArray(page.children) && page.children.length > 0) {
+    return `
+      <article class="page-card page-card--group">
+        <span class="tag">benchmark</span>
+        <h3>${page.title}</h3>
+        <p>${page.description}</p>
+        <div class="page-card-nested" role="list">
+          ${page.children.map(renderSubCard).join("")}
+        </div>
+      </article>
+    `;
+  }
+
+  const tagClass = page.kind === "interactive" ? "tag tag--interactive" : "tag";
 
   return `
     <article class="page-card">

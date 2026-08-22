@@ -226,6 +226,42 @@ a:hover {
   gap: 1rem;
 }
 
+.page-card--group {
+  grid-column: 1 / -1;
+  max-width: 40rem;
+}
+
+.page-card-nested {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.page-card-sub {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  background: var(--bg-base);
+}
+
+.page-card-sub h4 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.page-card-sub p {
+  margin: 0;
+  flex: 1;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
 .page-card {
   display: flex;
   flex-direction: column;

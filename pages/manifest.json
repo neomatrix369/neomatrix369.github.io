@@ -3,14 +3,21 @@
     {
       "title": "UK Charity Doc Extract",
       "description": "Multi-model PDF extraction benchmark — 111 scored runs across OpenRouter, Doubleword, and V7 Go.",
-      "href": "pages/playgroup-202602-docextract.html",
-      "kind": "static"
-    },
-    {
-      "title": "Model extraction playground",
-      "description": "Latest leaderboard (111 runs) plus 20 historic snapshots — rankings, heatmaps, and provider analysis from git history.",
-      "href": "demos/playgroup-202602-docextract/",
-      "kind": "interactive"
+      "kind": "group",
+      "children": [
+        {
+          "title": "Project page",
+          "description": "Findings, methodology, and provider comparison tables.",
+          "href": "pages/playgroup-202602-docextract.html",
+          "kind": "static"
+        },
+        {
+          "title": "Model extraction playground",
+          "description": "Latest snapshot plus 20 historic versions — rankings, heatmaps, provider analysis.",
+          "href": "demos/playgroup-202602-docextract/",
+          "kind": "interactive"
+        }
+      ]
     },
     {
       "title": "Projects",
