@@ -89,6 +89,28 @@
     }
     .timeline { margin: 1rem 0 0; padding-left: 1.1rem; color: var(--text-secondary); font-size: 0.9rem; }
     .empty { padding: 2rem; text-align: center; color: var(--text-muted); }
+    .section-gap {
+      height: 1.75rem;
+      margin: 0.5rem 0 1.75rem;
+      border-bottom: 2px dashed var(--border-subtle);
+    }
+    .table-wrap--latest {
+      border-color: var(--cta);
+      box-shadow: 0 0 0 1px rgba(196, 165, 116, 0.25);
+    }
+    table.snapshots tbody tr.snap-row--featured {
+      background: rgba(196, 165, 116, 0.14);
+      font-weight: 500;
+    }
+    table.snapshots tbody tr.snap-row--featured:hover,
+    table.snapshots tbody tr.snap-row--featured:focus-visible {
+      background: rgba(196, 165, 116, 0.26);
+    }
+    .section-subtitle {
+      margin: 0 0 0.75rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
   </style>
 </head>
 <body>
@@ -115,15 +137,39 @@
     </p>
 
     <div class="hero-actions">
-      <a class="button button--primary" id="latest-link" href="2026-08-22T0830Z-which-models-extracted-playground.html">Open latest snapshot</a>
       <a class="button" href="../../pages/playgroup-202602-docextract.html">Project summary &amp; findings</a>
     </div>
 
     <div class="callout">
-      <strong>How to use:</strong> Click any row to open that snapshot. Commit links open GitHub in a new tab.
+      <strong>How to use:</strong> Click any row to open that snapshot — latest is shown first, then historic versions below. Commit links open GitHub in a new tab.
     </div>
 
-    <h2>All snapshots <span id="count-label" style="font-weight:400;color:var(--text-muted);font-size:0.95rem"></span></h2>
+    <h2>Latest snapshot</h2>
+    <p class="section-subtitle">Current benchmark — 111 scored runs · 8 tabs · <code>2026-08-22T0830Z</code></p>
+    <div class="table-wrap table-wrap--latest">
+      <table class="snapshots" aria-label="Latest playground snapshot">
+        <thead>
+          <tr>
+            <th>Snapshot (UTC)</th>
+            <th>Models</th>
+            <th>F1 runs</th>
+            <th>Providers</th>
+            <th>Avg F1 (active)</th>
+            <th>Tabs</th>
+            <th>Commit</th>
+            <th>Change</th>
+          </tr>
+        </thead>
+        <tbody id="latest-body">
+          <tr><td colspan="8" class="empty">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-gap" aria-hidden="true"></div>
+
+    <h2>Historic snapshots <span id="count-label" style="font-weight:400;color:var(--text-muted);font-size:0.95rem"></span></h2>
+    <p class="section-subtitle">20 earlier versions recovered from git — click a row to open</p>
 
     <div class="filters">
       <label for="q">Search</label>
@@ -137,7 +183,7 @@
     </div>
 
     <div class="table-wrap">
-      <table class="snapshots" id="snap-table">
+      <table class="snapshots" id="snap-table" aria-label="Historic playground snapshots">
         <thead>
           <tr>
             <th>Snapshot (UTC)</th>
@@ -193,11 +239,12 @@
       return `${m[1]} ${m[2]}:${m[3]} UTC`;
     }
 
-    function rowHtml(v, isLatest) {
+    function rowHtml(v, { featured = false } = {}) {
       const href = v.file;
-      const latestPill = isLatest ? ' <span class="pill pill--latest">latest</span>' : '';
+      const latestPill = featured ? ' <span class="pill pill--latest">latest</span>' : '';
       const openHint = '<span class="open-hint" aria-hidden="true">↗ open</span>';
-      return `<tr class="snap-row${isLatest ? ' latest' : ''}" tabindex="0" role="link" data-href="${href}" aria-label="Open snapshot ${v.stamp}: ${v.subject}">
+      const rowClass = `snap-row${featured ? ' snap-row--featured latest' : ''}`;
+      return `<tr class="${rowClass}" tabindex="0" role="link" data-href="${href}" aria-label="Open snapshot ${v.stamp}: ${v.subject}">
         <td class="num">${v.stamp}${latestPill}${openHint}</td>
         <td class="num">${v.models}</td>
         <td class="num">${v.f1 || '—'}</td>
@@ -209,19 +256,23 @@
       </tr>`;
     }
 
+    function matchesQuery(v, q) {
+      const hay = [v.stamp, v.commit, v.subject, providerSummary(v), JSON.stringify(v.providers || {})].join(' ').toLowerCase();
+      return hay.includes(q);
+    }
+
     function openRow(row) {
       const href = row.dataset.href;
       if (href) window.location.href = href;
     }
 
-    function bindRowNavigation() {
-      const body = document.getElementById('snap-body');
-      body.addEventListener('click', (e) => {
+    function bindRowNavigation(root) {
+      root.addEventListener('click', (e) => {
         if (e.target.closest('a.commit-link')) return;
         const row = e.target.closest('tr.snap-row');
         if (row) openRow(row);
       });
-      body.addEventListener('keydown', (e) => {
+      root.addEventListener('keydown', (e) => {
         const row = e.target.closest('tr.snap-row');
         if (!row) return;
         if (e.key === 'Enter' || e.key === ' ') {
@@ -234,35 +285,45 @@
     function render() {
       const q = document.getElementById('q').value.trim().toLowerCase();
       const sort = document.getElementById('sort').value;
-      let rows = versions.filter(v => {
-        if (!q) return true;
-        const hay = [v.stamp, v.commit, v.subject, providerSummary(v), JSON.stringify(v.providers || {})].join(' ').toLowerCase();
-        return hay.includes(q);
-      });
+      const latest = versions.find(v => v.stamp === LATEST_STAMP) || versions[versions.length - 1];
+      const historic = versions.filter(v => v.stamp !== LATEST_STAMP);
+
+      const latestBody = document.getElementById('latest-body');
+      if (!q || matchesQuery(latest, q)) {
+        latestBody.innerHTML = rowHtml(latest, { featured: true });
+      } else {
+        latestBody.innerHTML = '<tr><td colspan="8" class="empty">Latest hidden by search filter — clear search to show.</td></tr>';
+      }
+
+      let rows = historic.filter(v => !q || matchesQuery(v, q));
       if (sort === 'newest') rows = [...rows].reverse();
+      else if (sort === 'oldest') rows = [...rows];
       else if (sort === 'models') rows = [...rows].sort((a, b) => b.models - a.models);
+
       const body = document.getElementById('snap-body');
       if (!rows.length) {
-        body.innerHTML = '<tr><td colspan="8" class="empty">No snapshots match your search.</td></tr>';
-        return;
+        body.innerHTML = '<tr><td colspan="8" class="empty">No historic snapshots match your search.</td></tr>';
+      } else {
+        body.innerHTML = rows.map(v => rowHtml(v)).join('');
       }
-      body.innerHTML = rows.map(v => rowHtml(v, v.stamp === LATEST_STAMP)).join('');
-      document.getElementById('count-label').textContent = `(${rows.length} of ${versions.length})`;
+      document.getElementById('count-label').textContent = `(${rows.length} of ${historic.length})`;
     }
 
     fetch('versions.json')
       .then(r => r.json())
       .then(data => {
         versions = data;
-        document.getElementById('latest-link').href = `${LATEST_STAMP}-which-models-extracted-playground.html`;
         render();
       })
       .catch(() => {
+        document.getElementById('latest-body').innerHTML =
+          '<tr><td colspan="8" class="empty">Could not load versions.json.</td></tr>';
         document.getElementById('snap-body').innerHTML =
-          '<tr><td colspan="8" class="empty">Could not load versions.json. Open a snapshot file directly from this folder.</td></tr>';
+          '<tr><td colspan="8" class="empty">Could not load versions.json.</td></tr>';
       });
 
-    bindRowNavigation();
+    bindRowNavigation(document.getElementById('latest-body'));
+    bindRowNavigation(document.getElementById('snap-body'));
 
     document.getElementById('q').addEventListener('input', render);
     document.getElementById('sort').addEventListener('change', render);

@@ -7,15 +7,9 @@
       "kind": "static"
     },
     {
-      "title": "Playground snapshots (21 versions)",
-      "description": "Browse every historical leaderboard from git — search, filter, and compare benchmark evolution.",
+      "title": "Model extraction playground",
+      "description": "Latest leaderboard (111 runs) plus 20 historic snapshots — rankings, heatmaps, and provider analysis from git history.",
       "href": "demos/playgroup-202602-docextract/",
-      "kind": "interactive"
-    },
-    {
-      "title": "Model extraction playground (latest)",
-      "description": "Rankings, heatmaps, provider analysis, and project evolution — snapshot 2026-08-22T0830Z.",
-      "href": "demos/playgroup-202602-docextract/2026-08-22T0830Z-which-models-extracted-playground.html",
       "kind": "interactive"
     },
     {
