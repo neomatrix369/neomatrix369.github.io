@@ -1,0 +1,618 @@
+[
+  {
+    "stamp": "2026-02-28T1312Z",
+    "commit": "5523528e",
+    "iso": "2026-02-28T13:12:17Z",
+    "subject": "Add multi-model scoring leaderboard, extraction results, and refactors",
+    "file": "2026-02-28T1312Z-which-models-extracted-playground.html",
+    "size_kb": 415,
+    "models": 40,
+    "f1": 0,
+    "tabs": [
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations"
+    ],
+    "docs": 11,
+    "providers": {
+      "?": 40
+    },
+    "tab_count": 5
+  },
+  {
+    "stamp": "2026-03-06T2327Z",
+    "commit": "f640b102",
+    "iso": "2026-03-06T23:27:49Z",
+    "subject": "Add time/cost estimation, project evolution tab to playground",
+    "file": "2026-03-06T2327Z-which-models-extracted-playground.html",
+    "size_kb": 374,
+    "models": 33,
+    "f1": 0,
+    "tabs": [
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "?": 33
+    },
+    "tab_count": 6
+  },
+  {
+    "stamp": "2026-03-07T0632Z",
+    "commit": "2c8083f6",
+    "iso": "2026-03-07T06:32:24Z",
+    "subject": "Add provider awareness to playground, update evolution timeline",
+    "file": "2026-03-07T0632Z-which-models-extracted-playground.html",
+    "size_kb": 447,
+    "models": 40,
+    "f1": 0,
+    "tabs": [
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "doubleword": 7,
+      "openrouter": 33
+    },
+    "tab_count": 6
+  },
+  {
+    "stamp": "2026-03-07T2104Z",
+    "commit": "7407385d",
+    "iso": "2026-03-07T21:04:37Z",
+    "subject": "Add F1 scoring, provider summary, and evolution updates to playground",
+    "file": "2026-03-07T2104Z-which-models-extracted-playground.html",
+    "size_kb": 522,
+    "models": 47,
+    "f1": 47,
+    "tabs": [
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 40,
+      "doubleword": 7
+    },
+    "avg_f1": {
+      "doubleword": 0.888,
+      "openrouter": 0.753
+    },
+    "tab_count": 6
+  },
+  {
+    "stamp": "2026-03-07T2116Z",
+    "commit": "42a6ad88",
+    "iso": "2026-03-07T21:16:23Z",
+    "subject": "Add Provider Analysis tab with model catalog, cost efficiency, tier/modality breakdown",
+    "file": "2026-03-07T2116Z-which-models-extracted-playground.html",
+    "size_kb": 538,
+    "models": 47,
+    "f1": 47,
+    "tabs": [
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Provider Analysis",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 40,
+      "doubleword": 7
+    },
+    "avg_f1": {
+      "doubleword": 0.888,
+      "openrouter": 0.753
+    },
+    "tab_count": 7
+  },
+  {
+    "stamp": "2026-03-19T2208Z",
+    "commit": "ac787585",
+    "iso": "2026-03-19T22:08:50Z",
+    "subject": "Regenerate playground with backfilled Doubleword batch stats",
+    "file": "2026-03-19T2208Z-which-models-extracted-playground.html",
+    "size_kb": 538,
+    "models": 47,
+    "f1": 47,
+    "tabs": [
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Provider Analysis",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 40,
+      "doubleword": 7
+    },
+    "avg_f1": {
+      "doubleword": 0.888,
+      "openrouter": 0.753
+    },
+    "tab_count": 7
+  },
+  {
+    "stamp": "2026-03-20T2359Z",
+    "commit": "932e0e63",
+    "iso": "2026-03-20T23:59:53Z",
+    "subject": "Update docs and playground for 9 Doubleword models, auto-sync, graceful shutdown",
+    "file": "2026-03-20T2359Z-which-models-extracted-playground.html",
+    "size_kb": 558,
+    "models": 49,
+    "f1": 49,
+    "tabs": [
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Provider Analysis",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 40,
+      "doubleword": 9
+    },
+    "avg_f1": {
+      "doubleword": 0.889,
+      "openrouter": 0.753
+    },
+    "tab_count": 7
+  },
+  {
+    "stamp": "2026-03-31T1827Z",
+    "commit": "68043cd4",
+    "iso": "2026-03-31T19:27:44+01:00",
+    "subject": "Updating the playground and the experiment and benchmark results",
+    "file": "2026-03-31T1827Z-which-models-extracted-playground.html",
+    "size_kb": 587,
+    "models": 52,
+    "f1": 52,
+    "tabs": [
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Provider Analysis",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 40,
+      "doubleword": 12
+    },
+    "avg_f1": {
+      "doubleword": 0.775,
+      "openrouter": 0.753
+    },
+    "tab_count": 7
+  },
+  {
+    "stamp": "2026-04-11T1748Z",
+    "commit": "c792daf5",
+    "iso": "2026-04-11T18:48:23+01:00",
+    "subject": "feat(v7): per-model Go Agent registry, template tool IDs, safe output paths",
+    "file": "2026-04-11T1748Z-which-models-extracted-playground.html",
+    "size_kb": 938,
+    "models": 85,
+    "f1": 85,
+    "tabs": [
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Provider Analysis",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 40,
+      "doubleword": 12,
+      "v7": 33
+    },
+    "avg_f1": {
+      "doubleword": 0.775,
+      "openrouter": 0.753,
+      "v7": 0.833
+    },
+    "tab_count": 7
+  },
+  {
+    "stamp": "2026-04-11T1800Z",
+    "commit": "745eeeee",
+    "iso": "2026-04-11T19:00:12+01:00",
+    "subject": "Shorten shared agent__ model ids in UI and refresh docs",
+    "file": "2026-04-11T1800Z-which-models-extracted-playground.html",
+    "size_kb": 939,
+    "models": 85,
+    "f1": 85,
+    "tabs": [
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Provider Analysis",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 40,
+      "doubleword": 12,
+      "v7": 33
+    },
+    "avg_f1": {
+      "doubleword": 0.775,
+      "openrouter": 0.753,
+      "v7": 0.833
+    },
+    "tab_count": 7
+  },
+  {
+    "stamp": "2026-04-11T1940Z",
+    "commit": "36858b1f",
+    "iso": "2026-04-11T20:40:42+01:00",
+    "subject": "feat: align V7 with OpenRouter/Doubleword in scoring, playground, and docs",
+    "file": "2026-04-11T1940Z-which-models-extracted-playground.html",
+    "size_kb": 953,
+    "models": 85,
+    "f1": 85,
+    "tabs": [
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Provider Analysis",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 40,
+      "doubleword": 12,
+      "v7": 33
+    },
+    "avg_f1": {
+      "doubleword": 0.775,
+      "openrouter": 0.753,
+      "v7": 0.833
+    },
+    "tab_count": 7
+  },
+  {
+    "stamp": "2026-04-11T1958Z",
+    "commit": "bff0562b",
+    "iso": "2026-04-11T20:58:42+01:00",
+    "subject": "chore: V7 registry tiers/modalities, README scored-run note, refresh artifacts",
+    "file": "2026-04-11T1958Z-which-models-extracted-playground.html",
+    "size_kb": 957,
+    "models": 85,
+    "f1": 85,
+    "tabs": [
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Provider Analysis",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 40,
+      "doubleword": 12,
+      "v7": 33
+    },
+    "avg_f1": {
+      "doubleword": 0.775,
+      "openrouter": 0.753,
+      "v7": 0.833
+    },
+    "tab_count": 7
+  },
+  {
+    "stamp": "2026-05-04T0031Z",
+    "commit": "4ebdd196",
+    "iso": "2026-05-04T01:31:58+01:00",
+    "subject": "docs(playground): Doubleword registry metadata, budget/standard tiers",
+    "file": "2026-05-04T0031Z-which-models-extracted-playground.html",
+    "size_kb": 1121,
+    "models": 98,
+    "f1": 98,
+    "tabs": [
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Provider Analysis",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 40,
+      "doubleword": 25,
+      "v7": 33
+    },
+    "avg_f1": {
+      "doubleword": 0.817,
+      "openrouter": 0.753,
+      "v7": 0.833
+    },
+    "tab_count": 7
+  },
+  {
+    "stamp": "2026-05-04T0100Z",
+    "commit": "c5793c30",
+    "iso": "2026-05-04T02:00:51+01:00",
+    "subject": "fix(playground): aliases, deprecated model meta, provider backfill",
+    "file": "2026-05-04T0100Z-which-models-extracted-playground.html",
+    "size_kb": 1128,
+    "models": 98,
+    "f1": 98,
+    "tabs": [
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Provider Analysis",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 40,
+      "doubleword": 25,
+      "v7": 33
+    },
+    "avg_f1": {
+      "doubleword": 0.817,
+      "openrouter": 0.753,
+      "v7": 0.833
+    },
+    "tab_count": 7
+  },
+  {
+    "stamp": "2026-07-22T1349Z",
+    "commit": "94cce75e",
+    "iso": "2026-07-22T14:49:24+01:00",
+    "subject": "chore(playground): regenerate with dw-gpt-oss-120b and dw-nemotron-3-ultra-550b-a55b results",
+    "file": "2026-07-22T1349Z-which-models-extracted-playground.html",
+    "size_kb": 1177,
+    "models": 103,
+    "f1": 103,
+    "tabs": [
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Provider Analysis",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 40,
+      "doubleword": 30,
+      "v7": 33
+    },
+    "avg_f1": {
+      "doubleword": 0.768,
+      "openrouter": 0.753,
+      "v7": 0.833
+    },
+    "tab_count": 7
+  },
+  {
+    "stamp": "2026-07-22T1532Z",
+    "commit": "334842fc",
+    "iso": "2026-07-22T16:32:46+01:00",
+    "subject": "data(dw): add extraction results for dw-glm-5-2 and dw-inkling; regenerate playground",
+    "file": "2026-07-22T1532Z-which-models-extracted-playground.html",
+    "size_kb": 1198,
+    "models": 105,
+    "f1": 105,
+    "tabs": [
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Provider Analysis",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 40,
+      "doubleword": 32,
+      "v7": 33
+    },
+    "avg_f1": {
+      "doubleword": 0.779,
+      "openrouter": 0.753,
+      "v7": 0.833
+    },
+    "tab_count": 7
+  },
+  {
+    "stamp": "2026-07-29T1317Z",
+    "commit": "d001f137",
+    "iso": "2026-07-29T14:17:45+01:00",
+    "subject": "docs(dw): update stats and playground for 2026-07-29 \u2014 107 runs, 34 DW models",
+    "file": "2026-07-29T1317Z-which-models-extracted-playground.html",
+    "size_kb": 1219,
+    "models": 107,
+    "f1": 107,
+    "tabs": [
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Provider Analysis",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 40,
+      "doubleword": 34,
+      "v7": 33
+    },
+    "avg_f1": {
+      "doubleword": 0.788,
+      "openrouter": 0.753,
+      "v7": 0.833
+    },
+    "tab_count": 7
+  },
+  {
+    "stamp": "2026-08-09T0746Z",
+    "commit": "cb77ca65",
+    "iso": "2026-08-09T08:46:22+01:00",
+    "subject": "docs: update benchmark stats for 2026-08-09 snapshot",
+    "file": "2026-08-09T0746Z-which-models-extracted-playground.html",
+    "size_kb": 1240,
+    "models": 109,
+    "f1": 109,
+    "tabs": [
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Provider Analysis",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 40,
+      "doubleword": 36,
+      "v7": 33
+    },
+    "avg_f1": {
+      "doubleword": 0.795,
+      "openrouter": 0.753,
+      "v7": 0.833
+    },
+    "tab_count": 7
+  },
+  {
+    "stamp": "2026-08-21T2145Z",
+    "commit": "acc5c5b5",
+    "iso": "2026-08-21T22:45:50+01:00",
+    "subject": "fix(playground): sync all dashboard tabs from shared row builders",
+    "file": "2026-08-21T2145Z-which-models-extracted-playground.html",
+    "size_kb": 1247,
+    "models": 109,
+    "f1": 109,
+    "tabs": [
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Provider Analysis",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 40,
+      "doubleword": 36,
+      "v7": 33
+    },
+    "avg_f1": {
+      "doubleword": 0.795,
+      "openrouter": 0.753,
+      "v7": 0.833
+    },
+    "tab_count": 7
+  },
+  {
+    "stamp": "2026-08-21T2219Z",
+    "commit": "3e374195",
+    "iso": "2026-08-21T23:19:48+01:00",
+    "subject": "data(doubleword): add dw-qwen3.8-27b and dw-muse-glimmer-30b extraction results",
+    "file": "2026-08-21T2219Z-which-models-extracted-playground.html",
+    "size_kb": 1268,
+    "models": 111,
+    "f1": 111,
+    "tabs": [
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Provider Analysis",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 40,
+      "doubleword": 38,
+      "v7": 33
+    },
+    "avg_f1": {
+      "doubleword": 0.826,
+      "openrouter": 0.753,
+      "v7": 0.833
+    },
+    "tab_count": 7
+  },
+  {
+    "stamp": "2026-08-22T0830Z",
+    "commit": "3ac93317",
+    "iso": "2026-08-22T09:30:07+01:00",
+    "subject": "data(doubleword): add dw-deepseek-ocr-2 two-step OCR extraction results",
+    "file": "2026-08-22T0830Z-which-models-extracted-playground.html",
+    "size_kb": 1269,
+    "models": 111,
+    "f1": 111,
+    "tabs": [
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Provider Analysis",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 40,
+      "doubleword": 38,
+      "v7": 33
+    },
+    "avg_f1": {
+      "doubleword": 0.812,
+      "openrouter": 0.753,
+      "v7": 0.833
+    },
+    "tab_count": 7
+  }
+]

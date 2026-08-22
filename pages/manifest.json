@@ -7,9 +7,15 @@
       "kind": "static"
     },
     {
-      "title": "Model extraction playground",
-      "description": "Interactive rankings, heatmaps, and provider analysis — snapshot 2026-08-22T2100Z.",
-      "href": "demos/playgroup-202602-docextract/2026-08-22T2100Z-which-models-extracted-playground.html",
+      "title": "Playground snapshots (21 versions)",
+      "description": "Archived model extraction playground from git history — browse or open latest (2026-08-22T0830Z).",
+      "href": "demos/playgroup-202602-docextract/",
+      "kind": "interactive"
+    },
+    {
+      "title": "Model extraction playground (latest)",
+      "description": "Interactive rankings, heatmaps, and provider analysis — 111 scored runs, snapshot 2026-08-22T0830Z.",
+      "href": "demos/playgroup-202602-docextract/2026-08-22T0830Z-which-models-extracted-playground.html",
       "kind": "interactive"
     },
     {

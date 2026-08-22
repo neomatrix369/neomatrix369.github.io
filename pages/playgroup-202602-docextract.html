@@ -43,6 +43,7 @@
       color: var(--text-muted);
     }
     .snapshot { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-muted); }
+    tr.latest-row td { background: rgba(196, 165, 116, 0.12); }
   </style>
 </head>
 <body>
@@ -75,17 +76,18 @@
     </div>
 
     <div class="cta-row">
-      <a class="button button--primary" href="../demos/playgroup-202602-docextract/2026-08-22T2100Z-which-models-extracted-playground.html">Open interactive playground</a>
+      <a class="button button--primary" href="../demos/playgroup-202602-docextract/2026-08-22T0830Z-which-models-extracted-playground.html">Open latest playground</a>
+      <a class="button" href="../demos/playgroup-202602-docextract/">All 21 snapshots</a>
       <a class="button" href="https://github.com/neomatrix369/playgroup_202602_docextract" rel="noopener">View on GitHub</a>
       <a class="button" href="https://github.com/neomatrix369/playgroup_202602_docextract/blob/main/QUICKSTART.md" rel="noopener">QUICKSTART</a>
     </div>
 
-    <p class="snapshot">Results snapshot: <strong>2026-08-22</strong> · 111 scored runs · playground published <code>2026-08-22T2100Z</code></p>
+    <p class="snapshot">Results snapshot: <strong>2026-08-22</strong> · 111 scored runs · playground <code>2026-08-22T0830Z</code> (21 archived versions from git history)</p>
 
     <h2>Who is this for?</h2>
     <ul>
       <li><strong>Playgroup attendees</strong> — start with <a href="https://github.com/neomatrix369/playgroup_202602_docextract/blob/main/QUICKSTART.md" rel="noopener">QUICKSTART.md</a>, then run extraction and scoring locally.</li>
-      <li><strong>Curious explorers</strong> — read the key findings below and open the <a href="../demos/playgroup-202602-docextract/2026-08-22T2100Z-which-models-extracted-playground.html">interactive playground</a> (no code required).</li>
+      <li><strong>Curious explorers</strong> — read the key findings below and open the <a href="../demos/playgroup-202602-docextract/2026-08-22T0830Z-which-models-extracted-playground.html">latest playground</a> or <a href="../demos/playgroup-202602-docextract/">browse all snapshots</a> (no code required).</li>
       <li><strong>Contributors</strong> — see the <a href="https://github.com/neomatrix369/playgroup_202602_docextract#whats-in-this-repo" rel="noopener">repo file map</a> for scripts, registries, and workflow.</li>
       <li><strong>Doubleword / V7 teams</strong> — provider tables and timing notes mirror <code>python score.py</code> output in the repo README.</li>
     </ul>
@@ -206,8 +208,40 @@
       exact-match when values are close but not identical — that is expected.
     </div>
     <p>
-      <a class="button button--primary" href="../demos/playgroup-202602-docextract/2026-08-22T2100Z-which-models-extracted-playground.html">Open playground (2026-08-22T2100Z snapshot)</a>
+      <a class="button button--primary" href="../demos/playgroup-202602-docextract/2026-08-22T0830Z-which-models-extracted-playground.html">Open latest (2026-08-22T0830Z)</a>
+      <a class="button" href="../demos/playgroup-202602-docextract/">Browse all snapshots</a>
     </p>
+
+    <h2>Playground version history</h2>
+    <p>
+      Each row is a frozen copy of <code>which-models-extracted-playground.html</code> from git, named with its commit time in UTC.
+      Use this to see how the benchmark grew from 40 OpenRouter-only models (Feb 2026) to 111 scored runs across three providers (Aug 2026).
+    </p>
+    <div class="table-wrap">
+      <table class="data" aria-label="Playground snapshots">
+        <thead>
+          <tr>
+            <th>Snapshot (UTC)</th>
+            <th>Models</th>
+            <th>F1 runs</th>
+            <th>Highlights</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="latest-row"><td class="num">2026-08-22T0830Z</td><td class="num">111</td><td class="num">111</td><td>Latest — dw-deepseek-ocr-2 OCR results</td><td><a href="../demos/playgroup-202602-docextract/2026-08-22T0830Z-which-models-extracted-playground.html">Open</a></td></tr>
+          <tr><td class="num">2026-08-21T2219Z</td><td class="num">111</td><td class="num">111</td><td>dw-qwen3.8-27b, dw-muse-glimmer-30b</td><td><a href="../demos/playgroup-202602-docextract/2026-08-21T2219Z-which-models-extracted-playground.html">Open</a></td></tr>
+          <tr><td class="num">2026-08-21T2145Z</td><td class="num">109</td><td class="num">109</td><td>Tab sync fix across all dashboards</td><td><a href="../demos/playgroup-202602-docextract/2026-08-21T2145Z-which-models-extracted-playground.html">Open</a></td></tr>
+          <tr><td class="num">2026-08-09T0746Z</td><td class="num">109</td><td class="num">109</td><td>Aug 2026 benchmark refresh</td><td><a href="../demos/playgroup-202602-docextract/2026-08-09T0746Z-which-models-extracted-playground.html">Open</a></td></tr>
+          <tr><td class="num">2026-07-29T1317Z</td><td class="num">107</td><td class="num">107</td><td>34 Doubleword models</td><td><a href="../demos/playgroup-202602-docextract/2026-07-29T1317Z-which-models-extracted-playground.html">Open</a></td></tr>
+          <tr><td class="num">2026-04-11T1748Z</td><td class="num">85</td><td class="num">85</td><td>V7 Go provider added</td><td><a href="../demos/playgroup-202602-docextract/2026-04-11T1748Z-which-models-extracted-playground.html">Open</a></td></tr>
+          <tr><td class="num">2026-03-07T2116Z</td><td class="num">47</td><td class="num">47</td><td>Provider Analysis tab</td><td><a href="../demos/playgroup-202602-docextract/2026-03-07T2116Z-which-models-extracted-playground.html">Open</a></td></tr>
+          <tr><td class="num">2026-03-07T2104Z</td><td class="num">47</td><td class="num">47</td><td>F1 scoring &amp; provider summary</td><td><a href="../demos/playgroup-202602-docextract/2026-03-07T2104Z-which-models-extracted-playground.html">Open</a></td></tr>
+          <tr><td class="num">2026-02-28T1312Z</td><td class="num">40</td><td class="num">—</td><td>First leaderboard (exact-match tabs)</td><td><a href="../demos/playgroup-202602-docextract/2026-02-28T1312Z-which-models-extracted-playground.html">Open</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><a href="../demos/playgroup-202602-docextract/">View all 21 snapshots with search and filters →</a></p>
 
     <h2>Dataset &amp; fields</h2>
     <p>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Archived snapshots of the UK Charity Doc Extract model playground — 21 versions from git history.">
+  <title>Playground snapshots · playgroup_202602_docextract</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <style>
+    .content { max-width: 56rem; }
+    .content h1 { margin-top: 0; font-family: var(--font-display); font-size: clamp(1.75rem, 3vw, 2.25rem); }
+    .content h2 { margin: 2rem 0 0.75rem; font-family: var(--font-display); font-size: 1.2rem; }
+    .content p, .content li { color: var(--text-secondary); }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1.25rem 0 1.75rem; }
+    .filters { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin: 0 0 1rem; }
+    .filters label { font-size: 0.875rem; color: var(--text-secondary); }
+    .filters input, .filters select {
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      padding: 0.45rem 0.65rem;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+    }
+    .table-wrap { overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid var(--border-subtle); border-radius: var(--radius); }
+    table.snapshots { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    table.snapshots th, table.snapshots td { padding: 0.6rem 0.75rem; text-align: left; border-bottom: 1px solid var(--border-subtle); vertical-align: top; }
+    table.snapshots th { background: var(--bg-elevated); font-weight: 600; white-space: nowrap; position: sticky; top: 0; }
+    table.snapshots tr:last-child td { border-bottom: none; }
+    table.snapshots td.num { font-family: var(--font-mono); font-size: 0.8125rem; white-space: nowrap; }
+    table.snapshots td.subject { color: var(--text-secondary); max-width: 18rem; }
+    table.snapshots tr.latest { background: rgba(196, 165, 116, 0.12); }
+    .pill { display: inline-block; padding: 0.15rem 0.45rem; margin: 0.1rem 0.15rem 0.1rem 0; border-radius: 999px; border: 1px solid var(--border-subtle); background: var(--bg-surface); font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); }
+    .pill--latest { border-color: var(--cta); color: var(--cta-ink); }
+    .callout {
+      margin: 1.25rem 0;
+      padding: 1rem 1.125rem;
+      border-left: 3px solid var(--cta);
+      background: var(--bg-surface);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+    }
+    .timeline { margin: 1rem 0 0; padding-left: 1.1rem; color: var(--text-secondary); font-size: 0.9rem; }
+    .empty { padding: 2rem; text-align: center; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../../">
+      neomatrix369
+      <small>github.io</small>
+    </a>
+    <nav class="site-nav">
+      <a href="../../">Home</a>
+      <a href="../../pages/playgroup-202602-docextract.html">Project page</a>
+      <a href="https://github.com/neomatrix369/playgroup_202602_docextract" rel="noopener">GitHub repo</a>
+    </nav>
+  </header>
+
+  <main class="site-main content">
+    <p><span class="tag">interactive</span> <span class="tag tag--interactive">archive</span></p>
+    <h1>Model extraction playground — version archive</h1>
+    <p>
+      Every snapshot below was recovered from <code>git log</code> on
+      <code>which-models-extracted-playground.html</code> in
+      <a href="https://github.com/neomatrix369/playgroup_202602_docextract" rel="noopener">playgroup_202602_docextract</a>.
+      Filenames use the commit timestamp in UTC (<code>YYYY-MM-DDTHHMMZ</code>).
+    </p>
+
+    <div class="hero-actions">
+      <a class="button button--primary" id="latest-link" href="2026-08-22T0830Z-which-models-extracted-playground.html">Open latest snapshot</a>
+      <a class="button" href="../../pages/playgroup-202602-docextract.html">Project summary &amp; findings</a>
+    </div>
+
+    <div class="callout">
+      <strong>How to use:</strong> Pick a row below to open that point-in-time leaderboard.
+      Earlier snapshots have fewer tabs (e.g. F1 scoring arrives 2026-03-07, Provider Analysis the same day, V7 joins 2026-04-11).
+      Rankings use semantic F1; heatmaps use exact-match — both are intentional.
+    </div>
+
+    <h2>All snapshots <span id="count-label" style="font-weight:400;color:var(--text-muted);font-size:0.95rem"></span></h2>
+
+    <div class="filters">
+      <label for="q">Search</label>
+      <input id="q" type="search" placeholder="commit message, stamp, provider…" style="min-width:14rem">
+      <label for="sort">Sort</label>
+      <select id="sort">
+        <option value="newest" selected>Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="models">Most models</option>
+      </select>
+    </div>
+
+    <div class="table-wrap">
+      <table class="snapshots" id="snap-table">
+        <thead>
+          <tr>
+            <th>Snapshot (UTC)</th>
+            <th>Models</th>
+            <th>F1 runs</th>
+            <th>Providers</th>
+            <th>Avg F1 (active)</th>
+            <th>Tabs</th>
+            <th>Commit</th>
+            <th>Change</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="snap-body">
+          <tr><td colspan="9" class="empty">Loading versions…</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Milestones</h2>
+    <ul class="timeline">
+      <li><strong>2026-02-28</strong> — first multi-model leaderboard (exact-match tabs)</li>
+      <li><strong>2026-03-06</strong> — time/cost estimation &amp; Project Evolution tab</li>
+      <li><strong>2026-03-07</strong> — provider awareness, F1 scoring, Provider Analysis tab</li>
+      <li><strong>2026-04-11</strong> — V7 Go provider (85 models)</li>
+      <li><strong>2026-07-29</strong> — 107 scored runs, 34 Doubleword models</li>
+      <li><strong>2026-08-22</strong> — 111 scored runs (latest; includes dw-deepseek-ocr-2)</li>
+    </ul>
+  </main>
+
+  <footer class="site-footer">
+    <a href="../../pages/playgroup-202602-docextract.html">Project page</a> ·
+    <a href="https://github.com/neomatrix369/playgroup_202602_docextract" rel="noopener">source repo</a>
+  </footer>
+
+  <script>
+    const LATEST_STAMP = '2026-08-22T0830Z';
+    let versions = [];
+
+    function providerSummary(v) {
+      const p = v.providers || {};
+      return Object.entries(p).filter(([k]) => k !== '?').map(([k, n]) => `${k}:${n}`).join(' ') || '—';
+    }
+
+    function avgF1Summary(v) {
+      const a = v.avg_f1;
+      if (!a) return v.f1 ? '—' : 'n/a';
+      return Object.entries(a).map(([k, n]) => `${k} ${n.toFixed(3)}`).join(' · ');
+    }
+
+    function formatStamp(stamp) {
+      const m = stamp.match(/^(\d{4}-\d{2}-\d{2})T(\d{2})(\d{2})Z$/);
+      if (!m) return stamp;
+      return `${m[1]} ${m[2]}:${m[3]} UTC`;
+    }
+
+    function rowHtml(v, isLatest) {
+      const href = v.file;
+      return `<tr class="${isLatest ? 'latest' : ''}">
+        <td class="num">${v.stamp}${isLatest ? ' <span class="pill pill--latest">latest</span>' : ''}</td>
+        <td class="num">${v.models}</td>
+        <td class="num">${v.f1 || '—'}</td>
+        <td>${providerSummary(v)}</td>
+        <td>${avgF1Summary(v)}</td>
+        <td class="num">${v.tab_count}</td>
+        <td class="num"><a href="https://github.com/neomatrix369/playgroup_202602_docextract/commit/${v.commit}" rel="noopener">${v.commit}</a></td>
+        <td class="subject">${v.subject}</td>
+        <td><a class="button" href="${href}">Open</a></td>
+      </tr>`;
+    }
+
+    function render() {
+      const q = document.getElementById('q').value.trim().toLowerCase();
+      const sort = document.getElementById('sort').value;
+      let rows = versions.filter(v => {
+        if (!q) return true;
+        const hay = [v.stamp, v.commit, v.subject, providerSummary(v), JSON.stringify(v.providers || {})].join(' ').toLowerCase();
+        return hay.includes(q);
+      });
+      if (sort === 'newest') rows = [...rows].reverse();
+      else if (sort === 'models') rows = [...rows].sort((a, b) => b.models - a.models);
+      const body = document.getElementById('snap-body');
+      if (!rows.length) {
+        body.innerHTML = '<tr><td colspan="9" class="empty">No snapshots match your search.</td></tr>';
+        return;
+      }
+      body.innerHTML = rows.map(v => rowHtml(v, v.stamp === LATEST_STAMP)).join('');
+      document.getElementById('count-label').textContent = `(${rows.length} of ${versions.length})`;
+    }
+
+    fetch('versions.json')
+      .then(r => r.json())
+      .then(data => {
+        versions = data;
+        document.getElementById('latest-link').href = `${LATEST_STAMP}-which-models-extracted-playground.html`;
+        render();
+      })
+      .catch(() => {
+        document.getElementById('snap-body').innerHTML =
+          '<tr><td colspan="9" class="empty">Could not load versions.json. Open a snapshot file directly from this folder.</td></tr>';
+      });
+
+    document.getElementById('q').addEventListener('input', render);
+    document.getElementById('sort').addEventListener('change', render);
+  </script>
+</body>
+</html>
