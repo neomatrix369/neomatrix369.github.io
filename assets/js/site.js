@@ -51,6 +51,20 @@ const FALLBACK_PAGES = [
   },
 ];
 
+function flattenForGrid(pages) {
+  const items = [];
+  for (const page of pages) {
+    if (page.kind === "group" && Array.isArray(page.children) && page.children.length > 0) {
+      for (const child of page.children) {
+        items.push({ ...child, groupTitle: page.title });
+      }
+    } else {
+      items.push(page);
+    }
+  }
+  return items;
+}
+
 function renderSubCard(child) {
   const tagClass = child.kind === "interactive" ? "tag tag--interactive" : "tag";
   return `
@@ -59,6 +73,25 @@ function renderSubCard(child) {
       <h4>${child.title}</h4>
       <p>${child.description}</p>
       <a class="button" href="${child.href}">Open</a>
+    </article>
+  `;
+}
+
+function renderFlatCard(page) {
+  const tagClass = page.kind === "interactive" ? "tag tag--interactive" : "tag";
+  const groupLabel = page.groupTitle
+    ? `<span class="tag tag--group">${page.groupTitle}</span>`
+    : "";
+
+  return `
+    <article class="page-card">
+      <div class="page-card-tags">
+        ${groupLabel}
+        <span class="${tagClass}">${page.kind}</span>
+      </div>
+      <h3>${page.title}</h3>
+      <p>${page.description}</p>
+      <a class="button" href="${page.href}">Open</a>
     </article>
   `;
 }
@@ -109,7 +142,7 @@ async function loadPages() {
     // Local file:// previews and offline use fall back to baked-in examples.
   }
 
-  grid.innerHTML = pages.map(renderPageCard).join("");
+  grid.innerHTML = flattenForGrid(pages).map(renderFlatCard).join("");
 }
 
 document.addEventListener("DOMContentLoaded", loadPages);

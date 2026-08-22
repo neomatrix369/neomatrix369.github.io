@@ -227,6 +227,13 @@ a:hover {
   align-items: stretch;
 }
 
+.page-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+}
+
 .page-card--group {
   grid-column: 1 / -1;
 }
@@ -309,6 +316,12 @@ a:hover {
 .tag--interactive {
   color: var(--signal-ink);
   background: rgba(0, 217, 255, 0.12);
+}
+
+.tag--group {
+  color: var(--cta-ink);
+  background: rgba(196, 165, 116, 0.18);
+  border: 1px solid rgba(196, 165, 116, 0.35);
 }
 
 .button {
