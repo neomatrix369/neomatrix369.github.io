@@ -10,7 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../assets/css/site.css">
   <style>
-    .content { max-width: 56rem; }
+    .content { max-width: min(76rem, 100%); }
+    .site-main.content { width: min(76rem, calc(100% - 2rem)); }
     .content h1 { margin-top: 0; font-family: var(--font-display); font-size: clamp(1.75rem, 3vw, 2.25rem); }
     .content h2 { margin: 2rem 0 0.75rem; font-family: var(--font-display); font-size: 1.2rem; }
     .content p, .content li { color: var(--text-secondary); }
@@ -26,14 +27,55 @@
       background: var(--bg-surface);
       color: var(--text-primary);
     }
-    .table-wrap { overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid var(--border-subtle); border-radius: var(--radius); }
-    table.snapshots { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
-    table.snapshots th, table.snapshots td { padding: 0.6rem 0.75rem; text-align: left; border-bottom: 1px solid var(--border-subtle); vertical-align: top; }
-    table.snapshots th { background: var(--bg-elevated); font-weight: 600; white-space: nowrap; position: sticky; top: 0; }
+    .table-wrap { overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid var(--border-subtle); border-radius: var(--radius); -webkit-overflow-scrolling: touch; }
+    table.snapshots { width: 100%; min-width: 52rem; border-collapse: collapse; font-size: 0.875rem; table-layout: auto; }
+    table.snapshots th, table.snapshots td { padding: 0.65rem 0.85rem; text-align: left; border-bottom: 1px solid var(--border-subtle); vertical-align: middle; }
+    table.snapshots th { background: var(--bg-elevated); font-weight: 600; white-space: nowrap; position: sticky; top: 0; z-index: 1; }
     table.snapshots tr:last-child td { border-bottom: none; }
     table.snapshots td.num { font-family: var(--font-mono); font-size: 0.8125rem; white-space: nowrap; }
-    table.snapshots td.subject { color: var(--text-secondary); max-width: 18rem; }
-    table.snapshots tr.latest { background: rgba(196, 165, 116, 0.12); }
+    table.snapshots td.subject { color: var(--text-secondary); min-width: 12rem; max-width: 28rem; }
+    table.snapshots tbody tr.snap-row {
+      cursor: pointer;
+      transition: background 0.12s ease, box-shadow 0.12s ease;
+    }
+    table.snapshots tbody tr.snap-row:hover,
+    table.snapshots tbody tr.snap-row:focus-visible {
+      background: rgba(196, 165, 116, 0.18);
+      outline: none;
+      box-shadow: inset 3px 0 0 var(--cta);
+    }
+    table.snapshots tbody tr.latest {
+      background: rgba(196, 165, 116, 0.1);
+    }
+    table.snapshots tbody tr.latest:hover,
+    table.snapshots tbody tr.latest:focus-visible {
+      background: rgba(196, 165, 116, 0.22);
+    }
+    table.snapshots a.row-link {
+      color: inherit;
+      text-decoration: none;
+    }
+    table.snapshots a.commit-link {
+      position: relative;
+      z-index: 2;
+      color: var(--cta-ink);
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+    }
+    table.snapshots a.commit-link:hover {
+      text-decoration: underline;
+    }
+    .open-hint {
+      margin-left: 0.35rem;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      opacity: 0;
+      transition: opacity 0.12s ease;
+    }
+    table.snapshots tbody tr.snap-row:hover .open-hint,
+    table.snapshots tbody tr.snap-row:focus-visible .open-hint {
+      opacity: 1;
+    }
     .pill { display: inline-block; padding: 0.15rem 0.45rem; margin: 0.1rem 0.15rem 0.1rem 0; border-radius: 999px; border: 1px solid var(--border-subtle); background: var(--bg-surface); font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); }
     .pill--latest { border-color: var(--cta); color: var(--cta-ink); }
     .callout {
@@ -78,9 +120,7 @@
     </div>
 
     <div class="callout">
-      <strong>How to use:</strong> Pick a row below to open that point-in-time leaderboard.
-      Earlier snapshots have fewer tabs (e.g. F1 scoring arrives 2026-03-07, Provider Analysis the same day, V7 joins 2026-04-11).
-      Rankings use semantic F1; heatmaps use exact-match — both are intentional.
+      <strong>How to use:</strong> Click any row to open that snapshot. Commit links open GitHub in a new tab.
     </div>
 
     <h2>All snapshots <span id="count-label" style="font-weight:400;color:var(--text-muted);font-size:0.95rem"></span></h2>
@@ -108,11 +148,10 @@
             <th>Tabs</th>
             <th>Commit</th>
             <th>Change</th>
-            <th></th>
           </tr>
         </thead>
         <tbody id="snap-body">
-          <tr><td colspan="9" class="empty">Loading versions…</td></tr>
+          <tr><td colspan="8" class="empty">Loading versions…</td></tr>
         </tbody>
       </table>
     </div>
@@ -156,17 +195,40 @@
 
     function rowHtml(v, isLatest) {
       const href = v.file;
-      return `<tr class="${isLatest ? 'latest' : ''}">
-        <td class="num">${v.stamp}${isLatest ? ' <span class="pill pill--latest">latest</span>' : ''}</td>
+      const latestPill = isLatest ? ' <span class="pill pill--latest">latest</span>' : '';
+      const openHint = '<span class="open-hint" aria-hidden="true">↗ open</span>';
+      return `<tr class="snap-row${isLatest ? ' latest' : ''}" tabindex="0" role="link" data-href="${href}" aria-label="Open snapshot ${v.stamp}: ${v.subject}">
+        <td class="num">${v.stamp}${latestPill}${openHint}</td>
         <td class="num">${v.models}</td>
         <td class="num">${v.f1 || '—'}</td>
         <td>${providerSummary(v)}</td>
         <td>${avgF1Summary(v)}</td>
         <td class="num">${v.tab_count}</td>
-        <td class="num"><a href="https://github.com/neomatrix369/playgroup_202602_docextract/commit/${v.commit}" rel="noopener">${v.commit}</a></td>
+        <td class="num"><a class="commit-link" href="https://github.com/neomatrix369/playgroup_202602_docextract/commit/${v.commit}" rel="noopener" tabindex="-1">${v.commit}</a></td>
         <td class="subject">${v.subject}</td>
-        <td><a class="button" href="${href}">Open</a></td>
       </tr>`;
+    }
+
+    function openRow(row) {
+      const href = row.dataset.href;
+      if (href) window.location.href = href;
+    }
+
+    function bindRowNavigation() {
+      const body = document.getElementById('snap-body');
+      body.addEventListener('click', (e) => {
+        if (e.target.closest('a.commit-link')) return;
+        const row = e.target.closest('tr.snap-row');
+        if (row) openRow(row);
+      });
+      body.addEventListener('keydown', (e) => {
+        const row = e.target.closest('tr.snap-row');
+        if (!row) return;
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openRow(row);
+        }
+      });
     }
 
     function render() {
@@ -181,7 +243,7 @@
       else if (sort === 'models') rows = [...rows].sort((a, b) => b.models - a.models);
       const body = document.getElementById('snap-body');
       if (!rows.length) {
-        body.innerHTML = '<tr><td colspan="9" class="empty">No snapshots match your search.</td></tr>';
+        body.innerHTML = '<tr><td colspan="8" class="empty">No snapshots match your search.</td></tr>';
         return;
       }
       body.innerHTML = rows.map(v => rowHtml(v, v.stamp === LATEST_STAMP)).join('');
@@ -197,8 +259,10 @@
       })
       .catch(() => {
         document.getElementById('snap-body').innerHTML =
-          '<tr><td colspan="9" class="empty">Could not load versions.json. Open a snapshot file directly from this folder.</td></tr>';
+          '<tr><td colspan="8" class="empty">Could not load versions.json. Open a snapshot file directly from this folder.</td></tr>';
       });
+
+    bindRowNavigation();
 
     document.getElementById('q').addEventListener('input', render);
     document.getElementById('sort').addEventListener('change', render);
