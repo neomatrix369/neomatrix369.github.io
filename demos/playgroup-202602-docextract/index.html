@@ -111,6 +111,34 @@
       color: var(--text-muted);
       font-size: 0.9rem;
     }
+    #pg-viewer {
+      position: fixed; inset: 0; z-index: 1000;
+      display: flex; flex-direction: column;
+      background: var(--bg-base);
+    }
+    #pg-viewer[hidden] { display: none !important; }
+    body.pg-viewer-open { overflow: hidden; }
+    .pg-viewer-bar {
+      flex: 0 0 auto;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem;
+      padding: 0.55rem 1rem;
+      border-bottom: 1px solid var(--border-default);
+      background: var(--bg-surface);
+    }
+    .pg-viewer-bar .pg-back-btn {
+      font-weight: 600;
+    }
+    .pg-viewer-title {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+    #pg-viewer-frame {
+      flex: 1 1 auto;
+      width: 100%;
+      border: none;
+      background: #fff;
+    }
   </style>
 </head>
 <body>
@@ -142,7 +170,7 @@
     </div>
 
     <div class="callout">
-      <strong>How to use:</strong> Click any row to open that snapshot — latest is shown first, then historic versions below. Commit links open GitHub in a new tab.
+      <strong>How to use:</strong> Click any row to open the playground here (embedded viewer). Use <strong>← Playground archive</strong> to return to this list. Commit links open GitHub in a new tab. Open in a new tab: right-click a row or <kbd>⌘</kbd>/<kbd>Ctrl</kbd>+click.
     </div>
 
     <h2>Latest snapshot</h2>
@@ -214,6 +242,15 @@
     </ul>
   </main>
 
+  <div id="pg-viewer" hidden>
+    <div class="pg-viewer-bar">
+      <button type="button" class="button pg-back-btn" id="pg-viewer-close">← Playground archive</button>
+      <span class="pg-viewer-title" id="pg-viewer-title"></span>
+      <a class="button" id="pg-viewer-newtab" href="#" target="_blank" rel="noopener" style="margin-left:auto">Open in new tab</a>
+    </div>
+    <iframe id="pg-viewer-frame" title="Playground snapshot" loading="lazy"></iframe>
+  </div>
+
   <footer class="site-footer">
     <a href="../../pages/playgroup-202602-docextract.html">Project page</a> ·
     <a href="https://github.com/neomatrix369/playgroup_202602_docextract" rel="noopener">source repo</a>
@@ -262,23 +299,55 @@
       return hay.includes(q);
     }
 
-    function openRow(row) {
+    function openRow(row, { newTab = false } = {}) {
       const href = row.dataset.href;
-      if (href) window.location.href = href;
+      if (!href) return;
+      if (newTab) {
+        window.open(href, '_blank', 'noopener');
+        return;
+      }
+      openViewer(href, row.getAttribute('aria-label') || href);
+    }
+
+    function openViewer(href, title) {
+      const viewer = document.getElementById('pg-viewer');
+      const iframe = document.getElementById('pg-viewer-frame');
+      const sep = href.includes('?') ? '&' : '?';
+      iframe.src = href + sep + 'embed=1';
+      document.getElementById('pg-viewer-title').textContent = title ? title.replace(/^Open snapshot /, '') : href;
+      document.getElementById('pg-viewer-newtab').href = href;
+      viewer.hidden = false;
+      document.body.classList.add('pg-viewer-open');
     }
 
     function bindRowNavigation(root) {
       root.addEventListener('click', (e) => {
         if (e.target.closest('a.commit-link')) return;
         const row = e.target.closest('tr.snap-row');
-        if (row) openRow(row);
+        if (!row) return;
+        const newTab = e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1;
+        if (newTab) {
+          e.preventDefault();
+          openRow(row, { newTab: true });
+          return;
+        }
+        e.preventDefault();
+        const url = new URL(location.href);
+        url.searchParams.set('view', row.dataset.href);
+        history.pushState({ view: row.dataset.href }, '', url);
+        openRow(row);
       });
       root.addEventListener('keydown', (e) => {
         const row = e.target.closest('tr.snap-row');
         if (!row) return;
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          openRow(row);
+          if (!(e.metaKey || e.ctrlKey)) {
+            const url = new URL(location.href);
+            url.searchParams.set('view', row.dataset.href);
+            history.pushState({ view: row.dataset.href }, '', url);
+          }
+          openRow(row, { newTab: e.metaKey || e.ctrlKey });
         }
       });
     }
@@ -315,6 +384,11 @@
       .then(data => {
         versions = data;
         render();
+        const initialView = new URLSearchParams(location.search).get('view');
+        if (initialView) {
+          const v = data.find(x => x.file === initialView);
+          openViewer(initialView, v ? `${v.stamp}: ${v.subject}` : initialView);
+        }
       })
       .catch(() => {
         document.getElementById('latest-body').innerHTML =
@@ -325,6 +399,25 @@
 
     bindRowNavigation(document.getElementById('latest-body'));
     bindRowNavigation(document.getElementById('snap-body'));
+
+    document.getElementById('pg-viewer-close').addEventListener('click', () => {
+      history.back();
+    });
+    window.addEventListener('popstate', () => {
+      const params = new URLSearchParams(location.search);
+      const view = params.get('view');
+      if (view) {
+        const v = versions.find(x => x.file === view);
+        openViewer(view, v ? `${v.stamp}: ${v.subject}` : view);
+      } else {
+        const viewer = document.getElementById('pg-viewer');
+        if (!viewer.hidden) {
+          viewer.hidden = true;
+          document.getElementById('pg-viewer-frame').src = 'about:blank';
+          document.body.classList.remove('pg-viewer-open');
+        }
+      }
+    });
 
     document.getElementById('q').addEventListener('input', render);
     document.getElementById('sort').addEventListener('change', render);
