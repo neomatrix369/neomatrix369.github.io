@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Static and interactive HTML demos by neomatrix369.">
-  <title>neomatrix369 · static pages</title>
+  <meta name="description" content="Live demos and project pages from neomatrix369 — multi-model document extraction benchmarks, open-source tools, and interactive explorations.">
+  <title>neomatrix369 · demos &amp; projects</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -17,37 +17,39 @@
       <small>github.io</small>
     </a>
     <nav class="site-nav" aria-label="Primary">
-      <a href="#pages">Pages</a>
+      <a href="#pages">Demos</a>
+      <a href="pages/projects.html">Projects</a>
       <a href="https://github.com/neomatrix369" rel="noopener">GitHub</a>
     </nav>
   </header>
 
   <main class="site-main">
     <section class="hero">
-      <h1>Static and interactive HTML pages</h1>
+      <p><span class="tag">open source</span> <span class="tag tag--interactive">live demos</span></p>
+      <h1>Demos, benchmarks, and project pages</h1>
       <p>
-        Drop standalone HTML files into <code>pages/</code> or interactive demos into
-        <code>demos/</code>, then list them in <code>pages/manifest.json</code> so they
-        appear here automatically.
+        Interactive explorations and write-ups from
+        <a href="https://github.com/neomatrix369" rel="noopener">neomatrix369</a> —
+        including the UK Charity Doc Extract multi-model benchmark (111 scored runs across OpenRouter, Doubleword, and V7 Go),
+        security tooling prototypes, and concept maps. No build step; everything here is plain HTML served from GitHub Pages.
+      </p>
+      <p class="hero-links">
+        <a class="button button--primary" href="pages/playgroup-202602-docextract.html">Doc extract benchmark</a>
+        <a class="button" href="demos/playgroup-202602-docextract/">Playground archive</a>
+        <a class="button" href="pages/projects.html">All projects</a>
       </p>
     </section>
 
     <section id="pages">
-      <h2 class="section-title">Published pages</h2>
+      <h2 class="section-title">Browse demos &amp; pages</h2>
+      <p class="section-lead">Pick a card below — interactive demos open in the browser; static pages are project summaries and guides.</p>
       <div class="page-grid" data-page-grid aria-live="polite"></div>
-    </section>
-
-    <section>
-      <h2 class="section-title">Local preview</h2>
-      <pre class="code-block"><code>cd neomatrix369.github.io
-python3 -m http.server 8080
-# open http://localhost:8080</code></pre>
     </section>
   </main>
 
   <footer class="site-footer">
-    Served from GitHub Pages at
-    <a href="https://neomatrix369.github.io/">neomatrix369.github.io</a>
+    <a href="https://neomatrix369.github.io/">neomatrix369.github.io</a> ·
+    <a href="https://github.com/neomatrix369/neomatrix369.github.io" rel="noopener">source on GitHub</a>
   </footer>
 
   <script src="assets/js/site.js"></script>

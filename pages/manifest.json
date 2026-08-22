@@ -2,43 +2,43 @@
   "pages": [
     {
       "title": "UK Charity Doc Extract",
-      "description": "Multi-model PDF extraction benchmark (OpenRouter, Doubleword, V7 Go) — playgroup Feb 2026 with interactive leaderboard.",
+      "description": "Multi-model PDF extraction benchmark — 111 scored runs across OpenRouter, Doubleword, and V7 Go.",
       "href": "pages/playgroup-202602-docextract.html",
       "kind": "static"
     },
     {
       "title": "Playground snapshots (21 versions)",
-      "description": "Archived model extraction playground from git history — browse or open latest (2026-08-22T0830Z).",
+      "description": "Browse every historical leaderboard from git — search, filter, and compare benchmark evolution.",
       "href": "demos/playgroup-202602-docextract/",
       "kind": "interactive"
     },
     {
       "title": "Model extraction playground (latest)",
-      "description": "Interactive rankings, heatmaps, and provider analysis — 111 scored runs, snapshot 2026-08-22T0830Z.",
+      "description": "Rankings, heatmaps, provider analysis, and project evolution — snapshot 2026-08-22T0830Z.",
       "href": "demos/playgroup-202602-docextract/2026-08-22T0830Z-which-models-extracted-playground.html",
       "kind": "interactive"
     },
     {
       "title": "Projects",
-      "description": "Open source repos with links to live demos on this site.",
+      "description": "Open source repos — Tripwire, Skills Scanner, SIE, and more with links to live demos.",
       "href": "pages/projects.html",
       "kind": "static"
     },
     {
       "title": "Tripwire dashboard",
-      "description": "Interactive FolderGate-style dashboard prototype (mock data on GitHub Pages).",
+      "description": "FolderGate-style security and quality scanning dashboard (interactive prototype).",
       "href": "demos/tripwire-dashboard/",
       "kind": "interactive"
     },
     {
       "title": "Claude Code concept map",
-      "description": "Pan/zoom concept map of Claude Code extension points and APIs.",
+      "description": "Pan/zoom map of Claude Code extension points, hooks, and APIs.",
       "href": "demos/claude-code-concept-map.html",
       "kind": "interactive"
     },
     {
       "title": "Example static page",
-      "description": "Template for simple standalone HTML pages.",
+      "description": "Starter template for simple standalone pages on this site.",
       "href": "pages/example-static.html",
       "kind": "static"
     },

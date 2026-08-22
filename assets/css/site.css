@@ -113,6 +113,20 @@ a:hover {
   font-size: 1.0625rem;
 }
 
+.hero-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem !important;
+}
+
+.section-lead {
+  margin: -0.35rem 0 1.25rem;
+  max-width: 42rem;
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+}
+
 .section-title {
   margin: 0 0 1rem;
   font-family: var(--font-display);
