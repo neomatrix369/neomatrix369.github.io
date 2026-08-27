@@ -50,6 +50,21 @@ python3 -m http.server 8080
 
 Open http://localhost:8080
 
+## Tripwire dashboard (mock-only)
+
+Hosted at https://neomatrix369.github.io/demos/tripwire-dashboard/
+
+Source of truth is the Tripwire repo (`prototypes/dc-dashboard/`). This site keeps a **mock-only** snapshot (empty Supabase keys). Refresh after Tripwire dashboard changes:
+
+```bash
+./scripts/sync-tripwire-dashboard.sh
+# or: bash ~/.agents/skills/sync-tripwire-pages/scripts/sync.sh
+```
+
+Agent skill (canonical): `~/.agents/skills/sync-tripwire-pages` — invoke as `/sync-tripwire-pages`.
+
+Preview: http://localhost:8080/demos/tripwire-dashboard/
+
 ## Publish to GitHub Pages
 
 1. Push this folder to the `main` branch of **`neomatrix369/neomatrix369.github.io`**.

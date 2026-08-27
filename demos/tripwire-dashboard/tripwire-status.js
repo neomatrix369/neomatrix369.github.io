@@ -80,6 +80,16 @@ export function countActionableFindings(findings) {
 }
 
 /**
+ * When both red and amber are present, return counts for split chips; else null.
+ * @param {Array<{severity?: string, scanner?: string, scanner_source?: string}>|null|undefined} findings
+ * @returns {{ red: number, amber: number }|null}
+ */
+export function findingCountParts(findings) {
+  const { red, amber } = countActionableFindings(findings);
+  return red > 0 && amber > 0 ? { red, amber } : null;
+}
+
+/**
  * Card chip label: "1 finding" / "3 findings" / "2● 1▲" when mixed.
  * Empty string when no actionable findings.
  * @param {Array<{severity?: string, scanner?: string, scanner_source?: string}>|null|undefined} findings
@@ -91,6 +101,19 @@ export function formatFindingCountLabel(findings) {
   if (red > 0 && amber > 0) return `${red}● ${amber}▲`;
   if (total === 1) return "1 finding";
   return `${total} findings`;
+}
+
+/**
+ * Drawer Findings heading — same actionable total / split as card chips.
+ * @param {Array<{severity?: string, scanner?: string, scanner_source?: string}>|null|undefined} findings
+ * @param {string|null|undefined} errorMessage
+ * @returns {string}
+ */
+export function formatFindingsHeadingLabel(findings, errorMessage) {
+  const { red, amber, total } = countActionableFindings(findings);
+  if (errorMessage && total === 0) return String(errorMessage);
+  if (red > 0 && amber > 0) return `Findings (${red}● ${amber}▲)`;
+  return `Findings (${total})`;
 }
 
 const SEVERITY_RED = new Set(["red", "critical", "high"]);
@@ -178,9 +201,18 @@ export const SCANNER_EXEC_META = {
   running: { color: STATUS_META.running.color, label: "◌ Running" },
   completed: { color: STATUS_META.green.color, label: "✓ Completed" },
   skipped_missing_credential: { color: STATUS_META.grey.color, label: "⊘ Skipped" },
+  needs_setup: { color: STATUS_META.amber.color, label: "Needs Setup" },
   unreachable: { color: STATUS_META.error.color, label: "✗ Unreachable" },
   not_applicable: { color: STATUS_META.grey.color, label: "— N/A" },
   failed: { color: STATUS_META.error.color, label: "✗ Failed" },
+  blocked: { color: STATUS_META.grey.color, label: "⊘ Blocked" },
+  stale: { color: STATUS_META.amber.color, label: "Stale" },
+  interrupted: { color: STATUS_META.amber.color, label: "Interrupted" },
+  timed_out: { color: STATUS_META.amber.color, label: "Timed Out" },
+  not_available_yet: {
+    color: STATUS_META.grey.color,
+    label: "Not Available Yet",
+  },
 };
 
 /**
@@ -273,6 +305,87 @@ export function formatRiskDensityLabel(riskLabel) {
  *   scheduleCue: string|null,
  * }|null}
  */
+/** Tessl Review (Quality) triage threshold — slice 42 A14–A15. */
+export const QUALITY_TAB_FLOOR = 80;
+
+/**
+ * @param {{ type?: string }|null|undefined} item
+ * @returns {boolean}
+ */
+export function isSkillItem(item) {
+  return item?.type === "skill";
+}
+
+/**
+ * @param {{ type?: string, quality?: number|null }|null|undefined} item
+ * @returns {boolean}
+ */
+export function hasKnownQualityScore(item) {
+  if (!isSkillItem(item)) return false;
+  const q = item.quality;
+  return typeof q === "number" && !Number.isNaN(q);
+}
+
+/**
+ * @param {{ type?: string, quality?: number|null }|null|undefined} item
+ * @param {number} [floor=QUALITY_TAB_FLOOR]
+ * @returns {boolean}
+ */
+export function qualityMeetsThreshold(item, floor = QUALITY_TAB_FLOOR) {
+  if (!hasKnownQualityScore(item)) return false;
+  return item.quality >= floor;
+}
+
+/**
+ * @param {{ type?: string, quality?: number|null }|null|undefined} item
+ * @param {number} [floor=QUALITY_TAB_FLOOR]
+ * @returns {'high'|'low'|'unscored'|null}
+ */
+export function qualityTabBucket(item, floor = QUALITY_TAB_FLOOR) {
+  if (!isSkillItem(item)) return null;
+  if (qualityMeetsThreshold(item, floor)) return "high";
+  if (hasKnownQualityScore(item)) return "low";
+  return "unscored";
+}
+
+/**
+ * @param {{ type?: string, quality?: number|null }|null|undefined} item
+ * @param {'high'|'low'|'unscored'} tab
+ * @param {number} [floor=QUALITY_TAB_FLOOR]
+ * @returns {boolean}
+ */
+export function matchesQualityTab(item, tab, floor = QUALITY_TAB_FLOOR) {
+  return qualityTabBucket(item, floor) === tab;
+}
+
+/**
+ * @param {Array<{ type?: string, quality?: number|null }>|null|undefined} items
+ * @param {'high'|'low'|'unscored'} tab
+ * @param {number} [floor=QUALITY_TAB_FLOOR]
+ * @returns {Array<object>}
+ */
+export function filterItemsByQualityTab(items, tab, floor = QUALITY_TAB_FLOOR) {
+  return (items || []).filter((it) => matchesQualityTab(it, tab, floor));
+}
+
+/**
+ * @param {Array<{ type?: string, quality?: number|null }>|null|undefined} items
+ * @param {number} [floor=QUALITY_TAB_FLOOR]
+ * @returns {{ high: number, low: number, unscored: number }}
+ */
+export function countSkillsByQualityTab(items, floor = QUALITY_TAB_FLOOR) {
+  let high = 0;
+  let low = 0;
+  let unscored = 0;
+  for (const it of items || []) {
+    const bucket = qualityTabBucket(it, floor);
+    if (bucket === "high") high += 1;
+    else if (bucket === "low") low += 1;
+    else if (bucket === "unscored") unscored += 1;
+  }
+  return { high, low, unscored };
+}
+
 export function qualitySurfacing(item) {
   if (!item || item.type !== "skill") return null;
 
@@ -309,8 +422,8 @@ export function qualitySurfacing(item) {
  */
 export function qualityTooltip(tone) {
   const base =
-    "Tessl quality = skill-review score from Tessl (not security risk / not card colour).\n" +
-    "Range: 0–100 (higher is better). Source: tessl skill review --json → items.quality_score.";
+    "Tessl quality = quality review score from Tessl (not security risk / not card colour).\n" +
+    "Range: 0–100 (higher is better). Source: tessl review run quality --json → items.quality_score.";
   if (tone === "unknown-unscanned") {
     return `${base}\nQ — = never scanned / no Tessl score yet.`;
   }
@@ -347,6 +460,69 @@ export function operatorAvailLabel(v) {
 }
 
 /**
+ * Ordered Tessl scanner_source values shown as a contiguous Scanner Outputs block.
+ */
+export const TESSL_CAPABILITY_SOURCES = Object.freeze([
+  "Tessl: Lint",
+  "Tessl: Review (Quality)",
+  "Tessl: Scenario Generation",
+  "Tessl: Eval",
+  "Tessl: Review (Security)",
+]);
+
+function tesslPlaceholderRow(source) {
+  return {
+    source,
+    status: "not_available_yet",
+    checks_run: null,
+    duration_ms: null,
+    output: {},
+  };
+}
+
+function tesslRowsFrom(bySource) {
+  return TESSL_CAPABILITY_SOURCES.map(
+    (source) => bySource.get(source) ?? tesslPlaceholderRow(source)
+  );
+}
+
+function insertTesslBlock(others, tesslRows) {
+  const insertAt = others.findIndex(
+    (row) =>
+      String(row.source ?? "").localeCompare("Tessl", undefined, {
+        sensitivity: "base",
+      }) > 0
+  );
+  const idx = insertAt === -1 ? others.length : insertAt;
+  return [...others.slice(0, idx), ...tesslRows, ...others.slice(idx)];
+}
+
+/**
+ * Pad missing Tessl capabilities with UI-only sentinels. DB rows win.
+ * MCP / non-Tessl scans are returned unchanged.
+ * @param {Array<{source?: string}>|null|undefined} rows
+ * @returns {Array<{source?: string, status?: string}>}
+ */
+export function mergeTesslCapabilityRows(rows) {
+  const list = Array.isArray(rows) ? rows : [];
+  const bySource = new Map(
+    list
+      .filter((row) => TESSL_CAPABILITY_SOURCES.includes(row.source))
+      .map((row) => [row.source, row])
+  );
+  if (bySource.size === 0) return list.slice();
+  const others = list.filter(
+    (row) => !TESSL_CAPABILITY_SOURCES.includes(row.source)
+  );
+  others.sort((a, b) =>
+    String(a.source ?? "").localeCompare(String(b.source ?? ""), undefined, {
+      sensitivity: "base",
+    })
+  );
+  return insertTesslBlock(others, tesslRowsFrom(bySource));
+}
+
+/**
  * Tessl inner-card quality line when score may be missing (GWT-42.7 / 42.9).
  * @param {{ source?: string, status?: string, output?: { quality_score?: number|null } }|null|undefined} scanner
  * @param {{ identifier?: string, name?: string }|null|undefined} item
@@ -360,7 +536,7 @@ export function operatorAvailLabel(v) {
  */
 export function tesslInnerQuality(scanner, item) {
   const src = String(scanner?.source || "");
-  if (!/tessl/i.test(src)) return null;
+  if (src !== "Tessl: Review (Quality)") return null;
 
   const score = scanner?.output?.quality_score;
   const known = typeof score === "number" && !Number.isNaN(score);
@@ -381,6 +557,37 @@ export function tesslInnerQuality(scanner, item) {
   };
 }
 
+const TESSL_QUALITY_SOURCE = "Tessl: Review (Quality)";
+
+function tesslUpstreamIds(scanner) {
+  return scanner?.upstream_run_ids || scanner?.output?.upstream_run_ids || {};
+}
+
+/**
+ * UI-level Quality↔Security traceability (GWT-51.3). No live Tessl CLI fetch.
+ * @param {{ source?: string, upstream_run_ids?: { review_quality?: string|null }, output?: { upstream_run_ids?: { review_quality?: string|null } } }|null|undefined} scanner
+ * @returns {{ qualityId: string, source: string }|null}
+ */
+export function securityQualityLink(scanner) {
+  if (String(scanner?.source || "") !== "Tessl: Review (Security)") return null;
+  const qualityId = tesslUpstreamIds(scanner).review_quality;
+  if (!qualityId) return null;
+  return { qualityId, source: TESSL_QUALITY_SOURCE };
+}
+
+/**
+ * Quality findings shown beside Security when the Quality run ID is linked.
+ * @param {object|null|undefined} scanner
+ * @param {Array<{scanner?: string, scanner_source?: string}>|null|undefined} findings
+ * @returns {Array<object>}
+ */
+export function linkedQualityFindingsForSecurity(scanner, findings) {
+  if (!securityQualityLink(scanner)) return [];
+  return (findings || []).filter(
+    (f) => (f.scanner || f.scanner_source) === TESSL_QUALITY_SOURCE
+  );
+}
+
 export default {
   STATUS_META,
   RESULT_STATUSES,
@@ -388,7 +595,9 @@ export default {
   statusFromRisk,
   maxFindingStatus,
   countActionableFindings,
+  findingCountParts,
   formatFindingCountLabel,
+  formatFindingsHeadingLabel,
   normalizeSeverity,
   resolveItemStatus,
   severityColor,
@@ -400,9 +609,21 @@ export default {
   riskTooltip,
   formatRiskBadge,
   formatRiskDensityLabel,
+  QUALITY_TAB_FLOOR,
+  isSkillItem,
+  hasKnownQualityScore,
+  qualityMeetsThreshold,
+  qualityTabBucket,
+  matchesQualityTab,
+  filterItemsByQualityTab,
+  countSkillsByQualityTab,
   qualitySurfacing,
   qualityTooltip,
   operatorLocusLabel,
   operatorAvailLabel,
   tesslInnerQuality,
+  securityQualityLink,
+  linkedQualityFindingsForSecurity,
+  TESSL_CAPABILITY_SOURCES,
+  mergeTesslCapabilityRows,
 };

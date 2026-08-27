@@ -73,6 +73,26 @@
     0%, 100% { opacity: 1; }
     50% { opacity: 0.4; }
   }
+  .findings-chevron {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--cta-ink);
+    transition: transform 180ms ease, color 150ms ease;
+    transform-origin: 50% 55%;
+  }
+  .findings-toggle:hover .findings-chevron {
+    color: var(--text-primary);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .findings-chevron { transition: none; }
+  }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
@@ -604,6 +624,10 @@
               <button onClick="{{ tt.onClick }}" style="{{ tt.style }}">{{ tt.label }}</button>
             </sc-for>
             <div style="width:1px;height:20px;background:var(--border-subtle);flex-shrink:0"></div>
+            <sc-for list="{{ qualityTabs }}" as="qt" hint-placeholder-count="3">
+              <button onClick="{{ qt.onClick }}" style="{{ qt.style }}">{{ qt.label }}</button>
+            </sc-for>
+            <div style="width:1px;height:20px;background:var(--border-subtle);flex-shrink:0"></div>
           </div>
           <div style="display:flex;align-items:center;gap:12px;flex:0 0 auto;margin-left:auto">
             <input type="text" placeholder="Search by name…" value="{{ searchQuery }}" onChange="{{ onSearchChange }}" style="background:var(--bg-input);border:1px solid var(--border-subtle);color:var(--text-primary);font-family:var(--font-sans);font-size:12px;padding:7px 12px;border-radius:6px;width:180px;outline:none;transition:border-color 200ms" />
@@ -808,24 +832,33 @@
             </div>
           </sc-if>
 
-          <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">{{ selectedView.findingsHeadingLabel }}</div>
-          <sc-for list="{{ selectedView.findingsView }}" as="f" hint-placeholder-count="1">
-            <div style="background:var(--bg-base);border:1px solid var(--border-subtle);border-left:3px solid {{ f.sevColor }};border-radius:6px;padding:10px 12px;margin-bottom:8px">
-              <div style="display:flex;justify-content:space-between;gap:8px;font-family:var(--font-mono);font-size:11px;color:var(--text-secondary);margin-bottom:4px">
-                <span>{{ f.category }}</span><span>{{ f.scanner }}</span>
-              </div>
-              <div style="font-size:12px;color:var(--text-primary);margin-bottom:4px">{{ f.message }}</div>
-              <sc-if value="{{ f.entity_name }}">
-                <div style="font-family:var(--font-mono);font-size:11px;color:var(--cta-ink)">tool: {{ f.entity_name }}</div>
-              </sc-if>
-              <sc-if value="{{ f.file_path }}">
-                <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted)">{{ f.file_path }}:{{ f.location }}</div>
-              </sc-if>
-              <sc-if value="{{ f.snippet }}">
-                <div style="font-family:var(--font-mono);font-size:11px;background:var(--bg-deep);padding:6px 8px;border-radius:4px;margin-top:6px;color:var(--red-ink);overflow-x:auto">{{ f.snippet }}</div>
-              </sc-if>
+          <div style="margin-bottom:8px">
+            <div class="findings-toggle" onClick="{{ selectedView.toggleFindings }}" role="button" tabindex="0" aria-expanded="{{ selectedView.findingsExpanded }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;padding:6px 0">
+              <span class="findings-chevron" aria-hidden="true" style="transform:rotate({{ selectedView.findingsChevronDeg }})">▸</span>
+              <div style="font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.06em">{{ selectedView.findingsHeadingLabel }}</div>
             </div>
-          </sc-for>
+            <sc-if value="{{ selectedView.findingsExpanded }}">
+              <div style="margin-top:8px">
+                <sc-for list="{{ selectedView.findingsView }}" as="f" hint-placeholder-count="1">
+                  <div style="background:var(--bg-base);border:1px solid var(--border-subtle);border-left:3px solid {{ f.sevColor }};border-radius:6px;padding:10px 12px;margin-bottom:8px">
+                    <div style="display:flex;justify-content:space-between;gap:8px;font-family:var(--font-mono);font-size:11px;color:var(--text-secondary);margin-bottom:4px">
+                      <span>{{ f.category }}</span><span>{{ f.scanner }}</span>
+                    </div>
+                    <div style="font-size:12px;color:var(--text-primary);margin-bottom:4px">{{ f.message }}</div>
+                    <sc-if value="{{ f.entity_name }}">
+                      <div style="font-family:var(--font-mono);font-size:11px;color:var(--cta-ink)">tool: {{ f.entity_name }}</div>
+                    </sc-if>
+                    <sc-if value="{{ f.file_path }}">
+                      <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted)">{{ f.file_path }}:{{ f.location }}</div>
+                    </sc-if>
+                    <sc-if value="{{ f.snippet }}">
+                      <div style="font-family:var(--font-mono);font-size:11px;background:var(--bg-deep);padding:6px 8px;border-radius:4px;margin-top:6px;color:var(--red-ink);overflow-x:auto">{{ f.snippet }}</div>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
 
           <sc-if value="{{ selectedView.sandbox }}">
             <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin:16px 0 8px">Sandbox evidence</div>
@@ -850,10 +883,10 @@
           </sc-if>
           <sc-for list="{{ selectedView.scannersView }}" as="scv" hint-placeholder-count="2">
             <div class="score-tip-host" style="background:var(--bg-base);border:1px solid var(--border-subtle);border-left:3px solid {{ scv.statusColor }};border-radius:6px;margin-bottom:6px;overflow:visible">
-              <div onClick="{{ scv.onToggle }}" style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;cursor:pointer;gap:8px;user-select:none;transition:background 150ms">
+              <div onClick="{{ scv.onToggle }}" style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;cursor:{{ scv.rowCursor }};gap:8px;user-select:none;transition:background 150ms">
                 <div style="display:flex;align-items:center;gap:8px;min-width:0">
                   <span style="font-size:10px;color:var(--text-secondary);flex-shrink:0;width:12px;text-align:center">{{ scv.chevron }}</span>
-                  <span style="font-size:12px;color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ scv.source }}</span>
+                  <span style="font-size:12px;color:{{ scv.sourceColor }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ scv.source }}</span>
                 </div>
                 <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
                   <sc-if value="{{ scv.tesslQuality }}">
@@ -905,6 +938,19 @@
                         </sc-if>
                       </div>
                     </sc-for>
+                  </sc-if>
+                  <sc-if value="{{ scv.securityQualityLink }}">
+                    <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin:6px 0 4px">Linked Quality Review ({{ scv.securityQualityLink.qualityId }})</div>
+                    <sc-if value="{{ scv.linkedQualityFindings.length }}">
+                      <sc-for list="{{ scv.linkedQualityFindings }}" as="qf" hint-placeholder-count="0">
+                        <div style="background:var(--bg-surface);border:1px solid var(--border-subtle);border-left:2px solid {{ qf.sevColor }};border-radius:4px;padding:6px 8px;margin-bottom:4px">
+                          <div style="font-size:11px;color:var(--text-primary);margin-bottom:2px">{{ qf.message }}</div>
+                          <sc-if value="{{ qf.file_path }}">
+                            <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted)">{{ qf.file_path }}:{{ qf.location }}</div>
+                          </sc-if>
+                        </div>
+                      </sc-for>
+                    </sc-if>
                   </sc-if>
                   <sc-if value="{{ scv.hasDetailJson }}">
                     <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin:6px 0 4px">Raw output</div>
@@ -992,8 +1038,9 @@ class Component extends DCLogic {
     activeTab: 'dashboard',
     data: null,
     dataSource: 'loading',
-    dataSourceMode: sessionStorage.getItem('tripwire-data-source-mode') || 'live',
+    dataSourceMode: sessionStorage.getItem('tripwire-data-source-mode') || 'mock',
     typeFilter: 'all',
+    qualityTab: 'high',
     statusFilter: 'all',
     selectedId: null,
     guardResults: {},
@@ -1004,6 +1051,7 @@ class Component extends DCLogic {
     sortKey: 'name',
     sortDir: 'asc',
     expandedScanners: {},
+    findingsExpanded: true,
     realtimeConnected: false,
     showIntro: !sessionStorage.getItem('tripwire-intro-dismissed')
   };
@@ -1100,7 +1148,7 @@ class Component extends DCLogic {
   setDataSourceMode = (e) => {
     const mode = e.target.value;
     sessionStorage.setItem('tripwire-data-source-mode', mode);
-    this.setState({ dataSourceMode: mode, selectedId: null, expandedScanners: {} });
+    this.setState({ dataSourceMode: mode, selectedId: null, expandedScanners: {}, findingsExpanded: true });
     this._loadDataForMode(mode);
   };
 
@@ -1129,9 +1177,10 @@ class Component extends DCLogic {
 
   setTab = (t) => this.setState({ activeTab: t });
   setTypeFilter = (v) => this.setState({ typeFilter: v });
+  setQualityTab = (v) => this.setState({ qualityTab: v });
   setStatusFilter = (v) => this.setState({ statusFilter: v });
-  clearFilters = () => this.setState({ statusFilter: 'all', typeFilter: 'all', searchQuery: '' });
-  selectItem = (id) => this.setState({ selectedId: id, expandedScanners: {} });
+  clearFilters = () => this.setState({ statusFilter: 'all', typeFilter: 'all', qualityTab: 'high', searchQuery: '' });
+  selectItem = (id) => this.setState({ selectedId: id, expandedScanners: {}, findingsExpanded: true });
   closeDrawer = () => this.setState({ selectedId: null });
   toggleMonitoring = () => this.setState(s => ({ monitoringEnabled: !s.monitoringEnabled, guardResults: {} }));
   setThreshold = (v) => this.setState({ threshold: v, guardResults: {} });
@@ -1142,6 +1191,7 @@ class Component extends DCLogic {
     const key = itemId + ':' + idx;
     return { expandedScanners: { ...s.expandedScanners, [key]: !s.expandedScanners[key] } };
   });
+  toggleFindings = () => this.setState(s => ({ findingsExpanded: !s.findingsExpanded }));
 
   simulateGuardCall = (id) => {
     this.setState(s => {
@@ -1208,6 +1258,10 @@ class Component extends DCLogic {
     }
   }
 
+  compareScannerSource(a, b) {
+    return String(a.source ?? '').localeCompare(String(b.source ?? ''), undefined, { sensitivity: 'base' });
+  }
+
   durationLabel(started, completed) {
     if (!started || !completed) return '—';
     const secs = (new Date(completed) - new Date(started)) / 1000;
@@ -1218,7 +1272,7 @@ class Component extends DCLogic {
     try { return typeof message === 'string' ? JSON.parse(message) : null; } catch { return null; }
   }
 
-  filterEmptyCopy(statusFilter, typeFilter, searchQuery, totalItems) {
+  filterEmptyCopy(statusFilter, typeFilter, qualityTab, searchQuery, totalItems) {
     if (totalItems === 0) {
       return {
         title: 'No items yet',
@@ -1238,6 +1292,9 @@ class Component extends DCLogic {
       };
     }
     const bits = [];
+    if (qualityTab === 'high') bits.push('Quality ≥ 80');
+    else if (qualityTab === 'low') bits.push('Quality < 80');
+    else if (qualityTab === 'unscored') bits.push('No quality score');
     if (typeFilter !== 'all') bits.push(typeFilter === 'skill' ? 'Skills' : 'MCP Servers');
     if (statusFilter !== 'all') bits.push(statusFilter);
     if (searchQuery.trim()) bits.push('“' + searchQuery.trim() + '”');
@@ -1334,7 +1391,9 @@ class Component extends DCLogic {
     const findingCountLabel = kit?.formatFindingCountLabel
       ? kit.formatFindingCountLabel(it.findings)
       : this.fallbackFindingCountLabel(it.findings);
-    const findingCountParts = this.fallbackFindingCountParts(it.findings);
+    const findingCountParts = kit?.findingCountParts
+      ? kit.findingCountParts(it.findings)
+      : this.fallbackFindingCountParts(it.findings);
     const SCANNER_FAIL_STATUSES = new Set(['failed', 'unreachable', 'skipped_missing_credential']);
     const scannerOk   = (it.scanners || []).filter(s => s.status === 'completed').length;
     const scannerFail = (it.scanners || []).filter(s => SCANNER_FAIL_STATUSES.has(s.status)).length;
@@ -1418,7 +1477,7 @@ class Component extends DCLogic {
     return {
       badge,
       tone,
-      tooltip: 'Tessl quality = skill-review score from Tessl (not security risk / not card colour). Range: 0–100.',
+      tooltip: 'Tessl quality = quality review score from Tessl (not security risk / not card colour).\nRange: 0–100 (higher is better). Source: tessl review run quality --json → items.quality_score.',
       scheduleCue: tone === 'known' ? null : `Schedule: tripwire scan ${scanTarget} --force`,
     };
   }
@@ -1429,8 +1488,8 @@ class Component extends DCLogic {
     for (const f of findings) {
       if (f.scanner === 'tiered_router') continue;
       const sev = (f.severity || '').toLowerCase();
-      if (sev === 'red') red += 1;
-      else if (sev === 'amber') amber += 1;
+      if (sev === 'red' || sev === 'critical' || sev === 'high') red += 1;
+      else if (sev === 'amber' || sev === 'medium' || sev === 'low' || sev === 'warn' || sev === 'warning') amber += 1;
     }
     return (red > 0 && amber > 0) ? { red, amber } : null;
   }
@@ -1441,14 +1500,28 @@ class Component extends DCLogic {
     for (const f of findings) {
       if (f.scanner === 'tiered_router') continue;
       const sev = (f.severity || '').toLowerCase();
-      if (sev === 'red') red += 1;
-      else if (sev === 'amber') amber += 1;
+      if (sev === 'red' || sev === 'critical' || sev === 'high') red += 1;
+      else if (sev === 'amber' || sev === 'medium' || sev === 'low' || sev === 'warn' || sev === 'warning') amber += 1;
     }
     const total = red + amber;
     if (total === 0) return '';
     if (red > 0 && amber > 0) return `${red}● ${amber}▲`;
     if (total === 1) return '1 finding';
     return `${total} findings`;
+  }
+
+  fallbackFindingsHeadingLabel(findings, errorMessage) {
+    let red = 0, amber = 0;
+    for (const f of findings || []) {
+      if (f.scanner === 'tiered_router') continue;
+      const sev = (f.severity || '').toLowerCase();
+      if (sev === 'red' || sev === 'critical' || sev === 'high') red += 1;
+      else if (sev === 'amber' || sev === 'medium' || sev === 'low' || sev === 'warn' || sev === 'warning') amber += 1;
+    }
+    const total = red + amber;
+    if (errorMessage && total === 0) return String(errorMessage);
+    if (red > 0 && amber > 0) return `Findings (${red}● ${amber}▲)`;
+    return `Findings (${total})`;
   }
 
   severityColor(severity) {
@@ -1468,6 +1541,7 @@ class Component extends DCLogic {
       running: { color: '#0E7490', label: '◌ Running' },
       completed: { color: '#0F766E', label: '✓ Completed' },
       skipped_missing_credential: { color: '#6B645A', label: '⊘ Skipped' },
+      not_available_yet: { color: '#6B645A', label: 'Not Available Yet' },
       unreachable: { color: '#6D28D9', label: '✗ Unreachable' },
       not_applicable: { color: '#6B645A', label: '— N/A' },
       failed: { color: '#6D28D9', label: '✗ Failed' }
@@ -1478,7 +1552,8 @@ class Component extends DCLogic {
   renderVals() {
     const s = this.state;
     const data = s.data;
-    const statusMeta = this._statusKit?.STATUS_META || {
+    const kit = this._statusKit;
+    const statusMeta = kit?.STATUS_META || {
       red: { color: '#B42318', label: 'RED', glyph: '●' },
       amber: { color: '#8B5A00', label: 'AMBER', glyph: '▲' },
       green: { color: '#0F766E', label: 'GREEN', glyph: '✓' },
@@ -1557,7 +1632,7 @@ class Component extends DCLogic {
     if (!data) {
       return {
         ...base,
-        gridItems: [], typeTabs: [], statusChips: [], overviewStats: [],
+        gridItems: [], typeTabs: [], qualityTabs: [], statusChips: [], overviewStats: [],
         selectedView: null,
         guardRows: [], footerLastScan: '—',
         listRows: [], historyRows: [],
@@ -1574,6 +1649,16 @@ class Component extends DCLogic {
       { key: 'skill', label: 'Skills' },
       { key: 'mcp_server', label: 'MCP Servers' }
     ].map(t => ({ ...t, onClick: () => this.setTypeFilter(t.key), style: this.btnStyle(s.typeFilter === t.key, { activeBg: 'rgba(196,165,116,0.18)', activeBorder: '#C4A574', activeColor: '#1C1915' }) }));
+
+    const qCounts = kit?.countSkillsByQualityTab
+      ? kit.countSkillsByQualityTab(data.items)
+      : { high: 0, low: 0, unscored: 0 };
+    const qFloor = kit?.QUALITY_TAB_FLOOR ?? 80;
+    const qualityTabs = [
+      { key: 'high', label: `Quality ≥ ${qFloor} (${qCounts.high})` },
+      { key: 'low', label: `Quality < ${qFloor} (${qCounts.low})` },
+      { key: 'unscored', label: `No quality score (${qCounts.unscored})` }
+    ].map(t => ({ ...t, onClick: () => this.setQualityTab(t.key), style: this.btnStyle(s.qualityTab === t.key, { activeBg: 'rgba(196,165,116,0.18)', activeBorder: '#C4A574', activeColor: '#1C1915' }) }));
 
     const routerChipMeta = {
       escalated: { color: '#6D28D9', activeColor: '#5B21B6' },
@@ -1592,7 +1677,11 @@ class Component extends DCLogic {
     });
 
     const q = s.searchQuery.trim().toLowerCase();
+    const matchQuality = kit?.matchesQualityTab
+      ? (it) => kit.matchesQualityTab(it, s.qualityTab)
+      : () => true;
     const filtered = data.items.filter(it => {
+      if (!matchQuality(it)) return false;
       if (s.typeFilter !== 'all' && it.type !== s.typeFilter) return false;
       if (q && !it.name.toLowerCase().includes(q)) return false;
       if (s.statusFilter === 'all') return true;
@@ -1617,7 +1706,7 @@ class Component extends DCLogic {
 
     const showFilterEmpty = filtered.length === 0;
     const showItemResults = filtered.length > 0;
-    const emptyCopy = this.filterEmptyCopy(s.statusFilter, s.typeFilter, s.searchQuery, data.items.length);
+    const emptyCopy = this.filterEmptyCopy(s.statusFilter, s.typeFilter, s.qualityTab, s.searchQuery, data.items.length);
 
     const counts = { red: 0, amber: 0, green: 0, grey: 0, running: 0, error: 0 };
     data.items.forEach(it => { counts[it.status] = (counts[it.status] || 0) + 1; });
@@ -1649,7 +1738,9 @@ class Component extends DCLogic {
     const selected = s.selectedId ? data.items.find(i => i.id === s.selectedId) : null;
     const selectedView = selected ? (() => {
       const decorated = this.decorateItemStatus(selected);
-      const kit = this._statusKit;
+      const mergedScanners = kit?.mergeTesslCapabilityRows
+        ? kit.mergeTesslCapabilityRows(selected.scanners)
+        : [...selected.scanners].sort((a, b) => this.compareScannerSource(a, b));
       return {
       ...decorated,
       typeLabel: selected.type === 'skill' ? 'Skill' : 'MCP Server',
@@ -1659,31 +1750,45 @@ class Component extends DCLogic {
       trendPoints: this.trendPath(selected.trend),
       routerStrip: this.routerStripForItem(selected),
       findingsView: selected.findings.filter(f => f.scanner !== 'tiered_router').map(f => ({ ...f, sevColor: this.severityColor(f.severity) })),
+      findingsExpanded: s.findingsExpanded,
+      findingsChevronDeg: s.findingsExpanded ? '90deg' : '0deg',
+      toggleFindings: this.toggleFindings,
       findingsHeadingLabel: (() => {
-        const fv = selected.findings.filter(f => f.scanner !== 'tiered_router');
-        return selected.errorMessage && fv.length === 0
-          ? selected.errorMessage
-          : `Findings (${fv.length})`;
+        if (kit?.formatFindingsHeadingLabel) {
+          return kit.formatFindingsHeadingLabel(selected.findings, selected.errorMessage);
+        }
+        return this.fallbackFindingsHeadingLabel(selected.findings, selected.errorMessage);
       })(),
       scanningPlaceholder: selected.status === 'running' && selected.scanners.length === 0,
       scanStartedAtLabel: selected.scanStartedAt ? this.fmtTime(selected.scanStartedAt) : null,
       scannersViewLabel: selected.status === 'running' && selected.scanners.length === 0
-        ? 'scanning…' : String(selected.scanners.length),
-      scannersView: selected.scanners.map((sc, idx) => {
+        ? 'scanning…' : String(mergedScanners.length),
+      scannersView: mergedScanners
+        .map((sc, idx) => {
         const key = selected.id + ':' + idx;
-        const expanded = !!s.expandedScanners[key];
+        const isPlaceholder = sc.status === 'not_available_yet';
+        const expanded = !isPlaceholder && !!s.expandedScanners[key];
         const out = sc.output || {};
         const findingsForScanner = selected.findings
           .filter(f => f.scanner === sc.source)
           .map(f => ({ ...f, sevColor: this.severityColor(f.severity) }));
-        const durationMs = out.duration_ms;
-        const tesslQuality = kit?.tesslInnerQuality
+        const durationMs = isPlaceholder ? null : out.duration_ms;
+        const tesslQuality = !isPlaceholder && kit?.tesslInnerQuality
           ? kit.tesslInnerQuality({ ...sc, output: out }, selected)
           : null;
+        const securityQualityLink = !isPlaceholder && kit?.securityQualityLink
+          ? kit.securityQualityLink(sc)
+          : null;
+        const linkedQualityFindings = kit?.linkedQualityFindingsForSecurity
+          ? kit.linkedQualityFindingsForSecurity(sc, selected.findings).map((f) => ({
+              ...f,
+              sevColor: this.severityColor(f.severity),
+            }))
+          : [];
         return {
           ...sc,
           expanded,
-          chevron: expanded ? '▾' : '▸',
+          chevron: isPlaceholder ? '' : (expanded ? '▾' : '▸'),
           isRunning: sc.status === 'running',
           statusColor: scannerStatusColor(sc.status),
           statusLabel: scannerStatusLabel(sc.status),
@@ -1691,9 +1796,13 @@ class Component extends DCLogic {
           output: out,
           findingsForScanner,
           tesslQuality,
-          hasDetailJson: !!(out.findings_detail || out.issues_detail || out.scan_results_summary || out.analyzers_run),
+          securityQualityLink,
+          linkedQualityFindings,
+          hasDetailJson: !isPlaceholder && !!(out.findings_detail || out.issues_detail || out.scan_results_summary || out.analyzers_run),
           outputJson: JSON.stringify(out.findings_detail || out.issues_detail || out.scan_results_summary || out, null, 2),
-          onToggle: () => this.toggleScanner(selected.id, idx)
+          sourceColor: isPlaceholder ? 'var(--text-muted)' : 'var(--text-primary)',
+          rowCursor: isPlaceholder ? 'default' : 'pointer',
+          onToggle: isPlaceholder ? () => {} : () => this.toggleScanner(selected.id, idx)
         };
       })
     };
@@ -1748,7 +1857,7 @@ class Component extends DCLogic {
     });
 
     return {
-      ...base, typeTabs, statusChips, gridItems, overviewStats, selectedView,
+      ...base, typeTabs, qualityTabs, statusChips, gridItems, overviewStats, selectedView,
       closeDrawer: this.closeDrawer,
       guardRows, toggleMonitoring: this.toggleMonitoring,
       footerLastScan, listRows, historyRows,
