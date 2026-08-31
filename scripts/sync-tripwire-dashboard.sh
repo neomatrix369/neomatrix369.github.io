@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
-# Thin wrapper: prefer global skill script, else inline sync.
+# Thin wrapper: prefer Tripwire project skill script, else inline sync.
 set -euo pipefail
 
 PAGES_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 export PAGES_ROOT
 
-AGENTS_SYNC="${HOME}/.agents/skills/sync-tripwire-pages/scripts/sync.sh"
+PROJECT_SYNC="$PAGES_ROOT/../tripwire/.claude/skills/sync-tripwire-pages/scripts/sync.sh"
 CLAUDE_SYNC="${HOME}/.claude/skills/sync-tripwire-pages/scripts/sync.sh"
 
-if [[ -x "$AGENTS_SYNC" ]] || [[ -f "$AGENTS_SYNC" ]]; then
-  exec bash "$AGENTS_SYNC" "$@"
+if [[ -f "$PROJECT_SYNC" ]]; then
+  exec bash "$PROJECT_SYNC" "$@"
 fi
-if [[ -x "$CLAUDE_SYNC" ]] || [[ -f "$CLAUDE_SYNC" ]]; then
+if [[ -f "$CLAUDE_SYNC" ]]; then
   exec bash "$CLAUDE_SYNC" "$@"
 fi
 
 echo "WARN: skill script not found; running inline fallback." >&2
-echo "Install: ~/.agents/skills/sync-tripwire-pages/" >&2
+echo "Install: tripwire/.claude/skills/sync-tripwire-pages/" >&2
 
 DEFAULT_TRIPWIRE_FALLBACK="/Users/swami/git-repos/ai-ml-dl-stuff/tools-and-utilities/tripwire"
 if [[ -z "${TRIPWIRE_ROOT:-}" ]]; then

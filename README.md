@@ -58,10 +58,11 @@ Source of truth is the Tripwire repo (`prototypes/dc-dashboard/`). This site kee
 
 ```bash
 ./scripts/sync-tripwire-dashboard.sh
-# or: bash ~/.agents/skills/sync-tripwire-pages/scripts/sync.sh
+# or: bash .claude/skills/sync-tripwire-pages/scripts/sync.sh
 ```
 
-Agent skill (canonical): `~/.agents/skills/sync-tripwire-pages` — invoke as `/sync-tripwire-pages`.
+Agent skill (project-local, gitignored): `.claude/skills/sync-tripwire-pages` — invoke as `/sync-tripwire-pages`.
+Also linked from `.cursor/skills/` and `.codex/skills/` in the Tripwire repo.
 
 Preview: http://localhost:8080/demos/tripwire-dashboard/
 
