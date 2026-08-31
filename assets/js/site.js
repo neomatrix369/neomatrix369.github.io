@@ -51,20 +51,6 @@ const FALLBACK_PAGES = [
   },
 ];
 
-function flattenForGrid(pages) {
-  const items = [];
-  for (const page of pages) {
-    if (page.kind === "group" && Array.isArray(page.children) && page.children.length > 0) {
-      for (const child of page.children) {
-        items.push({ ...child, groupTitle: page.title });
-      }
-    } else {
-      items.push(page);
-    }
-  }
-  return items;
-}
-
 function renderSubCard(child) {
   const tagClass = child.kind === "interactive" ? "tag tag--interactive" : "tag";
   return `
@@ -77,33 +63,38 @@ function renderSubCard(child) {
   `;
 }
 
-function renderFlatCard(page) {
-  const tagClass = page.kind === "interactive" ? "tag tag--interactive" : "tag";
-  const groupLabel = page.groupTitle
-    ? `<span class="tag tag--group">${page.groupTitle}</span>`
-    : "";
-
-  return `
-    <article class="page-card">
-      <div class="page-card-tags">
-        ${groupLabel}
-        <span class="${tagClass}">${page.kind}</span>
-      </div>
-      <h3>${page.title}</h3>
-      <p>${page.description}</p>
-      <a class="button" href="${page.href}">Open</a>
-    </article>
-  `;
+function toggleGroup(btn, childrenId) {
+  const children = document.getElementById(childrenId);
+  const expanded = btn.getAttribute("aria-expanded") === "true";
+  btn.setAttribute("aria-expanded", String(!expanded));
+  if (expanded) {
+    children.classList.add("page-card-nested--collapsed");
+    btn.textContent = `Explore ${children.children.length} pages ›`;
+  } else {
+    children.classList.remove("page-card-nested--collapsed");
+    btn.textContent = "Collapse ↑";
+  }
 }
 
 function renderPageCard(page) {
   if (page.kind === "group" && Array.isArray(page.children) && page.children.length > 0) {
+    const id = `group-${page.title.toLowerCase().replace(/\W+/g, "-")}`;
     return `
       <article class="page-card page-card--group">
-        <span class="tag">benchmark</span>
-        <h3>${page.title}</h3>
-        <p>${page.description}</p>
-        <div class="page-card-nested" role="list">
+        <div class="page-card-group-header">
+          <span class="tag">benchmark</span>
+          <div class="page-card-group-meta">
+            <h3>${page.title}</h3>
+            <p>${page.description}</p>
+          </div>
+          <button
+            class="button page-card-toggle"
+            aria-expanded="false"
+            aria-controls="${id}-children"
+            onclick="toggleGroup(this, '${id}-children')"
+          >Explore ${page.children.length} pages &rsaquo;</button>
+        </div>
+        <div class="page-card-nested page-card-nested--collapsed" id="${id}-children" role="list">
           ${page.children.map(renderSubCard).join("")}
         </div>
       </article>
@@ -142,7 +133,7 @@ async function loadPages() {
     // Local file:// previews and offline use fall back to baked-in examples.
   }
 
-  grid.innerHTML = flattenForGrid(pages).map(renderFlatCard).join("");
+  grid.innerHTML = pages.map(renderPageCard).join("");
 }
 
 document.addEventListener("DOMContentLoaded", loadPages);
