@@ -238,11 +238,42 @@ a:hover {
   grid-column: 1 / -1;
 }
 
+.page-card-group-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.page-card-group-meta {
+  flex: 1;
+  min-width: 12rem;
+}
+
+.page-card-group-meta h3 {
+  margin: 0 0 0.2rem;
+}
+
+.page-card-group-meta p {
+  margin: 0;
+  flex: none;
+}
+
+.page-card-toggle {
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-size: 0.9rem;
+}
+
 .page-card-nested {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.75rem;
-  margin-top: 0.25rem;
+  margin-top: 0.75rem;
+}
+
+.page-card-nested--collapsed {
+  display: none;
 }
 
 .page-card-sub {
