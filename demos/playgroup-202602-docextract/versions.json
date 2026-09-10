@@ -635,5 +635,37 @@
       "v7": 0.833
     },
     "tab_count": 8
+  },
+  {
+    "stamp": "2026-09-09T2357Z",
+    "commit": "0ace5a87",
+    "iso": "2026-09-10T00:57:23+01:00",
+    "subject": "data(doubleword): add dw-mimo-v2.5-pro, dw-deepseek-v4-pro-0813, dw-glm-5.3, dw-glm-5.3-flash extraction results",
+    "file": "2026-09-09T2357Z-which-models-extracted-playground.html",
+    "size_kb": 1311,
+    "models": 115,
+    "f1": 115,
+    "tabs": [
+      "Rankings",
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Provider Analysis",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 40,
+      "doubleword": 42,
+      "v7": 33
+    },
+    "tab_count": 8,
+    "avg_f1": {
+      "doubleword": 0.824,
+      "openrouter": 0.753,
+      "v7": 0.833
+    }
   }
 ]

@@ -1,6 +1,6 @@
 (function () {
   const ARCHIVE = 'index.html';
-  const LATEST = '2026-08-22T0830Z-which-models-extracted-playground.html';
+  const LATEST = 'latest/';
   const path = location.pathname;
 
   if (new URLSearchParams(location.search).get('embed') === '1') {
@@ -64,7 +64,7 @@
 
   if (stampMatch) {
     const stamp = stampMatch[1];
-    const latestMark = stamp === '2026-08-22T0830Z' ? ' <span class="latest">(latest)</span>' : '';
+    const latestMark = stamp === '2026-09-09T2357Z' ? ' <span class="latest">(latest)</span>' : '';
     parts.push(
       '<span class="sep">·</span>',
       '<a href="' + LATEST + '">Latest snapshot</a>',

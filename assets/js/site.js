@@ -41,6 +41,12 @@ const FALLBACK_PAGES = [
         href: "demos/playgroup-202602-docextract/",
         kind: "interactive",
       },
+      {
+        title: "Doubleword extraction guide",
+        description: "Video walkthrough of batch extraction.",
+        href: "demos/playgroup-202602-docextract/extractor-all-doubleword.html",
+        kind: "static",
+      },
     ],
   },
   {
