@@ -667,5 +667,37 @@
       "openrouter": 0.753,
       "v7": 0.833
     }
+  },
+  {
+    "stamp": "2026-09-10T2232Z",
+    "commit": "afbba618",
+    "iso": "2026-09-10T23:32:01+01:00",
+    "subject": "data(openrouter): record Gemini Kimi and GLM benchmark results",
+    "file": "2026-09-10T2232Z-which-models-extracted-playground.html",
+    "size_kb": 1391,
+    "models": 121,
+    "f1": 121,
+    "tabs": [
+      "Rankings",
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Provider Analysis",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 46,
+      "doubleword": 42,
+      "v7": 33
+    },
+    "tab_count": 8,
+    "avg_f1": {
+      "doubleword": 0.824,
+      "openrouter": 0.788,
+      "v7": 0.833
+    }
   }
 ]

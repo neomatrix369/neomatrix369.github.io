@@ -26,7 +26,7 @@ const FALLBACK_PAGES = [
   },
   {
     title: "UK Charity Doc Extract",
-    description: "Multi-model PDF extraction benchmark.",
+    description: "Multi-model PDF extraction benchmark — 121 scored runs.",
     kind: "group",
     children: [
       {
@@ -37,7 +37,7 @@ const FALLBACK_PAGES = [
       },
       {
         title: "Model extraction playground",
-        description: "Latest and historic snapshots.",
+        description: "Latest plus 22 historic snapshots.",
         href: "demos/playgroup-202602-docextract/",
         kind: "interactive",
       },
