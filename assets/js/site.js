@@ -37,7 +37,7 @@ const FALLBACK_PAGES = [
       },
       {
         title: "Model extraction playground",
-        description: "Latest plus 22 historic snapshots.",
+        description: "Latest plus 23 historic snapshots.",
         href: "demos/playgroup-202602-docextract/",
         kind: "interactive",
       },

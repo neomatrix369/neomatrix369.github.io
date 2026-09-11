@@ -64,7 +64,7 @@
 
   if (stampMatch) {
     const stamp = stampMatch[1];
-    const latestMark = stamp === '2026-09-10T2232Z' ? ' <span class="latest">(latest)</span>' : '';
+    const latestMark = stamp === '2026-09-11T0000Z' ? ' <span class="latest">(latest)</span>' : '';
     parts.push(
       '<span class="sep">·</span>',
       '<a href="' + LATEST + '">Latest snapshot</a>',
