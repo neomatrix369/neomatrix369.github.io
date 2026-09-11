@@ -699,5 +699,37 @@
       "openrouter": 0.788,
       "v7": 0.833
     }
+  },
+  {
+    "stamp": "2026-09-11T0000Z",
+    "commit": "34a0a5f5",
+    "iso": "2026-09-11T01:00:08+01:00",
+    "subject": "chore: fill DW/OR prices and backfill extraction costs",
+    "file": "2026-09-11T0000Z-which-models-extracted-playground.html",
+    "size_kb": 1391,
+    "models": 121,
+    "f1": 121,
+    "tabs": [
+      "Rankings",
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Provider Analysis",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 46,
+      "doubleword": 42,
+      "v7": 33
+    },
+    "tab_count": 8,
+    "avg_f1": {
+      "doubleword": 0.824,
+      "openrouter": 0.788,
+      "v7": 0.833
+    }
   }
 ]
