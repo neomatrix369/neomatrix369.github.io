@@ -33,10 +33,10 @@
     { icon: "kaggle", slug: "neomatrix369", href: "https://www.kaggle.com/neomatrix369", name: "Kaggle" },
     { icon: "hf", slug: "neomatrix369", href: "https://huggingface.co/neomatrix369", name: "Hugging Face" },
     { icon: "medium", slug: "@neomatrix369", href: "https://medium.com/@neomatrix369", name: "Medium" },
-    { icon: "youtube", slug: "neomatrix369", href: "https://www.youtube.com/user/neomatrix369/", name: "YouTube" },
     { icon: "blog", slug: "neomatrix369", href: "https://neomatrix369.wordpress.com/", name: "Blog" },
     { icon: "slides", slug: "neomatrix369", href: "https://www.slideshare.net/neomatrix369/", name: "SlideShare" },
     { icon: "mastodon", slug: "@neomatrix369", href: "https://mastodon.online/@neomatrix369", name: "Mastodon", rel: "me" },
+    { icon: "youtube", slug: "neomatrix369", href: "https://www.youtube.com/user/neomatrix369/", name: "YouTube" },
   ];
 
   const style = document.createElement("style");
