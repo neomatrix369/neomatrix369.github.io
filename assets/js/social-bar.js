@@ -3,7 +3,7 @@
  * Self-contained (injects CSS + markup) so demos without site.css still get the bar.
  */
 (function () {
-  if (document.getElementById("site-social-bar")) {
+  if (document.getElementById("site-social-chrome")) {
     return;
   }
   if (new URLSearchParams(location.search).get("embed") === "1") {
@@ -42,18 +42,27 @@
   const style = document.createElement("style");
   style.id = "site-social-bar-style";
   style.textContent = `
-    #site-social-bar {
+    #site-social-chrome {
       position: fixed;
       left: 0;
       right: 0;
       bottom: 0;
       z-index: 100000;
       display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      background: rgba(245, 242, 234, 0.94);
+      border-top: 1px solid rgba(28, 25, 21, 0.14);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 -1px 8px rgba(28, 25, 21, 0.05);
+    }
+    #site-social-bar {
+      display: flex;
       align-items: center;
       justify-content: flex-start;
       gap: 0.15rem;
       min-height: 2.25rem;
-      padding: 0.35rem 0.75rem;
+      padding: 0.4rem 0.75rem 0.25rem;
       overflow-x: auto;
       overflow-y: hidden;
       -webkit-overflow-scrolling: touch;
@@ -61,10 +70,6 @@
       font: 500 0.875rem/1.25 "IBM Plex Sans", system-ui, sans-serif;
       letter-spacing: 0.01em;
       color: #5c564c;
-      background: rgba(245, 242, 234, 0.94);
-      border-top: 1px solid rgba(28, 25, 21, 0.14);
-      backdrop-filter: blur(8px);
-      box-shadow: 0 -1px 8px rgba(28, 25, 21, 0.05);
     }
     #site-social-bar a {
       display: inline-flex;
@@ -106,16 +111,46 @@
       content: "";
       flex: 1 0 0.5rem;
     }
+    #site-social-quote {
+      margin: 0;
+      padding: 0.55rem 1rem 0.7rem;
+      text-align: center;
+      font-family: "Fraunces", Georgia, "Times New Roman", serif;
+      font-size: clamp(0.8125rem, 1.6vw, 0.9375rem);
+      font-style: italic;
+      font-weight: 500;
+      font-optical-sizing: auto;
+      line-height: 1.35;
+      letter-spacing: 0.01em;
+      color: #5c564c;
+    }
+    #site-social-quote .ssb-emphasis {
+      color: #7a5c2e;
+      font-style: italic;
+      font-weight: 600;
+    }
     body.site-social-bar-on {
-      padding-bottom: 2.5rem;
+      padding-bottom: 5rem;
+    }
+    @media (max-width: 560px) {
+      #site-social-quote {
+        padding: 0.5rem 0.75rem 0.65rem;
+        font-size: 0.75rem;
+      }
+      body.site-social-bar-on {
+        padding-bottom: 5.5rem;
+      }
     }
     @media (prefers-reduced-motion: reduce) {
-      #site-social-bar {
+      #site-social-chrome {
         backdrop-filter: none;
       }
     }
   `;
   document.head.appendChild(style);
+
+  const chrome = document.createElement("div");
+  chrome.id = "site-social-chrome";
 
   const nav = document.createElement("nav");
   nav.id = "site-social-bar";
@@ -134,11 +169,20 @@
   });
   nav.innerHTML = parts.join("");
 
+  const quote = document.createElement("p");
+  quote.id = "site-social-quote";
+  quote.setAttribute("role", "note");
+  quote.innerHTML =
+    'Don\u2019t chase success, rather aim for <span class="ssb-emphasis">\u201cExcellence\u201d</span>, and success will come chasing after you!';
+
+  chrome.appendChild(nav);
+  chrome.appendChild(quote);
+
   function mount() {
-    if (document.getElementById("site-social-bar")) {
+    if (document.getElementById("site-social-chrome")) {
       return;
     }
-    document.body.appendChild(nav);
+    document.body.appendChild(chrome);
     document.body.classList.add("site-social-bar-on");
   }
 
