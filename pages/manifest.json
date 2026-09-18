@@ -51,7 +51,7 @@
     },
     {
       "title": "UK Charity Doc Extract",
-      "description": "Multi-model PDF extraction benchmark — 121 scored runs across OpenRouter, Doubleword, and V7 Go.",
+      "description": "Multi-model PDF extraction benchmark — 122 scored runs across OpenRouter, Doubleword, and V7 Go.",
       "kind": "group",
       "children": [
         {
@@ -62,7 +62,7 @@
         },
         {
           "title": "Model extraction playground",
-          "description": "Latest snapshot plus 23 historic versions — rankings, heatmaps, provider analysis.",
+          "description": "Latest snapshot plus 24 historic versions — rankings, heatmaps, provider analysis.",
           "href": "demos/playgroup-202602-docextract/",
           "kind": "interactive"
         },
