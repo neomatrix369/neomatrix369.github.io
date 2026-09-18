@@ -5,11 +5,12 @@
  */
 (function () {
   const STORAGE_KEY = "nm369_ascii_intro_seen";
-  const PLAY_MS = 3400;
   const FORCE_PLAY_MS = 7000;
   const FADE_MS = 750;
   const LINE_MS = 240;
   const DECRYPT_MS = 900;
+  /** Extra time after boot + decrypt so readers can take in the banner. */
+  const READ_HOLD_MS = 2800;
 
   const SCRAMBLE =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789<>{}[]|/\\_+*#";
@@ -61,7 +62,6 @@
   const mode = introMode();
   const force = mode === "1" || mode === "hold";
   const hold = mode === "hold";
-  const playMs = force ? FORCE_PLAY_MS : PLAY_MS;
 
   if (!force && (alreadySeen() || prefersReducedMotion())) {
     return;
@@ -258,7 +258,10 @@
         footer.classList.add("nm-visible");
         renderBoot();
         if (!hold) {
-          endTimer = window.setTimeout(dismiss, Math.max(400, playMs - (BOOT_LINES.length * LINE_MS + DECRYPT_MS)));
+          const holdMs = force
+            ? Math.max(READ_HOLD_MS, FORCE_PLAY_MS - (BOOT_LINES.length * LINE_MS + DECRYPT_MS))
+            : READ_HOLD_MS;
+          endTimer = window.setTimeout(dismiss, holdMs);
         }
         return;
       }
