@@ -731,5 +731,37 @@
       "openrouter": 0.788,
       "v7": 0.833
     }
+  },
+  {
+    "stamp": "2026-09-18T0710Z",
+    "commit": "a31ead29",
+    "iso": "2026-09-18T08:10:09+01:00",
+    "subject": "feat(doubleword): add dw-deepseek-v4.1-flash extraction results (F1=0.941, rank 10 globally)",
+    "file": "2026-09-18T0710Z-which-models-extracted-playground.html",
+    "size_kb": 1402,
+    "models": 122,
+    "f1": 122,
+    "tabs": [
+      "Rankings",
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Provider Analysis",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 46,
+      "doubleword": 43,
+      "v7": 33
+    },
+    "tab_count": 8,
+    "avg_f1": {
+      "doubleword": 0.827,
+      "openrouter": 0.788,
+      "v7": 0.833
+    }
   }
 ]

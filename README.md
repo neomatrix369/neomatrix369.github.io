@@ -11,7 +11,7 @@ Static GitHub Pages site for standalone HTML and interactive demos.
 | Home — all demos & pages | https://neomatrix369.github.io/ |
 | Projects hub (Tripwire, SIE, rag-params-finder, …) | https://neomatrix369.github.io/pages/projects.html |
 | Doc extract — project write-up | https://neomatrix369.github.io/pages/playgroup-202602-docextract.html |
-| Doc extract — playground archive (24 snapshots) | https://neomatrix369.github.io/demos/playgroup-202602-docextract/ |
+| Doc extract — playground archive (25 snapshots) | https://neomatrix369.github.io/demos/playgroup-202602-docextract/ |
 | Doc extract — Doubleword guide | https://neomatrix369.github.io/demos/playgroup-202602-docextract/extractor-all-doubleword.html |
 | Laguna py-bug-trace — project page | https://neomatrix369.github.io/pages/laguna-py-bug-trace.html |
 | Laguna py-bug-trace — reports & explorer | https://neomatrix369.github.io/demos/laguna-py-bug-trace/ |
