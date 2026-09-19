@@ -625,11 +625,12 @@ body.site-home > * {
 
 /* --- Parallel-style floating tabs + prompt card (cream) --- */
 .prompt-stage {
-  margin: 0 0 1.75rem;
+  margin: 0 auto 1.75rem;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: 0.75rem;
+  width: min(100%, 40rem);
   max-width: 40rem;
 }
 
