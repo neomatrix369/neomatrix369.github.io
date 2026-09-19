@@ -255,34 +255,47 @@
       white-space: nowrap;
     }
 
-    /* --- Tabbed demos (Parallel) --- */
-    .demo-tabs {
+    /* --- Parallel-style floating tabs + prompt card (cream) --- */
+    .prompt-stage {
       margin: 0 0 1.75rem;
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius);
-      background: var(--bg-surface);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-
-    .demo-tabs__list {
       display: flex;
-      flex-wrap: wrap;
-      gap: 0;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      border-bottom: 1px solid var(--border-subtle);
-      background: var(--bg-elevated);
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.75rem;
+      max-width: 40rem;
     }
 
-    .demo-tabs__tab {
+    .prompt-tabs {
+      display: inline-flex;
+      align-self: center;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.15rem;
       margin: 0;
-      padding: 0.7rem 1rem;
+      padding: 0.28rem;
+      list-style: none;
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 3px,
+          rgba(28, 25, 21, 0.035) 3px,
+          rgba(28, 25, 21, 0.035) 4px
+        ),
+        rgba(239, 233, 220, 0.72);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+    }
+
+    .prompt-tabs__tab {
+      margin: 0;
+      padding: 0.45rem 0.85rem;
       border: none;
-      border-right: 1px solid var(--border-subtle);
+      border-radius: 999px;
       background: transparent;
-      color: var(--text-secondary);
+      color: var(--text-muted);
       font-family: var(--font-mono);
       font-size: 0.6875rem;
       font-weight: 500;
@@ -291,43 +304,141 @@
       cursor: pointer;
     }
 
-    .demo-tabs__tab:hover {
+    .prompt-tabs__tab:hover {
       color: var(--text-primary);
-      background: var(--bg-surface);
     }
 
-    .demo-tabs__tab[aria-selected="true"] {
+    .prompt-tabs__tab[aria-selected="true"] {
       color: var(--text-primary);
-      background: var(--bg-surface);
-      box-shadow: inset 0 -2px 0 var(--cta);
+      background: rgba(245, 242, 234, 0.95);
+      box-shadow: 0 1px 2px rgba(28, 25, 21, 0.08);
     }
 
-    .demo-tabs__panel {
-      display: none;
-      padding: 1.125rem 1.25rem 1.25rem;
+    .prompt-card {
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+      padding: 1.15rem 1.25rem 1rem;
+      border: 1px solid var(--border-subtle);
+      border-radius: 1.15rem;
+      background: rgba(245, 242, 234, 0.88);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
     }
 
-    .demo-tabs__panel.is-active {
-      display: block;
-      animation: panel-in 0.28s ease;
+    .prompt-card__query {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      min-height: 3.25rem;
     }
 
-    @keyframes panel-in {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: none; }
+    .prompt-card__mark {
+      flex-shrink: 0;
+      width: 1.75rem;
+      height: 1.75rem;
+      margin-top: 0.15rem;
+      border-radius: 50%;
+      border: 1.5px solid var(--border-default);
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent 0 3px,
+          rgba(28, 25, 21, 0.55) 3px 4.5px
+        );
+      background-clip: content-box;
+      padding: 0.35rem 0.3rem;
     }
 
-    .demo-tabs__panel h3 {
-      margin: 0 0 0.35rem;
-      font-family: var(--font-display);
+    .prompt-card__text {
+      margin: 0;
+      flex: 1;
+      color: var(--text-primary);
       font-size: 1.05rem;
+      font-weight: 500;
+      line-height: 1.45;
     }
 
-    .demo-tabs__panel p {
-      margin: 0 0 1rem;
-      color: var(--text-secondary);
-      font-size: 0.9375rem;
-      max-width: 40rem;
+    .prompt-card__caret {
+      display: inline-block;
+      width: 0.08em;
+      height: 1.05em;
+      margin-left: 0.08em;
+      vertical-align: -0.12em;
+      background: var(--cta-ink);
+      animation: caret-blink 1s steps(1) infinite;
+    }
+
+    .prompt-card__caret.is-done {
+      opacity: 0;
+      animation: none;
+    }
+
+    @keyframes caret-blink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+
+    .prompt-card__footer {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .prompt-card__mode {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .prompt-card__mode strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .prompt-card__mode-chevron {
+      opacity: 0.55;
+      font-size: 0.65rem;
+    }
+
+    .prompt-card__run {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.5rem 0.85rem;
+      border: none;
+      border-radius: 0.55rem;
+      background: #1c1915;
+      color: #f5f2ea;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    .prompt-card__run:hover {
+      color: #f5f2ea;
+      background: #2e2923;
+    }
+
+    .prompt-card__run-key {
+      opacity: 0.7;
+      font-size: 0.85em;
+    }
+
+    .prompt-card__hint {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.8125rem;
     }
 
     /* --- Stats row --- */
@@ -425,13 +536,17 @@
     @media (prefers-reduced-motion: reduce) {
       .cred-marquee__track,
       .news-window__live::before,
-      .demo-tabs__panel.is-active,
-      .preview-card {
+      .preview-card,
+      .prompt-card__caret {
         animation: none !important;
       }
 
       .preview-card {
         opacity: 1;
+      }
+
+      .prompt-card__caret {
+        opacity: 0;
       }
 
       .preview-body .page-card:hover {
@@ -515,32 +630,27 @@
         </div>
       </div>
 
-      <div class="demo-tabs" data-demo-tabs>
-        <div class="demo-tabs__list" role="tablist" aria-label="Featured demos">
-          <button type="button" class="demo-tabs__tab" role="tab" id="tab-extract" aria-controls="panel-extract" aria-selected="true">Extract</button>
-          <button type="button" class="demo-tabs__tab" role="tab" id="tab-laguna" aria-controls="panel-laguna" aria-selected="false">Laguna</button>
-          <button type="button" class="demo-tabs__tab" role="tab" id="tab-tripwire" aria-controls="panel-tripwire" aria-selected="false">Tripwire</button>
-          <button type="button" class="demo-tabs__tab" role="tab" id="tab-github" aria-controls="panel-github" aria-selected="false">GitHub</button>
+      <div class="prompt-stage" data-prompt-stage>
+        <div class="prompt-tabs" role="tablist" aria-label="Featured demos">
+          <button type="button" class="prompt-tabs__tab" role="tab" id="tab-extract" data-prompt-key="extract" aria-selected="true">Extract</button>
+          <button type="button" class="prompt-tabs__tab" role="tab" id="tab-laguna" data-prompt-key="laguna" aria-selected="false">Laguna</button>
+          <button type="button" class="prompt-tabs__tab" role="tab" id="tab-tripwire" data-prompt-key="tripwire" aria-selected="false">Tripwire</button>
+          <button type="button" class="prompt-tabs__tab" role="tab" id="tab-github" data-prompt-key="github" aria-selected="false">GitHub</button>
         </div>
-        <div class="demo-tabs__panel is-active" role="tabpanel" id="panel-extract" aria-labelledby="tab-extract">
-          <h3>Model extraction playground</h3>
-          <p>Latest + 24 historic snapshots · 122 scored runs · rankings &amp; heatmaps for UK charity doc extract.</p>
-          <a class="button button--primary" href="../../demos/playgroup-202602-docextract/">Open playground</a>
-        </div>
-        <div class="demo-tabs__panel" role="tabpanel" id="panel-laguna" aria-labelledby="tab-laguna" hidden>
-          <h3>py-bug-trace · Laguna eval</h3>
-          <p>29 models · Laguna-XS.2 rank 12/29 · sweep explorer with heatmap &amp; Pareto.</p>
-          <a class="button button--primary" href="../../demos/laguna-py-bug-trace/?view=explorer.html">Open explorer</a>
-        </div>
-        <div class="demo-tabs__panel" role="tabpanel" id="panel-tripwire" aria-labelledby="tab-tripwire" hidden>
-          <h3>Tripwire dashboard</h3>
-          <p>Security &amp; quality scanning prototype — cream chrome, live-style panels.</p>
-          <a class="button button--primary" href="../../demos/tripwire-dashboard/">Open dashboard</a>
-        </div>
-        <div class="demo-tabs__panel" role="tabpanel" id="panel-github" aria-labelledby="tab-github" hidden>
-          <h3>awesome-ai-ml-dl</h3>
-          <p>Curated AI/ML/DL resources · 1.7k★ — plus RagCheck, awesome-graal, and more on GitHub.</p>
-          <a class="button button--primary" href="https://github.com/neomatrix369/awesome-ai-ml-dl" rel="noopener">View on GitHub</a>
+        <div class="prompt-card" role="tabpanel" aria-labelledby="tab-extract">
+          <div class="prompt-card__query">
+            <span class="prompt-card__mark" aria-hidden="true"></span>
+            <p class="prompt-card__text">
+              <span data-prompt-typed></span><span class="prompt-card__caret" data-prompt-caret aria-hidden="true"></span>
+            </p>
+          </div>
+          <div class="prompt-card__footer">
+            <span class="prompt-card__mode">Mode <strong>Basic</strong> <span class="prompt-card__mode-chevron" aria-hidden="true">▾</span></span>
+            <a class="prompt-card__run" data-prompt-run href="../../demos/playgroup-202602-docextract/">
+              Run <span class="prompt-card__run-key" aria-hidden="true">⏎</span>
+            </a>
+          </div>
+          <p class="prompt-card__hint" data-prompt-hint>Latest + 24 historic snapshots · 122 scored runs</p>
         </div>
       </div>
 
@@ -634,7 +744,7 @@
         <li><strong>Mono action strip + copy prompt</strong> — Parallel “copy onboarding” pattern</li>
         <li><strong>Cred marquee</strong> — motion without new colour</li>
         <li><strong>News window + live clock</strong> — restrained TypeSafe chrome</li>
-        <li><strong>Tabbed featured demos</strong> — Parallel hero tabs</li>
+        <li><strong>Prompt card + type completion</strong> — Parallel floating tabs/card with caret animation (cream)</li>
         <li><strong>Proof stats</strong> — real numbers from existing content</li>
         <li><strong>Card stagger / hover</strong> — respects <code>prefers-reduced-motion</code></li>
         <li><strong>Social bar + Excellence quote</strong> — same <code>social-bar.js</code> as live home</li>
@@ -689,28 +799,115 @@
       tickClock();
       window.setInterval(tickClock, 1000);
 
-      const root = document.querySelector("[data-demo-tabs]");
+      const root = document.querySelector("[data-prompt-stage]");
       if (root) {
-        const tabs = Array.from(root.querySelectorAll('[role="tab"]'));
-        const panels = Array.from(root.querySelectorAll('[role="tabpanel"]'));
+        const PROMPTS = {
+          extract: {
+            text: "Rank charity-report extractors across 122 scored runs with heatmaps",
+            href: "../../demos/playgroup-202602-docextract/",
+            hint: "Latest + 24 historic snapshots · rankings & heatmaps",
+            tabId: "tab-extract",
+          },
+          laguna: {
+            text: "Compare 29 models on py-bug-trace — Laguna-XS.2 at rank 12/29",
+            href: "../../demos/laguna-py-bug-trace/?view=explorer.html",
+            hint: "Sweep explorer · heatmap & Pareto frontier",
+            tabId: "tab-laguna",
+          },
+          tripwire: {
+            text: "Prototype FolderGate-style security and quality scanning",
+            href: "../../demos/tripwire-dashboard/",
+            hint: "Tripwire dashboard · interactive prototype",
+            tabId: "tab-tripwire",
+          },
+          github: {
+            text: "Browse curated AI/ML/DL resources — awesome-ai-ml-dl · 1.7k★",
+            href: "https://github.com/neomatrix369/awesome-ai-ml-dl",
+            hint: "Also RagCheck, awesome-graal, and more on GitHub",
+            tabId: "tab-github",
+          },
+        };
 
-        function activate(tab) {
+        const tabs = Array.from(root.querySelectorAll('[role="tab"]'));
+        const typedEl = root.querySelector("[data-prompt-typed]");
+        const caretEl = root.querySelector("[data-prompt-caret]");
+        const runEl = root.querySelector("[data-prompt-run]");
+        const hintEl = root.querySelector("[data-prompt-hint]");
+        const panel = root.querySelector('[role="tabpanel"]');
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        let typeTimer = null;
+        let holdTimer = null;
+        let activeKey = "extract";
+
+        function clearTimers() {
+          if (typeTimer) window.clearTimeout(typeTimer);
+          if (holdTimer) window.clearTimeout(holdTimer);
+          typeTimer = null;
+          holdTimer = null;
+        }
+
+        function setMeta(key) {
+          const prompt = PROMPTS[key];
+          if (!prompt) return;
+          if (runEl) runEl.setAttribute("href", prompt.href);
+          if (hintEl) hintEl.textContent = prompt.hint;
+          if (panel) panel.setAttribute("aria-labelledby", prompt.tabId);
+        }
+
+        function typePrompt(key) {
+          const prompt = PROMPTS[key];
+          if (!prompt || !typedEl) return;
+          clearTimers();
+          setMeta(key);
+          caretEl && caretEl.classList.remove("is-done");
+
+          if (reduceMotion) {
+            typedEl.textContent = prompt.text;
+            caretEl && caretEl.classList.add("is-done");
+            return;
+          }
+
+          typedEl.textContent = "";
+          let i = 0;
+          const stepMs = 22;
+
+          function tick() {
+            i += 1;
+            typedEl.textContent = prompt.text.slice(0, i);
+            if (i < prompt.text.length) {
+              typeTimer = window.setTimeout(tick, stepMs);
+              return;
+            }
+            caretEl && caretEl.classList.add("is-done");
+            holdTimer = window.setTimeout(function () {
+              const keys = Object.keys(PROMPTS);
+              const next = keys[(keys.indexOf(key) + 1) % keys.length];
+              activate(next, true);
+            }, 2800);
+          }
+
+          tick();
+        }
+
+        function activate(key, fromAuto) {
+          if (!PROMPTS[key]) return;
+          activeKey = key;
           tabs.forEach(function (t) {
-            const on = t === tab;
+            const on = t.getAttribute("data-prompt-key") === key;
             t.setAttribute("aria-selected", on ? "true" : "false");
           });
-          panels.forEach(function (panel) {
-            const on = panel.id === tab.getAttribute("aria-controls");
-            panel.classList.toggle("is-active", on);
-            panel.hidden = !on;
-          });
+          if (!fromAuto) clearTimers();
+          typePrompt(key);
         }
 
         tabs.forEach(function (tab) {
           tab.addEventListener("click", function () {
-            activate(tab);
+            activate(tab.getAttribute("data-prompt-key"), false);
           });
         });
+
+        activate(activeKey, false);
       }
 
       /** Prefix site-root hrefs so preview under demos/… does not 404. */
