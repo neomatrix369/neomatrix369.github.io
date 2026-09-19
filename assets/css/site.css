@@ -844,6 +844,78 @@ body.site-home > * {
   text-transform: uppercase;
 }
 
+/* --- Wins & in public --- */
+.spotlight {
+  margin: 0 0 2.75rem;
+}
+
+.spotlight-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.spotlight-item {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: 0.85rem 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+  align-items: start;
+}
+
+.spotlight-kind {
+  margin-top: 0.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--signal-ink);
+}
+
+.spotlight-title {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.spotlight-detail {
+  margin: 0 0 0.45rem;
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+.spotlight-link {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--cta-ink);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.spotlight-links {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.5rem;
+}
+
+.spotlight-sep {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.spotlight-link:hover {
+  color: var(--text-primary);
+}
+
 /* --- Card stagger --- */
 .page-card--enter {
   opacity: 0;
@@ -868,6 +940,11 @@ body.site-home > * {
 @media (max-width: 640px) {
   .proof-stats {
     grid-template-columns: 1fr;
+  }
+
+  .spotlight-item {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
   }
 }
 
