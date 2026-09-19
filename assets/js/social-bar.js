@@ -1,6 +1,6 @@
 /**
  * Fixed social strip — logo + handle, matching github.com/neomatrix369 profile links.
- * Self-contained (injects CSS + markup) so demos without site.css still get the bar.
+ * Self-contained (injects CSS + markup) so builds without site.css still get the bar.
  */
 (function () {
   if (document.getElementById("site-social-chrome")) {

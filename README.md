@@ -1,14 +1,14 @@
 # neomatrix369.github.io
 
-Static GitHub Pages site for standalone HTML and interactive demos.
+Static GitHub Pages site for standalone HTML, live benchmarks, explorers, and systems.
 
 **Live site:** https://neomatrix369.github.io/
 
-## Featured demos (hosted)
+## Featured builds (hosted)
 
-| Demo | URL |
+| Build | URL |
 |------|-----|
-| Home — all demos & pages | https://neomatrix369.github.io/ |
+| Home — all builds & pages | https://neomatrix369.github.io/ |
 | Projects hub (Tripwire, SIE, rag-params-finder, …) | https://neomatrix369.github.io/pages/projects.html |
 | Doc extract — project write-up | https://neomatrix369.github.io/pages/playgroup-202602-docextract.html |
 | Doc extract — playground archive (25 snapshots) | https://neomatrix369.github.io/demos/playgroup-202602-docextract/ |
@@ -30,13 +30,13 @@ neomatrix369.github.io/
 ├── pages/
 │   ├── manifest.json       # page catalog for the home page
 │   └── *.html              # project summaries
-└── demos/
+└── demos/                  # URL path kept for permanence — interactive builds
     └── */                  # interactive archives & explorers
 ```
 
 ## Add a page
 
-1. Put static HTML in `pages/` or interactive demos in `demos/`.
+1. Put static HTML in `pages/` or interactive builds in `demos/`.
 2. Add an entry to `pages/manifest.json`.
 
 Use `"kind": "interactive"` for canvas, WebGL, or other JS-heavy pages. Group related pages with `"kind": "group"` and `children`.

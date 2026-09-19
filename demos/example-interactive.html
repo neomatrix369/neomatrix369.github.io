@@ -9,17 +9,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/site.css">
   <style>
-    .demo-shell {
+    .interactive-shell {
       display: grid;
       gap: 1rem;
     }
 
-    .demo-shell h1 {
+    .interactive-shell h1 {
       margin: 0;
       font-family: var(--font-display);
     }
 
-    .demo-panel {
+    .interactive-panel {
       padding: 1rem;
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius);
@@ -64,18 +64,18 @@
     </nav>
   </header>
 
-  <main class="site-main demo-shell">
+  <main class="site-main interactive-shell">
     <div>
       <p><span class="tag tag--interactive">interactive</span></p>
       <h1>Example interactive page</h1>
       <p>Move the pointer over the canvas or press arrow keys to shift the orb.</p>
     </div>
 
-    <section class="demo-panel">
-      <canvas id="demo-canvas" width="640" height="360" aria-label="Interactive orb demo"></canvas>
+    <section class="interactive-panel">
+      <canvas id="interactive-canvas" width="640" height="360" aria-label="Interactive orb"></canvas>
       <div class="controls">
         <button class="button" id="reset-btn" type="button">Reset</button>
-        <output id="coords" for="demo-canvas">x: 320, y: 180</output>
+        <output id="coords" for="interactive-canvas">x: 320, y: 180</output>
       </div>
     </section>
 
@@ -85,7 +85,7 @@
   </main>
 
   <script>
-    const canvas = document.getElementById("demo-canvas");
+    const canvas = document.getElementById("interactive-canvas");
     const coords = document.getElementById("coords");
     const resetBtn = document.getElementById("reset-btn");
     const ctx = canvas.getContext("2d");

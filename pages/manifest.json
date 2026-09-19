@@ -76,7 +76,7 @@
     },
     {
       "title": "Projects",
-      "description": "Open source repos — Tripwire, Skills Scanner, SIE, and more with links to live demos.",
+      "description": "Open source repos — Tripwire, Skills Scanner, SIE, and more with links to live builds.",
       "href": "pages/projects.html",
       "kind": "static"
     },
