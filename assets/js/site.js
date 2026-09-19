@@ -51,7 +51,7 @@ const FALLBACK_PAGES = [
   },
   {
     title: "Projects",
-    description: "Open source repos with links to live demos on this site.",
+    description: "Open source repos with links to live builds on this site.",
     href: "pages/projects.html",
     kind: "static",
   },

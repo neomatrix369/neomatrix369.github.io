@@ -560,7 +560,7 @@
             <div style="position:absolute;left:19px;top:8px;bottom:8px;width:1px;background-image:repeating-linear-gradient(180deg,var(--border-default) 0 4px,transparent 4px 9px)"></div>
             <div style="display:flex;gap:20px;padding-bottom:28px">
               <div style="flex:0 0 auto;width:38px;height:38px;background:var(--bg-surface);border:1px solid var(--green);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--green-ink);z-index:1">✓</div>
-              <div><h4 style="font-family:var(--font-mono);font-size:14px;margin-bottom:4px;font-weight:600">Phase 1 — Hook &amp; skill integration</h4><p style="font-family:var(--font-sans);font-size:13px;color:var(--text-secondary);max-width:520px;line-height:1.45">Handler scripts, PreToolUse wiring, config bootstrap, the five /tw-* skills, demo artifacts, regression pass.</p><div style="font-family:var(--font-mono);font-size:10px;color:var(--green-ink);margin-top:5px;text-transform:uppercase;letter-spacing:0.06em">Shipped at Frontline Hackathon</div></div>
+              <div><h4 style="font-family:var(--font-mono);font-size:14px;margin-bottom:4px;font-weight:600">Phase 1 — Hook &amp; skill integration</h4><p style="font-family:var(--font-sans);font-size:13px;color:var(--text-secondary);max-width:520px;line-height:1.45">Handler scripts, PreToolUse wiring, config bootstrap, the five /tw-* skills, sample artifacts, regression pass.</p><div style="font-family:var(--font-mono);font-size:10px;color:var(--green-ink);margin-top:5px;text-transform:uppercase;letter-spacing:0.06em">Shipped at Frontline Hackathon</div></div>
             </div>
             <div style="display:flex;gap:20px;padding-bottom:28px">
               <div style="flex:0 0 auto;width:38px;height:38px;background:var(--bg-surface);border:1px solid var(--amber);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--amber-ink);z-index:1;box-shadow:0 0 0 4px rgba(255,176,32,0.15)">2</div>
@@ -980,12 +980,12 @@
       <div style="display:flex;align-items:center;gap:16px;background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:8px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.2)">
         <div style="flex:1">
           <div style="font-size:13px;font-weight:600;margin-bottom:4px">Data Source</div>
-          <div style="font-size:12px;color:var(--text-secondary)">Controls whether the entire dashboard (all tabs) loads live data from Supabase or uses built-in demo fixtures.</div>
+          <div style="font-size:12px;color:var(--text-secondary)">Controls whether the entire dashboard (all tabs) loads live data from Supabase or uses built-in sample fixtures.</div>
         </div>
         <div style="display:flex;align-items:center;gap:10px">
           <select onChange="{{ setDataSourceMode }}" value="{{ dataSourceMode }}" style="background:var(--bg-input);border:1px solid var(--border-default);color:var(--text-primary);font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.04em;padding:6px 28px 6px 10px;border-radius:6px;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%226%22><path d=%225 6 0 0h10%22 fill=%22%238fa3be%22/></svg>');background-repeat:no-repeat;background-position:right 8px center;transition:border-color 200ms">
             <option value="live" style="background:var(--bg-surface);color:var(--text-primary)">Live (Supabase)</option>
-            <option value="mock" style="background:var(--bg-surface);color:var(--text-primary)">Mock (demo data)</option>
+            <option value="mock" style="background:var(--bg-surface);color:var(--text-primary)">Mock (sample data)</option>
           </select>
           <div style="display:flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:.04em;padding:3px 9px;border-radius:5px;border:1px solid {{ dataSourceChip.borderColor }};background:{{ dataSourceChip.bgColor }};color:{{ dataSourceChip.textColor }};white-space:nowrap" title="{{ dataSourceChip.tooltip }}">
             <div style="width:5px;height:5px;border-radius:50%;background:{{ dataSourceChip.dotColor }};flex-shrink:0"></div>
@@ -1286,7 +1286,7 @@ class Component extends DCLogic {
     if (totalItems === 0) {
       return {
         title: 'No items yet',
-        detail: 'Run a scan or switch to Mock demo data in Guard to populate the dashboard.'
+        detail: 'Run a scan or switch to Mock sample data in Guard to populate the dashboard.'
       };
     }
     if (statusFilter === 'sie-only') {
@@ -1590,9 +1590,9 @@ class Component extends DCLogic {
       live: { label: 'Live · Supabase', dotColor: '#34d399', textColor: '#0F766E', bgColor: 'rgba(52,211,153,0.1)', borderColor: 'rgba(52,211,153,0.3)', tooltip: 'Fetching real data from Supabase (polling)' },
       'live-realtime': { label: 'Live · Realtime', dotColor: '#34d399', textColor: '#0F766E', bgColor: 'rgba(52,211,153,0.15)', borderColor: 'rgba(52,211,153,0.4)', tooltip: 'Supabase Realtime — updates arrive within ~1s of Modal writes' },
       'live-empty': { label: 'Live · empty', dotColor: '#f59e0b', textColor: '#8B5A00', bgColor: 'rgba(245,158,11,0.1)', borderColor: 'rgba(245,158,11,0.3)', tooltip: 'Connected to Supabase — no items yet' },
-      'mock-selected': { label: 'Demo data', dotColor: '#6b7a8e', textColor: '#5C564C', bgColor: 'rgba(107,122,142,0.1)', borderColor: 'rgba(28,25,21,0.12)', tooltip: 'Using built-in demo data (user selected)' },
-      mock: { label: 'Demo data', dotColor: '#6b7a8e', textColor: '#5C564C', bgColor: 'rgba(107,122,142,0.1)', borderColor: 'rgba(28,25,21,0.12)', tooltip: 'Using built-in demo data; configure Supabase and select Live for database results' },
-      'mock-failed': { label: 'Connection error', dotColor: '#f43f5e', textColor: '#B42318', bgColor: 'rgba(244,63,94,0.1)', borderColor: 'rgba(244,63,94,0.3)', tooltip: 'Could not reach Supabase (auth, RLS, or network) — showing demo data' },
+      'mock-selected': { label: 'Sample data', dotColor: '#6b7a8e', textColor: '#5C564C', bgColor: 'rgba(107,122,142,0.1)', borderColor: 'rgba(28,25,21,0.12)', tooltip: 'Using built-in sample data (user selected)' },
+      mock: { label: 'Sample data', dotColor: '#6b7a8e', textColor: '#5C564C', bgColor: 'rgba(107,122,142,0.1)', borderColor: 'rgba(28,25,21,0.12)', tooltip: 'Using built-in sample data; configure Supabase and select Live for database results' },
+      'mock-failed': { label: 'Connection error', dotColor: '#f43f5e', textColor: '#B42318', bgColor: 'rgba(244,63,94,0.1)', borderColor: 'rgba(244,63,94,0.3)', tooltip: 'Could not reach Supabase (auth, RLS, or network) — showing sample data' },
       'mock-empty': { label: 'Live · empty', dotColor: '#f59e0b', textColor: '#8B5A00', bgColor: 'rgba(245,158,11,0.1)', borderColor: 'rgba(245,158,11,0.3)', tooltip: 'Connected to Supabase — no items yet' }
     };
     const chipKey = s.realtimeConnected && s.dataSource === 'live' ? 'live-realtime' : s.dataSource;
