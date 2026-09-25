@@ -54,17 +54,12 @@
   <main class="site-main content">
     <p><span class="tag">static</span></p>
     <h1>Open source projects</h1>
-    <p>Why each one started, the problem, what was put in place, and the result. Repos and live builds sit under that.</p>
+    <p>Repos and live builds. The full why, problem, and result for each flagship is on the <a href="../#stories">home page</a>.</p>
 
     <ul class="project-list">
       <li>
         <h2>py-bug-trace · Laguna eval</h2>
-        <dl class="story-bits">
-          <div><dt>Why</dt><dd>The Poolside Laguna hackathon asked how laguna-xs.2 behaves on Python bugs next to other models.</dd></div>
-          <div><dt>Problem</dt><dd>One overall score hides whether a model is weak on easy tasks and strong when the job is fixing code.</dd></div>
-          <div><dt>Built</dt><dd>A 29-model sweep, with an explorer, a short write-up, and per-level scorecards.</dd></div>
-          <div><dt>Result</dt><dd>12th of 29 overall (79%), and 2nd on the hardest level (86.7%).</dd></div>
-        </dl>
+        <p>12th of 29 overall, and 2nd on the hardest level: weak on easy tasks, strong at fixing code.</p>
         <p><a class="repo" href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/tree/main/environments/py_bug_trace">HF: laguna-eval-experiments / py_bug_trace</a></p>
         <p>
           <a class="button" href="laguna-py-bug-trace.html">Project page</a>
@@ -74,12 +69,7 @@
       </li>
       <li>
         <h2>UK Charity Doc Extract</h2>
-        <dl class="story-bits">
-          <div><dt>Why</dt><dd>A playgroup needed a fair comparison of models on the same real charity PDFs.</dd></div>
-          <div><dt>Problem</dt><dd>Eight financial fields have to come out of PDF annual reports, and models differ in accuracy, failures, time, and cost.</dd></div>
-          <div><dt>Built</dt><dd>A scored extractor across OpenRouter, Doubleword, and V7 Go, plus a public playground of every run.</dd></div>
-          <div><dt>Result</dt><dd>122 scored runs. The best models reach about 0.95 F1, and the leaderboard shows the failures too.</dd></div>
-        </dl>
+        <p>122 scored runs. The best models reach about 0.95 F1, and the leaderboard shows the failures too.</p>
         <p><a class="repo" href="https://github.com/neomatrix369/playgroup_202602_docextract">github.com/neomatrix369/playgroup_202602_docextract</a></p>
         <p>
           <a class="button" href="playgroup-202602-docextract.html">Project page</a>
@@ -88,12 +78,7 @@
       </li>
       <li>
         <h2>Tripwire</h2>
-        <dl class="story-bits">
-          <div><dt>Why</dt><dd>Coding agents install skills and tools, then treat that install as trusted code.</dd></div>
-          <div><dt>Problem</dt><dd>The install is unreviewed code sitting inside a trusted session.</dd></div>
-          <div><dt>Built</dt><dd>A scan that runs before the agent executes the artifact. Tiered routing uses <a href="#sie">SIE</a> before a heavier model step.</dd></div>
-          <div><dt>Result</dt><dd>A scan-and-block path for Claude Code, with a public dashboard of the gate.</dd></div>
-        </dl>
+        <p>Scans agent installs and blocks them before they run. Tiered routing uses <a href="#sie">SIE</a> before a heavier model step.</p>
         <p><a class="repo" href="https://github.com/neomatrix369/tripwire">github.com/neomatrix369/tripwire</a></p>
         <p class="card-actions">
           <a class="button" href="../demos/tripwire-dashboard/">Open dashboard</a>
