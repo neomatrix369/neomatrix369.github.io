@@ -27,19 +27,6 @@
 
   <main class="site-main">
     <section class="hero">
-      <div class="news-window" aria-label="Site highlight">
-        <div class="news-window__titlebar">
-          <span>Site news · build highlight</span>
-          <span class="news-window__live">Live</span>
-        </div>
-        <div class="news-window__body">
-          <p>
-            <strong>Model extraction playground</strong> — 122 scored runs, rankings &amp; heatmaps.
-          </p>
-          <span class="news-window__clock" data-live-clock aria-live="polite">—</span>
-        </div>
-      </div>
-
       <p class="hero-eyebrow">UK · SWE/BE → Data/AI/ML · software craftsperson · open source</p>
       <h1>Where benchmarks and builds live</h1>
       <p class="hero-lead">
@@ -121,6 +108,19 @@
         </div>
       </section>
 
+      <div class="news-window" aria-label="Site highlight">
+        <div class="news-window__titlebar">
+          <span>Site news · build highlight</span>
+          <span class="news-window__live">Live</span>
+        </div>
+        <div class="news-window__body">
+          <p>
+            <strong>Model extraction playground</strong> — 122 scored runs, rankings &amp; heatmaps.
+          </p>
+          <span class="news-window__clock" data-live-clock aria-live="polite">—</span>
+        </div>
+      </div>
+
       <div class="hero-action-strip">
         <a class="button button--primary button--mono" href="pages/playgroup-202602-docextract.html">Open doc extract benchmark</a>
         <div class="copy-strip">
@@ -185,31 +185,19 @@
 
       <div class="hero-featured">
         <div class="hero-panel">
-          <h2 class="hero-panel-title">Live on this site</h2>
+          <h2 class="hero-panel-title">One page each</h2>
           <ul class="hero-links-list">
             <li>
-              <a href="demos/playgroup-202602-docextract/"><strong>Model extraction playground</strong></a>
-              <span>Latest + 24 historic snapshots · 122 scored runs · rankings &amp; heatmaps</span>
+              <a href="pages/playgroup-202602-docextract.html"><strong>Charity document extraction</strong></a>
+              <span>Which model can pull eight financial fields from a charity PDF, and what it costs. 122 scored runs.</span>
             </li>
             <li>
-              <a href="demos/playgroup-202602-docextract/extractor-all-doubleword.html"><strong>Doubleword extraction guide</strong></a>
-              <span>Video walkthrough · <code>extractor.py --all-doubleword</code></span>
+              <a href="pages/laguna-py-bug-trace.html"><strong>Python bug benchmark</strong></a>
+              <span>One overall rank hid a model that is weak on easy tasks and strong at fixing code. 12th of 29, 2nd on the hardest level.</span>
             </li>
             <li>
-              <a href="pages/playgroup-202602-docextract.html"><strong>UK Charity Doc Extract</strong></a>
-              <span>Benchmark write-up · provider findings &amp; methodology</span>
-            </li>
-            <li>
-              <a href="demos/laguna-py-bug-trace/?view=explorer.html"><strong>py-bug-trace sweep explorer</strong></a>
-              <span>29 models · Laguna-XS.2 rank 12/29 · heatmap &amp; Pareto</span>
-            </li>
-            <li>
-              <a href="pages/laguna-py-bug-trace.html"><strong>py-bug-trace · Laguna eval</strong></a>
-              <span>One-pager, write-up, technical report &amp; level scorecards</span>
-            </li>
-            <li>
-              <a href="demos/tripwire-dashboard/"><strong>Tripwire dashboard</strong></a>
-              <span>Security &amp; quality scanning prototype</span>
+              <a href="demos/tripwire-dashboard/"><strong>Tripwire</strong></a>
+              <span>Agents install unreviewed skills and tools, then trust them. This scans and blocks before they run.</span>
             </li>
           </ul>
         </div>
