@@ -11,3 +11,5 @@ node_modules/
 .vercel/
 .cursor/
 .gate-cache/
+
+.omc
