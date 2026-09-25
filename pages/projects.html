@@ -20,6 +20,7 @@
     }
     .project-list h2 { margin: 0 0 0.35rem; font-size: 1.05rem; }
     .project-list p { margin: 0; color: var(--text-secondary); font-size: 0.9375rem; }
+    .project-list .story-bits { margin: 0.35rem 0 0.75rem; }
     .project-list a.repo { font-family: var(--font-mono); font-size: 0.8125rem; }
     .project-list .deps {
       margin: 0.85rem 0 0;
@@ -53,12 +54,12 @@
   <main class="site-main content">
     <p><span class="tag">static</span></p>
     <h1>Open source projects</h1>
-    <p>Repos and live builds published from this GitHub Pages site.</p>
+    <p>Repos and live builds. The full why, problem, and result for each flagship is on the <a href="../#stories">home page</a>.</p>
 
     <ul class="project-list">
       <li>
         <h2>py-bug-trace · Laguna eval</h2>
-        <p>29-model Python benchmark from the Poolside Laguna hackathon — output prediction and bug-fix tasks across three levels.</p>
+        <p>12th of 29 overall, and 2nd on the hardest level: weak on easy tasks, strong at fixing code.</p>
         <p><a class="repo" href="https://huggingface.co/poolside-laguna-hackathon/laguna-eval-experiments/tree/main/environments/py_bug_trace">HF: laguna-eval-experiments / py_bug_trace</a></p>
         <p>
           <a class="button" href="laguna-py-bug-trace.html">Project page</a>
@@ -68,7 +69,7 @@
       </li>
       <li>
         <h2>UK Charity Doc Extract</h2>
-        <p>Multi-model benchmark for extracting structured fields from UK charity financial PDFs (OpenRouter, Doubleword, V7 Go).</p>
+        <p>122 scored runs. The best models reach about 0.95 F1, and the leaderboard shows the failures too.</p>
         <p><a class="repo" href="https://github.com/neomatrix369/playgroup_202602_docextract">github.com/neomatrix369/playgroup_202602_docextract</a></p>
         <p>
           <a class="button" href="playgroup-202602-docextract.html">Project page</a>
@@ -77,24 +78,21 @@
       </li>
       <li>
         <h2>Tripwire</h2>
-        <p>Security and quality scanning for AI-assisted development workflows — tiered routing uses <a href="#sie">SIE</a> before Model Studio escalation.</p>
+        <p>Scans agent installs and blocks them before they run. Tiered routing uses <a href="#sie">SIE</a> before a heavier model step.</p>
         <p><a class="repo" href="https://github.com/neomatrix369/tripwire">github.com/neomatrix369/tripwire</a></p>
         <p class="card-actions">
           <a class="button" href="../demos/tripwire-dashboard/">Open dashboard</a>
           <a class="button" href="#sie">SIE hub ↓</a>
         </p>
       </li>
-      <li>
-        <h2>Skills Scanner</h2>
-        <p>Scan and review agent skill packages for quality and safety signals.</p>
-        <p><a class="repo" href="https://github.com/neomatrix369/skills_scanner">github.com/neomatrix369/skills_scanner</a></p>
-      </li>
       <li id="sie">
         <h2>SIE</h2>
-        <p>
-          <strong>Superlinked Inference Engine (SIE)</strong> — open-source inference server and production cluster for the models your agents need.
-          Several projects on this site depend on SIE for embeddings, routing, or arbitration.
-        </p>
+        <dl class="story-bits">
+          <div><dt>Why</dt><dd>Tripwire and the RAG parameter toolkit need a shared place to run models.</dd></div>
+          <div><dt>Problem</dt><dd>Embeddings, routing, and triage need an inference server those projects can call.</dd></div>
+          <div><dt>Built</dt><dd><strong>Superlinked Inference Engine (SIE)</strong> — an open-source inference server and production cluster.</dd></div>
+          <div><dt>Result</dt><dd>Tripwire uses it for triage before a heavier model step. rag-params-finder uses it for embeddings.</dd></div>
+        </dl>
         <p><a class="repo" href="https://github.com/neomatrix369/sie">github.com/neomatrix369/sie</a></p>
         <p class="card-actions">
           <a class="button button--primary" href="https://github.com/neomatrix369/sie" rel="noopener">SIE repo</a>

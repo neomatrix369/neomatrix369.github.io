@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="mani · neomatrix369 — AI engineer rooted in software/backend, transforming through data into ML and AI. Java Champion. Live benchmarks, explorers, and systems.">
+  <meta name="description" content="mani · neomatrix369 — why each public build started, the problem it takes on, what was put in place, and the result. Live benchmarks, explorers, and systems.">
   <title>mani · neomatrix369</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,6 +17,7 @@
       <small>github.io</small>
     </a>
     <nav class="site-nav" aria-label="Primary">
+      <a href="#stories">Why</a>
       <a href="#spotlight">Wins</a>
       <a href="#pages">Builds</a>
       <a href="pages/projects.html">Projects</a>
@@ -26,6 +27,87 @@
 
   <main class="site-main">
     <section class="hero">
+      <p class="hero-eyebrow">UK · SWE/BE → Data/AI/ML · software craftsperson · open source</p>
+      <h1>Where benchmarks and builds live</h1>
+      <p class="hero-lead">
+        Lead AI engineer rooted in software and backend systems.
+      </p>
+
+      <section class="stories" id="stories" aria-labelledby="stories-title">
+        <h2 class="section-title" id="stories-title">Why these exist</h2>
+        <p class="section-lead">
+          One view of each project. The benchmarks, explorers, and repos stay one click further down.
+        </p>
+        <div class="story-grid">
+          <article class="story-card">
+            <h3>Charity document extraction</h3>
+            <dl class="story-bits">
+              <div>
+                <dt>Why</dt>
+                <dd>A playgroup needed a fair comparison of models on the same real charity PDFs, with the same fields and the same score.</dd>
+              </div>
+              <div>
+                <dt>Problem</dt>
+                <dd>UK charity annual reports are PDFs. Eight financial fields have to come out correctly, and models differ in accuracy, failed runs, time, and cost.</dd>
+              </div>
+              <div>
+                <dt>Built</dt>
+                <dd>A scored extractor across OpenRouter, Doubleword, and V7 Go, plus a public playground of every run.</dd>
+              </div>
+              <div>
+                <dt>Result</dt>
+                <dd>122 scored runs. The best models reach about 0.95 F1. Provider averages and failures are on the leaderboard, so a choice is a comparison.</dd>
+              </div>
+            </dl>
+            <a class="button button--primary" href="pages/playgroup-202602-docextract.html">Read the project</a>
+          </article>
+          <article class="story-card">
+            <h3>Python bug benchmark</h3>
+            <dl class="story-bits">
+              <div>
+                <dt>Why</dt>
+                <dd>The Poolside Laguna hackathon asked how laguna-xs.2 behaves on Python bugs next to a field of other models.</dd>
+              </div>
+              <div>
+                <dt>Problem</dt>
+                <dd>One overall score hides the shape of a model. Easy tasks and hard code-fixes are different jobs.</dd>
+              </div>
+              <div>
+                <dt>Built</dt>
+                <dd>A 29-model sweep on py-bug-trace, with an explorer, a short write-up, and per-level scorecards.</dd>
+              </div>
+              <div>
+                <dt>Result</dt>
+                <dd>12th of 29 overall (79%), and 2nd on the hardest level (86.7%): weaker on easy tasks, stronger when the job is fixing code.</dd>
+              </div>
+            </dl>
+            <a class="button button--primary" href="pages/laguna-py-bug-trace.html">Read the project</a>
+          </article>
+          <article class="story-card">
+            <h3>Tripwire</h3>
+            <dl class="story-bits">
+              <div>
+                <dt>Why</dt>
+                <dd>Coding agents install skills and tools, then treat that install as trusted code.</dd>
+              </div>
+              <div>
+                <dt>Problem</dt>
+                <dd>The install is unreviewed code sitting inside a trusted session.</dd>
+              </div>
+              <div>
+                <dt>Built</dt>
+                <dd>A scan that runs before the agent executes the artifact, and blocks what should not run. The dashboard is the public view of that gate.</dd>
+              </div>
+              <div>
+                <dt>Result</dt>
+                <dd>A scan-and-block path for Claude Code, built at the Frontline hackathon in London. Open the dashboard to see the gate.</dd>
+              </div>
+            </dl>
+            <a class="button button--primary" href="demos/tripwire-dashboard/">Open the dashboard</a>
+          </article>
+        </div>
+      </section>
+
       <div class="news-window" aria-label="Site highlight">
         <div class="news-window__titlebar">
           <span>Site news · build highlight</span>
@@ -39,15 +121,7 @@
         </div>
       </div>
 
-      <p class="hero-eyebrow">UK · SWE/BE → Data/AI/ML · software craftsperson · open source</p>
-      <h1>Where benchmarks and builds live</h1>
-      <p class="hero-lead">
-        Lead AI engineer rooted in software and backend systems — transforming through data science and data engineering into ML and AI, shipping production-grade work and proving it in public.
-        This site hosts <strong>live benchmarks, explorers, and systems</strong>; GitHub holds repos, katas, and curated learning lists.
-      </p>
-
       <div class="hero-action-strip">
-        <a class="button button--primary button--mono" href="pages/playgroup-202602-docextract.html">Open doc extract benchmark</a>
         <div class="copy-strip">
           <button type="button" class="copy-strip__btn" data-copy-prompt id="copy-prompt-btn">
             <span class="copy-strip__icon" aria-hidden="true">⎘</span>
@@ -109,35 +183,6 @@
       </div>
 
       <div class="hero-featured">
-        <div class="hero-panel">
-          <h2 class="hero-panel-title">Live on this site</h2>
-          <ul class="hero-links-list">
-            <li>
-              <a href="demos/playgroup-202602-docextract/"><strong>Model extraction playground</strong></a>
-              <span>Latest + 24 historic snapshots · 122 scored runs · rankings &amp; heatmaps</span>
-            </li>
-            <li>
-              <a href="demos/playgroup-202602-docextract/extractor-all-doubleword.html"><strong>Doubleword extraction guide</strong></a>
-              <span>Video walkthrough · <code>extractor.py --all-doubleword</code></span>
-            </li>
-            <li>
-              <a href="pages/playgroup-202602-docextract.html"><strong>UK Charity Doc Extract</strong></a>
-              <span>Benchmark write-up · provider findings &amp; methodology</span>
-            </li>
-            <li>
-              <a href="demos/laguna-py-bug-trace/?view=explorer.html"><strong>py-bug-trace sweep explorer</strong></a>
-              <span>29 models · Laguna-XS.2 rank 12/29 · heatmap &amp; Pareto</span>
-            </li>
-            <li>
-              <a href="pages/laguna-py-bug-trace.html"><strong>py-bug-trace · Laguna eval</strong></a>
-              <span>One-pager, write-up, technical report &amp; level scorecards</span>
-            </li>
-            <li>
-              <a href="demos/tripwire-dashboard/"><strong>Tripwire dashboard</strong></a>
-              <span>Security &amp; quality scanning prototype</span>
-            </li>
-          </ul>
-        </div>
         <div class="hero-panel">
           <h2 class="hero-panel-title">On GitHub</h2>
           <ul class="hero-links-list">
