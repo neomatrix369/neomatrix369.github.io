@@ -26,6 +26,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 4.75rem;
 }
 
 body {
@@ -54,13 +55,13 @@ a:hover {
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 20;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
   padding: 1rem 1.5rem;
-  background: rgba(245, 242, 234, 0.92);
+  background: var(--bg-base);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border-subtle);
 }
@@ -517,6 +518,11 @@ body.site-home::before {
 body.site-home > * {
   position: relative;
   z-index: 1;
+}
+
+body.site-home > .site-header {
+  position: sticky;
+  z-index: 20;
 }
 
 .hero h1 {
