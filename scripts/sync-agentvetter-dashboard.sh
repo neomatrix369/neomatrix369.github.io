@@ -5,10 +5,19 @@ set -euo pipefail
 PAGES_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 export PAGES_ROOT
 
-PROJECT_SYNC="$PAGES_ROOT/../agentvetter/.claude/skills/sync-agentvetter-pages/scripts/sync.sh"
+PROJECT_SYNC=""
+for candidate in \
+  "$PAGES_ROOT/../AgentVetter/.claude/skills/sync-agentvetter-pages/scripts/sync.sh" \
+  "$PAGES_ROOT/../agentvetter/.claude/skills/sync-agentvetter-pages/scripts/sync.sh"
+do
+  if [[ -f "$candidate" ]]; then
+    PROJECT_SYNC="$candidate"
+    break
+  fi
+done
 CLAUDE_SYNC="${HOME}/.claude/skills/sync-agentvetter-pages/scripts/sync.sh"
 
-if [[ -f "$PROJECT_SYNC" ]]; then
+if [[ -n "$PROJECT_SYNC" ]]; then
   exec bash "$PROJECT_SYNC" "$@"
 fi
 if [[ -f "$CLAUDE_SYNC" ]]; then
@@ -16,11 +25,13 @@ if [[ -f "$CLAUDE_SYNC" ]]; then
 fi
 
 echo "WARN: skill script not found; running inline fallback." >&2
-echo "Install: agentvetter/.claude/skills/sync-agentvetter-pages/" >&2
+echo "Install: AgentVetter/.claude/skills/sync-agentvetter-pages/" >&2
 
-DEFAULT_AGENTVETTER_FALLBACK="/Users/swami/git-repos/ai-ml-dl-stuff/tools-and-utilities/agentvetter"
+DEFAULT_AGENTVETTER_FALLBACK="/Users/swami/git-repos/ai-ml-dl-stuff/tools-and-utilities/AgentVetter"
 if [[ -z "${AGENTVETTER_ROOT:-}" ]]; then
-  if [[ -d "$PAGES_ROOT/../agentvetter/prototypes/dc-dashboard" ]]; then
+  if [[ -d "$PAGES_ROOT/../AgentVetter/prototypes/dc-dashboard" ]]; then
+    AGENTVETTER_ROOT="$(cd "$PAGES_ROOT/../AgentVetter" && pwd)"
+  elif [[ -d "$PAGES_ROOT/../agentvetter/prototypes/dc-dashboard" ]]; then
     AGENTVETTER_ROOT="$(cd "$PAGES_ROOT/../agentvetter" && pwd)"
   else
     AGENTVETTER_ROOT="$DEFAULT_AGENTVETTER_FALLBACK"

@@ -261,6 +261,302 @@
   .stat-num { font-family: var(--font-mono); font-size: 32px; font-weight: 700; line-height: 1; margin-bottom: 8px; }
   .stat-label { font-family: var(--font-sans); font-size: 13px; color: var(--text-secondary); margin-bottom: 10px; line-height: 1.45; }
   .stat-src { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); border-top: 1px dashed var(--border-default); padding-top: 8px; }
+
+  /* Slice 68 — workflow stepper (colour + text stateLabel; never colour alone) */
+  .tw-workflow-chrome {
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--border-subtle);
+    background: var(--bg-deep);
+    padding: 10px 20px 12px;
+  }
+  /* Workflow tab: chrome fills the main pane (inventory lives on Dashboard) */
+  .tw-workflow-chrome.tw-workflow-focus {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+  }
+  .tw-workflow-stepper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+  }
+  .tw-workflow-stepper button {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid var(--border-default);
+    background: transparent;
+    color: var(--text-secondary);
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    transition: border-color 150ms ease, background 150ms ease, color 150ms ease;
+  }
+  .tw-workflow-stepper button:hover {
+    border-color: var(--cta);
+    color: var(--text-primary);
+  }
+  .tw-workflow-stepper button:focus-visible {
+    outline: 2px solid var(--cta);
+    outline-offset: 2px;
+  }
+  .tw-workflow-stepper button[aria-current="step"] {
+    border-color: var(--cta);
+    background: rgba(196, 165, 116, 0.18);
+    color: var(--text-primary);
+    font-weight: 700;
+  }
+  /* Slice 74: secondary line is modelHint (not COMPLETE/CURRENT/UPCOMING).
+     Progress remains text-accessible via title + aria-current (slice 68). */
+  .tw-workflow-stepper .tw-step-models {
+    display: block;
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    letter-spacing: 0.02em;
+    max-width: 9.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: none;
+  }
+  .tw-workflow-stepper button[aria-current="step"] .tw-step-models {
+    color: var(--cta-ink);
+  }
+  .tw-workflow-panel {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border-subtle);
+  }
+  /* Fix step — hierarchy: display title, sans prose, mono only for the diff */
+  .tw-fix-kicker {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .tw-fix-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    margin: 0 0 14px;
+    line-height: 1.2;
+  }
+  .tw-fix-panes {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 12px;
+    margin-bottom: 14px;
+    align-items: stretch;
+  }
+  @media (max-width: 720px) {
+    .tw-fix-panes { grid-template-columns: 1fr; }
+  }
+  .tw-fix-pane {
+    padding: 12px 14px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    background: var(--bg-surface);
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .tw-fix-pane-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 8px;
+  }
+  .tw-fix-problem {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+  }
+  .tw-fix-badge {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--cta-ink);
+    background: rgba(196, 165, 116, 0.16);
+    border: 1px solid rgba(196, 165, 116, 0.35);
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin: 0 0 8px;
+  }
+  .tw-fix-body {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-primary);
+    margin: 0 0 6px;
+  }
+  .tw-fix-status {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin: 0 0 12px;
+  }
+  .tw-fix-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .tw-fix-hint {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    color: var(--text-muted);
+    margin: 0 0 6px;
+  }
+  /* Full unified diff — never clip; operator scrolls inside the pane */
+  .tw-proposed-patch {
+    margin: 0;
+    flex: 1 1 auto;
+    min-height: 12rem;
+    font-size: 12px;
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    line-height: 1.5;
+    white-space: pre;
+    max-height: min(55vh, 36rem);
+    overflow: auto;
+    background: var(--bg-deep);
+    padding: 10px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--border-subtle);
+  }
+  .tw-workflow-finding {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    text-align: left;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    padding: 8px 10px;
+    margin-bottom: 6px;
+    border-radius: 4px;
+    border: 1px solid var(--border-subtle);
+    border-left: 3px solid var(--grey);
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    cursor: pointer;
+  }
+  .tw-workflow-finding:focus-visible {
+    outline: 2px solid var(--cta);
+    outline-offset: 2px;
+  }
+  .tw-workflow-finding-selected {
+    border-color: var(--cta, var(--border-default));
+    background: var(--bg-elevated, var(--bg-surface));
+  }
+  .tw-finding-select {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 8px 4px;
+  }
+  .tw-finding-select input {
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+  }
+  .tw-parent-meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-right: 8px;
+  }
+  .tw-selection-progress {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  /* Slice 76 — shared Workflow panel chrome (display / sans / mono) */
+  .tw-panel-kicker {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 4px;
+  }
+  .tw-panel-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    margin: 0 0 8px;
+    line-height: 1.25;
+  }
+  .tw-panel-meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    margin: 0 0 6px;
+    line-height: 1.4;
+  }
+  .tw-panel-body {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-primary);
+    margin: 0 0 8px;
+  }
+  .tw-panel-filter-label {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    min-width: 3.5rem;
+    flex-shrink: 0;
+    padding-top: 4px;
+  }
+  .tw-filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 6px 8px;
+    margin: 2px 0;
+  }
+  .tw-filter-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 0px;
+    flex: 1;
+    min-width: 0;
+  }
+  /* Legacy class kept as alias for any external references */
+  .tw-triage-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 2px 0;
+  }
 </style>
 </helmet>
 <div style="display:flex;flex-direction:column;height:100vh;background:var(--bg-base);color:var(--text-primary);font-family:var(--font-sans);overflow:hidden;position:relative;z-index:1">
@@ -283,6 +579,277 @@
     <div style="width:1px;height:16px;background:var(--border-subtle);margin:0 2px"></div>
     <button onClick="{{ toggleIntro }}" style="{{ introToggleStyle }}" title="Toggle intro / about">{{ introToggleLabel }}</button>
   </div>
+
+  <!-- ── Slice 68 workflow chrome (Workflow primary tab only) ── -->
+  <sc-if value="{{ showWorkflow }}" hint-placeholder-val="{{ false }}">
+  <div class="{{ workflowChromeClass }}" role="region" aria-label="Approved-repo workflow">
+    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px">
+      <nav class="tw-workflow-stepper" aria-label="Workflow steps">
+        <sc-for list="{{ workflowStepperSteps }}" as="step" hint-placeholder-count="6">
+          <button type="button" onClick="{{ step.onClick }}" aria-current="{{ step.ariaCurrent }}" title="{{ step.title }}">
+            <span>{{ step.label }}</span>
+            <sc-if value="{{ step.hasModelHint }}" hint-placeholder-val="{{ false }}">
+              <span class="tw-step-models">{{ step.modelHint }}</span>
+            </sc-if>
+          </button>
+        </sc-for>
+      </nav>
+      <div style="display:flex;align-items:center;gap:8px" role="group" aria-label="View mode">
+        <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em">View</span>
+        <button type="button" onClick="{{ setSimpleMode }}" style="{{ simpleModeBtnStyle }}" aria-pressed="{{ simpleModePressed }}">Simple</button>
+        <button type="button" onClick="{{ setExpertModeOn }}" style="{{ expertModeBtnStyle }}" aria-pressed="{{ expertModePressed }}">Expert</button>
+      </div>
+    </div>
+
+    <sc-if value="{{ workflowIsRun }}" hint-placeholder-val="{{ true }}">
+      <div class="tw-workflow-panel" aria-label="Run progress">
+        <div class="tw-panel-kicker">Run</div>
+        <div class="tw-panel-title">{{ workflowRun.judgesSummary }}</div>
+        <sc-if value="{{ workflowRun.processLine }}">
+          <div class="tw-panel-body">{{ workflowRun.processLine }}</div>
+        </sc-if>
+        <sc-if value="{{ workflowRun.finalLine }}">
+          <div class="tw-panel-body">{{ workflowRun.finalLine }}</div>
+        </sc-if>
+        <sc-if value="{{ workflowRun.disagreementLine }}">
+          <div class="tw-panel-meta">{{ workflowRun.disagreementLine }}</div>
+        </sc-if>
+        <sc-if value="{{ workflowRun.modelsUsedLine }}">
+          <div class="tw-panel-meta">{{ workflowRun.modelsUsedLine }}</div>
+        </sc-if>
+        <sc-for list="{{ workflowRun.scannerRows }}" as="row" hint-placeholder-count="2">
+          <div style="display:grid;grid-template-columns:1.2fr 1.4fr 0.9fr 0.7fr 0.7fr;gap:8px;padding:6px 8px;margin-bottom:4px;border:1px solid var(--border-subtle);border-radius:4px;background:var(--bg-surface);font-family:var(--font-mono);font-size:11px;color:var(--text-secondary)">
+            <span style="color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ row.target }}</span>
+            <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ row.scanner }}</span>
+            <span>{{ row.status }}</span>
+            <span>cand {{ row.candidates }}</span>
+            <span>err {{ row.errors }}</span>
+          </div>
+        </sc-for>
+        <sc-for list="{{ workflowRun.judgeSlots }}" as="slot" hint-placeholder-count="0">
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);padding:2px 0">{{ slot.slot }} · {{ slot.status }} · {{ slot.verdict }}</div>
+        </sc-for>
+        <sc-if value="{{ workflowRun.primaryCtaVisible }}">
+          <button type="button" onClick="{{ workflowRun.onPrimaryCta }}" style="margin-top:10px;font-family:var(--font-mono);font-size:11px;padding:6px 12px;border-radius:4px;cursor:pointer;border:1px solid var(--border-default);background:var(--cta-bg, var(--bg-elevated));color:var(--cta-ink, var(--text-primary))">{{ workflowRun.primaryCtaLabel }}</button>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ workflowIsTriage }}" hint-placeholder-val="{{ false }}">
+      <div class="tw-workflow-panel" aria-label="Triage">
+        <div class="tw-panel-kicker">Triage</div>
+        <div class="tw-panel-title">{{ workflowTriage.headline }}</div>
+        <sc-if value="{{ workflowTriage.modelsUsedLine }}">
+          <div class="tw-panel-meta">{{ workflowTriage.modelsUsedLine }}</div>
+        </sc-if>
+        <div class="tw-panel-meta">
+          Coverage · discovered {{ workflowTriage.coverageHonesty.discovered }} · scanned {{ workflowTriage.coverageHonesty.scanned }} · failed {{ workflowTriage.coverageHonesty.failed }} · skipped {{ workflowTriage.coverageHonesty.skipped }}
+        </div>
+        <div class="tw-filter-row">
+          <span class="tw-panel-filter-label">Type</span>
+          <div class="tw-filter-toolbar" role="tablist" aria-label="Target type filters">
+            <sc-for list="{{ workflowTriage.typeTabs }}" as="tab" hint-placeholder-count="4">
+              <button type="button" role="tab" onClick="{{ tab.onClick }}" aria-selected="{{ tab.ariaSelected }}" style="{{ tab.style }}">{{ tab.label }} ({{ tab.count }})</button>
+            </sc-for>
+          </div>
+        </div>
+        <div class="tw-filter-row">
+          <span class="tw-panel-filter-label">Quality</span>
+          <div class="tw-filter-toolbar" role="tablist" aria-label="Quality filters">
+            <sc-for list="{{ workflowTriage.qualityTabs }}" as="tab" hint-placeholder-count="4">
+              <button type="button" role="tab" onClick="{{ tab.onClick }}" aria-selected="{{ tab.ariaSelected }}" style="{{ tab.style }}">{{ tab.label }} ({{ tab.count }})</button>
+            </sc-for>
+          </div>
+        </div>
+        <div class="tw-filter-row">
+          <span class="tw-panel-filter-label">Target</span>
+          <div class="tw-filter-toolbar" role="tablist" aria-label="Target filters">
+            <sc-for list="{{ workflowTriage.targetChips }}" as="tab" hint-placeholder-count="3">
+              <button type="button" role="tab" onClick="{{ tab.onClick }}" aria-selected="{{ tab.ariaSelected }}" style="{{ tab.style }}">{{ tab.label }} ({{ tab.count }})</button>
+            </sc-for>
+          </div>
+        </div>
+        <div class="tw-panel-meta" style="margin:4px 0 8px">Focus one skill / MCP / package via Target, then select a single finding to Investigate → Fix → Verify.</div>
+        <div class="tw-filter-row">
+          <span class="tw-panel-filter-label">Status</span>
+          <div class="tw-filter-toolbar" role="tablist" aria-label="Triage status filters">
+            <sc-for list="{{ workflowTriage.tabs }}" as="tab" hint-placeholder-count="4">
+              <button type="button" role="tab" onClick="{{ tab.onClick }}" aria-selected="{{ tab.ariaSelected }}" style="{{ tab.style }}">{{ tab.label }} ({{ tab.count }})</button>
+            </sc-for>
+          </div>
+        </div>
+        <sc-for list="{{ workflowTriage.filteredFindings }}" as="f" hint-placeholder-count="2">
+          <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:stretch;margin-bottom:6px" class="{{ f.rowClass }}">
+            <label class="tw-finding-select">
+              <input type="checkbox" checked="{{ f.selectionChecked }}" onChange="{{ f.onToggleSelect }}" aria-label="{{ f.selectAriaLabel }}" />
+            </label>
+            <button type="button" class="tw-workflow-finding {{ f.findingClass }}" onClick="{{ f.onInvestigate }}" style="flex:1;min-width:200px;border-left-color:{{ f.sevColor }}">
+              <span>
+                <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;color:{{ f.sevColor }};text-transform:uppercase">{{ f.severity }}</span>
+                <sc-if value="{{ f.parentMeta }}">
+                  <span class="tw-parent-meta">{{ f.parentMeta }}</span>
+                </sc-if>
+                <span style="margin-left:8px">{{ f.title }}</span>
+                <span style="display:block;font-family:var(--font-mono);font-size:10px;color:var(--text-muted);margin-top:2px">{{ f.metaLine }}</span>
+              </span>
+              <span style="font-family:var(--font-mono);font-size:10px;color:var(--cta-ink)">Investigate →</span>
+            </button>
+            <div style="display:flex;flex-direction:column;gap:4px" role="group" aria-label="Override triage status">
+              <button type="button" onClick="{{ f.setToFix }}" style="{{ f.toFixStyle }}">To fix</button>
+              <button type="button" onClick="{{ f.setNeedsReview }}" style="{{ f.needsReviewStyle }}">Needs review</button>
+              <button type="button" onClick="{{ f.setDismissed }}" style="{{ f.dismissedStyle }}">Dismiss</button>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ workflowIsInvestigate }}" hint-placeholder-val="{{ false }}">
+      <div class="tw-workflow-panel" aria-label="Investigate">
+        <div class="tw-panel-kicker">Investigate</div>
+        <sc-if value="{{ workflowInvestigateEmpty }}" hint-placeholder-val="{{ false }}">
+          <div class="tw-panel-body" style="color:var(--text-secondary)">Select a finding from Triage to investigate.</div>
+        </sc-if>
+        <sc-if value="{{ workflowInvestigateReady }}" hint-placeholder-val="{{ false }}">
+          <sc-if value="{{ workflowInvestigate.parentMetaLine }}">
+            <div class="tw-panel-meta" style="display:block">{{ workflowInvestigate.parentMetaLine }}</div>
+          </sc-if>
+          <sc-if value="{{ workflowInvestigate.selectionProgressLabel }}">
+            <div class="tw-selection-progress">{{ workflowInvestigate.selectionProgressLabel }}</div>
+          </sc-if>
+          <sc-if value="{{ workflowInvestigate.modelsUsedLine }}">
+            <div class="tw-panel-meta">{{ workflowInvestigate.modelsUsedLine }}</div>
+          </sc-if>
+          <sc-if value="{{ workflowInvestigate.finalLine }}">
+            <div class="tw-panel-title" style="font-size:16px">{{ workflowInvestigate.finalLine }}</div>
+          </sc-if>
+          <sc-if value="{{ workflowInvestigate.disagreementLine }}">
+            <div class="tw-panel-meta">{{ workflowInvestigate.disagreementLine }}</div>
+          </sc-if>
+          <sc-if value="{{ workflowInvestigate.agreementLine }}">
+            <div class="tw-panel-body">Agreement: {{ workflowInvestigate.agreementLine }}</div>
+          </sc-if>
+          <sc-for list="{{ workflowInvestigate.sections }}" as="sec" hint-placeholder-count="4">
+            <div style="margin-bottom:10px;padding:8px 10px;border:1px solid var(--border-subtle);border-radius:4px;background:var(--bg-surface)">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+                <div class="tw-panel-kicker" style="margin:0">{{ sec.title }}</div>
+                <sc-if value="{{ sec.isHowWeDecided }}">
+                  <button type="button" onClick="{{ sec.onToggle }}" style="font-family:var(--font-mono);font-size:10px;padding:3px 8px;border-radius:3px;cursor:pointer;border:1px solid var(--border-default);background:transparent;color:var(--text-secondary)" aria-expanded="{{ sec.ariaExpanded }}">{{ sec.toggleLabel }}</button>
+                </sc-if>
+              </div>
+              <sc-if value="{{ sec.showBody }}">
+                <div class="tw-panel-body" style="white-space:pre-wrap;margin-top:6px">{{ sec.body }}</div>
+              </sc-if>
+              <sc-if value="{{ sec.showCollapsedHint }}">
+                <div class="tw-panel-meta" style="margin-top:6px">Collapsed — expand for decision detail</div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ workflowIsFix }}" hint-placeholder-val="{{ false }}">
+      <div class="tw-workflow-panel" aria-label="Fix">
+        <div class="tw-panel-kicker tw-fix-kicker">{{ workflowFix.progressLabel }}</div>
+        <h2 class="tw-panel-title tw-fix-title">Propose a fix</h2>
+        <sc-if value="{{ workflowFix.parentMetaLine }}">
+          <div class="tw-panel-meta tw-parent-meta" style="display:block;margin-bottom:4px">{{ workflowFix.parentMetaLine }}</div>
+        </sc-if>
+        <sc-if value="{{ workflowFix.selectionProgressLabel }}">
+          <div class="tw-selection-progress">{{ workflowFix.selectionProgressLabel }}</div>
+        </sc-if>
+        <sc-if value="{{ workflowFix.modelsUsedLine }}">
+          <div class="tw-panel-meta tw-fix-hint">{{ workflowFix.modelsUsedLine }}</div>
+        </sc-if>
+        <sc-if value="{{ workflowFixEmpty }}" hint-placeholder-val="{{ false }}">
+          <div class="tw-panel-body tw-fix-body" style="color:var(--text-secondary)">{{ workflowFix.emptyMessage }}</div>
+        </sc-if>
+        <sc-if value="{{ workflowFixReady }}" hint-placeholder-val="{{ false }}">
+          <div class="tw-fix-panes">
+            <section class="tw-fix-pane">
+              <h3 class="tw-fix-pane-label">Problem</h3>
+              <div class="tw-fix-problem">{{ workflowFix.problemText }}</div>
+            </section>
+            <section class="tw-fix-pane">
+              <h3 class="tw-fix-pane-label">Proposed patch</h3>
+              <pre class="tw-proposed-patch" aria-label="Proposed patch diff">{{ workflowFix.diffText }}</pre>
+            </section>
+          </div>
+          <div class="tw-fix-badge">{{ workflowFix.patchClassLabel }}</div>
+          <p class="tw-fix-body">Regression test: {{ workflowFix.regressionTest }}</p>
+          <p class="tw-fix-status">{{ workflowFix.applyCleanLine }}</p>
+          <sc-if value="{{ workflowFix.showOperatorMarked }}">
+            <p class="tw-fix-status">{{ workflowFix.operatorMarkedLabel }}</p>
+          </sc-if>
+          <div class="tw-fix-actions">
+            <button type="button" onClick="{{ workflowFix.copyPatch }}" style="{{ workflowFix.copyPatchStyle }}">Copy patch</button>
+            <button type="button" onClick="{{ workflowFix.copyGitApply }}" style="{{ workflowFix.copyGitApplyStyle }}">Copy git apply</button>
+            <button type="button" onClick="{{ workflowFix.markFixed }}" style="{{ workflowFix.markFixedStyle }}">Mark fixed</button>
+            <button type="button" onClick="{{ workflowFix.markWontFix }}" style="{{ workflowFix.markWontFixStyle }}">Won't fix</button>
+          </div>
+          <label for="tw-fix-wont-reason" class="tw-fix-hint" style="display:block">Won't-fix reason (required)</label>
+          <input id="tw-fix-wont-reason" type="text" required aria-required="true" aria-label="Won't-fix reason" value="{{ workflowFix.wontFixReason }}" onChange="{{ workflowFix.onReasonChange }}" style="background:var(--bg-input);border:1px solid var(--border-subtle);color:var(--text-primary);font-family:var(--font-sans);font-size:13px;padding:8px 12px;border-radius:6px;width:100%;max-width:480px;outline:none" />
+          <sc-if value="{{ workflowFix.reasonRequired }}">
+            <div class="tw-fix-hint" style="color:var(--red-ink)">Reason required</div>
+          </sc-if>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ workflowIsVerify }}" hint-placeholder-val="{{ false }}">
+      <div class="tw-workflow-panel" aria-label="Verify">
+        <sc-if value="{{ workflowVerifyEmpty }}" hint-placeholder-val="{{ false }}">
+          <div class="tw-panel-body" style="color:var(--text-secondary)">{{ workflowVerify.emptyMessage }}</div>
+        </sc-if>
+        <sc-if value="{{ workflowVerifyReady }}" hint-placeholder-val="{{ false }}">
+          <div class="tw-panel-kicker">Verify</div>
+          <div class="tw-panel-title" role="status">{{ workflowVerify.outcomeLabel }}</div>
+          <sc-if value="{{ workflowVerify.showReason }}">
+            <div class="tw-panel-body" style="color:var(--text-secondary)">Reason: {{ workflowVerify.reasonText }}</div>
+          </sc-if>
+          <div class="tw-panel-kicker">Scanner actions</div>
+          <sc-for list="{{ workflowVerify.scannerActionsLines }}" as="line" hint-placeholder-count="2">
+            <div class="tw-panel-meta">{{ line.text }}</div>
+          </sc-for>
+          <div class="tw-panel-body" style="margin-top:10px">{{ workflowVerify.honestyLine }}</div>
+          <button type="button" onClick="{{ workflowVerify.runVerify }}" style="{{ workflowVerify.runVerifyStyle }}">Re-run verify</button>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ workflowIsReport }}" hint-placeholder-val="{{ false }}">
+      <div class="tw-workflow-panel" aria-label="Report">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px">
+          <div>
+            <div class="tw-panel-kicker">Report</div>
+            <div class="tw-panel-title">{{ workflowReport.headline }}</div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px" role="group" aria-label="Export actions">
+            <button type="button" onClick="{{ exportReportPrimary }}" style="{{ exportPrimaryBtnStyle }}">{{ workflowReport.primaryExportLabel }}</button>
+            <button type="button" onClick="{{ exportReportMarkdown }}" style="{{ exportSecondaryBtnStyle }}">Export Markdown</button>
+            <label style="display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;color:var(--text-secondary);cursor:pointer">
+              <input type="checkbox" checked="{{ revealSecretsChecked }}" onChange="{{ toggleRevealSecrets }}" />
+              Reveal secrets
+            </label>
+          </div>
+        </div>
+        <div class="tw-panel-meta">
+          Coverage: discovered {{ workflowReport.coverage.discovered }} · scanned {{ workflowReport.coverage.scanned }} · failed {{ workflowReport.coverage.failed }} · skipped {{ workflowReport.coverage.skipped }}
+        </div>
+        <sc-if value="{{ exportStatusVisible }}">
+          <div role="status" class="tw-panel-body" style="padding:8px;border:1px solid var(--border-subtle);border-radius:4px;background:var(--bg-surface);white-space:pre-wrap;max-height:160px;overflow:auto">{{ exportStatusMessage }}</div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ workflowIsStub }}" hint-placeholder-val="{{ false }}">
+      <div class="tw-workflow-panel" aria-label="Coming later">
+        <div style="font-family:var(--font-mono);font-size:12px;color:var(--text-secondary)">Coming in later slice</div>
+      </div>
+    </sc-if>
+  </div>
+  </sc-if><!-- end showWorkflow -->
 
   <!-- ── Intro / landing screen ── -->
   <sc-if value="{{ showIntro }}" hint-placeholder-val="{{ false }}">
@@ -331,7 +898,7 @@
           <button onClick="{{ enterDashboard }}" style="font-family:var(--font-mono);font-size:13px;padding:13px 22px;background:var(--cta);color:#1C1915;font-weight:700;border:none;cursor:pointer;border-radius:2px;transition:background 0.15s ease;display:inline-flex;align-items:center;gap:8px">
             Open Dashboard →
           </button>
-          <a href="https://github.com/neomatrix369/agentvetter/" target="_blank" rel="noopener" style="font-family:var(--font-mono);font-size:13px;padding:13px 22px;border:1px solid var(--border-default);color:var(--text-primary);text-decoration:none;border-radius:2px;display:inline-flex;align-items:center;gap:8px;transition:border-color 0.15s ease">
+          <a href="https://github.com/neomatrix369/AgentVetter/" target="_blank" rel="noopener" style="font-family:var(--font-mono);font-size:13px;padding:13px 22px;border:1px solid var(--border-default);color:var(--text-primary);text-decoration:none;border-radius:2px;display:inline-flex;align-items:center;gap:8px;transition:border-color 0.15s ease">
             View the repo ↗
           </a>
         </div>
@@ -560,7 +1127,7 @@
             <div style="position:absolute;left:19px;top:8px;bottom:8px;width:1px;background-image:repeating-linear-gradient(180deg,var(--border-default) 0 4px,transparent 4px 9px)"></div>
             <div style="display:flex;gap:20px;padding-bottom:28px">
               <div style="flex:0 0 auto;width:38px;height:38px;background:var(--bg-surface);border:1px solid var(--green);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--green-ink);z-index:1">✓</div>
-              <div><h4 style="font-family:var(--font-mono);font-size:14px;margin-bottom:4px;font-weight:600">Phase 1 — Hook &amp; skill integration</h4><p style="font-family:var(--font-sans);font-size:13px;color:var(--text-secondary);max-width:520px;line-height:1.45">Handler scripts, PreToolUse wiring, config bootstrap, the five /tw-* skills, sample artifacts, regression pass.</p><div style="font-family:var(--font-mono);font-size:10px;color:var(--green-ink);margin-top:5px;text-transform:uppercase;letter-spacing:0.06em">Shipped at Frontline Hackathon</div></div>
+              <div><h4 style="font-family:var(--font-mono);font-size:14px;margin-bottom:4px;font-weight:600">Phase 1 — Hook &amp; skill integration</h4><p style="font-family:var(--font-sans);font-size:13px;color:var(--text-secondary);max-width:520px;line-height:1.45">Handler scripts, PreToolUse wiring, config bootstrap, the five /tw-* skills, demo artifacts, regression pass.</p><div style="font-family:var(--font-mono);font-size:10px;color:var(--green-ink);margin-top:5px;text-transform:uppercase;letter-spacing:0.06em">Shipped at Frontline Hackathon</div></div>
             </div>
             <div style="display:flex;gap:20px;padding-bottom:28px">
               <div style="flex:0 0 auto;width:38px;height:38px;background:var(--bg-surface);border:1px solid var(--amber);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--amber-ink);z-index:1;box-shadow:0 0 0 4px rgba(255,176,32,0.15)">2</div>
@@ -604,9 +1171,10 @@
     </div>
   </sc-if>
 
-  <!-- ── Main dashboard (hidden while intro is showing) ── -->
+  <!-- ── Main dashboard inventory (default Dashboard tab) ── -->
   <sc-if value="{{ showDashboard }}" hint-placeholder-val="{{ true }}">
 
+  <sc-if value="{{ showInventory }}" hint-placeholder-val="{{ true }}">
   <sc-if value="{{ activeTabIsDashboard }}" hint-placeholder-val="{{ true }}">
     <div style="display:flex;flex:1;min-height:0">
       <div style="flex:1;display:flex;flex-direction:column;min-width:0">
@@ -932,8 +1500,13 @@
                     </sc-if>
                   </sc-if>
                   <sc-if value="{{ scv.output.console_output }}">
-                    <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin:6px 0 4px">Modal console output</div>
-                    <div style="font-family:var(--font-mono);font-size:10px;background:var(--bg-deep);padding:6px 8px;border-radius:4px;color:var(--text-secondary);overflow-x:auto;white-space:pre-wrap;max-height:200px;overflow-y:auto;line-height:1.5">{{ scv.output.console_output }}</div>
+                    <div class="findings-toggle" onClick="{{ scv.toggleRuntime }}" role="button" tabindex="0" aria-expanded="{{ scv.runtimeExpanded }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;padding:6px 0">
+                      <span aria-hidden="true" style="transform:rotate({{ scv.runtimeChevronDeg }})">▸</span>
+                      <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em">Modal console output</div>
+                    </div>
+                    <sc-if value="{{ scv.runtimeExpanded }}">
+                      <div style="font-family:var(--font-mono);font-size:10px;background:var(--bg-deep);padding:6px 8px;border-radius:4px;color:var(--text-secondary);overflow-x:auto;white-space:pre-wrap;max-height:200px;overflow-y:auto;line-height:1.5">{{ scv.output.console_output }}</div>
+                    </sc-if>
                   </sc-if>
                   <sc-if value="{{ scv.findingsForScanner.length }}">
                     <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin:6px 0 4px">Findings from this scanner</div>
@@ -963,8 +1536,13 @@
                     </sc-if>
                   </sc-if>
                   <sc-if value="{{ scv.hasDetailJson }}">
-                    <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin:6px 0 4px">Raw output</div>
-                    <div style="font-family:var(--font-mono);font-size:10px;background:var(--bg-deep);padding:6px 8px;border-radius:4px;color:var(--text-secondary);overflow-x:auto;white-space:pre-wrap;max-height:180px;overflow-y:auto">{{ scv.outputJson }}</div>
+                    <div class="findings-toggle" onClick="{{ scv.toggleRaw }}" role="button" tabindex="0" aria-expanded="{{ scv.rawExpanded }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;padding:6px 0">
+                      <span aria-hidden="true" style="transform:rotate({{ scv.rawChevronDeg }})">▸</span>
+                      <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em">Raw output</div>
+                    </div>
+                    <sc-if value="{{ scv.rawExpanded }}">
+                      <div style="font-family:var(--font-mono);font-size:10px;background:var(--bg-deep);padding:6px 8px;border-radius:4px;color:var(--text-secondary);overflow-x:auto;white-space:pre-wrap;max-height:180px;overflow-y:auto">{{ scv.outputJson }}</div>
+                    </sc-if>
                   </sc-if>
                 </div>
               </sc-if>
@@ -974,18 +1552,19 @@
       </sc-if>
     </div>
   </sc-if>
+  </sc-if><!-- end showInventory -->
 
   <sc-if value="{{ activeTabIsGuard }}" hint-placeholder-val="{{ false }}">
     <div style="flex:1;padding:24px;overflow-y:auto;display:flex;flex-direction:column;gap:16px;max-width:760px">
       <div style="display:flex;align-items:center;gap:16px;background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:8px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.2)">
         <div style="flex:1">
           <div style="font-size:13px;font-weight:600;margin-bottom:4px">Data Source</div>
-          <div style="font-size:12px;color:var(--text-secondary)">Controls whether the entire dashboard (all tabs) loads live data from Supabase or uses built-in sample fixtures.</div>
+          <div style="font-size:12px;color:var(--text-secondary)">Controls whether the entire dashboard (all tabs) loads live data from Supabase or uses built-in demo fixtures.</div>
         </div>
         <div style="display:flex;align-items:center;gap:10px">
           <select onChange="{{ setDataSourceMode }}" value="{{ dataSourceMode }}" style="background:var(--bg-input);border:1px solid var(--border-default);color:var(--text-primary);font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.04em;padding:6px 28px 6px 10px;border-radius:6px;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%226%22><path d=%225 6 0 0h10%22 fill=%22%238fa3be%22/></svg>');background-repeat:no-repeat;background-position:right 8px center;transition:border-color 200ms">
             <option value="live" style="background:var(--bg-surface);color:var(--text-primary)">Live (Supabase)</option>
-            <option value="mock" style="background:var(--bg-surface);color:var(--text-primary)">Mock (sample data)</option>
+            <option value="mock" style="background:var(--bg-surface);color:var(--text-primary)">Mock (demo data)</option>
           </select>
           <div style="display:flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:.04em;padding:3px 9px;border-radius:5px;border:1px solid {{ dataSourceChip.borderColor }};background:{{ dataSourceChip.bgColor }};color:{{ dataSourceChip.textColor }};white-space:nowrap" title="{{ dataSourceChip.tooltip }}">
             <div style="width:5px;height:5px;border-radius:50%;background:{{ dataSourceChip.dotColor }};flex-shrink:0"></div>
@@ -1061,9 +1640,28 @@ class Component extends DCLogic {
     sortKey: 'name',
     sortDir: 'asc',
     expandedScanners: {},
-    findingsExpanded: true,
+    expandedRuntime: {},
+    findingsExpanded: false,
     realtimeConnected: false,
-    showIntro: !sessionStorage.getItem('agentvetter-intro-dismissed')
+    showIntro: !sessionStorage.getItem('agentvetter-intro-dismissed'),
+    currentStep: 'run',
+    expertMode: false,
+    workflowSelectedFindingId: null,
+    workflowSelectedFindingIds: [],
+    triageFilter: 'all',
+    triageQualityTab: 'all',
+    triageTargetFilter: 'all',
+    investigateHowExpanded: false,
+    workflowKitsLoaded: false,
+    triageRevision: 0,
+    workflowStepInferred: false,
+    fixWontFixReason: '',
+    fixReasonRequired: false,
+    fixRevision: 0,
+    verifyRevision: 0,
+    revealSecrets: false,
+    exportStatusMessage: '',
+    exportStatusVisible: false
   };
 
   componentDidMount() {
@@ -1074,12 +1672,40 @@ class Component extends DCLogic {
       console.error('[agentvetter-dashboard] status kit load error:', err);
       this._loadDataForMode(this.state.dataSourceMode);
     });
+    Promise.all([
+      import('./agentvetter-workflow-stepper.js'),
+      import('./agentvetter-run-progress.js'),
+      import('./agentvetter-triage.js'),
+      import('./agentvetter-investigate.js'),
+      import('./agentvetter-workflow-prefs.js'),
+      import('./agentvetter-fix-propose.js'),
+      import('./agentvetter-apply-clean.js'),
+      import('./agentvetter-fix-controls.js'),
+      import('./agentvetter-verify-rescan.js'),
+      import('./agentvetter-verify-view.js'),
+      import('./agentvetter-report.js'),
+      import('./agentvetter-report-export.js'),
+      import('./agentvetter-workflow-models.js'),
+      import('./agentvetter-workflow-pipeline.js')
+    ]).then(([stepper, run, triage, investigate, prefs, fixPropose, applyClean, fixControls, verifyRescan, verifyView, report, reportExport, models, pipeline]) => {
+      this._workflow = { stepper, run, triage, investigate, prefs, fixPropose, applyClean, fixControls, verifyRescan, verifyView, report, reportExport, models, pipeline };
+      const loadedExpert = prefs.loadExpertMode(sessionStorage);
+      this.setState({ expertMode: loadedExpert, workflowKitsLoaded: true });
+    }).catch(err => {
+      console.error('[agentvetter-dashboard] workflow kit load error:', err);
+    });
+    document.addEventListener('keydown', this.handleFixKeydown);
   }
 
   _loadDataForMode(mode) {
     this.setState({ dataSource: 'loading' });
     import('./agentvetter-live.js').then(m => m.default(mode)).then(result => {
-      this.setState({ data: result.data, dataSource: result.source });
+      const patch = { data: result.data, dataSource: result.source };
+      if (!this.state.workflowStepInferred) {
+        patch.currentStep = this.inferDefaultWorkflowStep(result.data);
+        patch.workflowStepInferred = true;
+      }
+      this.setState(patch);
       this._managePoll(result.data, mode);
     }).catch(err => {
       console.error('[agentvetter-dashboard] data load error:', err);
@@ -1158,12 +1784,13 @@ class Component extends DCLogic {
   setDataSourceMode = (e) => {
     const mode = e.target.value;
     sessionStorage.setItem('agentvetter-data-source-mode', mode);
-    this.setState({ dataSourceMode: mode, selectedId: null, expandedScanners: {}, findingsExpanded: true });
+    this.setState({ dataSourceMode: mode, selectedId: null, expandedScanners: {}, expandedRuntime: {}, findingsExpanded: false });
     this._loadDataForMode(mode);
   };
 
   componentWillUnmount() {
     clearInterval(this._pollTimer);
+    document.removeEventListener('keydown', this.handleFixKeydown);
     if (this._rt) {
       this._rt.unsubscribe();
       this._rt = null;
@@ -1172,7 +1799,7 @@ class Component extends DCLogic {
 
   enterDashboard = () => {
     sessionStorage.setItem('agentvetter-intro-dismissed', '1');
-    this.setState({ showIntro: false });
+    this.setState({ showIntro: false, activeTab: 'dashboard' });
   };
 
   toggleIntro = () => {
@@ -1190,7 +1817,7 @@ class Component extends DCLogic {
   setQualityTab = (v) => this.setState({ qualityTab: v });
   setStatusFilter = (v) => this.setState({ statusFilter: v });
   clearFilters = () => this.setState({ statusFilter: 'all', typeFilter: 'all', qualityTab: 'high', searchQuery: '' });
-  selectItem = (id) => this.setState({ selectedId: id, expandedScanners: {}, findingsExpanded: true });
+  selectItem = (id) => this.setState({ selectedId: id, expandedScanners: {}, expandedRuntime: {}, findingsExpanded: false });
   closeDrawer = () => this.setState({ selectedId: null });
   toggleMonitoring = () => this.setState(s => ({ monitoringEnabled: !s.monitoringEnabled, guardResults: {} }));
   setThreshold = (v) => this.setState({ threshold: v, guardResults: {} });
@@ -1202,6 +1829,971 @@ class Component extends DCLogic {
     return { expandedScanners: { ...s.expandedScanners, [key]: !s.expandedScanners[key] } };
   });
   toggleFindings = () => this.setState(s => ({ findingsExpanded: !s.findingsExpanded }));
+  toggleRuntime = (itemId, idx, part) => this.setState(s => {
+    const key = itemId + ':' + idx + ':' + part;
+    return { expandedRuntime: { ...s.expandedRuntime, [key]: !s.expandedRuntime[key] } };
+  });
+
+  setWorkflowStep = (stepId) => this.setState({ currentStep: stepId, investigateHowExpanded: false });
+
+  setSimpleMode = () => {
+    const prefs = this._workflow?.prefs;
+    if (prefs) prefs.saveExpertMode(false, sessionStorage);
+    this.setState({ expertMode: false });
+  };
+
+  setExpertModeOn = () => {
+    const prefs = this._workflow?.prefs;
+    if (prefs) prefs.saveExpertMode(true, sessionStorage);
+    this.setState({ expertMode: true });
+  };
+
+  setTriageFilter = (filterId) => this.setState({ triageFilter: filterId });
+  setTriageQualityTab = (v) => this.setState({ triageQualityTab: v, triageTargetFilter: 'all' });
+  setTriageTargetFilter = (v) => {
+    // Focusing one skill/mcp/package clears cross-target multi selection.
+    this.setState({
+      triageTargetFilter: v,
+      workflowSelectedFindingIds: [],
+      workflowSelectedFindingId: null
+    });
+  };
+  setTriageTypeFilter = (v) => this.setState({ typeFilter: v, triageTargetFilter: 'all' });
+
+  selectWorkflowFinding = (findingId, itemId) => {
+    const pipeline = this._workflow?.pipeline;
+    const nextIds = pipeline
+      ? pipeline.selectSingleFinding([], findingId, { toggleOff: false })
+      : (findingId ? [findingId] : []);
+    const patch = {
+      workflowSelectedFindingId: findingId,
+      workflowSelectedFindingIds: nextIds,
+      currentStep: 'investigate',
+      investigateHowExpanded: false
+    };
+    if (itemId) patch.triageTargetFilter = itemId;
+    this.setState(patch);
+  };
+
+  toggleWorkflowFindingSelection = (findingId) => {
+    const pipeline = this._workflow?.pipeline;
+    if (!pipeline) return;
+    const next = pipeline.selectSingleFinding(
+      this.state.workflowSelectedFindingIds,
+      findingId,
+      { toggleOff: true },
+    );
+    this.setState({
+      workflowSelectedFindingIds: next,
+      workflowSelectedFindingId: next[0] || null
+    });
+  };
+
+  clearWorkflowFindingSelection = () => {
+    this.setState({
+      workflowSelectedFindingIds: [],
+      workflowSelectedFindingId: null
+    });
+  };
+
+  setWorkflowTriageStatus = (findingId, status) => {
+    const prefs = this._workflow?.prefs;
+    if (prefs) prefs.saveTriageDecision(findingId, status, localStorage);
+    this.setState(s => ({ triageRevision: (s.triageRevision || 0) + 1 }));
+  };
+
+  toggleInvestigateHow = () => this.setState(s => ({ investigateHowExpanded: !s.investigateHowExpanded }));
+
+  isFixReasonInput(target) {
+    return !!target && target.id === 'tw-fix-wont-reason';
+  }
+
+  listFixCandidates() {
+    const wf = this._workflow;
+    if (!wf?.fixPropose) return [];
+    const raw = this.collectWorkflowFindings(this.state.data);
+    const findings = wf.prefs ? wf.prefs.applyPersistedTriage(raw, localStorage) : raw;
+    const scoped = wf.pipeline?.scopeFindingsToTarget
+      ? wf.pipeline.scopeFindingsToTarget(findings, this.state.triageTargetFilter)
+      : findings;
+    return scoped.filter(wf.fixPropose.isFixCandidate);
+  }
+
+  handleFixKeydown = (e) => {
+    if (this.state.currentStep !== 'fix') return;
+    if (this.isFixReasonInput(e.target)) return;
+    const key = e.key;
+    if (key !== 'j' && key !== 'J' && key !== 'k' && key !== 'K') return;
+    const candidates = this.listFixCandidates();
+    if (!candidates.length || !this._workflow?.fixControls) return;
+    const index = Math.max(0, candidates.findIndex(f => f.id === this.state.workflowSelectedFindingId));
+    const next = this._workflow.fixControls.navigateFix({ key, index, count: candidates.length });
+    this.setState({ workflowSelectedFindingId: candidates[next.index].id });
+    e.preventDefault();
+  };
+
+  copyToClipboard(text) {
+    if (navigator.clipboard?.writeText) navigator.clipboard.writeText(text);
+  }
+
+  copyFixPatch = () => {
+    const controls = this._workflow?.fixControls;
+    if (controls) this.copyToClipboard(controls.copyPatchText(this._fixUnifiedDiff || ''));
+  };
+
+  copyFixGitApply = () => {
+    const controls = this._workflow?.fixControls;
+    if (controls) this.copyToClipboard(controls.gitApplyCommand(this._fixUnifiedDiff || ''));
+  };
+
+  markSelectedFixed = () => {
+    const controls = this._workflow?.fixControls;
+    const id = this.state.workflowSelectedFindingId;
+    if (!controls || !id) return;
+    controls.markFixed({ findingId: id, storage: localStorage });
+    this.setState(s => ({ fixRevision: (s.fixRevision || 0) + 1 }));
+  };
+
+  markSelectedWontFix = () => {
+    const controls = this._workflow?.fixControls;
+    const id = this.state.workflowSelectedFindingId;
+    if (!controls || !id) return;
+    const result = controls.markWontFix({
+      findingId: id,
+      reason: this.state.fixWontFixReason,
+      storage: localStorage
+    });
+    if (!result.ok) {
+      this.setState({ fixReasonRequired: true });
+      return;
+    }
+    this.setState(s => ({
+      fixRevision: (s.fixRevision || 0) + 1,
+      fixReasonRequired: false,
+      fixWontFixReason: ''
+    }));
+  };
+
+  setFixWontFixReason = (e) => {
+    this.setState({ fixWontFixReason: e.target.value, fixReasonRequired: false });
+  };
+
+  emptyFixView() {
+    const btn = this.btnStyle(false, { size: '12px', pad: '8px 12px' });
+    const primary = this.btnStyle(true, { size: '12px', pad: '8px 14px' });
+    return {
+      problemText: '',
+      diffText: '',
+      patchClassLabel: '',
+      regressionTest: '',
+      applyClean: false,
+      applyCleanLine: 'Applies cleanly: no',
+      progressLabel: '0 of 0 reviewed',
+      emptyMessage: 'Select a true-positive or to_fix finding to propose a patch.',
+      operatorMarkedLabel: '',
+      showOperatorMarked: false,
+      modelsUsedLine: '',
+      parentMetaLine: '',
+      selectionProgressLabel: '',
+      wontFixReason: '',
+      reasonRequired: false,
+      copyPatch: this.copyFixPatch,
+      copyGitApply: this.copyFixGitApply,
+      markFixed: this.markSelectedFixed,
+      markWontFix: this.markSelectedWontFix,
+      onReasonChange: this.setFixWontFixReason,
+      copyPatchStyle: btn,
+      copyGitApplyStyle: btn,
+      markFixedStyle: primary,
+      markWontFixStyle: btn
+    };
+  }
+
+  evaluateMemoryApplyClean(unifiedDiff) {
+    const apply = this._workflow?.applyClean;
+    if (!apply) return { applyClean: false };
+    return apply.evaluateApplyClean({
+      patch: unifiedDiff,
+      approvedRepoPath: 'approved',
+      applyPort: apply.createMemoryApplyPort()
+    });
+  }
+
+  buildFixWorkflowSlice(findings, selectedFinding, s) {
+    const wf = this._workflow;
+    const empty = this.emptyFixView();
+    const stepIsFix = (s.currentStep || 'run') === 'fix';
+    if (wf?.fixControls) {
+      const withDecisions = wf.fixControls.applyPersistedFixDecisions(findings, localStorage);
+      empty.progressLabel = wf.fixControls.buildFixProgress({ findings: withDecisions }).label;
+    }
+    empty.wontFixReason = s.fixWontFixReason || '';
+    empty.reasonRequired = !!s.fixReasonRequired;
+    const isCandidate = !!(selectedFinding && wf?.fixPropose?.isFixCandidate(selectedFinding));
+    if (!stepIsFix || !isCandidate) {
+      empty.emptyMessage = selectedFinding
+        ? 'Selected finding is not a fix candidate (needs true_positive or to_fix).'
+        : 'Select a true-positive or to_fix finding to propose a patch.';
+      return { workflowFix: empty, workflowFixEmpty: stepIsFix, workflowFixReady: false };
+    }
+    return { workflowFix: this.populateFixReadyView(empty, selectedFinding, wf), workflowFixEmpty: false, workflowFixReady: true };
+  }
+
+  populateFixReadyView(empty, selectedFinding, wf) {
+    const proposedFix = wf.fixPropose.buildProposedFix(selectedFinding);
+    this._fixUnifiedDiff = proposedFix.unifiedDiff;
+    const view = wf.fixPropose.buildFixProposeView({ finding: selectedFinding, proposedFix });
+    const applyResult = this.evaluateMemoryApplyClean(proposedFix.unifiedDiff);
+    const marked = wf.fixControls.loadFixDecision(selectedFinding.id, localStorage)?.status === 'fixed';
+    const modelsUsedLine = wf.models
+      ? wf.models.buildModelsUsedLine({
+        stepId: 'fix',
+        finding: selectedFinding,
+        proposedFix,
+        fallbackToDefaults: true
+      })
+      : '';
+    const parentMetaLine = wf.pipeline
+      ? wf.pipeline.formatParentTargetMeta(selectedFinding)
+      : '';
+    return {
+      ...empty,
+      problemText: view.problemText,
+      diffText: view.diffText,
+      patchClassLabel: view.patchClassLabel,
+      regressionTest: view.regressionTest,
+      applyClean: !!applyResult.applyClean,
+      applyCleanLine: applyResult.applyClean ? 'Applies cleanly: yes' : 'Applies cleanly: no',
+      operatorMarkedLabel: marked ? 'Operator marked fixed — not verified' : '',
+      showOperatorMarked: marked,
+      modelsUsedLine,
+      parentMetaLine
+    };
+  }
+
+  emptyVerifyView() {
+    const btn = this.btnStyle(false, { size: '11px', pad: '4px 10px' });
+    return {
+      outcomeLabel: '',
+      reasonText: '',
+      showReason: false,
+      scannerActionsLines: [],
+      honestyLine: '',
+      emptyMessage: 'Select a fix-candidate finding to verify the proposed patch on a temp worktree.',
+      runVerify: this.runWorkflowVerify,
+      runVerifyStyle: btn
+    };
+  }
+
+  runWorkflowVerify = () => {
+    this.setState(s => ({ verifyRevision: (s.verifyRevision || 0) + 1 }));
+  };
+
+  evaluateMemoryVerify(finding, patch) {
+    const rescan = this._workflow?.verifyRescan;
+    const controls = this._workflow?.fixControls;
+    if (!rescan) return null;
+    const marked = controls?.loadFixDecision?.(finding?.id, localStorage);
+    const markedFixed = marked?.status === 'fixed';
+    const matchFinding = {
+      id: finding?.id,
+      title: finding?.title,
+      source: finding?.source
+    };
+    const scanResult = markedFixed
+      ? {
+        status: 'ok',
+        findings: [],
+        actions: [{ name: 'memory-scanner', status: 'ok', detail: 'no match after mark fixed' }]
+      }
+      : {
+        status: 'ok',
+        findings: [matchFinding],
+        actions: [{ name: 'memory-scanner', status: 'ok', detail: 'pattern still present — mark fixed after apply' }]
+      };
+    return rescan.verifyFixOnWorktree({
+      finding,
+      patch,
+      approvedRepoPath: 'approved',
+      verifyPort: rescan.createMemoryVerifyPort({ scanResult })
+    });
+  }
+
+  buildVerifyWorkflowSlice(findings, selectedFinding, s) {
+    const wf = this._workflow;
+    const empty = this.emptyVerifyView();
+    const stepIsVerify = (s.currentStep || 'run') === 'verify';
+    const marked = selectedFinding && wf?.fixControls
+      ? wf.fixControls.loadFixDecision(selectedFinding.id, localStorage)
+      : null;
+    const isCandidate = !!(selectedFinding && (
+      wf?.fixPropose?.isFixCandidate(selectedFinding)
+      || marked?.status === 'fixed'
+    ));
+    if (!stepIsVerify || !isCandidate || !wf?.verifyRescan || !wf?.verifyView) {
+      empty.emptyMessage = selectedFinding
+        ? 'Selected finding is not a fix candidate (needs true_positive or to_fix).'
+        : 'Select a fix-candidate finding to verify the proposed patch on a temp worktree.';
+      return { workflowVerify: empty, workflowVerifyEmpty: stepIsVerify, workflowVerifyReady: false };
+    }
+    return {
+      workflowVerify: this.populateVerifyReadyView(empty, selectedFinding, wf),
+      workflowVerifyEmpty: false,
+      workflowVerifyReady: true
+    };
+  }
+
+  populateVerifyReadyView(empty, selectedFinding, wf) {
+    const proposedFix = wf.fixPropose.buildProposedFix(selectedFinding);
+    const verification = this.evaluateMemoryVerify(selectedFinding, proposedFix.unifiedDiff);
+    const view = wf.verifyView.buildVerifyView({ finding: selectedFinding, verification });
+    const reasonText = view.reasonText || '';
+    const lines = view.scannerActionsLines || [];
+    return {
+      ...empty,
+      outcomeLabel: view.outcomeLabel,
+      reasonText,
+      showReason: reasonText.length > 0,
+      scannerActionsLines: lines.map(text => ({ text })),
+      honestyLine: view.honestyLine
+    };
+  }
+
+  mapWorkflowSeverity(sev) {
+    const key = String(sev || '').toLowerCase();
+    if (key === 'red' || key === 'high' || key === 'critical') return 'High';
+    if (key === 'amber' || key === 'medium' || key === 'yellow' || key === 'warn') return 'Medium';
+    if (key === 'green' || key === 'low' || key === 'info') return 'Low';
+    return 'Medium';
+  }
+
+  defaultTriageStatus(sevLabel) {
+    return sevLabel === 'Low' ? 'needs_review' : 'to_fix';
+  }
+
+  mapItemFindingToWorkflow(item, f, index) {
+    const prefs = this._workflow?.prefs;
+    const pipeline = this._workflow?.pipeline;
+    const severity = this.mapWorkflowSeverity(f.severity);
+    const titleFn = this._workflow?.triage?.buildWorkflowFindingTitle;
+    // Prefer unique message/package over bare category even before kits load.
+    const title = titleFn
+      ? titleFn(f)
+      : (f.message
+        ? String(f.message).slice(0, 120)
+        : (f.category || 'Finding'));
+    const evidenceHighlight = f.snippet || f.evidenceHighlight || '';
+    const source = f.file_path
+      ? (f.location != null ? `${f.file_path}:${f.location}` : f.file_path)
+      : (f.source || '');
+
+    const absent = (kind) => (pipeline
+      ? pipeline.honestAbsentCopy(kind)
+      : ({
+        attack_path: 'Not provided by scanner',
+        prerequisites: 'Not provided by scanner',
+        evidence: 'Evidence verification not run',
+        verdict: 'Judgement pending — judge panel fields not present yet'
+      })[kind]);
+
+    const panelRun = f.panel_run || f.panelRun || null;
+    const rawJudgePanel = f.judgePanel || null;
+    const panelState = pipeline
+      ? pipeline.resolveJudgePanelState({
+        panel_run: panelRun,
+        judgePanel: rawJudgePanel,
+        judgePanelEnabled: f.judgePanelEnabled,
+        panel_status: f.panel_status,
+        judgePanelOptIn: f.judgePanelOptIn
+      })
+      : null;
+
+    const rawEvidence = f.evidenceVerification ?? f.evidence_verification ?? f.evidence_status ?? null;
+    let evidenceVerification;
+    if (rawEvidence != null && rawEvidence !== '') {
+      evidenceVerification = pipeline
+        ? pipeline.formatEvidenceVerification(rawEvidence)
+        : String(rawEvidence);
+    } else {
+      evidenceVerification = absent('evidence');
+    }
+
+    let verdictLine = f.verdictLine || null;
+    let agreement = f.agreement || null;
+    let howWeDecided = f.howWeDecided || null;
+    let judgePanel = rawJudgePanel;
+
+    if (panelState && (panelState.mode === 'live' || panelState.mode === 'present')) {
+      if (!verdictLine && panelState.finalVerdict != null) {
+        verdictLine = `Final verdict: ${panelState.finalVerdict}`;
+      }
+      if (!agreement && panelState.total > 0) {
+        agreement = panelState.disagreement
+          ? 'Judges disagreed — final judge weighed reasons'
+          : `${panelState.answered} of ${panelState.total} agree`;
+      }
+      if (!howWeDecided && panelState.finalVerdict != null) {
+        howWeDecided = {
+          final: String(panelState.finalVerdict),
+          judges: panelState.slots,
+          rawIds: null
+        };
+      }
+      if (!judgePanel) {
+        judgePanel = {
+          slots: panelState.slots,
+          answered: panelState.answered,
+          total: panelState.total,
+          finalVerdict: panelState.finalVerdict,
+          disagreement: panelState.disagreement
+        };
+      }
+    }
+
+    const provisional = {
+      id: f.id || null,
+      title,
+      severity,
+      evidenceHighlight,
+      source,
+      sink: f.sink || '',
+      explanation: f.message || f.explanation || '',
+      verdictLine: verdictLine || absent('verdict'),
+      attackPath: f.attackPath || f.attack_path || absent('attack_path'),
+      prerequisites: f.prerequisites || absent('prerequisites'),
+      evidenceVerification,
+      howWeDecided: howWeDecided || {
+        final: 'Judgement pending',
+        judges: null,
+        rawIds: null
+      },
+      agreement: agreement || 'Agreement not available yet',
+      triageStatus: f.triageStatus || this.defaultTriageStatus(severity),
+      proposedPatch: f.proposedPatch,
+      reportDisposition: f.reportDisposition || null,
+      fix: f.fix || f.proposedFix || null,
+      verification: f.verification || f.verifyResult || null,
+      cwe_ids: f.cwe_ids || f.cweIds || [],
+      weaknessIds: f.weaknessIds || [],
+      ai_sec_ids: f.ai_sec_ids || f.aiSecIds || [],
+      scanner: f.scanner || '',
+      scannerDetails: f.scannerDetails || {
+        scanner: f.scanner || '',
+        status: f.scanner_status || f.status || ''
+      },
+      judgePanel,
+      panel_run: panelRun,
+      confidence: f.confidence ?? null,
+      dataFlow: f.dataFlow || null,
+      package_name: f.package_name || null,
+      package_version: f.package_version || null,
+      cve_ids: Array.isArray(f.cve_ids) ? f.cve_ids : [],
+      category: f.category || '',
+      itemId: item.id,
+      itemName: item.name,
+      itemType: item.type || '',
+      itemQuality: typeof item.quality === 'number' ? item.quality : null
+    };
+    const id = prefs
+      ? prefs.stableFindingId(provisional)
+      : (f.id || `${item.id}:${f.scanner || 'scan'}:${f.category || index}`);
+    return { ...provisional, id };
+  }
+
+  collectWorkflowFindings(data) {
+    if (!data?.items) return [];
+    const out = [];
+    for (const item of data.items) {
+      const findings = item.findings || [];
+      findings.forEach((f, index) => {
+        if (f.scanner === 'tiered_router') return;
+        out.push(this.mapItemFindingToWorkflow(item, f, index));
+      });
+    }
+    const pipeline = this._workflow?.pipeline;
+    return pipeline?.dedupeFindingsById ? pipeline.dedupeFindingsById(out) : out;
+  }
+
+  collectWorkflowScanners(data) {
+    const pipeline = this._workflow?.pipeline;
+    if (pipeline?.collectScannerRows) return pipeline.collectScannerRows(data);
+    if (!data?.items) return [];
+    const rows = [];
+    for (const item of data.items) {
+      for (const sc of (item.scanners || [])) {
+        const out = sc.output || {};
+        rows.push({
+          target: item.name || item.identifier || '',
+          scanner: sc.source || sc.scanner || '',
+          status: sc.status || '',
+          candidates: out.candidates ?? out.findings_count ?? (item.findings || []).filter(f => f.scanner === sc.source).length,
+          errors: out.errors ?? (sc.status === 'failed' || sc.status === 'unreachable' ? 1 : 0)
+        });
+      }
+    }
+    return rows;
+  }
+
+  collectWorkflowJudges(data) {
+    const pipeline = this._workflow?.pipeline;
+    if (pipeline?.resolveJudgePanelState) {
+      return pipeline.resolveJudgePanelState(data);
+    }
+    // Kits not loaded yet — honest absent (never fabricate pending slots).
+    return {
+      mode: 'absent',
+      answered: 0,
+      total: 0,
+      slots: [],
+      disagreement: false,
+      finalVerdict: null,
+      finalReason: null,
+      finalModel: null,
+      panelOff: false,
+      statusLine: 'Judge panel pending / not available yet'
+    };
+  }
+
+  collectWorkflowCoverage(data) {
+    const pipeline = this._workflow?.pipeline;
+    if (pipeline?.resolveCoverageHonesty) {
+      return pipeline.resolveCoverageHonesty(data);
+    }
+    const items = data?.items || [];
+    return {
+      discovered: items.length,
+      scanned: items.filter(it => it.lastScan || it.status === 'running').length,
+      failed: items.filter(it => it.status === 'error').length,
+      skipped: items.filter(it => it.status === 'grey' || it.status === 'no_coverage').length,
+      source: 'heuristic'
+    };
+  }
+
+  inferDefaultWorkflowStep(data) {
+    if (!data?.items) return 'run';
+    if (data.items.some(it => it.status === 'running')) return 'run';
+    const hasFindings = data.items.some(it => (it.findings || []).some(f => f.scanner !== 'tiered_router'));
+    if (hasFindings) return 'triage';
+    return 'run';
+  }
+
+  buildWorkflowView(data, s) {
+    const wf = this._workflow;
+    const emptyRun = {
+      scannerRows: [],
+      judgesSummary: 'Judge panel pending / not available yet',
+      judgeSlots: [],
+      modelsUsedLine: '',
+      processLine: '',
+      finalLine: '',
+      disagreementLine: '',
+      primaryCtaVisible: false,
+      primaryCtaLabel: 'Review findings',
+      onPrimaryCta: () => this.setWorkflowStep('triage')
+    };
+    const emptyTriage = {
+      headline: '0 to-fix · 0 needs-review · 0 dismissed',
+      typeTabs: [],
+      qualityTabs: [],
+      targetChips: [],
+      tabs: [],
+      filteredFindings: [],
+      coverageHonesty: { discovered: 0, scanned: 0, failed: 0, skipped: 0 },
+      modelsUsedLine: ''
+    };
+    const emptyInvestigate = {
+      sections: [],
+      hiddenInSimple: [],
+      agreementLine: null,
+      modelsUsedLine: '',
+      parentMetaLine: '',
+      selectionProgressLabel: '',
+      finalLine: '',
+      disagreementLine: ''
+    };
+    const emptyReport = {
+      headline: '0 fixed · 0 left · 0 won\'t fix',
+      counts: { fixed: 0, left: 0, wontFix: 0 },
+      primaryExportLabel: 'Export report',
+      coverage: { discovered: 0, scanned: 0, failed: 0, skipped: 0 }
+    };
+    const step = s.currentStep || 'run';
+    const stubSteps = false;
+
+    if (!wf) {
+      return {
+        workflowStepperSteps: [
+          { id: 'run', label: 'Run', stateLabel: 'current', modelHint: 'panel (light/mid): gen-4b · final (stronger): gen-27b', hasModelHint: true, ariaCurrent: 'step', title: 'Run (current) · panel (light/mid): gen-4b · final (stronger): gen-27b', onClick: () => this.setWorkflowStep('run') },
+          { id: 'triage', label: 'Triage', stateLabel: 'upcoming', modelHint: 'SIE triage: gen-4b', hasModelHint: true, ariaCurrent: 'false', title: 'Triage (upcoming) · SIE triage: gen-4b', onClick: () => this.setWorkflowStep('triage') },
+          { id: 'investigate', label: 'Investigate', stateLabel: 'upcoming', modelHint: 'SIE · Model Studio: gen-4b · qwen3.8-max', hasModelHint: true, ariaCurrent: 'false', title: 'Investigate (upcoming) · SIE · Model Studio: gen-4b · qwen3.8-max', onClick: () => this.setWorkflowStep('investigate') },
+          { id: 'fix', label: 'Fix', stateLabel: 'upcoming', modelHint: '', hasModelHint: false, ariaCurrent: 'false', title: 'Fix (upcoming)', onClick: () => this.setWorkflowStep('fix') },
+          { id: 'verify', label: 'Verify', stateLabel: 'upcoming', modelHint: '', hasModelHint: false, ariaCurrent: 'false', title: 'Verify (upcoming)', onClick: () => this.setWorkflowStep('verify') },
+          { id: 'report', label: 'Report', stateLabel: 'upcoming', modelHint: '', hasModelHint: false, ariaCurrent: 'false', title: 'Report (upcoming)', onClick: () => this.setWorkflowStep('report') }
+        ],
+        workflowIsRun: step === 'run',
+        workflowIsTriage: step === 'triage',
+        workflowIsInvestigate: step === 'investigate',
+        workflowIsFix: step === 'fix',
+        workflowIsVerify: step === 'verify',
+        workflowIsReport: step === 'report',
+        workflowIsStub: stubSteps,
+        workflowRun: emptyRun,
+        workflowTriage: emptyTriage,
+        workflowInvestigate: emptyInvestigate,
+        workflowInvestigateEmpty: true,
+        workflowInvestigateReady: false,
+        workflowFix: this.emptyFixView(),
+        workflowFixEmpty: step === 'fix',
+        workflowFixReady: false,
+        workflowVerify: this.emptyVerifyView(),
+        workflowVerifyEmpty: step === 'verify',
+        workflowVerifyReady: false,
+        workflowReport: emptyReport,
+        exportReportPrimary: this.exportReportPrimary,
+        exportReportMarkdown: this.exportReportMarkdown,
+        toggleRevealSecrets: this.toggleRevealSecrets,
+        revealSecretsChecked: !!s.revealSecrets,
+        exportPrimaryBtnStyle: this.btnStyle(true, { size: '11px', pad: '6px 12px' }),
+        exportSecondaryBtnStyle: this.btnStyle(false, { size: '11px', pad: '6px 12px' }),
+        exportStatusMessage: s.exportStatusMessage || '',
+        exportStatusVisible: !!s.exportStatusVisible,
+        setSimpleMode: this.setSimpleMode,
+        setExpertModeOn: this.setExpertModeOn,
+        simpleModePressed: (!s.expertMode).toString(),
+        expertModePressed: (!!s.expertMode).toString(),
+        simpleModeBtnStyle: this.btnStyle(!s.expertMode, { size: '11px', pad: '4px 10px' }),
+        expertModeBtnStyle: this.btnStyle(!!s.expertMode, { size: '11px', pad: '4px 10px' })
+      };
+    }
+
+    const rawFindings = this.collectWorkflowFindings(data);
+    const findings = wf.prefs.applyPersistedTriage(rawFindings, localStorage);
+    const scanners = this.collectWorkflowScanners(data);
+    const judges = this.collectWorkflowJudges(data);
+    const coverage = this.collectWorkflowCoverage(data);
+
+    const stepper = wf.stepper.buildStepperView({ currentStep: step });
+    const workflowStepperSteps = stepper.steps.map(st => {
+      const modelHint = st.modelHint || '';
+      const titleBase = `${st.label} (${st.stateLabel})`;
+      return {
+        ...st,
+        modelHint,
+        hasModelHint: !!modelHint,
+        ariaCurrent: st.current ? 'step' : 'false',
+        title: modelHint ? `${titleBase} · ${modelHint}` : titleBase,
+        onClick: () => this.setWorkflowStep(st.id)
+      };
+    });
+
+    const selectedIds = wf.pipeline
+      ? wf.pipeline.normalizeSelectionIds(s.workflowSelectedFindingIds)
+      : (Array.isArray(s.workflowSelectedFindingIds) ? s.workflowSelectedFindingIds : []);
+    const selectedIdSet = new Set(selectedIds);
+
+    let selectedFinding = null;
+    if (selectedIds.length > 0) {
+      const activeId = selectedIds.includes(s.workflowSelectedFindingId)
+        ? s.workflowSelectedFindingId
+        : selectedIds[0];
+      selectedFinding = findings.find((f) => f.id === activeId) || null;
+    } else {
+      selectedFinding = findings.find((f) => f.id === s.workflowSelectedFindingId) || null;
+    }
+    if (
+      (step === 'investigate' || step === 'fix') &&
+      !selectedFinding &&
+      selectedIds.length === 0 &&
+      wf.pipeline?.pickFirstToFixFinding
+    ) {
+      selectedFinding = wf.pipeline.pickFirstToFixFinding(findings) || null;
+    }
+
+    const selectionProgress = wf.pipeline
+      ? wf.pipeline.selectionProgressLabel({
+        selectedIds,
+        activeId: selectedFinding?.id ?? s.workflowSelectedFindingId
+      })
+      : '';
+    const parentMetaLine = wf.pipeline && selectedFinding
+      ? wf.pipeline.formatParentTargetMeta(selectedFinding)
+      : '';
+
+    const hasFindings = findings.length > 0;
+    const readiness = wf.pipeline?.buildRunReadiness
+      ? wf.pipeline.buildRunReadiness({
+        scanners,
+        hasFindings,
+        judgesState: judges
+      })
+      : null;
+    const scannersComplete = readiness
+      ? readiness.scannersComplete
+      : (wf.pipeline?.scannersReadyForTriage
+        ? wf.pipeline.scannersReadyForTriage(scanners)
+        : (scanners.length > 0 && scanners.every((r) => {
+          const st = String(r.status ?? '').toLowerCase();
+          return ['done', 'completed', 'failed', 'skipped', 'timed_out', 'unreachable', 'not_applicable', 'blocked'].includes(st);
+        })));
+    const runProgress = wf.run.buildRunProgressView({ scanners, judges });
+    const processLine = readiness
+      ? readiness.processLine
+      : (wf.pipeline
+        ? wf.pipeline.buildProcessLine({ scanners, judgesState: judges, hasFindings })
+        : '');
+    const runNarration = wf.pipeline
+      ? wf.pipeline.buildFinalJudgeNarration(judges)
+      : { finalLine: '', disagreementLine: '' };
+    const primaryCta = readiness
+      ? { label: 'Review findings', visible: readiness.ctaVisible }
+      : (wf.pipeline
+        ? wf.pipeline.buildPrimaryCta({
+          scannersComplete,
+          hasFindings,
+          panelMode: judges.mode
+        })
+        : { label: 'Review findings', visible: false });
+    const workflowRun = {
+      ...runProgress,
+      judgesSummary: judges.statusLine || runProgress.judgesSummary,
+      processLine,
+      finalLine: runNarration.finalLine || '',
+      disagreementLine: runNarration.disagreementLine || '',
+      primaryCtaVisible: !!primaryCta.visible,
+      primaryCtaLabel: primaryCta.label || 'Review findings',
+      onPrimaryCta: () => this.setWorkflowStep('triage'),
+      modelsUsedLine: wf.models
+        ? wf.models.buildModelsUsedLine({ stepId: 'run', judges })
+        : ''
+    };
+    const triageVm = wf.triage.buildTriageView({
+      findings,
+      coverage,
+      triageFilter: s.triageFilter,
+      typeFilter: s.typeFilter,
+      qualityTab: s.triageQualityTab,
+      targetFilter: s.triageTargetFilter
+    });
+    const mapFilterTab = (tab, onClick) => ({
+      ...tab,
+      ariaSelected: tab.selected ? 'true' : 'false',
+      onClick,
+      style: this.btnStyle(tab.selected, { size: '11px', pad: '4px 10px' })
+    });
+    const workflowTriage = {
+      headline: triageVm.headline,
+      coverageHonesty: triageVm.coverageHonesty,
+      modelsUsedLine: wf.models
+        ? wf.models.buildModelsUsedLine({
+          stepId: 'triage',
+          finding: selectedFinding,
+          fallbackToDefaults: !!selectedFinding
+        })
+        : '',
+      typeTabs: triageVm.typeTabs.map(tab =>
+        mapFilterTab(tab, () => this.setTriageTypeFilter(tab.id))
+      ),
+      qualityTabs: triageVm.qualityTabs.map(tab =>
+        mapFilterTab(tab, () => this.setTriageQualityTab(tab.id))
+      ),
+      targetChips: triageVm.targetChips.map(tab =>
+        mapFilterTab(tab, () => this.setTriageTargetFilter(tab.id))
+      ),
+      tabs: triageVm.tabs.map(tab =>
+        mapFilterTab(tab, () => this.setTriageFilter(tab.id))
+      ),
+      filteredFindings: triageVm.filteredFindings.map(f => {
+        const sevColor = f.severity === 'High' ? '#B42318' : (f.severity === 'Medium' ? '#8B5A00' : '#0F766E');
+        const statusBtn = (status) => this.btnStyle(f.triageStatus === status, { size: '10px', pad: '3px 6px' });
+        const parentMeta = wf.pipeline
+          ? wf.pipeline.formatParentTargetMeta(f)
+          : ([f.itemType, f.itemName || f.itemId].filter(Boolean).join(' · '));
+        const isSelected = selectedIdSet.has(f.id);
+        return {
+          ...f,
+          sevColor,
+          parentMeta,
+          selectionChecked: isSelected,
+          selectAriaLabel: `Select finding ${f.title || f.id}`,
+          findingClass: isSelected ? 'tw-workflow-finding-selected' : '',
+          rowClass: isSelected ? 'tw-row-selected' : '',
+          onToggleSelect: () => this.toggleWorkflowFindingSelection(f.id),
+          targetLabel: f.itemName || f.itemId || '',
+          pathLabel: f.source || f.file_path || '',
+          duplicateLabel: (f.duplicateCount || 1) > 1 ? `×${f.duplicateCount}` : '',
+          metaLine: [
+            parentMeta || f.itemName || f.itemId || '',
+            f.source || f.file_path || '',
+            f.triageStatus || '',
+            (f.duplicateCount || 1) > 1 ? `×${f.duplicateCount}` : ''
+          ].filter(Boolean).join(' · '),
+          onInvestigate: () => this.selectWorkflowFinding(f.id, f.itemId),
+          setToFix: () => this.setWorkflowTriageStatus(f.id, 'to_fix'),
+          setNeedsReview: () => this.setWorkflowTriageStatus(f.id, 'needs_review'),
+          setDismissed: () => this.setWorkflowTriageStatus(f.id, 'dismissed'),
+          toFixStyle: statusBtn('to_fix'),
+          needsReviewStyle: statusBtn('needs_review'),
+          dismissedStyle: statusBtn('dismissed')
+        };
+      })
+    };
+
+    let workflowInvestigate = emptyInvestigate;
+    if (selectedFinding) {
+      const built = wf.investigate.buildInvestigateView({
+        finding: selectedFinding,
+        expertMode: !!s.expertMode
+      });
+      const findingJudges = wf.pipeline
+        ? wf.pipeline.resolveJudgePanelState({
+          panel_run: selectedFinding.panel_run,
+          judgePanel: selectedFinding.judgePanel
+        })
+        : null;
+      const invNarration = wf.pipeline && findingJudges
+        ? wf.pipeline.buildFinalJudgeNarration(findingJudges)
+        : { finalLine: '', disagreementLine: '' };
+      // Simple mode: title_severity already carries Agreement when present; keep all
+      // sections (including collapsed how_we_decided) — do not strip agreement.
+      workflowInvestigate = {
+        sections: built.sections.map(sec => {
+          const isHow = sec.id === 'how_we_decided';
+          const expanded = isHow ? !!s.investigateHowExpanded : true;
+          return {
+            ...sec,
+            isHowWeDecided: isHow,
+            showBody: expanded,
+            showCollapsedHint: isHow && !expanded,
+            ariaExpanded: expanded ? 'true' : 'false',
+            toggleLabel: expanded ? 'Collapse' : 'Expand',
+            onToggle: this.toggleInvestigateHow
+          };
+        }),
+        hiddenInSimple: built.hiddenInSimple,
+        agreementLine: selectedFinding.agreement || null,
+        finalLine: invNarration.finalLine || '',
+        disagreementLine: invNarration.disagreementLine || '',
+        parentMetaLine,
+        selectionProgressLabel: selectionProgress,
+        modelsUsedLine: wf.models
+          ? wf.models.buildModelsUsedLine({ stepId: 'investigate', finding: selectedFinding })
+          : ''
+      };
+    }
+
+    const fixSlice = this.buildFixWorkflowSlice(findings, selectedFinding, s);
+    if (fixSlice.workflowFix) {
+      fixSlice.workflowFix.parentMetaLine = parentMetaLine || fixSlice.workflowFix.parentMetaLine || '';
+      fixSlice.workflowFix.selectionProgressLabel = selectionProgress;
+    }
+    const verifySlice = this.buildVerifyWorkflowSlice(findings, selectedFinding, s);
+    const reportVm = wf.report.buildReportView({ findings });
+    const workflowReport = {
+      headline: reportVm.headline,
+      counts: reportVm.counts,
+      primaryExportLabel: reportVm.primaryExportLabel,
+      coverage
+    };
+
+    return {
+      workflowStepperSteps,
+      workflowIsRun: step === 'run',
+      workflowIsTriage: step === 'triage',
+      workflowIsInvestigate: step === 'investigate',
+      workflowIsFix: step === 'fix',
+      workflowIsVerify: step === 'verify',
+      workflowIsReport: step === 'report',
+      workflowIsStub: stubSteps,
+      workflowRun,
+      workflowTriage,
+      workflowInvestigate,
+      workflowInvestigateEmpty: step === 'investigate' && !selectedFinding,
+      workflowInvestigateReady: step === 'investigate' && !!selectedFinding,
+      ...fixSlice,
+      ...verifySlice,
+      workflowReport,
+      exportReportPrimary: this.exportReportPrimary,
+      exportReportMarkdown: this.exportReportMarkdown,
+      toggleRevealSecrets: this.toggleRevealSecrets,
+      revealSecretsChecked: !!s.revealSecrets,
+      exportPrimaryBtnStyle: this.btnStyle(true, { size: '11px', pad: '6px 12px' }),
+      exportSecondaryBtnStyle: this.btnStyle(false, { size: '11px', pad: '6px 12px' }),
+      exportStatusMessage: s.exportStatusMessage || '',
+      exportStatusVisible: !!s.exportStatusVisible,
+      setSimpleMode: this.setSimpleMode,
+      setExpertModeOn: this.setExpertModeOn,
+      simpleModePressed: (!s.expertMode).toString(),
+      expertModePressed: (!!s.expertMode).toString(),
+      simpleModeBtnStyle: this.btnStyle(!s.expertMode, { size: '11px', pad: '4px 10px' }),
+      expertModeBtnStyle: this.btnStyle(!!s.expertMode, { size: '11px', pad: '4px 10px' })
+    };
+  }
+
+  toggleRevealSecrets = (ev) => {
+    const checked = ev?.target ? !!ev.target.checked : !this.state.revealSecrets;
+    this.setState({ revealSecrets: checked });
+  };
+
+  _buildExportPayload() {
+    const wf = this._workflow;
+    if (!wf?.reportExport) return null;
+    const data = this.state.data;
+    const rawFindings = this.collectWorkflowFindings(data);
+    const findings = wf.prefs.applyPersistedTriage(rawFindings, localStorage);
+    const coverage = this.collectWorkflowCoverage(data);
+    return wf.reportExport.buildReportPayload({
+      findings,
+      coverage: {
+        ...coverage,
+        repo: data?.repo || data?.repository || null,
+        commit: data?.commit || data?.sha || null,
+        scanners: this.collectWorkflowScanners(data)
+      },
+      meta: {
+        repo: data?.repo || data?.repository || null,
+        commit: data?.commit || data?.sha || null,
+        exportedAt: new Date().toISOString()
+      },
+      revealSecrets: !!this.state.revealSecrets
+    });
+  }
+
+  _copyExportText(text, label) {
+    const done = (ok) => {
+      this.setState({
+        exportStatusVisible: true,
+        exportStatusMessage: ok
+          ? `${label} copied to clipboard (${text.length} chars). Secrets ${this.state.revealSecrets ? 'REVEALED' : 'masked'}.`
+          : `${label} ready (${text.length} chars) — clipboard unavailable; text logged to console.`
+      });
+      if (!ok) console.info(`[agentvetter-export] ${label}\n`, text);
+    };
+    if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(text).then(() => done(true)).catch(() => done(false));
+      return;
+    }
+    done(false);
+  }
+
+  exportReportPrimary = () => {
+    const wf = this._workflow;
+    const payload = this._buildExportPayload();
+    if (!wf?.reportExport || !payload) {
+      this.setState({ exportStatusVisible: true, exportStatusMessage: 'Export kit not loaded' });
+      return;
+    }
+    this._copyExportText(wf.reportExport.serializeReportJson(payload), 'JSON report');
+  };
+
+  exportReportMarkdown = () => {
+    const wf = this._workflow;
+    const payload = this._buildExportPayload();
+    if (!wf?.reportExport || !payload) {
+      this.setState({ exportStatusVisible: true, exportStatusMessage: 'Export kit not loaded' });
+      return;
+    }
+    this._copyExportText(wf.reportExport.serializeReportMarkdown(payload), 'Markdown report');
+  };
 
   simulateGuardCall = (id) => {
     this.setState(s => {
@@ -1286,7 +2878,7 @@ class Component extends DCLogic {
     if (totalItems === 0) {
       return {
         title: 'No items yet',
-        detail: 'Run a scan or switch to Mock sample data in Guard to populate the dashboard.'
+        detail: 'Run a scan or switch to Mock demo data in Guard to populate the dashboard.'
       };
     }
     if (statusFilter === 'sie-only') {
@@ -1305,7 +2897,9 @@ class Component extends DCLogic {
     if (qualityTab === 'high') bits.push('Quality ≥ 80');
     else if (qualityTab === 'low') bits.push('Quality < 80');
     else if (qualityTab === 'unscored') bits.push('No quality score');
-    if (typeFilter !== 'all') bits.push(typeFilter === 'skill' ? 'Skills' : 'MCP Servers');
+    if (typeFilter !== 'all') bits.push(
+      typeFilter === 'skill' ? 'Skills' : typeFilter === 'package' ? 'Packages' : 'MCP Servers'
+    );
     if (statusFilter !== 'all') bits.push(statusFilter);
     if (searchQuery.trim()) bits.push('“' + searchQuery.trim() + '”');
     return {
@@ -1383,6 +2977,7 @@ class Component extends DCLogic {
       amber: { color: '#8B5A00', label: 'AMBER', glyph: '▲' },
       green: { color: '#0F766E', label: 'GREEN', glyph: '✓' },
       grey: { color: '#6B645A', label: 'UNSCANNED', glyph: '–' },
+      no_coverage: { color: '#6B645A', label: 'NO COVERAGE', glyph: '–' },
       running: { color: '#0E7490', label: 'SCANNING', glyph: '◌' },
       error: { color: '#6D28D9', label: 'ERROR', glyph: '!' }
     };
@@ -1568,13 +3163,15 @@ class Component extends DCLogic {
       amber: { color: '#8B5A00', label: 'AMBER', glyph: '▲' },
       green: { color: '#0F766E', label: 'GREEN', glyph: '✓' },
       grey: { color: '#6B645A', label: 'UNSCANNED', glyph: '–' },
+      no_coverage: { color: '#6B645A', label: 'NO COVERAGE', glyph: '–' },
       running: { color: '#0E7490', label: 'SCANNING', glyph: '◌' },
       error: { color: '#6D28D9', label: 'ERROR', glyph: '!' }
     };
 
-    const primaryTabs = ['dashboard'].map(key => ({
+    const primaryTabLabels = { dashboard: 'Dashboard', workflow: 'Workflow' };
+    const primaryTabs = ['dashboard', 'workflow'].map(key => ({
       key,
-      label: key.charAt(0).toUpperCase() + key.slice(1),
+      label: primaryTabLabels[key],
       onClick: () => this.setTab(key),
       style: this.btnStyle(s.activeTab === key, { size: '13px' })
     }));
@@ -1590,9 +3187,9 @@ class Component extends DCLogic {
       live: { label: 'Live · Supabase', dotColor: '#34d399', textColor: '#0F766E', bgColor: 'rgba(52,211,153,0.1)', borderColor: 'rgba(52,211,153,0.3)', tooltip: 'Fetching real data from Supabase (polling)' },
       'live-realtime': { label: 'Live · Realtime', dotColor: '#34d399', textColor: '#0F766E', bgColor: 'rgba(52,211,153,0.15)', borderColor: 'rgba(52,211,153,0.4)', tooltip: 'Supabase Realtime — updates arrive within ~1s of Modal writes' },
       'live-empty': { label: 'Live · empty', dotColor: '#f59e0b', textColor: '#8B5A00', bgColor: 'rgba(245,158,11,0.1)', borderColor: 'rgba(245,158,11,0.3)', tooltip: 'Connected to Supabase — no items yet' },
-      'mock-selected': { label: 'Sample data', dotColor: '#6b7a8e', textColor: '#5C564C', bgColor: 'rgba(107,122,142,0.1)', borderColor: 'rgba(28,25,21,0.12)', tooltip: 'Using built-in sample data (user selected)' },
-      mock: { label: 'Sample data', dotColor: '#6b7a8e', textColor: '#5C564C', bgColor: 'rgba(107,122,142,0.1)', borderColor: 'rgba(28,25,21,0.12)', tooltip: 'Using built-in sample data; configure Supabase and select Live for database results' },
-      'mock-failed': { label: 'Connection error', dotColor: '#f43f5e', textColor: '#B42318', bgColor: 'rgba(244,63,94,0.1)', borderColor: 'rgba(244,63,94,0.3)', tooltip: 'Could not reach Supabase (auth, RLS, or network) — showing sample data' },
+      'mock-selected': { label: 'Demo data', dotColor: '#6b7a8e', textColor: '#5C564C', bgColor: 'rgba(107,122,142,0.1)', borderColor: 'rgba(28,25,21,0.12)', tooltip: 'Using built-in demo data (user selected)' },
+      mock: { label: 'Demo data', dotColor: '#6b7a8e', textColor: '#5C564C', bgColor: 'rgba(107,122,142,0.1)', borderColor: 'rgba(28,25,21,0.12)', tooltip: 'Using built-in demo data; configure Supabase and select Live for database results' },
+      'mock-failed': { label: 'Connection error', dotColor: '#f43f5e', textColor: '#B42318', bgColor: 'rgba(244,63,94,0.1)', borderColor: 'rgba(244,63,94,0.3)', tooltip: 'Could not reach Supabase (auth, RLS, or network) — showing demo data' },
       'mock-empty': { label: 'Live · empty', dotColor: '#f59e0b', textColor: '#8B5A00', bgColor: 'rgba(245,158,11,0.1)', borderColor: 'rgba(245,158,11,0.3)', tooltip: 'Connected to Supabase — no items yet' }
     };
     const chipKey = s.realtimeConnected && s.dataSource === 'live' ? 'live-realtime' : s.dataSource;
@@ -1601,11 +3198,15 @@ class Component extends DCLogic {
     const base = {
       showIntro: s.showIntro,
       showDashboard: !s.showIntro,
+      showInventory: !s.showIntro && s.activeTab === 'dashboard',
+      showWorkflow: !s.showIntro && s.activeTab === 'workflow',
+      workflowChromeClass: 'tw-workflow-chrome tw-workflow-focus',
       enterDashboard: this.enterDashboard,
       toggleIntro: this.toggleIntro,
       introToggleLabel: s.showIntro ? 'Dashboard' : 'About',
       introToggleStyle: `font-family:var(--font-mono);font-size:11px;padding:4px 10px;border-radius:2px;cursor:pointer;border:1px solid ${s.showIntro ? 'var(--cta)' : 'var(--border-subtle)'};background:${s.showIntro ? 'rgba(196,165,116,0.18)' : 'transparent'};color:${s.showIntro ? 'var(--text-primary)' : 'var(--text-muted)'};transition:all 150ms`,
       activeTabIsDashboard: s.activeTab === 'dashboard',
+      activeTabIsWorkflow: s.activeTab === 'workflow',
       activeTabIsGuard: s.activeTab === 'guard',
       primaryTabs,
       guardTab,
@@ -1636,7 +3237,8 @@ class Component extends DCLogic {
         { key: 'name', label: 'Name' }, { key: 'type', label: 'Type' },
         { key: 'lastScan', label: 'Last scanned' }, { key: 'status', label: 'Health' },
         { key: 'risk', label: 'Risk density' }, { key: 'locus', label: 'Source' }
-      ].map(c => ({ ...c, onClick: () => this.setSort(c.key), arrow: s.sortKey === c.key ? (s.sortDir === 'asc' ? ' ▲' : ' ▼') : '' }))
+      ].map(c => ({ ...c, onClick: () => this.setSort(c.key), arrow: s.sortKey === c.key ? (s.sortDir === 'asc' ? ' ▲' : ' ▼') : '' })),
+      ...this.buildWorkflowView(data, s)
     };
 
     if (!data) {
@@ -1657,7 +3259,8 @@ class Component extends DCLogic {
     const typeTabs = [
       { key: 'all', label: 'All items' },
       { key: 'skill', label: 'Skills' },
-      { key: 'mcp_server', label: 'MCP Servers' }
+      { key: 'mcp_server', label: 'MCP Servers' },
+      { key: 'package', label: 'Packages' }
     ].map(t => ({ ...t, onClick: () => this.setTypeFilter(t.key), style: this.btnStyle(s.typeFilter === t.key, { activeBg: 'rgba(196,165,116,0.18)', activeBorder: '#C4A574', activeColor: '#1C1915' }) }));
 
     const qCounts = kit?.countSkillsByQualityTab
@@ -1709,7 +3312,7 @@ class Component extends DCLogic {
       return {
         ...decorated,
         repoSignature,
-        typeLabel: it.type === 'skill' ? 'Skill' : 'MCP Server',
+        typeLabel: it.type === 'skill' ? 'Skill' : (it.type === 'package' ? 'Package' : 'MCP Server'),
         timeLabel: it.scanStartedAt ? 'scanning since ' + this.fmtTime(it.scanStartedAt) : it.lastScan ? this.fmtTime(it.lastScan) : 'never scanned',
         locusLabel: this.locusLabel(it.locus),
         availLabel: this.availLabel(it.avail),
@@ -1722,7 +3325,7 @@ class Component extends DCLogic {
     const showItemResults = filtered.length > 0;
     const emptyCopy = this.filterEmptyCopy(s.statusFilter, s.typeFilter, s.qualityTab, s.searchQuery, data.items.length);
 
-    const counts = { red: 0, amber: 0, green: 0, grey: 0, running: 0, error: 0 };
+    const counts = { red: 0, amber: 0, green: 0, grey: 0, no_coverage: 0, running: 0, error: 0 };
     data.items.forEach(it => { counts[it.status] = (counts[it.status] || 0) + 1; });
     const escalatedCount = data.items.filter(it => it.findings.some(f => f.scanner === 'tiered_router' && ['routing_decision', 'routing_triage'].includes(f.category))).length;
     const sieOnlyCount = data.items.filter(it => it.findings.some(f => f.scanner === 'tiered_router' && f.category === 'routing_review')).length;
@@ -1733,6 +3336,7 @@ class Component extends DCLogic {
       { key: 'green', label: 'Green', value: counts.green, color: statusMeta.green.color },
       { key: 'running', label: 'Scanning', value: counts.running, color: statusMeta.running.color },
       { key: 'grey', label: 'Unscanned', value: counts.grey, color: statusMeta.grey.color },
+      { key: 'no_coverage', label: 'No coverage', value: counts.no_coverage, color: (statusMeta.no_coverage || statusMeta.grey).color },
       { key: 'error', label: 'Error', value: counts.error, color: statusMeta.error.color },
       { key: 'drifted', label: 'Changed', value: data.items.filter(it => it.drifted).length, color: statusMeta.amber.color },
       { key: 'escalated', label: 'Escalated', value: escalatedCount, color: '#6D28D9' },
@@ -1757,7 +3361,7 @@ class Component extends DCLogic {
         : [...selected.scanners].sort((a, b) => this.compareScannerSource(a, b));
       return {
       ...decorated,
-      typeLabel: selected.type === 'skill' ? 'Skill' : 'MCP Server',
+      typeLabel: selected.type === 'skill' ? 'Skill' : (selected.type === 'package' ? 'Package' : 'MCP Server'),
       timeLabel: selected.scanStartedAt ? 'scanning since ' + this.fmtTime(selected.scanStartedAt) : selected.lastScan ? this.fmtTime(selected.lastScan) : 'never scanned',
       locusLabel: this.locusLabel(selected.locus),
       availLabel: this.availLabel(selected.avail),
@@ -1782,6 +3386,9 @@ class Component extends DCLogic {
         const key = selected.id + ':' + idx;
         const isPlaceholder = sc.status === 'not_available_yet';
         const expanded = !isPlaceholder && !!s.expandedScanners[key];
+        const runtimeOpen = s.expandedRuntime || {};
+        const runtimeExpanded = !isPlaceholder && !!runtimeOpen[key + ':console'];
+        const rawExpanded = !isPlaceholder && !!runtimeOpen[key + ':raw'];
         const out = sc.output || {};
         const findingsForScanner = selected.findings
           .filter(f => f.scanner === sc.source)
@@ -1802,6 +3409,12 @@ class Component extends DCLogic {
         return {
           ...sc,
           expanded,
+          runtimeExpanded,
+          runtimeChevronDeg: runtimeExpanded ? '90deg' : '0deg',
+          rawExpanded,
+          rawChevronDeg: rawExpanded ? '90deg' : '0deg',
+          toggleRuntime: isPlaceholder ? () => {} : () => this.toggleRuntime(selected.id, idx, 'console'),
+          toggleRaw: isPlaceholder ? () => {} : () => this.toggleRuntime(selected.id, idx, 'raw'),
           chevron: isPlaceholder ? '' : (expanded ? '▾' : '▸'),
           isRunning: sc.status === 'running',
           statusColor: scannerStatusColor(sc.status),
@@ -1842,7 +3455,7 @@ class Component extends DCLogic {
     const lastScanTimes = data.items.map(i => i.lastScan).filter(Boolean).sort().reverse();
     const footerLastScan = lastScanTimes.length ? this.fmtTime(lastScanTimes[0]) : 'never';
 
-    const statusOrder = { running: 0, red: 1, amber: 2, green: 3, grey: 4, error: 5 };
+    const statusOrder = { running: 0, red: 1, amber: 2, green: 3, no_coverage: 4, grey: 5, error: 6 };
     const listRows = [...filtered].sort((a, b) => {
       const av = this.sortValue(a, s.sortKey, statusOrder), bv = this.sortValue(b, s.sortKey, statusOrder);
       if (av < bv) return s.sortDir === 'asc' ? -1 : 1;
@@ -1856,7 +3469,7 @@ class Component extends DCLogic {
       return {
       ...decorated,
       repoSignature,
-      typeLabel: it.type === 'skill' ? 'Skill' : 'MCP Server',
+      typeLabel: it.type === 'skill' ? 'Skill' : (it.type === 'package' ? 'Package' : 'MCP Server'),
       timeLabel: it.scanStartedAt ? 'scanning since ' + this.fmtTime(it.scanStartedAt) : it.lastScan ? this.fmtTime(it.lastScan) : 'never scanned',
       sourceLabel: this.locusLabel(it.locus) + ' · ' + this.availLabel(it.avail),
       onSelect: () => this.selectItem(it.id)
@@ -1960,6 +3573,5 @@ class Component extends DCLogic {
   window.addEventListener('resize', hide);
 })();
 </script>
-<script src="../../assets/js/social-bar.js"></script>
 </body>
 </html>

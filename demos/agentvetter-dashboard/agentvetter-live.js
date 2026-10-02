@@ -5,7 +5,7 @@
  * and findings from Supabase and reshapes them into the same structure as
  * agentvetter-data.js (mock).
  *
- * Uses sample data when Live is selected but:
+ * Uses demo data when Live is selected but:
  *  - window.__AGENTVETTER_CONFIG is not set (config file missing)
  *  - SUPABASE_URL or SUPABASE_ANON_KEY is empty
  *  - Any fetch fails (source: mock-failed → chip "Connection error")
@@ -113,14 +113,28 @@ function shapeItem(item, runsByItem, scannersByRun, findingsByRun) {
     message: f.message,
     snippet: f.snippet,
     cwe_ids: f.cwe_ids,
+    package_name: f.package_name,
+    package_version: f.package_version,
+    cve_ids: f.cve_ids,
   }));
+
+  const completedScannerCount = latestScanners.filter(
+    (s) => s.status === "completed"
+  ).length;
 
   const status = resolveItemStatus({
     runStatus,
     heatmapStatus: item.heatmap_status,
     riskScore: item.risk_score,
     findings: mappedFindings,
+    completedScannerCount,
   });
+
+  // No completed engines → no scored density (avoid stale R 0.00 as "clean").
+  const risk =
+    (status === "grey" || status === "no_coverage") && completedScannerCount === 0
+      ? null
+      : item.risk_score;
 
   const unreachableCount = latestScanners.filter((s) => s.status === "unreachable").length;
   const totalScanners = latestScanners.length;
@@ -134,7 +148,7 @@ function shapeItem(item, runsByItem, scannersByRun, findingsByRun) {
     name: item.name,
     identifier: item.identifier || item.name,
     status,
-    risk: item.risk_score,
+    risk,
     quality: item.quality_score,
     locus: item.install_locus || "unknown",
     avail: item.source_availability || "unknown",
@@ -244,14 +258,14 @@ async function fetchLiveData() {
 
 async function loadMockData() {
   const mock = await import("./agentvetter-data.js");
-  console.info("[agentvetter-dashboard] using sample data (user selected)");
+  console.info("[agentvetter-dashboard] using demo data (user selected)");
   return { data: mock.default, source: 'mock-selected' };
 }
 
 async function loadLiveData() {
   const cfg = window.__AGENTVETTER_CONFIG;
   if (!cfg || !cfg.SUPABASE_URL || !cfg.SUPABASE_ANON_KEY) {
-    console.info("[agentvetter-dashboard] Supabase not configured — using sample data");
+    console.info("[agentvetter-dashboard] Supabase not configured — using demo data");
     const mock = await import("./agentvetter-data.js");
     return { data: mock.default, source: "mock" };
   }
@@ -259,7 +273,7 @@ async function loadLiveData() {
   try {
     const live = await fetchLiveData();
     if (!live) {
-      console.info("[agentvetter-dashboard] Supabase not configured — using sample data");
+      console.info("[agentvetter-dashboard] Supabase not configured — using demo data");
       const mock = await import("./agentvetter-data.js");
       return { data: mock.default, source: "mock" };
     }
@@ -267,7 +281,7 @@ async function loadLiveData() {
       console.info("[agentvetter-dashboard] loaded", live.items.length, "items from Supabase");
       return { data: live, source: "live" };
     }
-    // Connected successfully but DB has no rows — do not swap in mock sample data.
+    // Connected successfully but DB has no rows — do not swap in mock demo data.
     console.info("[agentvetter-dashboard] Supabase connected — 0 items");
     return { data: live, source: "live-empty" };
   } catch (err) {
