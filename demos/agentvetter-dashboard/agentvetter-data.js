@@ -55,7 +55,7 @@ const items = [
     {source:'Cisco MCP Scanner: Behavioral Code Scanning', status:'completed', checks_run:18, output:{raw_summary:'18 checks — 1 finding (red): shell=True with unsanitized interpolation'}},
     {source:'Cisco MCP Scanner: vulnerable-package', status:'completed', checks_run:9, output:{raw_summary:'9 checks passed — 0 vulnerable packages'}},
     {source:'Snyk', status:'completed', checks_run:20, output:{raw_summary:'20 checks — 1 issue (red): command injection surface on tool run_shell'}},
-    {source:'Tripwire Sandbox (egress log)', status:'completed', checks_run:1, output:{raw_summary:'1 denied egress attempt: raw.githubusercontent.com'}}
+    {source:'AgentVetter Sandbox (egress log)', status:'completed', checks_run:1, output:{raw_summary:'1 denied egress attempt: raw.githubusercontent.com'}}
   ], trend:[{d:'07-22',r:0.4},{d:'07-27',r:0.4},{d:'08-01',r:2.40}],
   sandbox:{id:'sb_9d21aa', started:'2026-08-01T02:09:10Z', completed:'2026-08-01T02:10:00Z', egressPhase:'static+dynamic allowlist', denied:[{host:'raw.githubusercontent.com', reason:'attempted egress not in dynamic allowlist for this run'}], cleanup:true} },
 
@@ -89,13 +89,13 @@ const items = [
   sandbox:{id:'sb_331fce', started:'2026-07-30T13:14:35Z', completed:'2026-07-30T13:15:00Z', egressPhase:'static allowlist', denied:[], cleanup:true} },
 
   { id:'i10', type:'skill', name:'safe-changelog-writer-v2-drifted', identifier:'safe-changelog-writer', status:'amber', risk:0.50, quality:90, locus:'local', avail:'source_on_disk', lastScan:'2026-08-01T01:05:00Z', drifted:true, findings:[
-    {severity:'amber', category:'undeclared_egress_attempt', file_path:'notify.py', location:'8', scanner:'Tripwire Sandbox (egress log)', message:'Undeclared outbound POST to webhook.example.com blocked by egress allowlist — not present in v1.'}
+    {severity:'amber', category:'undeclared_egress_attempt', file_path:'notify.py', location:'8', scanner:'AgentVetter Sandbox (egress log)', message:'Undeclared outbound POST to webhook.example.com blocked by egress allowlist — not present in v1.'}
   ], scanners:[
     {source:'Cisco Skill Scanner: static/bytecode/pipeline', status:'completed', checks_run:34, output:{raw_summary:'34 checks passed — no findings'}},
     {source:'Snyk', status:'completed', checks_run:18, output:{raw_summary:'18 checks passed — 0 issues'}},
     {source:'Tessl: Lint', status:'completed', checks_run:12, output:{raw_summary:'12 checks — 0 findings'}},
     {source:'Tessl: Review (Quality)', status:'completed', checks_run:1, output:{quality_score:90}},
-    {source:'Tripwire Sandbox (egress log)', status:'completed', checks_run:1, output:{raw_summary:'1 denied egress attempt: webhook.example.com'}}
+    {source:'AgentVetter Sandbox (egress log)', status:'completed', checks_run:1, output:{raw_summary:'1 denied egress attempt: webhook.example.com'}}
   ], trend:[{d:'07-24',r:0.10},{d:'07-27',r:0.10},{d:'08-01',r:0.50}],
   diff:{new:[{category:'undeclared_egress_attempt', message:'Undeclared outbound POST to webhook.example.com'}], resolved:[], persisted:[]},
   sandbox:{id:'sb_0091fb', started:'2026-08-01T01:04:20Z', completed:'2026-08-01T01:05:00Z', egressPhase:'static+dynamic allowlist', denied:[{host:'webhook.example.com', reason:'undeclared egress target, not in allowlist'}], cleanup:true} },

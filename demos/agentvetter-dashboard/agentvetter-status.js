@@ -1,17 +1,17 @@
 /**
- * Single source of truth for Tripwire dashboard status / severity → color.
+ * Single source of truth for AgentVetter dashboard status / severity → color.
  *
  * Two orthogonal concepts:
  * 1. Scan *execution* status (did the scan run finish?)
  * 2. Scan *result* severity (when it finished, how bad are the vulns?)
  *
  * heatmap_status / card colour = worst-of actionable findings (aligned with
- * tripwire_rollup_item). risk_score remains weighted density for sort/trend;
+ * agentvetter_rollup_item). risk_score remains weighted density for sort/trend;
  * statusFromRisk is only a fallback when heatmap and findings are unscorable.
  */
 
 export const STATUS_META = {
-  // Hex must equal Tripwire.dc.html :root --*-ink (CSS owns the SSOT).
+  // Hex must equal AgentVetter.dc.html :root --*-ink (CSS owns the SSOT).
   red: { color: "#B42318", label: "RED", glyph: "●" }, // must equal --red-ink
   amber: { color: "#8B5A00", label: "AMBER", glyph: "▲" }, // must equal --amber-ink
   green: { color: "#0F766E", label: "GREEN", glyph: "✓" }, // must equal --green-ink
@@ -121,7 +121,7 @@ const SEVERITY_AMBER = new Set(["amber", "medium", "low", "warn", "warning"]);
 const SEVERITY_GREEN = new Set(["green", "info", "informational"]);
 
 /**
- * Normalize upstream / DB severity strings to Tripwire buckets.
+ * Normalize upstream / DB severity strings to AgentVetter buckets.
  * CRITICAL/HIGH → red; MEDIUM/LOW → amber; INFO/green soft → green.
  * @param {string|null|undefined} raw
  * @returns {'red'|'amber'|'green'|null}
@@ -407,7 +407,7 @@ export function qualitySurfacing(item) {
   const scheduleCue =
     tone === "known"
       ? null
-      : `Schedule: tripwire scan ${scanTarget} --force`;
+      : `Schedule: agentvetter scan ${scanTarget} --force`;
 
   return {
     badge,
@@ -430,7 +430,7 @@ export function qualityTooltip(tone) {
   }
   if (tone === "unknown-unscored") {
     return (
-      `${base}\nQ ? = scanned but Tessl did not yield a score — schedule: tripwire scan <id> --force.`
+      `${base}\nQ ? = scanned but Tessl did not yield a score — schedule: agentvetter scan <id> --force.`
     );
   }
   return base;
@@ -554,7 +554,7 @@ export function tesslInnerQuality(scanner, item) {
     label,
     headerBadge: known ? `Q ${Math.round(score)}` : "Q ?",
     tooltip: qualityTooltip(known ? "known" : "unknown-unscored"),
-    scheduleCue: known ? null : `Schedule: tripwire scan ${scanTarget} --force`,
+    scheduleCue: known ? null : `Schedule: agentvetter scan ${scanTarget} --force`,
   };
 }
 

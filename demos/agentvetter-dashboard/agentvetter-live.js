@@ -1,18 +1,18 @@
 /**
- * Live Supabase data loader for the Tripwire dashboard.
+ * Live Supabase data loader for the AgentVetter dashboard.
  *
  * Fetches items, dashboard_latest_runs (one row per item), scan_run_scanners,
  * and findings from Supabase and reshapes them into the same structure as
- * tripwire-data.js (mock).
+ * agentvetter-data.js (mock).
  *
  * Uses sample data when Live is selected but:
- *  - window.__TRIPWIRE_CONFIG is not set (config file missing)
+ *  - window.__AGENTVETTER_CONFIG is not set (config file missing)
  *  - SUPABASE_URL or SUPABASE_ANON_KEY is empty
  *  - Any fetch fails (source: mock-failed → chip "Connection error")
  * Empty successful responses stay on Live (source: live-empty).
  */
 
-import { resolveItemStatus } from "./tripwire-status.js";
+import { resolveItemStatus } from "./agentvetter-status.js";
 
 // ── Scanner shaping helpers ───────────────────────────────────────────────────
 
@@ -197,7 +197,7 @@ async function supabaseGetByRunIds(baseUrl, anonKey, table, runIds) {
 }
 
 async function fetchLiveData() {
-  const cfg = window.__TRIPWIRE_CONFIG;
+  const cfg = window.__AGENTVETTER_CONFIG;
   if (!cfg || !cfg.SUPABASE_URL || !cfg.SUPABASE_ANON_KEY) {
     return null;
   }
@@ -243,36 +243,36 @@ async function fetchLiveData() {
 }
 
 async function loadMockData() {
-  const mock = await import("./tripwire-data.js");
-  console.info("[tripwire-dashboard] using sample data (user selected)");
+  const mock = await import("./agentvetter-data.js");
+  console.info("[agentvetter-dashboard] using sample data (user selected)");
   return { data: mock.default, source: 'mock-selected' };
 }
 
 async function loadLiveData() {
-  const cfg = window.__TRIPWIRE_CONFIG;
+  const cfg = window.__AGENTVETTER_CONFIG;
   if (!cfg || !cfg.SUPABASE_URL || !cfg.SUPABASE_ANON_KEY) {
-    console.info("[tripwire-dashboard] Supabase not configured — using sample data");
-    const mock = await import("./tripwire-data.js");
+    console.info("[agentvetter-dashboard] Supabase not configured — using sample data");
+    const mock = await import("./agentvetter-data.js");
     return { data: mock.default, source: "mock" };
   }
 
   try {
     const live = await fetchLiveData();
     if (!live) {
-      console.info("[tripwire-dashboard] Supabase not configured — using sample data");
-      const mock = await import("./tripwire-data.js");
+      console.info("[agentvetter-dashboard] Supabase not configured — using sample data");
+      const mock = await import("./agentvetter-data.js");
       return { data: mock.default, source: "mock" };
     }
     if (live.items.length > 0) {
-      console.info("[tripwire-dashboard] loaded", live.items.length, "items from Supabase");
+      console.info("[agentvetter-dashboard] loaded", live.items.length, "items from Supabase");
       return { data: live, source: "live" };
     }
     // Connected successfully but DB has no rows — do not swap in mock sample data.
-    console.info("[tripwire-dashboard] Supabase connected — 0 items");
+    console.info("[agentvetter-dashboard] Supabase connected — 0 items");
     return { data: live, source: "live-empty" };
   } catch (err) {
-    console.warn("[tripwire-dashboard] live fetch failed:", err.message);
-    const mock = await import("./tripwire-data.js");
+    console.warn("[agentvetter-dashboard] live fetch failed:", err.message);
+    const mock = await import("./agentvetter-data.js");
     return { data: mock.default, source: "mock-failed" };
   }
 }

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="./tripwire-dashboard.config.js" onerror=""></script>
+<script src="./agentvetter-dashboard.config.js" onerror=""></script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -268,7 +268,7 @@
   <div style="display:flex;align-items:center;height:52px;padding:0 20px;border-bottom:1px solid var(--border-subtle);gap:10px;flex-shrink:0;background:var(--bg-surface)">
     <div style="font-family:var(--font-mono);font-weight:700;font-size:13px;letter-spacing:0.08em;color:var(--text-primary);margin-right:16px;display:flex;align-items:center;gap:8px">
       <svg width="14" height="16" viewBox="0 0 14 16" fill="none" style="opacity:0.85"><path d="M7 1L13 4V9.5C13 12.5 10 14.5 7 15.5C4 14.5 1 12.5 1 9.5V4L7 1Z" stroke="currentColor" stroke-width="1.2" fill="currentColor" fill-opacity="0.15"/><circle cx="7" cy="7.5" r="1.5" fill="currentColor"/></svg>
-      TRIPWIRE
+      AGENTVETTER
     </div>
     <sc-for list="{{ primaryTabs }}" as="tab" hint-placeholder-count="2">
       <button onClick="{{ tab.onClick }}" style="{{ tab.style }}">{{ tab.label }}</button>
@@ -325,13 +325,13 @@
           handed a trusted seat in your session.
         </h1>
         <p style="font-family:var(--font-sans);font-size:17px;color:var(--text-secondary);max-width:580px;margin-bottom:32px;line-height:1.55">
-          Tripwire scans agentic artifacts before Claude Code trusts them — and blocks the ones that shouldn't be running in your terminal.
+          AgentVetter scans agentic artifacts before Claude Code trusts them — and blocks the ones that shouldn't be running in your terminal.
         </p>
         <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:0">
           <button onClick="{{ enterDashboard }}" style="font-family:var(--font-mono);font-size:13px;padding:13px 22px;background:var(--cta);color:#1C1915;font-weight:700;border:none;cursor:pointer;border-radius:2px;transition:background 0.15s ease;display:inline-flex;align-items:center;gap:8px">
             Open Dashboard →
           </button>
-          <a href="https://github.com/neomatrix369/tripwire/" target="_blank" rel="noopener" style="font-family:var(--font-mono);font-size:13px;padding:13px 22px;border:1px solid var(--border-default);color:var(--text-primary);text-decoration:none;border-radius:2px;display:inline-flex;align-items:center;gap:8px;transition:border-color 0.15s ease">
+          <a href="https://github.com/neomatrix369/agentvetter/" target="_blank" rel="noopener" style="font-family:var(--font-mono);font-size:13px;padding:13px 22px;border:1px solid var(--border-default);color:var(--text-primary);text-decoration:none;border-radius:2px;display:inline-flex;align-items:center;gap:8px;transition:border-color 0.15s ease">
             View the repo ↗
           </a>
         </div>
@@ -362,7 +362,7 @@
           <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:20px;font-family:var(--font-mono);font-size:11px;color:var(--text-muted)">
             <span style="display:inline-flex;align-items:center;gap:7px"><i style="width:7px;height:7px;display:inline-block;background:var(--red);flex-shrink:0;font-style:normal"></i>active threat / confirmed harm</span>
             <span style="display:inline-flex;align-items:center;gap:7px"><i style="width:7px;height:7px;display:inline-block;background:var(--amber);flex-shrink:0;font-style:normal"></i>exposure / trend to watch</span>
-            <span style="display:inline-flex;align-items:center;gap:7px"><i style="width:7px;height:7px;display:inline-block;background:var(--green);flex-shrink:0;font-style:normal"></i>what Tripwire protects</span>
+            <span style="display:inline-flex;align-items:center;gap:7px"><i style="width:7px;height:7px;display:inline-block;background:var(--green);flex-shrink:0;font-style:normal"></i>what AgentVetter protects</span>
           </div>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
             <div class="stat-card risk hud"><span class="hc-br"></span>
@@ -434,9 +434,9 @@
         <div style="position:relative;padding-top:56px;margin-bottom:52px">
           <div style="position:absolute;top:0;left:0;right:0;height:1px;background-image:repeating-linear-gradient(90deg,var(--border-default) 0 6px,transparent 6px 14px)"></div>
           <div style="position:absolute;top:-1px;right:0;background:var(--bg-base);padding:0 10px;font-family:var(--font-mono);font-size:10px;color:var(--text-muted);letter-spacing:0.1em">SEC / 03</div>
-          <div class="intro-eyebrow" style="margin-bottom:12px">How Tripwire stops it</div>
+          <div class="intro-eyebrow" style="margin-bottom:12px">How AgentVetter stops it</div>
           <h2 style="font-family:var(--font-display);font-size:clamp(20px,2.6vw,28px);font-weight:600;margin-bottom:12px">A scan on the wire, before anything runs</h2>
-          <p style="font-family:var(--font-sans);font-size:15px;color:var(--text-secondary);max-width:640px;margin-bottom:28px;line-height:1.55">Tripwire sits between Claude Code's hook system and every skill, tool, or MCP call — dispatching to a scanner and relaying a verdict before execution proceeds.</p>
+          <p style="font-family:var(--font-sans);font-size:15px;color:var(--text-secondary);max-width:640px;margin-bottom:28px;line-height:1.55">AgentVetter sits between Claude Code's hook system and every skill, tool, or MCP call — dispatching to a scanner and relaying a verdict before execution proceeds.</p>
           <div style="display:flex;align-items:stretch;gap:0;background:var(--bg-deep);padding:26px 20px;border:1px solid var(--border-subtle);margin-bottom:32px;flex-wrap:wrap" class="hud"><span class="hc-br"></span>
             <div style="background:var(--bg-surface);border:1px solid var(--border-subtle);padding:14px;flex:1 1 120px;min-width:120px">
               <div style="font-family:var(--font-mono);font-size:9px;color:var(--cta-ink);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:5px">Claude Code</div>
@@ -452,7 +452,7 @@
             <div style="flex:0 0 auto;width:26px;text-align:center;color:var(--text-muted);font-family:var(--font-mono);align-self:center">→</div>
             <div style="background:var(--bg-surface);border:1px solid var(--border-subtle);padding:14px;flex:1 1 120px;min-width:120px">
               <div style="font-family:var(--font-mono);font-size:9px;color:var(--cta-ink);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:5px">Engine</div>
-              <div style="font-size:13px;font-weight:600;margin-bottom:3px;font-family:var(--font-mono)">tripwire CLI</div>
+              <div style="font-size:13px;font-weight:600;margin-bottom:3px;font-family:var(--font-mono)">agentvetter CLI</div>
               <div style="font-size:11px;color:var(--text-secondary);font-family:var(--font-sans)">submit-for-scan &amp; status APIs</div>
             </div>
             <div style="flex:0 0 auto;width:26px;text-align:center;color:var(--text-muted);font-family:var(--font-mono);align-self:center">→</div>
@@ -503,7 +503,7 @@
           <div style="position:absolute;top:-1px;right:0;background:var(--bg-base);padding:0 10px;font-family:var(--font-mono);font-size:10px;color:var(--text-muted);letter-spacing:0.1em">SEC / 04</div>
           <div class="intro-eyebrow" style="margin-bottom:12px">Shipped today</div>
           <h2 style="font-family:var(--font-display);font-size:clamp(20px,2.6vw,28px);font-weight:600;margin-bottom:12px">Five Claude Code skills, wired to a live enforcement layer</h2>
-          <p style="font-family:var(--font-sans);font-size:15px;color:var(--text-secondary);max-width:640px;margin-bottom:28px;line-height:1.55">Built at Frontline Hackathon London 2026: the integration layer that connects Claude Code's hook system to Tripwire's existing scan engine — enforcing from the moment of install.</p>
+          <p style="font-family:var(--font-sans);font-size:15px;color:var(--text-secondary);max-width:640px;margin-bottom:28px;line-height:1.55">Built at Frontline Hackathon London 2026: the integration layer that connects Claude Code's hook system to AgentVetter's existing scan engine — enforcing from the moment of install.</p>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px">
             <div style="background:var(--bg-surface);padding:20px;position:relative" class="hud hud-green"><span class="hc-br"></span>
               <span style="font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--green-ink);margin-bottom:9px;display:block">/tw-verify [name(s)]</span>
@@ -511,7 +511,7 @@
             </div>
             <div style="background:var(--bg-surface);padding:20px;position:relative" class="hud hud-green"><span class="hc-br"></span>
               <span style="font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--green-ink);margin-bottom:9px;display:block">/tw-scan [name(s)] --force</span>
-              <p style="font-family:var(--font-sans);font-size:12px;color:var(--text-secondary);line-height:1.45">Submits artifacts for scanning via Tripwire's existing API. --force resubmits over a valid result.</p>
+              <p style="font-family:var(--font-sans);font-size:12px;color:var(--text-secondary);line-height:1.45">Submits artifacts for scanning via AgentVetter's existing API. --force resubmits over a valid result.</p>
             </div>
             <div style="background:var(--bg-surface);padding:20px;position:relative" class="hud hud-green"><span class="hc-br"></span>
               <span style="font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--green-ink);margin-bottom:9px;display:block">/tw-enable</span>
@@ -523,7 +523,7 @@
             </div>
             <div style="background:var(--bg-surface);padding:20px;position:relative" class="hud hud-green"><span class="hc-br"></span>
               <span style="font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--green-ink);margin-bottom:9px;display:block">/tw-self-check</span>
-              <p style="font-family:var(--font-sans);font-size:12px;color:var(--text-secondary);line-height:1.45">Runs the same status logic against Tripwire's own five skills — the guard, guarding itself.</p>
+              <p style="font-family:var(--font-sans);font-size:12px;color:var(--text-secondary);line-height:1.45">Runs the same status logic against AgentVetter's own five skills — the guard, guarding itself.</p>
             </div>
             <div style="display:flex;align-items:center;justify-content:center;border:1px dashed var(--border-default);color:var(--text-muted);font-family:var(--font-mono);font-size:11px;padding:20px;text-align:center">
               pre-tool-use.sh · fail-closed on error
@@ -544,7 +544,7 @@
             </div>
             <div style="flex:1;background:var(--bg-elevated);padding:16px 20px">
               <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:5px">Install path</div>
-              <div style="font-family:var(--font-mono);font-size:13px;color:var(--cta-ink);font-weight:600">tripwire setup-agent-hooks</div>
+              <div style="font-family:var(--font-mono);font-size:13px;color:var(--cta-ink);font-weight:600">agentvetter setup-agent-hooks</div>
             </div>
           </div>
         </div>
@@ -555,7 +555,7 @@
           <div style="position:absolute;top:-1px;right:0;background:var(--bg-base);padding:0 10px;font-family:var(--font-mono);font-size:10px;color:var(--text-muted);letter-spacing:0.1em">SEC / 05</div>
           <div class="intro-eyebrow" style="margin-bottom:12px">Where it goes next</div>
           <h2 style="font-family:var(--font-display);font-size:clamp(20px,2.6vw,28px);font-weight:600;margin-bottom:12px">From hook wiring to full dispatch coverage</h2>
-          <p style="font-family:var(--font-sans);font-size:15px;color:var(--text-secondary);max-width:640px;margin-bottom:32px;line-height:1.55">The integration layer is live. What extends next is Tripwire's own dispatch capability — pluggable scanners behind the same RAG verdict contract.</p>
+          <p style="font-family:var(--font-sans);font-size:15px;color:var(--text-secondary);max-width:640px;margin-bottom:32px;line-height:1.55">The integration layer is live. What extends next is AgentVetter's own dispatch capability — pluggable scanners behind the same RAG verdict contract.</p>
           <div style="position:relative;padding-left:2px">
             <div style="position:absolute;left:19px;top:8px;bottom:8px;width:1px;background-image:repeating-linear-gradient(180deg,var(--border-default) 0 4px,transparent 4px 9px)"></div>
             <div style="display:flex;gap:20px;padding-bottom:28px">
@@ -590,7 +590,7 @@
           <div style="position:absolute;top:0;left:0;right:0;height:1px;background-image:repeating-linear-gradient(90deg,var(--border-default) 0 6px,transparent 6px 14px)"></div>
           <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;padding-bottom:32px;margin-bottom:24px;border-bottom:1px solid var(--border-subtle)">
             <h3 style="font-family:var(--font-mono);font-size:18px;max-width:400px;font-weight:600">Enforcement should start at install, not after the first incident.</h3>
-            <div style="font-family:var(--font-mono);font-size:13px;background:var(--bg-deep);border:1px solid var(--border-default);padding:14px 18px;color:var(--cta-ink)">$ tripwire setup-agent-hooks</div>
+            <div style="font-family:var(--font-mono);font-size:13px;background:var(--bg-deep);border:1px solid var(--border-default);padding:14px 18px;color:var(--cta-ink)">$ agentvetter setup-agent-hooks</div>
           </div>
           <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
             <button onClick="{{ enterDashboard }}" style="font-family:var(--font-mono);font-size:13px;padding:13px 22px;background:var(--cta);color:#1C1915;font-weight:700;border:none;cursor:pointer;border-radius:2px;transition:background 0.15s ease">
@@ -1035,7 +1035,7 @@
   <div style="display:flex;align-items:center;gap:14px;padding:8px 20px;border-top:1px solid var(--border-subtle);font-size:11px;color:var(--text-muted);flex-shrink:0;background:var(--bg-surface);flex-wrap:wrap">
     <span style="font-family:var(--font-mono);color:var(--text-secondary)">Last scan: {{ footerLastScan }}</span>
     <div style="width:1px;height:14px;background:var(--border-subtle)"></div>
-    <span style="color:var(--text-secondary)">Primary stack: Tripwire · Modal · Supabase · Cursor</span>
+    <span style="color:var(--text-secondary)">Primary stack: AgentVetter · Modal · Supabase · Cursor</span>
     <div style="width:1px;height:14px;background:var(--border-subtle)"></div>
     <span>Scanners: Cisco Skill/MCP Scanner · Snyk · Tessl</span>
   </div>
@@ -1048,7 +1048,7 @@ class Component extends DCLogic {
     activeTab: 'dashboard',
     data: null,
     dataSource: 'loading',
-    dataSourceMode: sessionStorage.getItem('tripwire-data-source-mode') || 'mock',
+    dataSourceMode: sessionStorage.getItem('agentvetter-data-source-mode') || 'mock',
     typeFilter: 'all',
     qualityTab: 'high',
     statusFilter: 'all',
@@ -1063,26 +1063,26 @@ class Component extends DCLogic {
     expandedScanners: {},
     findingsExpanded: true,
     realtimeConnected: false,
-    showIntro: !sessionStorage.getItem('tripwire-intro-dismissed')
+    showIntro: !sessionStorage.getItem('agentvetter-intro-dismissed')
   };
 
   componentDidMount() {
-    import('./tripwire-status.js').then(m => {
+    import('./agentvetter-status.js').then(m => {
       this._statusKit = m;
       this._loadDataForMode(this.state.dataSourceMode);
     }).catch(err => {
-      console.error('[tripwire-dashboard] status kit load error:', err);
+      console.error('[agentvetter-dashboard] status kit load error:', err);
       this._loadDataForMode(this.state.dataSourceMode);
     });
   }
 
   _loadDataForMode(mode) {
     this.setState({ dataSource: 'loading' });
-    import('./tripwire-live.js').then(m => m.default(mode)).then(result => {
+    import('./agentvetter-live.js').then(m => m.default(mode)).then(result => {
       this.setState({ data: result.data, dataSource: result.source });
       this._managePoll(result.data, mode);
     }).catch(err => {
-      console.error('[tripwire-dashboard] data load error:', err);
+      console.error('[agentvetter-dashboard] data load error:', err);
       this.setState({ dataSource: 'mock-failed' });
     });
   }
@@ -1092,7 +1092,7 @@ class Component extends DCLogic {
     this._teardownRealtime();
     if (mode !== 'live') return;
 
-    const cfg = window.__TRIPWIRE_CONFIG;
+    const cfg = window.__AGENTVETTER_CONFIG;
     if (cfg?.SUPABASE_URL && cfg?.SUPABASE_ANON_KEY) {
       this._tryRealtime(cfg, data);
       return;
@@ -1101,26 +1101,26 @@ class Component extends DCLogic {
   }
 
   _tryRealtime(cfg, data) {
-    import('./tripwire-realtime.js').then(rt => {
+    import('./agentvetter-realtime.js').then(rt => {
       this._rt = rt;
       return rt.subscribe(cfg, (payload) => {
-        console.info('[tripwire] realtime event:', payload.eventType, payload.table);
+        console.info('[agentvetter] realtime event:', payload.eventType, payload.table);
         this._reloadLive();
       });
     }).then(status => {
       if (status === 'SUBSCRIBED') {
-        console.info('[tripwire] Realtime connected — 8s polling disabled');
+        console.info('[agentvetter] Realtime connected — 8s polling disabled');
         this.setState({ realtimeConnected: true });
         const hasRunning = data?.items?.some(it => it.status === 'running');
         if (hasRunning) {
           this._pollTimer = setInterval(() => this._reloadLive(), 30000);
         }
       } else {
-        console.warn('[tripwire] Realtime unavailable — falling back to 8s poll');
+        console.warn('[agentvetter] Realtime unavailable — falling back to 8s poll');
         this._startPollFallback(data);
       }
     }).catch(err => {
-      console.warn('[tripwire] Realtime init failed:', err?.message, '— using 8s poll');
+      console.warn('[agentvetter] Realtime init failed:', err?.message, '— using 8s poll');
       this._startPollFallback(data);
     });
   }
@@ -1130,7 +1130,7 @@ class Component extends DCLogic {
     const hasRunning = data && data.items && data.items.some(it => it.status === 'running');
     if (!hasRunning) return;
     this._pollTimer = setInterval(() => {
-      import('./tripwire-live.js').then(m => m.default('live')).then(result => {
+      import('./agentvetter-live.js').then(m => m.default('live')).then(result => {
         this.setState({ data: result.data, dataSource: result.source });
         const stillRunning = result.data && result.data.items && result.data.items.some(it => it.status === 'running');
         if (!stillRunning && !this._rt) clearInterval(this._pollTimer);
@@ -1142,7 +1142,7 @@ class Component extends DCLogic {
     const now = Date.now();
     if (this._lastReload && now - this._lastReload < 2000) return;
     this._lastReload = now;
-    import('./tripwire-live.js').then(m => m.default('live')).then(result => {
+    import('./agentvetter-live.js').then(m => m.default('live')).then(result => {
       this.setState({ data: result.data, dataSource: result.source });
     }).catch(() => {});
   }
@@ -1157,7 +1157,7 @@ class Component extends DCLogic {
 
   setDataSourceMode = (e) => {
     const mode = e.target.value;
-    sessionStorage.setItem('tripwire-data-source-mode', mode);
+    sessionStorage.setItem('agentvetter-data-source-mode', mode);
     this.setState({ dataSourceMode: mode, selectedId: null, expandedScanners: {}, findingsExpanded: true });
     this._loadDataForMode(mode);
   };
@@ -1171,16 +1171,16 @@ class Component extends DCLogic {
   }
 
   enterDashboard = () => {
-    sessionStorage.setItem('tripwire-intro-dismissed', '1');
+    sessionStorage.setItem('agentvetter-intro-dismissed', '1');
     this.setState({ showIntro: false });
   };
 
   toggleIntro = () => {
     const next = !this.state.showIntro;
     if (next) {
-      sessionStorage.removeItem('tripwire-intro-dismissed');
+      sessionStorage.removeItem('agentvetter-intro-dismissed');
     } else {
-      sessionStorage.setItem('tripwire-intro-dismissed', '1');
+      sessionStorage.setItem('agentvetter-intro-dismissed', '1');
     }
     this.setState({ showIntro: next });
   };
@@ -1488,7 +1488,7 @@ class Component extends DCLogic {
       badge,
       tone,
       tooltip: 'Tessl quality = quality review score from Tessl (not security risk / not card colour).\nRange: 0–100 (higher is better). Source: tessl review run quality --json → items.quality_score.',
-      scheduleCue: tone === 'known' ? null : `Schedule: tripwire scan ${scanTarget} --force`,
+      scheduleCue: tone === 'known' ? null : `Schedule: agentvetter scan ${scanTarget} --force`,
     };
   }
 
