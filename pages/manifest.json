@@ -76,14 +76,14 @@
     },
     {
       "title": "Projects",
-      "description": "Open source repos — Tripwire, SIE, and more with links to live builds.",
+      "description": "Open source repos — AgentVetter, SIE, and more with links to live builds.",
       "href": "pages/projects.html",
       "kind": "static"
     },
     {
-      "title": "Tripwire dashboard",
+      "title": "AgentVetter dashboard",
       "description": "FolderGate-style security and quality scanning dashboard (interactive prototype).",
-      "href": "demos/tripwire-dashboard/",
+      "href": "demos/agentvetter-dashboard/",
       "kind": "interactive"
     },
     {

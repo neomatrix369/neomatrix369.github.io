@@ -1,5 +1,5 @@
 /**
- * Supabase Realtime subscription for the Tripwire dashboard.
+ * Supabase Realtime subscription for the AgentVetter dashboard.
  *
  * Subscribes to Postgres Changes on scan_runs, scan_run_scanners, and findings
  * so the dashboard updates within ~1s of Modal writing a scanner result,
@@ -41,7 +41,7 @@ export async function subscribe(config, onUpdate, { loadCreateClient = getCreate
   try {
     createClient = await loadCreateClient();
   } catch (err) {
-    console.warn("[tripwire-realtime] CDN load failed:", err.message);
+    console.warn("[agentvetter-realtime] CDN load failed:", err.message);
     return null;
   }
 
@@ -56,7 +56,7 @@ export async function subscribe(config, onUpdate, { loadCreateClient = getCreate
 
   return new Promise((resolve) => {
     _channel = _client
-      .channel("tripwire-scans")
+      .channel("agentvetter-scans")
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "scan_runs" },
@@ -73,7 +73,7 @@ export async function subscribe(config, onUpdate, { loadCreateClient = getCreate
         debouncedCallback,
       )
       .subscribe((status) => {
-        console.info("[tripwire-realtime]", status);
+        console.info("[agentvetter-realtime]", status);
         resolve(status);
       });
   });
@@ -84,7 +84,7 @@ export function unsubscribe() {
   clearTimeout(_debounceTimer);
   if (_channel && _client) {
     _client.removeChannel(_channel);
-    console.info("[tripwire-realtime] unsubscribed");
+    console.info("[agentvetter-realtime] unsubscribed");
   }
   _channel = null;
   _client = null;

@@ -77,21 +77,21 @@
         </p>
       </li>
       <li>
-        <h2>Tripwire</h2>
+        <h2>AgentVetter</h2>
         <p>Scans agent installs and blocks them before they run. Tiered routing uses <a href="#sie">SIE</a> before a heavier model step.</p>
-        <p><a class="repo" href="https://github.com/neomatrix369/tripwire">github.com/neomatrix369/tripwire</a></p>
+        <p><a class="repo" href="https://github.com/neomatrix369/agentvetter">github.com/neomatrix369/agentvetter</a></p>
         <p class="card-actions">
-          <a class="button" href="../demos/tripwire-dashboard/">Open dashboard</a>
+          <a class="button" href="../demos/agentvetter-dashboard/">Open dashboard</a>
           <a class="button" href="#sie">SIE hub ↓</a>
         </p>
       </li>
       <li id="sie">
         <h2>SIE</h2>
         <dl class="story-bits">
-          <div><dt>Why</dt><dd>Tripwire and the RAG parameter toolkit need a shared place to run models.</dd></div>
+          <div><dt>Why</dt><dd>AgentVetter and the RAG parameter toolkit need a shared place to run models.</dd></div>
           <div><dt>Problem</dt><dd>Embeddings, routing, and triage need an inference server those projects can call.</dd></div>
           <div><dt>Built</dt><dd><strong>Superlinked Inference Engine (SIE)</strong> — an open-source inference server and production cluster.</dd></div>
-          <div><dt>Result</dt><dd>Tripwire uses it for triage before a heavier model step. rag-params-finder uses it for embeddings.</dd></div>
+          <div><dt>Result</dt><dd>AgentVetter uses it for triage before a heavier model step. rag-params-finder uses it for embeddings.</dd></div>
         </dl>
         <p><a class="repo" href="https://github.com/neomatrix369/sie">github.com/neomatrix369/sie</a></p>
         <p class="card-actions">
@@ -101,11 +101,11 @@
           <strong>SIE-enabled dependent projects</strong>
           <ul>
             <li>
-              <a href="https://github.com/neomatrix369/tripwire" rel="noopener"><strong>Tripwire</strong></a>
+              <a href="https://github.com/neomatrix369/agentvetter" rel="noopener"><strong>AgentVetter</strong></a>
               — sandboxed security scanning for AI skills and MCP servers; SIE handles tiered triage before Model Studio escalation.
               <div class="dep-actions">
-                <a class="button" href="https://github.com/neomatrix369/tripwire" rel="noopener">GitHub</a>
-                <a class="button" href="../demos/tripwire-dashboard/">Open dashboard</a>
+                <a class="button" href="https://github.com/neomatrix369/agentvetter" rel="noopener">GitHub</a>
+                <a class="button" href="../demos/agentvetter-dashboard/">Open dashboard</a>
               </div>
             </li>
             <li>

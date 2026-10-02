@@ -15,11 +15,11 @@
   const SCRAMBLE =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789<>{}[]|/\\_+*#";
 
-  // Blend: AI/ML engineer impact + profile/repos including Tripwire & rag-params-finder.
+  // Blend: AI/ML engineer impact + profile/repos including AgentVetter & rag-params-finder.
   const BOOT_LINES = [
     "> AI / ML engineer · certified · production systems",
     "> RAG / LLMs · rag-params-finder · RagCheck · evaluation",
-    "> tripwire · security & quality scanning · NLP",
+    "> agentvetter · security & quality scanning · NLP",
     "> java champion · 4× kaggle expert · software craftsperson",
     "> awesome-ai-ml-dl · 1.7k★ · speaker · mentor · open source",
   ];

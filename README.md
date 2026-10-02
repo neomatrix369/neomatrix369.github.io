@@ -9,13 +9,13 @@ Static GitHub Pages site for standalone HTML, live benchmarks, explorers, and sy
 | Build | URL |
 |------|-----|
 | Home — all builds & pages | https://neomatrix369.github.io/ |
-| Projects hub (Tripwire, SIE, rag-params-finder, …) | https://neomatrix369.github.io/pages/projects.html |
+| Projects hub (AgentVetter, SIE, rag-params-finder, …) | https://neomatrix369.github.io/pages/projects.html |
 | Doc extract — project write-up | https://neomatrix369.github.io/pages/playgroup-202602-docextract.html |
 | Doc extract — playground archive (25 snapshots) | https://neomatrix369.github.io/demos/playgroup-202602-docextract/ |
 | Doc extract — Doubleword guide | https://neomatrix369.github.io/demos/playgroup-202602-docextract/extractor-all-doubleword.html |
 | Laguna py-bug-trace — project page | https://neomatrix369.github.io/pages/laguna-py-bug-trace.html |
 | Laguna py-bug-trace — reports & explorer | https://neomatrix369.github.io/demos/laguna-py-bug-trace/ |
-| Tripwire dashboard | https://neomatrix369.github.io/demos/tripwire-dashboard/ |
+| AgentVetter dashboard | https://neomatrix369.github.io/demos/agentvetter-dashboard/ |
 | Claude Code concept map | https://neomatrix369.github.io/demos/claude-code-concept-map.html |
 
 ## Folder layout
@@ -50,21 +50,21 @@ python3 -m http.server 8080
 
 Open http://localhost:8080
 
-## Tripwire dashboard (mock-only)
+## AgentVetter dashboard (mock-only)
 
-Hosted at https://neomatrix369.github.io/demos/tripwire-dashboard/
+Hosted at https://neomatrix369.github.io/demos/agentvetter-dashboard/
 
-Source of truth is the Tripwire repo (`prototypes/dc-dashboard/`). This site keeps a **mock-only** snapshot (empty Supabase keys). Refresh after Tripwire dashboard changes:
+Source of truth is the AgentVetter repo (`prototypes/dc-dashboard/`). This site keeps a **mock-only** snapshot (empty Supabase keys). Refresh after AgentVetter dashboard changes:
 
 ```bash
-./scripts/sync-tripwire-dashboard.sh
-# or: bash .claude/skills/sync-tripwire-pages/scripts/sync.sh
+./scripts/sync-agentvetter-dashboard.sh
+# or: bash .claude/skills/sync-agentvetter-pages/scripts/sync.sh
 ```
 
-Agent skill (project-local, gitignored): `.claude/skills/sync-tripwire-pages` — invoke as `/sync-tripwire-pages`.
-Also linked from `.cursor/skills/` and `.codex/skills/` in the Tripwire repo.
+Agent skill (project-local, gitignored): `.claude/skills/sync-agentvetter-pages` — invoke as `/sync-agentvetter-pages`.
+Also linked from `.cursor/skills/` and `.codex/skills/` in the AgentVetter repo.
 
-Preview: http://localhost:8080/demos/tripwire-dashboard/
+Preview: http://localhost:8080/demos/agentvetter-dashboard/
 
 ## Publish to GitHub Pages
 

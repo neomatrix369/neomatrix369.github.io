@@ -21,11 +21,11 @@
       hint: "Heatmap and Pareto view",
       tabId: "tab-laguna",
     },
-    tripwire: {
-      text: "Tripwire dashboard — security and quality scanning prototype",
-      href: "demos/tripwire-dashboard/",
+    agentvetter: {
+      text: "AgentVetter dashboard — security and quality scanning prototype",
+      href: "demos/agentvetter-dashboard/",
       hint: "Interactive FolderGate-style panels",
-      tabId: "tab-tripwire",
+      tabId: "tab-agentvetter",
     },
     github: {
       text: "awesome-ai-ml-dl — curated AI and ML resources on GitHub",
