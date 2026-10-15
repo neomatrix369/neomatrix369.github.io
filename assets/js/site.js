@@ -1,6 +1,8 @@
+// Safety net for file:// previews and failed manifest fetches. Titles and hrefs
+// must match pages/manifest.json; the child lists are deliberately condensed.
 const FALLBACK_PAGES = [
   {
-    title: "Laguna py-bug-trace",
+    title: "py-bug-trace · Laguna eval",
     description: "Poolside Laguna hackathon benchmark — hosted from HF laguna-eval-experiments.",
     kind: "group",
     children: [
@@ -13,7 +15,7 @@ const FALLBACK_PAGES = [
       {
         title: "Interactive explorer",
         description: "Filter models, levels, and tasks.",
-        href: "demos/laguna-py-bug-trace/explorer.html",
+        href: "demos/laguna-py-bug-trace/?view=explorer.html",
         kind: "interactive",
       },
       {
@@ -55,16 +57,40 @@ const FALLBACK_PAGES = [
     href: "pages/projects.html",
     kind: "static",
   },
+  {
+    title: "AgentVetter dashboard",
+    description: "FolderGate-style security and quality scanning dashboard.",
+    href: "demos/agentvetter-dashboard/",
+    kind: "interactive",
+  },
+  {
+    title: "Claude Code concept map",
+    description: "Pan/zoom map of Claude Code extension points, hooks, and APIs.",
+    href: "demos/claude-code-concept-map.html",
+    kind: "interactive",
+  },
 ];
+
+/** Cards are built as HTML strings, so manifest text has to be escaped —
+ *  an unescaped "&" or "<" in a title would otherwise corrupt the markup. */
+function esc(value) {
+  return String(value == null ? "" : value).replace(/[&<>"']/g, (ch) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  })[ch]);
+}
 
 function renderSubCard(child) {
   const tagClass = child.kind === "interactive" ? "tag tag--interactive" : "tag";
   return `
     <article class="page-card-sub">
-      <span class="${tagClass}">${child.kind}</span>
-      <h4>${child.title}</h4>
-      <p>${child.description}</p>
-      <a class="button" href="${child.href}">Open</a>
+      <span class="${tagClass}">${esc(child.kind)}</span>
+      <h4>${esc(child.title)}</h4>
+      <p>${esc(child.description)}</p>
+      <a class="button" href="${esc(child.href)}">Open</a>
     </article>
   `;
 }
@@ -88,10 +114,10 @@ function renderPageCard(page) {
     return `
       <article class="page-card page-card--group">
         <div class="page-card-group-header">
-          <span class="tag">benchmark</span>
+          <span class="tag">${esc(page.tag || "benchmark")}</span>
           <div class="page-card-group-meta">
-            <h3>${page.title}</h3>
-            <p>${page.description}</p>
+            <h3>${esc(page.title)}</h3>
+            <p>${esc(page.description)}</p>
           </div>
           <button
             class="button page-card-toggle"
@@ -111,10 +137,10 @@ function renderPageCard(page) {
 
   return `
     <article class="page-card">
-      <span class="${tagClass}">${page.kind}</span>
-      <h3>${page.title}</h3>
-      <p>${page.description}</p>
-      <a class="button" href="${page.href}">Open page</a>
+      <span class="${tagClass}">${esc(page.kind)}</span>
+      <h3>${esc(page.title)}</h3>
+      <p>${esc(page.description)}</p>
+      <a class="button" href="${esc(page.href)}">Open page</a>
     </article>
   `;
 }

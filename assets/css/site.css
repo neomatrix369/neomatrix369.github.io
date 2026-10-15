@@ -192,6 +192,28 @@ a:hover {
   align-self: flex-start;
 }
 
+/* Full-width card for a family of builds rather than a single project. */
+.story-card--wide {
+  grid-column: 1 / -1;
+}
+
+/* The card spans all three columns, so cap the prose instead of letting it
+   run the full width — otherwise lines reach ~150 characters. */
+.story-card--wide .story-bits dd {
+  max-width: 68ch;
+}
+
+.story-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: auto 0 0;
+}
+
+.story-actions .button {
+  margin-top: 0;
+}
+
 .hero-tags {
   display: flex;
   flex-wrap: wrap;
