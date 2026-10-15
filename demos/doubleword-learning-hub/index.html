@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Doubleword Platform — Developer Learning Hub v5.1 (verified 5 Oct 2026)</title>
+<meta name="description" content="Interactive reference for the Doubleword inference platform: tiers and what they cost, a 36-model catalogue with a live cost calculator, prompt caching, batch and Autobatcher, the dw CLI, 26 integrations, and a docs audit of where the documentation disagrees with itself.">
+
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -115,6 +118,11 @@ p code,li code,td code,.small code{color:#1c1915}
   .dw-site-nav{gap:.7rem}
   .dw-site-nav a{font-size:13px}
   .dw-site-nav a[data-optional]{display:none}
+}
+/* Very narrow: drop the contextual site link too. Home reaches it in one tap,
+   while the sibling hub links have no other route. */
+@media (max-width:430px){
+  .dw-site-nav a[data-secondary]{display:none}
   body{font-size:16px}
   #deck>section>section,#deck>section:not(:has(>section)){padding:20px 16px 12px}
   .two,.three,.code-output,.calc-res{grid-template-columns:1fr}
@@ -131,7 +139,9 @@ p code,li code,td code,.small code{color:#1c1915}
   </a>
   <nav class="dw-site-nav" aria-label="Primary">
     <a href="../../">Home</a>
-    <a href="../../pages/playgroup-202602-docextract.html">Doc extract</a>
+    <a href="../../pages/playgroup-202602-docextract.html" data-secondary>Doc extract</a>
+    <a href="../superlinked-sie-learning-hub/">SIE</a>
+    <a href="../modal-learning-hub/">Modal</a>
     <a href="https://github.com/neomatrix369/playgroup_202602_docextract" rel="noopener" data-optional>Repo</a>
     <a href="https://github.com/neomatrix369" rel="noopener">GitHub</a>
   </nav>
