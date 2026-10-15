@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Doubleword Platform — Developer Learning Hub v5.1 (verified 5 Oct 2026)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--a:#b33d0b;--a2:#1d4ed8;--g:#166534;--am:#9a4708;--p:#6d28d9;--m:#6b645a;--s:#efe9dc;--b:rgba(28,25,21,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f5f2ea;overflow:hidden;font-size:19px;color:#1c1915;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif}
+#deck{width:100vw;height:calc(100vh - 39px);position:relative}
+#deck>section{display:none;width:100%;height:100%;position:absolute;top:0;left:0}
+#deck>section.active{display:block}
+#deck>section>section{display:none;width:100%;height:100%;overflow-y:auto;padding:22px 44px 12px}
+#deck>section>section.active{display:flex;flex-direction:column}
+#deck>section:not(:has(>section)){display:none;overflow-y:auto;padding:22px 44px 12px}
+#deck>section.active:not(:has(>section)){display:flex;flex-direction:column;align-items:center;justify-content:center}
+#deck section>*{flex-shrink:0}
+.section-header{text-align:center!important;min-height:calc(100vh - 95px);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.section-num{font-family:'JetBrains Mono','SF Mono',Menlo,monospace;font-size:.55em;color:var(--a);letter-spacing:.15em;text-transform:uppercase;margin-bottom:.3em}
+h1,h2,h3{font-family:Georgia,'Times New Roman',serif;letter-spacing:-.02em;color:#1c1915}
+h1{font-size:2.2em;line-height:1.1} h2{font-size:1.35em;margin-bottom:.25em} h3{font-size:.95em;color:var(--a);margin-bottom:.15em}
+code,pre code{font-family:'JetBrains Mono','SF Mono','Cascadia Code',Menlo,Consolas,monospace;font-size:.66em}
+:not(pre)>code{font-size:.92em}
+p code,li code,td code,.small code{background:rgba(28,25,21,.06);padding:.05em .3em;border-radius:3px}
+pre{width:100%;margin:.35em 0;border-radius:8px;border:1px solid var(--b);background:#1e1e2e;overflow-x:auto}
+pre code{display:block;color:#cdd6f4;white-space:pre;max-height:300px;padding:.65em .85em;line-height:1.4;overflow-y:auto}
+a{color:var(--a);text-underline-offset:3px} a:hover{color:#8f3109}
+hr{border:none;border-top:1px solid var(--b);margin:.45em 0}
+kbd{background:rgba(28,25,21,.08);padding:.1em .35em;border-radius:4px;font-size:.85em}
+ul.tight{list-style:none;font-size:.76em;line-height:1.55} ul.tight li{margin:.2em 0;padding-left:1em;position:relative} ul.tight li:before{content:"›";position:absolute;left:0;color:var(--a)}
+.title-slide{text-align:center!important;background:radial-gradient(ellipse at 30% 50%,#efe9dc 0%,#f5f2ea 70%)}
+.accent-bar{width:100px;height:4px;background:var(--a);margin:.3em auto;border-radius:2px}
+.tbl{width:100%;border-collapse:collapse;font-size:.7em;margin:.4em 0}
+.tbl th{background:rgba(179,61,11,.10);color:var(--a);padding:.4em .55em;text-align:left;font-weight:600;border-bottom:2px solid var(--a);position:sticky;top:0}
+.tbl td{padding:.35em .55em;border-bottom:1px solid var(--b);vertical-align:top}
+.tbl tr:hover td{background:rgba(28,25,21,.03)}
+.tscroll{max-height:64vh;overflow:auto;border:1px solid var(--b);border-radius:8px}
+.num{font-family:'JetBrains Mono','SF Mono',Menlo,monospace;white-space:nowrap}
+.badge{display:inline-block;padding:.1em .45em;border-radius:20px;font-size:.68em;font-weight:600;font-family:'JetBrains Mono','SF Mono',Menlo,monospace}
+.b-g{background:rgba(22,101,52,.13);color:#166534}.b-am{background:rgba(154,71,8,.13);color:#9a4708}.b-b{background:rgba(29,78,216,.13);color:#1d4ed8}.b-r{background:rgba(185,28,28,.13);color:#a81717}.b-p{background:rgba(109,40,217,.13);color:#6d28d9}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1em;align-items:start}.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.7em;align-items:start}
+.callout{background:rgba(29,78,216,.07);border-left:3px solid var(--a2);padding:.45em .8em;border-radius:0 6px 6px 0;margin:.35em 0;font-size:.74em;line-height:1.5}
+.c-a{background:rgba(179,61,11,.07);border-left-color:var(--a)}.c-g{background:rgba(22,101,52,.07);border-left-color:var(--g)}.c-r{background:rgba(185,28,28,.06);border-left-color:#a81717}.c-am{background:rgba(154,71,8,.07);border-left-color:var(--am)}
+.mc{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:.45em .75em;margin:.22em 0}.mc .mn{font-family:'JetBrains Mono','SF Mono',Menlo,monospace;font-size:.7em;color:var(--a)}.mc .md{font-size:.66em;color:#5c564c;line-height:1.45}
+.step{display:flex;gap:.55em;margin:.3em 0;align-items:flex-start;font-size:.84em}.step-num{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--a);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono','SF Mono',Menlo,monospace;font-weight:700;font-size:.65em}
+.small{font-size:.74em;color:#5c564c;line-height:1.5}.smaller{font-size:.62em;color:#5c564c}
+.stat-row{display:flex;gap:1.2em;justify-content:center;margin:.5em 0}.stat-card{text-align:center}.stat-num{font-family:'Fraunces',Georgia,serif;font-size:1.8em;color:var(--a)}.stat-label{font-size:.6em;color:var(--m)}
+svg{max-width:100%;display:block;margin:.3em auto}
+/* status pills */
+.st{display:inline-block;font-family:'JetBrains Mono','SF Mono',Menlo,monospace;font-size:.95em;padding:.05em .5em;border-radius:20px;margin-right:.5em;white-space:nowrap}
+.st.v{background:rgba(22,101,52,.12);color:#166534}.st.c{background:rgba(154,71,8,.13);color:#9a4708}.st.u{background:rgba(185,28,28,.12);color:#a81717}.st.o{background:rgba(28,25,21,.10);color:#1c1915}
+/* sources */
+.sources{margin-top:auto;padding-top:.35em;border-top:1px solid var(--b);font-size:.56em;color:#6b645a;line-height:1.8}
+.sources a{color:#5c564c;text-decoration:none;border-bottom:1px dotted #6b645a}.sources a:hover{color:var(--a);border-bottom-color:var(--a)}
+.sn{display:inline-block;min-width:1.2em;color:#5c564c;font-family:'JetBrains Mono','SF Mono',Menlo,monospace}
+/* reviews */
+.review{display:none;margin-top:.4em;background:rgba(154,71,8,.06);border:1px solid rgba(154,71,8,.25);border-radius:8px;padding:.45em .65em;font-size:.6em;line-height:1.6;color:#1c1915}
+.review.visible{display:block}
+.rt{font-family:'JetBrains Mono','SF Mono',Menlo,monospace;color:var(--am);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.2em}
+.rr{display:flex;gap:.4em;margin:.1em 0;align-items:baseline}.rd{min-width:78px;color:#5c564c;font-family:'JetBrains Mono','SF Mono',Menlo,monospace}.rs{font-family:'JetBrains Mono','SF Mono',Menlo,monospace;font-weight:700;min-width:26px}
+.rs.g{color:#166534}.rs.o{color:#9a4708}.rs.x{color:#a81717}.rn{color:#5c564c}
+.rsec{margin-top:.25em;padding-top:.25em;border-top:1px solid rgba(154,71,8,.10)}.rst{color:var(--am);font-weight:600}
+.review-toggle{position:fixed;top:8px;right:8px;z-index:1002;background:rgba(154,71,8,.10);border:1px solid rgba(154,71,8,.30);color:#9a4708;padding:3px 9px;border-radius:4px;cursor:pointer;font-size:11px;font-family:'JetBrains Mono','SF Mono',Menlo,monospace}
+.ov-toggle{position:fixed;top:8px;right:92px;z-index:1002;background:rgba(28,25,21,.08);border:1px solid rgba(28,25,21,.12);color:#1c1915;padding:3px 9px;border-radius:4px;cursor:pointer;font-size:11px;font-family:'JetBrains Mono','SF Mono',Menlo,monospace}
+/* nav + overview */
+.nav-bar{position:fixed;bottom:0;left:0;right:0;height:36px;background:rgba(245,242,234,.97);border-top:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:1000}
+.nav-bar button{background:rgba(28,25,21,.08);border:1px solid rgba(28,25,21,.18);color:#5c564c;padding:3px 11px;border-radius:4px;cursor:pointer;font-size:12px;font-family:inherit}
+.nav-bar button:hover{background:rgba(28,25,21,.12);color:#1c1915}.nav-counter{color:#6b645a;font-size:12px;font-family:'JetBrains Mono','SF Mono',Menlo,monospace}
+.progress-bar{position:fixed;bottom:36px;left:0;height:3px;background:var(--a);transition:width .3s;z-index:1001}
+#ov{display:none;position:fixed;inset:0;background:rgba(245,242,234,.97);z-index:1500;overflow:auto;padding:40px 6vw}
+#ov.open{display:block}#ov h3{margin:.9em 0 .3em;color:var(--a)}
+#ov a{display:inline-block;margin:.15em .4em .15em 0;padding:.25em .6em;border:1px solid var(--b);border-radius:6px;color:#1c1915;text-decoration:none;font-size:.7em;cursor:pointer}
+#ov a:hover{border-color:var(--a);color:#1c1915}#ov a.cur{background:rgba(179,61,11,.14);border-color:var(--a)}
+/* calc + catalog */
+.calc{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:.7em .9em;font-size:.74em}
+.calc .row{display:flex;align-items:center;gap:.6em;margin:.3em 0;flex-wrap:wrap}.calc label{min-width:150px;color:#5c564c}
+.calc input,.calc select,.filters input{background:rgba(28,25,21,.06);border:1px solid var(--b);color:#1c1915;padding:.3em .5em;border-radius:6px;font-family:'JetBrains Mono','SF Mono',Menlo,monospace;font-size:.95em}
+.calc input[type=number]{width:110px}.calc select{width:260px}
+.calc-res{display:grid;grid-template-columns:repeat(3,1fr);gap:.5em;margin-top:.5em}
+.cr{background:rgba(28,25,21,.03);border:1px solid var(--b);border-radius:8px;padding:.45em .6em;text-align:center}.cr .pr{font-family:'JetBrains Mono','SF Mono',Menlo,monospace;font-size:1.3em;font-weight:600}.cr .lb{font-size:.78em;color:#5c564c}
+.filters{display:flex;gap:.4em;align-items:center;flex-wrap:wrap;font-size:.7em;margin:.2em 0}
+.chip{background:rgba(28,25,21,.06);border:1px solid var(--b);color:#1c1915;padding:.2em .7em;border-radius:20px;cursor:pointer;font-family:inherit;font-size:1em}.chip.on{background:var(--a);border-color:var(--a);color:#fff}
+.filters input{width:190px}
+/* === Site skin: neomatrix369.github.io chrome, webfonts, layout offsets === */
+:root{--dw-header-h:61px;--dw-nav-h:39px}
+html,body{height:100%}
+body{padding-top:var(--dw-header-h);font-family:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif}
+h1,h2,h3{font-family:'Fraunces',Georgia,'Times New Roman',serif}
+code,pre code,.badge,.num,.section-num,.st,.chip,.nav-counter,kbd,.rt,.rd,.rs,.sn,.mc .mn,.stat-label,.calc input,.calc select,.filters input{font-family:'JetBrains Mono','SF Mono','Cascadia Code',Menlo,Consolas,monospace}
+#deck{width:100%;height:calc(100% - var(--dw-nav-h))}
+.section-header{min-height:calc(100vh - var(--dw-header-h) - var(--dw-nav-h) - 56px)}
+.review-toggle,.ov-toggle{top:calc(8px + var(--dw-header-h))}
+#ov{top:var(--dw-header-h)}
+/* code panes stay dark on the light page -- a dark hairline would vanish */
+pre{border-color:rgba(255,255,255,.12)}
+pre code{color:#cdd6f4}
+p code,li code,td code,.small code{color:#1c1915}
+
+/* site header -- mirrors .site-header in assets/css/site.css */
+.dw-site-header{position:fixed;top:0;left:0;right:0;height:var(--dw-header-h);background:rgba(245,242,234,.97);backdrop-filter:blur(8px);border-bottom:1px solid rgba(28,25,21,.18);display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:0 1.5rem;z-index:30}
+.dw-brand{display:inline-flex;align-items:baseline;gap:.5rem;color:#1c1915;font-family:'Fraunces',Georgia,serif;font-size:18px;font-weight:600;text-decoration:none}
+.dw-brand:hover{color:#1c1915}
+.dw-brand small{color:#6b645a;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500}
+.dw-site-nav{display:flex;flex-wrap:nowrap;gap:1rem}
+.dw-site-nav a{color:#7a5c2e;text-decoration:none;font-size:15px;font-family:'IBM Plex Sans',sans-serif;white-space:nowrap}
+.dw-site-nav a:hover{color:#6b4f24}
+@media (max-width:760px){
+  .dw-site-header{padding:0 1rem}
+  .dw-brand{font-size:15px}
+  .dw-brand small{display:none}
+  .dw-site-nav{gap:.7rem}
+  .dw-site-nav a{font-size:13px}
+  .dw-site-nav a[data-optional]{display:none}
+  body{font-size:16px}
+  #deck>section>section,#deck>section:not(:has(>section)){padding:20px 16px 12px}
+  .two,.three,.code-output,.calc-res{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<header class="dw-site-header">
+  <a class="dw-brand" href="../../">
+    neomatrix369
+    <small>github.io</small>
+  </a>
+  <nav class="dw-site-nav" aria-label="Primary">
+    <a href="../../">Home</a>
+    <a href="../../pages/playgroup-202602-docextract.html">Doc extract</a>
+    <a href="https://github.com/neomatrix369/playgroup_202602_docextract" rel="noopener" data-optional>Repo</a>
+    <a href="https://github.com/neomatrix369" rel="noopener">GitHub</a>
+  </nav>
+</header>
+<div id="deck">
+
+<!-- ================= TITLE ================= -->
+<section class="title-slide">
+  <h1>Doubleword<br>Platform</h1><div class="accent-bar"></div>
+  <p style="font-size:.75em;color:var(--m)">Developer Learning Hub <strong style="color:#1c1915">v5.1</strong> · verified build · 5 Oct 2026</p>
+  <div class="stat-row"><div class="stat-card"><div class="stat-num">36</div><div class="stat-label">models (counted)</div></div><div class="stat-card"><div class="stat-num" style="color:var(--a2)">26</div><div class="stat-label">integrations</div></div><div class="stat-card"><div class="stat-num" style="color:var(--p)">13</div><div class="stat-label">workbooks</div></div><div class="stat-card"><div class="stat-num" style="color:var(--g)">14</div><div class="stat-label">pages read in full</div></div></div>
+  <p style="font-size:.62em;color:#5c564c;max-width:760px;line-height:1.6">Every slide carries a status pill. <span class="st v">✔ verified</span> read on 5 Oct 2026 · <span class="st c">↻ corrected</span> v5 was wrong, now fixed · <span class="st o">◷ carried</span> from earlier crawl, not re-read · <span class="st u">? unverified</span> could not be confirmed</p>
+  <p class="smaller" style="margin-top:.6em"><kbd>←</kbd><kbd>→</kbd> navigate · <kbd>Esc</kbd> or ☰ slide map · <kbd>R</kbd> or ☆ toggles docs-review panels · every slide has a shareable <code>#sN</code> link</p>
+</section>
+
+<!-- ================= S1 ORIENTATION ================= -->
+<section>
+  <section class="section-header"><div class="section-num">Section 01</div><h2>Orientation</h2><p class="small">What Doubleword is, how the tiers differ, and how to make a first call</p></section>
+
+  <section>
+    <h2>How far to trust this deck</h2>
+    <div class="two">
+      <div>
+        <h3>What "verified" means here</h3>
+        <ul class="tight">
+          <li><strong>14 pages read in full</strong> on 5 Oct 2026: intro, async, batch, models, prompt caching, reasoning, Anthropic compatibility, skill, autobatcher, one model page, <code>llms.txt</code>, the GitHub org page, the skill repo, and the marketing homepage.</li>
+          <li>About <strong>12 more seen as search snippets</strong> (Pi, Rig, Daytona, Agno, Mastra, CrewAI, Google ADK, Control Layer pages, skill-page variants).</li>
+          <li><strong>~140 pages listed</strong> in the site's own <code>llms.txt</code> (my count). Most are indexed here by title and description only.</li>
+          <li>The sidebar of the live docs was used to check every docs link in this deck.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>What changed from v5</h3>
+        <ul class="tight">
+          <li>Full price table rebuilt from the page; v5 had ~half of it from memory.</li>
+          <li>"Async up to 50% off / batch up to 75% off" removed. Computed from the table instead: <strong>≈25% / ≈50%</strong> below realtime.</li>
+          <li>"Control Layer removed from docs" was wrong; see the ledger in Section 09.</li>
+          <li>Skill repo name, reasoning levels, Anthropic setup and Autobatcher details corrected.</li>
+          <li>Restored from v4: four diagrams and the docs-review panels.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout c-am"><strong>Still not verified:</strong> Dedicated Realtime, Data Sources, Get Support, CLI pages, webhooks and organization details were read only as index entries or carried from the March crawl. They are flagged where they appear.</div>
+    <div class="sources"><span class="st v">✔ method</span><span class="sn">1</span><a href="https://docs.doubleword.ai/llms.txt" target="_blank">docs.doubleword.ai/llms.txt</a> · <span class="sn">2</span><a href="https://docs.doubleword.ai/inference-api/models" target="_blank">Models &amp; Pricing</a></div>
+  </section>
+
+  <section>
+    <h2>The platform at a glance</h2>
+    <table class="tbl">
+      <thead><tr><th>Tier</th><th>How you call it</th><th>Latency</th><th>List price vs realtime*</th><th>Best for</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge b-r">Realtime</span></td><td>Shared, rate-limited. Chat Completions, or Responses with <code>service_tier: "priority"</code>; <code>background: true</code> to submit and poll</td><td>Immediate</td><td>baseline</td><td>Testing, prototyping, prompt iteration. Model pages note "realtime availability is limited"</td></tr>
+        <tr><td><span class="badge b-am">Async</span></td><td><code>service_tier: "flex"</code> on Responses (or Chat Completions), or Autobatcher <code>AsyncOpenAI</code></td><td>Minutes; target &lt;1 min to first token, with stated exceptions</td><td><strong>≈25% lower</strong> (middle half of models: 24–25%)</td><td>Agents, background pipelines, production work that tolerates short delay</td></tr>
+        <tr><td><span class="badge b-g">Batch</span></td><td>JSONL upload, or Autobatcher <code>BatchOpenAI</code></td><td>Up to 24h (SLA)</td><td><strong>≈50% lower</strong> (≈33% below async)</td><td>Datasets, evals, bulk generation</td></tr>
+        <tr><td><span class="badge b-p">Dedicated Realtime</span></td><td>Reserved capacity; contact sales (<span class="st o">◷ index text</span>)</td><td>Immediate</td><td>custom, per-token</td><td>Production realtime without shared rate limits</td></tr>
+      </tbody>
+    </table>
+    <p class="smaller">*Computed from the models table: median of (1 − tier price ÷ realtime price) on output tokens across the 31 models that have a realtime price. Input tokens give the same medians. Intro page itself says only "Standard / Reduced / Lowest pricing".</p>
+    <div class="callout c-a"><strong>Vendor claims on the Oct 2026 homepage (attributed, not independently checked):</strong> "up to 90% lower cost than closed-source APIs" · "93% average cache hit rates" · "4× cheaper agentic inference than OpenRouter" · "6 of the 10 models on the efficient frontier run on Doubleword" (Artificial Analysis Intelligence Index v4.3, cost at 24h batch rates for every provider) · GLM-5.3, 1B in + 1B out: $5.8K vs $24K for GPT-5.6 Sol max. Zero Data Retention is listed as included on self-service.</div>
+    <div class="review"><div class="rt">Docs review · intro page <span class="st v">✔ verified</span></div>
+      <div class="rr"><span class="rd">Clarity</span><span class="rs g">B+</span><span class="rn">One clean three-way table; async latency now concrete (~1 min TTFT). Cost row is still qualitative.</span></div>
+      <div class="rr"><span class="rd">Prerequisites</span><span class="rs o">B-</span><span class="rn">No checklist: SDK, API key, base URL are spread across subpages.</span></div>
+      <div class="rr"><span class="rd">Examples</span><span class="rs x">C</span><span class="rn">No code on the page; every section links out. Autobatcher screenshot helps.</span></div>
+      <div class="rr"><span class="rd">Level</span><span class="rs g">A-</span><span class="rn">Plain language, no jargon.</span></div>
+      <div class="rsec"><span class="rst">✅ Good:</span> "Not every model is available in every tier" is stated; dedicated-realtime CTA opens a pre-filled email asking for model, volume, latency and region. <span class="rst">⚠️ Open:</span> add numbers to the cost row (the table implies ~25% / ~50%); add a 5-line hello-world per tier; a "pick a tier" decision aid lives only in this deck.</div></div>
+    <div class="sources"><span class="st v">✔ verified</span><span class="sn">1</span><a href="https://docs.doubleword.ai/inference-api/intro-to-doubleword-inference" target="_blank">Intro</a> · <span class="sn">2</span><a href="https://docs.doubleword.ai/inference-api/models" target="_blank">Models &amp; Pricing</a> · <span class="sn">3</span><a href="https://doubleword.ai/" target="_blank">Homepage (vendor claims)</a> · <span class="sn">4</span><a href="https://docs.doubleword.ai/inference-api/dedicated-realtime-inference" target="_blank">Dedicated Realtime</a></div>
+  </section>
+
+  <section>
+    <h2>Which tier should I use?</h2>
+    <svg viewBox="0 0 820 360" xmlns="http://www.w3.org/2000/svg" style="max-width:820px">
+      <defs><marker id="ar1" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6b645a"/></marker>
+      <style>.q{fill:rgba(29,78,216,.09);stroke:#1d4ed8;stroke-width:1.5}.t{fill:#1c1915;font-family:'IBM Plex Sans',-apple-system,system-ui,sans-serif}.l{fill:#5c564c;font-family:'IBM Plex Sans',-apple-system,system-ui,sans-serif;font-size:12px}.ln{stroke:#6b645a;stroke-width:1.5;fill:none;marker-end:url(#ar1)}
+      @keyframes fs{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}.g1{animation:fs .4s ease-out .1s both}.g2{animation:fs .4s ease-out .35s both}.g3{animation:fs .4s ease-out .6s both}.g4{animation:fs .4s ease-out .85s both}</style></defs>
+      <g class="g1"><rect class="q" x="220" y="8" width="380" height="42" rx="10"/><text class="t" x="410" y="34" text-anchor="middle" font-size="14" font-weight="600">Does a person or caller need the answer immediately?</text></g>
+      <g class="g2"><path class="ln" d="M310 50 L130 112"/><text class="l" x="200" y="78">Yes</text><path class="ln" d="M510 50 L590 112"/><text class="l" x="565" y="78">No</text></g>
+      <g class="g2"><rect x="20" y="116" width="230" height="96" rx="10" fill="rgba(185,28,28,.09)" stroke="#a81717" stroke-width="1.5"/><text x="135" y="140" text-anchor="middle" fill="#a81717" font-family="'JetBrains Mono',Menlo,monospace" font-weight="700" font-size="15">REALTIME</text><text class="t" x="135" y="160" text-anchor="middle" font-size="12" fill="#5c564c">service_tier "priority" · shared, rate-limited</text><text class="t" x="135" y="176" text-anchor="middle" font-size="12" fill="#5c564c">Production at scale? Ask about</text><text class="t" x="135" y="192" text-anchor="middle" font-size="12" fill="#6d28d9">Dedicated Realtime (contact sales)</text></g>
+      <g class="g3"><rect class="q" x="415" y="116" width="390" height="42" rx="10"/><text class="t" x="610" y="142" text-anchor="middle" font-size="14" font-weight="600">Is the call made by running application code?</text></g>
+      <g class="g3"><path class="ln" d="M520 158 L390 232"/><text class="l" x="430" y="196">Yes</text><path class="ln" d="M700 158 L700 232"/><text class="l" x="712" y="196">No</text></g>
+      <g class="g4"><rect x="250" y="236" width="250" height="108" rx="10" fill="rgba(154,71,8,.09)" stroke="#9a4708" stroke-width="1.5"/><text x="375" y="262" text-anchor="middle" fill="#9a4708" font-family="'JetBrains Mono',Menlo,monospace" font-weight="700" font-size="15">ASYNC (flex)</text><text class="t" x="375" y="282" text-anchor="middle" font-size="12" fill="#5c564c">Agents, background jobs, pipelines</text><text class="t" x="375" y="298" text-anchor="middle" font-size="12" fill="#5c564c">Responses API or Autobatcher AsyncOpenAI</text><text class="t" x="375" y="320" text-anchor="middle" font-size="11" fill="#9a4708">≈25% below realtime · target &lt;1 min to first token</text></g>
+      <g class="g4"><rect x="560" y="236" width="240" height="108" rx="10" fill="rgba(22,101,52,.09)" stroke="#166534" stroke-width="1.5"/><text x="680" y="262" text-anchor="middle" fill="#166534" font-family="'JetBrains Mono',Menlo,monospace" font-weight="700" font-size="15">BATCH</text><text class="t" x="680" y="282" text-anchor="middle" font-size="12" fill="#5c564c">Datasets, evals, bulk generation</text><text class="t" x="680" y="298" text-anchor="middle" font-size="12" fill="#5c564c">JSONL file or Autobatcher BatchOpenAI</text><text class="t" x="680" y="320" text-anchor="middle" font-size="11" fill="#166534">≈50% below realtime · up to 24h</text></g>
+    </svg>
+    <p class="smaller" style="text-align:center">Decision aid built for this deck from the intro, async and batch pages; the docs themselves do not publish one. Not every model exists in every tier: 5 of 36 have no realtime price.</p>
+    <div class="sources"><span class="st v">✔ verified</span><span class="sn">1</span><a href="https://docs.doubleword.ai/inference-api/intro-to-doubleword-inference" target="_blank">Intro</a> · <span class="sn">2</span><a href="https://docs.doubleword.ai/inference-api/async-inference" target="_blank">Async</a> · <span class="sn">3</span><a href="https://docs.doubleword.ai/inference-api/batch-inference" target="_blank">Batch</a> · <span class="sn">4</span><a href="https://docs.doubleword.ai/inference-api/models" target="_blank">Models &amp; Pricing</a></div>
+  </section>
+
+  <section>
+    <h2>Request paths</h2>
+    <svg viewBox="0 0 820 230" xmlns="http://www.w3.org/2000/svg" style="max-width:820px">
+      <defs><marker id="ar2" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="7" markerHeight="5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#5c564c"/></marker>
+      <style>.bx{stroke-width:1.5}.tx{fill:#1c1915;font-family:'IBM Plex Sans',-apple-system,system-ui,sans-serif;font-size:12.5px;font-weight:600}.sb{fill:#5c564c;font-family:'IBM Plex Sans',-apple-system,system-ui,sans-serif;font-size:10.5px}
+      @keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}@keyframes dr{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
+      .p1{animation:pop .3s ease-out .1s both}.p2{animation:pop .3s ease-out .35s both}.p3{animation:pop .3s ease-out .6s both}.p4{animation:pop .3s ease-out .85s both}
+      .dl{stroke:#5c564c;stroke-width:1.5;fill:none;stroke-dasharray:6 3;stroke-dashoffset:100;animation:dr .6s ease-out .5s forwards;marker-end:url(#ar2)}</style></defs>
+      <g class="p1"><rect class="bx" x="8" y="20" width="170" height="150" rx="8" fill="rgba(28,25,21,.04)" stroke="#6b645a"/><text class="tx" x="93" y="44" text-anchor="middle">Your code</text><text class="sb" x="93" y="66" text-anchor="middle">OpenAI SDK</text><text class="sb" x="93" y="82" text-anchor="middle">Anthropic SDK (auth_token)</text><text class="sb" x="93" y="98" text-anchor="middle">Autobatcher (Py / TS)</text><text class="sb" x="93" y="114" text-anchor="middle">dw CLI</text><text class="sb" x="93" y="130" text-anchor="middle">Agent frameworks (26)</text><text class="sb" x="93" y="152" text-anchor="middle" fill="#6d28d9">Optional: Control Layer in front</text></g>
+      <g class="p2"><rect class="bx" x="250" y="20" width="200" height="150" rx="8" fill="rgba(179,61,11,.08)" stroke="#b33d0b"/><text class="tx" x="350" y="44" text-anchor="middle" fill="#8f3109">api.doubleword.ai</text><text class="sb" x="350" y="68" text-anchor="middle">/v1/chat/completions</text><text class="sb" x="350" y="84" text-anchor="middle">/v1/responses</text><text class="sb" x="350" y="100" text-anchor="middle">/v1/messages (Anthropic)</text><text class="sb" x="350" y="116" text-anchor="middle">/v1/files · /v1/batches</text><text class="sb" x="350" y="132" text-anchor="middle">/v1/embeddings · /v1/models</text><text class="sb" x="350" y="154" text-anchor="middle" fill="#9a4708">Bearer token auth</text></g>
+      <g class="p3"><rect class="bx" x="520" y="8" width="150" height="50" rx="8" fill="rgba(185,28,28,.07)" stroke="#a81717"/><text class="tx" x="595" y="30" text-anchor="middle" fill="#a81717">priority (realtime)</text><text class="sb" x="595" y="46" text-anchor="middle">shared · rate-limited</text>
+      <rect class="bx" x="520" y="68" width="150" height="50" rx="8" fill="rgba(154,71,8,.08)" stroke="#9a4708"/><text class="tx" x="595" y="90" text-anchor="middle" fill="#9a4708">flex (async)</text><text class="sb" x="595" y="106" text-anchor="middle">&lt;1 min TTFT target</text>
+      <rect class="bx" x="520" y="128" width="150" height="50" rx="8" fill="rgba(22,101,52,.08)" stroke="#166534"/><text class="tx" x="595" y="150" text-anchor="middle" fill="#166534">batch (24h)</text><text class="sb" x="595" y="166" text-anchor="middle">JSONL · partial results</text></g>
+      <g class="p4"><rect class="bx" x="720" y="40" width="94" height="110" rx="8" fill="rgba(109,40,217,.08)" stroke="#6d28d9"/><text class="tx" x="767" y="66" text-anchor="middle" fill="#6d28d9">36 models</text><text class="sb" x="767" y="86" text-anchor="middle">open-weight</text><text class="sb" x="767" y="102" text-anchor="middle">text · vision</text><text class="sb" x="767" y="118" text-anchor="middle">OCR · embed</text></g>
+      <path class="dl" d="M180 95 L248 95"/><path class="dl" d="M452 33 L518 33"/><path class="dl" d="M452 95 L518 93"/><path class="dl" d="M452 150 L518 153"/><path class="dl" d="M672 95 L718 95"/>
+      <text class="sb" x="410" y="205" text-anchor="middle">Dedicated Realtime (contact sales) and the self-hosted Control Layer / Inference Stack sit outside this self-serve path.</text>
+    </svg>
+    <div class="callout"><strong>Auth differs by SDK.</strong> OpenAI SDK: <code>base_url="https://api.doubleword.ai/v1"</code> and <code>api_key</code>. Anthropic SDK: <code>base_url="https://api.doubleword.ai"</code> (no <code>/v1</code>) and <code>auth_token=</code>, not <code>api_key=</code>, because Doubleword reads <code>Authorization: Bearer</code>.</div>
+    <div class="sources"><span class="st v">✔ verified</span><span class="sn">1</span><a href="https://docs.doubleword.ai/inference-api/anthropic-api-compatibility" target="_blank">Anthropic API compatibility</a> · <span class="sn">2</span><a href="https://docs.doubleword.ai/inference-api/batch-inference" target="_blank">Batch</a> · <span class="sn">3</span><a href="https://docs.doubleword.ai/inference-api/autobatcher" target="_blank">Autobatcher</a> · <span class="sn">4</span><a href="https://docs.doubleword.ai/inference-api/integrations" target="_blank">Integrations</a></div>
+  </section>
+
+  <section>
+    <h2>Quick start: three working shapes</h2>
+    <div class="step"><div class="step-num">1</div><div><strong>Key:</strong> create one in the <a href="https://app.doubleword.ai/api-keys" target="_blank">Console</a>; integrations read <code>DOUBLEWORD_API_KEY</code>. <strong>Model ID:</strong> shown on each model page, not in the table (e.g. <code>deepseek-ai/DeepSeek-V4-Flash</code>).</div></div>
+    <div class="three">
+      <div><p class="small" style="color:#a81717">Realtime · Chat Completions</p><pre><code>import os
+from openai import OpenAI
+c = OpenAI(
+  base_url="https://api.doubleword.ai/v1",
+  api_key=os.environ["DOUBLEWORD_API_KEY"])
+r = c.chat.completions.create(
+  model="deepseek-ai/DeepSeek-V4-Flash",
+  messages=[{"role":"user",
+             "content":"Hello"}])
+print(r.choices[0].message.content)</code></pre></div>
+      <div><p class="small" style="color:#9a4708">Async · Responses + poll</p><pre><code>from time import sleep
+resp = c.responses.create(
+  model="deepseek-ai/DeepSeek-V4-Flash",
+  input="Explain relativity.",
+  service_tier="flex",
+  background=True)   # returns "queued"
+while resp.status in ("queued",
+                      "in_progress"):
+  sleep(2)
+  resp = c.responses.retrieve(resp.id)
+print(resp.output_text)</code></pre></div>
+      <div><p class="small" style="color:#9a4708">Async · Chat Completions, blocking</p><pre><code># from the Daytona integration page:
+# flex on chat.completions blocks until
+# done; background=True is a
+# Responses-only feature.
+r = c.chat.completions.create(
+  model="deepseek-ai/DeepSeek-V4-Flash",
+  service_tier="flex",
+  messages=[{"role":"user",
+             "content":"Hello"}])</code></pre></div>
+    </div>
+    <p class="smaller">Async-polling shape is the docs' own example with the model swapped. The Chat Completions + flex shape is from the Daytona integration page; the async page itself documents flex only on Responses.</p>
+    <div class="review"><div class="rt">Docs review · async + realtime pages <span class="st v">✔ async read; realtime ◷ not re-read</span></div>
+      <div class="rr"><span class="rd">Clarity</span><span class="rs g">A-</span><span class="rn">Polling vs blocking explained; TTFT target stated with exceptions (OCR-only models "as of Aug 2026", bursts).</span></div>
+      <div class="rr"><span class="rd">Examples</span><span class="rs g">A</span><span class="rn">Python, JavaScript and cURL for both modes.</span></div>
+      <div class="rr"><span class="rd">Prerequisites</span><span class="rs o">B</span><span class="rn">Key link given; SDK version and minimum <code>openai</code> package for <code>responses</code> not stated.</span></div>
+      <div class="rsec"><span class="rst">⚠️ Open:</span> the intro says flex works on "Responses or Chat Completions" but the async page shows only Responses; the Anthropic page describes flex as "~1 hour SLA at batch pricing", which contradicts this page (see D2 in Section 09).</div></div>
+    <div class="sources"><span class="st v">✔ verified</span><span class="sn">1</span><a href="https://docs.doubleword.ai/inference-api/async-inference" target="_blank">Async</a> · <span class="sn">2</span><a href="https://docs.doubleword.ai/inference-api/realtime-inference" target="_blank">Realtime</a> · <span class="sn">3</span><a href="https://docs.doubleword.ai/inference-api/models/deepseek-ai-deepseek-v4-flash" target="_blank">DeepSeek V4 Flash (model ID)</a> · <span class="sn">4</span><a href="https://docs.doubleword.ai/inference-api/integrations/daytona" target="_blank">Daytona</a> · <span class="sn">5</span><a href="https://docs.doubleword.ai/inference-api/integrations/pi" target="_blank">Pi (env var)</a></div>
+  </section>
+</section>
+
+<!-- ================= S2 MODELS ================= -->
+<section>
+  <section class="section-header"><div class="section-num">Section 02</div><h2>Models &amp; pricing</h2><p class="small">36 models · three tiers · input / cache read / output per 1M tokens</p></section>
+
+  <section>
+    <h2>The full catalog <span class="st v" style="font-size:.5em">✔ copied from the table 5 Oct</span></h2>
+    <div class="filters"><span>Show:</span><button class="chip on" data-f="all">All 36</button><button class="chip" data-f="text">Text</button><button class="chip" data-f="vision">Vision</button><button class="chip" data-f="ocr">OCR</button><button class="chip" data-f="embedding">Embedding</button><button class="chip" data-f="reasoning">In reasoning table</button><button class="chip" data-f="norealtime">No realtime</button><input id="mq" placeholder="search model…"></div>
+    <div class="tscroll"><table class="tbl" id="cat"><thead><tr><th>Model (links to its page)</th><th>Realtime in / cache / out</th><th>Async in / cache / out</th><th>Batch in / cache / out</th><th>Cache vs input (async)</th><th>Reasoning table</th></tr></thead><tbody></tbody></table></div>
+    <p class="smaller" id="catcount"></p>
+    <div class="review"><div class="rt">Docs review · models page + one model page <span class="st v">✔ verified</span></div>
+      <div class="rr"><span class="rd">Clarity</span><span class="rs g">A-</span><span class="rn">One table, three tiers, three prices each; per-model pages show ID, capability, reasoning efforts, cache-read multiplier and a playground link.</span></div>
+      <div class="rr"><span class="rd">Examples</span><span class="rs o">B-</span><span class="rn">Playground per model; no model-specific code. Model IDs are only on the 36 individual pages, not in the table.</span></div>
+      <div class="rsec"><span class="rst">⚠️ Open:</span> page intro still says "Doubleword Batch API is priced per model"; "—" for realtime is unexplained; no quality-vs-cost view or "which model?" guide (the marketing site has an intelligence-vs-cost chart); Qwen3.5 35B A3B (non-dottxt) is listed on the marketing site but not here.</div></div>
+    <div class="sources"><span class="st v">✔ verified</span><span class="sn">1</span><a href="https://docs.doubleword.ai/inference-api/models" target="_blank">Models &amp; Pricing</a> · <span class="sn">2</span><a href="https://docs.doubleword.ai/inference-api/models/deepseek-ai-deepseek-v4-flash" target="_blank">Model page example</a> · <span class="sn">3</span><a href="https://doubleword.ai/pricing" target="_blank">Marketing pricing</a></div>
+  </section>
+
+  <section>
+    <h2>What the numbers actually say <span class="st c" style="font-size:.5em">↻ replaces v5's guessed discounts</span></h2>
+    <div class="two">
+      <div>
+        <h3>Tier discounts (list price, 31 models with realtime)</h3>
+        <ul class="tight">
+          <li><strong>Async ≈ 25% below realtime</strong>, tightly clustered (24–25% for the middle half).</li>
+          <li><strong>Batch ≈ 50% below realtime</strong>, and ≈33% below async.</li>
+          <li>So the large savings in the marketing ("up to 90%") come from <em>model choice</em> (open-weight vs closed), not from tier choice alone. Output price spans <strong>141×</strong> across the catalog ($0.10 to $11.25 per 1M async output).</li>
+        </ul>
+        <h3 style="margin-top:.5em">Cache read is not always a discount</h3>
+        <ul class="tight">
+          <li>29 models have a cache-read discount: median <strong>80% below input</strong> (range 27–97%).</li>
+          <li><strong>7 models price cache read at the input price</strong>: Hy3, Qwen3.6 35B A3B, Gemma 4 31B IT, the three OCR models and Qwen3 Embedding 8B. The docs don't say whether caching is unsupported there or simply undiscounted.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Anomalies worth checking before you budget</h3>
+        <ul class="tight">
+          <li><strong>Qwen3.5 9B dottxt:</strong> async output $0.70 and batch $0.58 are <em>higher</em> than realtime output $0.30. Could be a typo or real; confirm in the Console.</li>
+          <li><strong>5 models have no realtime price:</strong> Qwen3.5 4B, Qwen3.5 397B dottxt, DeepSeek OCR 2, LightOnOCR 2, olmOCR 2.</li>
+          <li><strong>Embedding output is $0.00</strong>; you pay input only.</li>
+          <li><strong>Reasoning table covers 19 of 36.</strong> Not listed: Kimi K3, Inkling, Hy3, MiMo V2.5 Pro, DeepSeek V4 Pro 0813 and V4.1 Flash, Qwen3.8 27B, Muse Glimmer, Gemma 4 26B and others. The DeepSeek V4 Flash page lists efforts, so the table may simply lag the catalog.</li>
+        </ul>
+        <div class="callout c-r"><strong>Dropped from v5:</strong> the old "$30K / $15.8K / $2.1K per 1B tokens" benchmark, "20M free tokens" and "miss the SLA, job is free" were not found on any Oct 2026 page. The homepage now shows GLM-5.3 at $5.8K vs $24K.</div>
+      </div>
+    </div>
+    <div class="sources"><span class="st v">✔ computed</span> from the table on this site's Models page · <span class="sn">1</span><a href="https://docs.doubleword.ai/inference-api/models" target="_blank">Models &amp; Pricing</a> · <span class="sn">2</span><a href="https://docs.doubleword.ai/inference-api/prompt-caching" target="_blank">Prompt caching</a> · <span class="sn">3</span><a href="https://docs.doubleword.ai/inference-api/reasoning-controls" target="_blank">Reasoning effort</a></div>
+  </section>
+
+  <section>
+    <h2>Cost calculator <span class="st v" style="font-size:.5em">✔ all 36 models, real prices</span></h2>
+    <div class="calc">
+      <div class="row"><label>Model</label><select id="cm"></select></div>
+      <div class="row"><label>Input tokens (millions)</label><input type="number" id="ci" value="10" min="0" step="1"><label style="min-width:150px">Output tokens (millions)</label><input type="number" id="co" value="2" min="0" step="1"></div>
+      <div class="row"><label>Cached share of input</label><input type="number" id="cc" value="0" min="0" max="100" step="5"> %<span class="smaller">uses the cache-read price for that share (reads only)</span></div>
+      <div class="calc-res"><div class="cr"><div class="pr" id="r1" style="color:#a81717">—</div><div class="lb">Realtime</div></div><div class="cr"><div class="pr" id="r2" style="color:#9a4708">—</div><div class="lb">Async</div></div><div class="cr"><div class="pr" id="r3" style="color:#166534">—</div><div class="lb">Batch (24h)</div></div></div>
+      <p class="smaller" style="margin-top:.4em" id="cnote"></p>
+    </div>
+    <div class="callout c-am"><strong>Not included:</strong> explicit-cache <em>write</em> premiums (1.25× input price for 5m TTL, 2× for 1h). Implicit caching never bills writes. Estimates use list prices; check the Console for your actual rates. For a cross-check see the vendor's <a href="https://doubleword.ai/calculator" target="_blank">savings calculator</a> (not read).</div>
+    <div class="sources"><span class="st v">✔ verified data</span><span class="sn">1</span><a href="https://docs.doubleword.ai/inference-api/models" target="_blank">Models &amp; Pricing</a> · <span class="sn">2</span><a href="https://docs.doubleword.ai/inference-api/prompt-caching" target="_blank">Prompt caching (write multipliers)</a></div>
+  </section>
+</section>
+
+<!-- ================= S3 FEATURES ================= -->
+<section>
+  <section class="section-header"><div class="section-num">Section 03</div><h2>Platform features</h2><p class="small">Prompt caching · reasoning effort · Anthropic compatibility · tools and more</p></section>
+
+  <section>
+    <h2>Prompt caching: implicit and explicit <span class="st c" style="font-size:.5em">↻ v5 described only a sliver</span></h2>
+    <div class="two">
+      <div>
+        <ul class="tight">
+          <li><strong>Implicit:</strong> on by default for cache-supported models, no code change. Best-effort; reused tokens bill at the cache-read rate; no write charges.</li>
+          <li><strong>Explicit:</strong> add <code>cache_control: {"type":"ephemeral","ttl":"5m"|"1h"}</code> to a content block or tool. Guaranteed reads, sliding TTL, up to <strong>4 breakpoints</strong>, shared across an org's keys. Minimum prefix is model-specific (1,024 tokens on most).</li>
+          <li><strong>Write prices:</strong> 1.25× input (5m), 2× input (1h). Cache read = <em>r</em> × input, model-specific.</li>
+          <li>Models without caching ignore markers and bill normally, so markers are safe to send.</li>
+        </ul>
+        <table class="tbl"><thead><tr><th>Endpoint</th><th>Implicit</th><th>Explicit</th></tr></thead><tbody>
+          <tr><td><code>/v1/chat/completions</code></td><td>✅</td><td>✅ markers + auto-placement</td></tr>
+          <tr><td><code>/v1/messages</code></td><td>✅</td><td>✅ markers + auto-placement</td></tr>
+          <tr><td><code>/v1/responses</code></td><td>✅</td><td>auto-placement only</td></tr>
+          <tr><td><code>/v1/completions</code></td><td>✅</td><td>no (single string)</td></tr></tbody></table>
+      </div>
+      <div>
+        <svg viewBox="0 0 400 190" xmlns="http://www.w3.org/2000/svg">
+          <style>.cb{font-family:'JetBrains Mono',Menlo,monospace;font-size:11px;fill:#1c1915}.cl{font-family:'IBM Plex Sans',-apple-system,system-ui,sans-serif;font-size:11px;fill:#5c564c}@keyframes pp{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}.s1{animation:pp .4s ease-out .1s both}.s2{animation:pp .4s ease-out .5s both}</style>
+          <g class="s1"><text class="cl" x="4" y="16">Request A — writes the prefix</text><rect x="4" y="24" width="250" height="34" rx="6" fill="rgba(22,101,52,.10)" stroke="#166534"/><text class="cb" x="14" y="45">[ tools + system ]</text><text x="150" y="46" fill="#b33d0b" font-size="16">●</text><rect x="262" y="24" width="130" height="34" rx="6" fill="rgba(28,25,21,.04)" stroke="#6b645a"/><text class="cb" x="272" y="45">[ question 1 ]</text></g>
+          <g class="s2"><text class="cl" x="4" y="92">Request B — reads it, pays full price only for the tail</text><rect x="4" y="100" width="250" height="34" rx="6" fill="rgba(29,78,216,.10)" stroke="#1d4ed8"/><text class="cb" x="14" y="121">[ tools + system ]</text><text x="150" y="122" fill="#b33d0b" font-size="16">●</text><rect x="262" y="100" width="130" height="34" rx="6" fill="rgba(28,25,21,.04)" stroke="#6b645a"/><text class="cb" x="272" y="121">[ question 2 ]</text></g>
+          <text class="cl" x="4" y="158">● = breakpoint. Matching is left-anchored: keep stable content first,</text><text class="cl" x="4" y="173">volatile content last. One changed byte before the ● breaks the match.</text>
+        </svg>
+        <pre><code>"messages": [{"role":"system","content":[{
+  "type":"text","text":"&lt;~2,000 tokens&gt;",
+  "cache_control":{"type":"ephemeral","ttl":"1h"}}]},
+ {"role":"user","content":"How do I reset my password?"}]
+# check usage.cache_read_input_tokens and
+# usage.prompt_tokens_details.cached_tokens</code></pre>
+      </div>
+    </div>
+    <div class="review"><div class="rt">Docs review · prompt caching <span class="st v">✔ verified</span></div>
+      <div class="rr"><span class="rd">Clarity</span><span class="rs g">A</span><span class="rn">Two modes explained with when to choose each; endpoint support table; usage fields for both API shapes; patterns for tools, RAG and growing conversations.</span></div>
+      <div class="rr"><span class="rd">Examples</span><span class="rs g">A</span><span class="rn">OpenAI and Anthropic request shapes side by side, plus usage output for first and second call.</span></div>
+      <div class="rr"><span class="rd">Level</span><span class="rs o">B+</span><span class="rn">Assumes you understand prefix caching; links to Anthropic's guide for background.</span></div>
+      <div class="rsec"><span class="rst">⚠️ Open:</span> support is signalled by catalog metadata (<code>cache_pricing.enabled</code>), but the pricing table shows a cache price for every model, including 7 where it equals the input price; one sentence has a typo ("it is does not require"). <span class="rst">✅ Notable:</span> every integration page has its own caching section, and Google ADK and Pi say plainly that they cannot set the marker today.</div></div>
+    <div class="sources"><span class="st v">✔ verified</span><span class="sn">1</span><a href="https://docs.doubleword.ai/inference-api/prompt-caching" target="_blank">Prompt caching</a> · <span class="sn">2</span><a href="https://docs.doubleword.ai/inference-api/integrations/google-adk" target="_blank">Google ADK (limitation)</a> · <span class="sn">3</span><a href="https://docs.doubleword.ai/inference-api/integrations/pi" target="_blank">Pi (limitation)</a> · <span class="sn">4</span><a href="https://docs.doubleword.ai/inference-api/integrations/mastra" target="_blank">Mastra</a></div>
+  </section>
+
+  <section>
+    <h2>Reasoning effort <span class="st c" style="font-size:.5em">↻ v5's example and model list were wrong</span></h2>
+    <div class="two">
+      <div>
+        <ul class="tight">
+          <li><strong>Seven levels:</strong> <code>none</code>, <code>minimal</code>, <code>low</code>, <code>medium</code>, <code>high</code>, <code>xhigh</code>, <code>max</code> (OpenAI-compatible). v5 showed three.</li>
+          <li>Chat Completions: <code>reasoning_effort</code>. Responses: <code>reasoning.effort</code>.</li>
+          <li><strong>Unsupported effort is rejected</strong>, not silently changed. Omit the field for the model default.</li>
+          <li>Some models map effort to a reasoning-token budget; your output limit must exceed it or the request is rejected.</li>
+          <li>Send only these OpenAI-style fields. Do not send <code>thinking</code>, <code>thinking_token_budget</code> or <code>chat_template_kwargs</code>.</li>
+          <li><strong>Qwen3 non-thinking:</strong> append <code>/no_think</code> to the latest user prompt; it is Qwen-specific, not an effort value.</li>
+          <li>Anthropic <code>thinking</code> config is mapped to reasoning effort (Anthropic page).</li>
+        </ul>
+      </div>
+      <div>
+        <pre><code>curl https://api.doubleword.ai/v1/chat/completions \
+  -H "Authorization: Bearer $DOUBLEWORD_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "deepseek-ai/DeepSeek-V4-Flash",
+    "messages": [{"role":"user",
+      "content":"Solve this carefully."}],
+    "reasoning_effort": "medium",
+    "max_completion_tokens": 16384
+  }'</code></pre>
+        <div class="callout c-g"><strong>Supported (19 models):</strong> all seven levels on 18 models including DeepSeek V4 Pro/Flash, GLM 5.1–5.3, Nemotron 3 Ultra/Super, Kimi K2.6, Qwen3.5 family, Qwen3.6 35B, Gemma 4 31B, GPT OSS 120B. GLM 5.3 Flash has no <code>none</code>. GPT OSS 20B: low/medium/high only. <strong>Not in the table:</strong> Kimi K3, Inkling, Hy3, MiMo, DeepSeek V4 Pro 0813 and 15 others.</div>
+      </div>
+    </div>
+    <div class="review"><div class="rt">Docs review · reasoning effort <span class="st v">✔ verified</span></div>
+      <div class="rr"><span class="rd">Clarity</span><span class="rs g">A-</span><span class="rn">Rejects-rather-than-rewrites is a good, explicit contract; per-model support matrix.</span></div>
+      <div class="rr"><span class="rd">Examples</span><span class="rs o">B</span><span class="rn">cURL only on this page (no Python or JS), though Chat Completions and Responses are both shown.</span></div>
+      <div class="rsec"><span class="rst">⚠️ Open:</span> the matrix lags the catalog (17 models unlisted); no guidance on which effort to pick or what it costs in output tokens.</div></div>
+    <div class="sources"><span class="st v">✔ verified</span><span class="sn">1</span><a href="https://docs.doubleword.ai/inference-api/reasoning-controls" target="_blank">Reasoning effort</a> · <span class="sn">2</span><a href="https://docs.doubleword.ai/inference-api/models/deepseek-ai-deepseek-v4-flash" target="_blank">DeepSeek V4 Flash page</a> · <span class="sn">3</span><a href="https://docs.doubleword.ai/inference-api/anthropic-api-compatibility" target="_blank">Anthropic compat (thinking)</a></div>
+  </section>
+
+  <section>
+    <h2>Anthropic API compatibility <span class="st c" style="font-size:.5em">↻ setup and scope corrected</span></h2>
+    <div class="two">
+      <div>
+        <pre><code>from anthropic import Anthropic
+client = Anthropic(
+    base_url="https://api.doubleword.ai",  # no /v1
+    auth_token=KEY)       # NOT api_key=
+m = client.messages.create(
+    model="deepseek-ai/DeepSeek-V4-Flash",
+    max_tokens=1024,
+    messages=[{"role":"user","content":"Hi"}],
+    extra_body={"service_tier":"flex"})  # optional</code></pre>
+        <p class="smaller"><code>api_key=</code> makes the SDK send <code>x-api-key</code>; Doubleword authenticates on <code>Authorization: Bearer</code>.</p>
+      </div>
+      <div>
+        <ul class="tight">
+          <li><strong>Works:</strong> messages, streaming, <code>GET /v1/models</code> in Anthropic shape (with <code>anthropic-version</code>), flex tier via <code>service_tier: "flex"</code> in <code>extra_body</code>, caching on <code>/v1/messages</code>.</li>
+          <li><strong>Batch:</strong> native <code>/v1/messages/batches</code> is <em>not</em> available. Use the OpenAI-format Batch API with <code>"url": "/v1/messages"</code> on every JSONL line and <code>endpoint="/v1/messages"</code>; results come back as Anthropic messages.</li>
+          <li>Anthropic's <code>auto</code> / <code>standard_only</code> service tiers are accepted but do nothing.</li>
+          <li>The page does not mention tool use or vision. v5 claimed tool use; that was not supported.</li>
+        </ul>
+        <div class="callout c-r"><strong>Contradiction (D2):</strong> this page says flex is "queued to the inference daemon, ~1 hour SLA, at batch pricing". The async page says work "starts within a minute" and is priced above batch. Both can't be right.</div>
+      </div>
+    </div>
+    <div class="review"><div class="rt">Docs review · Anthropic compatibility <span class="st v">✔ verified</span></div>
+      <div class="rr"><span class="rd">Clarity</span><span class="rs g">A</span><span class="rn">The <code>auth_token</code> vs <code>api_key</code> trap is called out in a note.</span></div>
+      <div class="rr"><span class="rd">Examples</span><span class="rs g">A-</span><span class="rn">Python and cURL for messages, streaming, flex, batch, models.</span></div>
+      <div class="rsec"><span class="rst">⚠️ Open:</span> the flex-tier contradiction above; state which Anthropic features (tools, vision, caching limits) are supported.</div></div>
+    <div class="sources"><span class="st v">✔ verified</span><span class="sn">1</span><a href="https://docs.doubleword.ai/inference-api/anthropic-api-compatibility" target="_blank">Anthropic API compatibility</a> · <span class="sn">2</span><a href="https://docs.doubleword.ai/inference-api/async-inference" target="_blank">Async (for the contradiction)</a></div>
+  </section>
+
+  <section>
+    <h2>Tools, structured output, vision, embeddings, data sources <span class="st o" style="font-size:.5em">◷ index descriptions only</span></h2>
+    <div class="two">
+      <div>
+        <div class="mc"><div class="mn">Tool calling &amp; structured outputs</div><div class="md">Per the site index: OpenAI-compatible tool calling and Structured Outputs "to build reliable agents and enforce strict JSON Schema responses". Three <code>dottxt</code> model variants (Qwen3.5 9B, 35B A3B, 397B A17B) exist; their purpose isn't explained on the pages I read.</div></div>
+        <div class="mc"><div class="mn">Vision &amp; OCR models</div><div class="md">Qwen3 VL 30B A3B and 235B A22B (vision); DeepSeek OCR 2, LightOnOCR 2 1B, olmOCR 2 7B (OCR, async and batch only). Batch lines accept image URLs or base64 (batch page).</div></div>
+      </div>
+      <div>
+        <div class="mc"><div class="mn">Embeddings</div><div class="md">Qwen3 Embedding 8B at $0.04 / $0.03 / $0.02 input (realtime / async / batch) and $0.00 output. Autobatcher supports <code>embeddings.create()</code>.</div></div>
+        <div class="mc"><div class="mn">Data Sources · S3 Connections (Beta)</div><div class="md">"Connect S3 buckets to automatically sync files and create batches." Page not read; confirm setup steps and limits there.</div></div>
+      </div>
+    </div>
+    <div class="callout c-am"><strong>Gap in the docs, not just in this deck:</strong> there is no "when to use tool calling vs structured outputs" guide and no description of what <code>dottxt</code> adds. Both are worth reading the source pages for.</div>
+    <div class="sources"><span class="st o">◷ index only</span><span class="sn">1</span><a href="https://docs.doubleword.ai/inference-api/tool-calling" target="_blank">Tool calling</a> · <span class="sn">2</span><a href="https://docs.doubleword.ai/inference-api/data-sources" target="_blank">Data Sources</a> · <span class="sn">3</span><a href="https://docs.doubleword.ai/inference-api/data-sources/connections" target="_blank">S3 Connections</a> · <span class="sn">4</span><a href="https://docs.doubleword.ai/inference-api/embeddings" target="_blank">Embeddings workbook</a></div>
+  </section>
+</section>
+
+<!-- ================= S4 SDKs ================= -->
+<section>
+  <section class="section-header"><div class="section-num">Section 04</div><h2>SDKs, CLI &amp; skills</h2><p class="small">Autobatcher · batch lifecycle · dw CLI · agent skills</p></section>
+
+  <section>
+    <h2>Autobatcher <span class="st c" style="font-size:.5em">↻ now Python + TypeScript; options trimmed</span></h2>
+    <svg viewBox="0 0 800 96" xmlns="http://www.w3.org/2000/svg" style="max-width:800px">
+      <defs><marker id="ar3" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="7" markerHeight="5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#9a4708"/></marker>
+      <style>.ab{stroke-width:1.2}.at{fill:#1c1915;font-family:'IBM Plex Sans',-apple-system,system-ui,sans-serif;font-size:11.5px;text-anchor:middle;font-weight:600}.as{fill:#5c564c;font-family:'IBM Plex Sans',-apple-system,system-ui,sans-serif;font-size:9.5px;text-anchor:middle}@keyframes fl{from{stroke-dashoffset:20}to{stroke-dashoffset:0}}@keyframes pu{0%,100%{opacity:.55}50%{opacity:1}}.af{stroke:#9a4708;stroke-width:1.5;fill:none;stroke-dasharray:6 3;animation:fl 1s linear infinite;marker-end:url(#ar3)}.pu{animation:pu 2s ease-in-out infinite}</style></defs>
+      <rect class="ab" x="4" y="14" width="136" height="62" rx="6" fill="rgba(28,25,21,.04)" stroke="#6b645a"/><text class="at" x="72" y="36">Your async calls</text><text class="as" x="72" y="52">await create()</text><text class="as" x="72" y="64">await create()</text>
+      <path class="af" d="M142 45 L176 45"/>
+      <rect class="ab" x="178" y="14" width="146" height="62" rx="6" fill="rgba(154,71,8,.07)" stroke="#9a4708"/><text class="at" x="251" y="36" fill="#9a4708">Collect</text><text class="as" x="251" y="52">flush at batch_size 1000</text><text class="as" x="251" y="64">or after 10 s window</text>
+      <path class="af" d="M326 45 L360 45"/>
+      <rect class="ab" x="362" y="14" width="146" height="62" rx="6" fill="rgba(29,78,216,.07)" stroke="#1d4ed8"/><text class="at" x="435" y="36" fill="#1d4ed8">Submit</text><text class="as" x="435" y="52">AsyncOpenAI → async tier</text><text class="as" x="435" y="64">BatchOpenAI → batch tier</text>
+      <path class="af" d="M510 45 L544 45"/>
+      <g class="pu"><rect class="ab" x="546" y="14" width="110" height="62" rx="6" fill="rgba(109,40,217,.07)" stroke="#6d28d9"/><text class="at" x="601" y="36" fill="#6d28d9">Poll</text><text class="as" x="601" y="52">every 5 s</text><text class="as" x="601" y="64">return as they finish</text></g>
+      <path class="af" d="M658 45 L690 45"/>
+      <rect class="ab" x="692" y="14" width="104" height="62" rx="6" fill="rgba(22,101,52,.07)" stroke="#166534"/><text class="at" x="744" y="36" fill="#166534">Response</text><text class="as" x="744" y="52">normal</text><text class="as" x="744" y="64">ChatCompletion</text>
+    </svg>
+    <div class="two">
+      <div>
+        <pre><code># pip install autobatcher   |   npm install autobatcher
+from autobatcher import AsyncOpenAI      # or BatchOpenAI
+client = AsyncOpenAI(
+    api_key=KEY,
+    base_url="https://api.doubleword.ai/v1")
+r = await client.chat.completions.create(
+    model="deepseek-ai/DeepSeek-V4-Flash",
+    messages=[{"role":"user","content":"Hi"}])</code></pre>
+      </div>
+      <div>
+        <table class="tbl"><thead><tr><th>Option</th><th>Default</th></tr></thead><tbody><tr><td><code>batch_size</code> / <code>batchSize</code></td><td>1000</td></tr><tr><td><code>batch_window_seconds</code></td><td>10</td></tr><tr><td><code>poll_interval_seconds</code></td><td>5</td></tr></tbody></table>
+        <ul class="tight"><li>Supports <code>chat.completions.create()</code> and <code>embeddings.create()</code> only. <strong>No Responses API</strong> (v5 said otherwise); everything else passes through to the OpenAI client.</li><li><strong>No <code>completion_window</code> option</strong> in the current table (v3/v4 had one).</li></ul>
+      </div>
+    </div>
+    <div class="review"><div class="rt">Docs review · autobatcher <span class="st v">✔ verified</span></div>
+      <div class="rr"><span class="rd">Clarity</span><span class="rs g">A</span><span class="rn">One mental model (collect, submit, poll, return); two clients mapped to two tiers.</span></div>
+      <div class="rr"><span class="rd">Examples</span><span class="rs o">B+</span><span class="rn">Quick start in Python and JavaScript; no error handling, cancellation or timeout example.</span></div>
+      <div class="rsec"><span class="rst">⚠️ Open:</span> no guidance on tuning window and batch size per workload, or what happens when a batch fails or expires; no mention that Responses-API async flows can't use it.</div></div>
+    <div class="sources"><span class="st v">✔ verified</span><span class="sn">1</span><a href="https://docs.doubleword.ai/inference-api/autobatcher" target="_blank">Autobatcher</a> · <span class="sn">2</span><a href="https://github.com/doublewordai/autobatcher" target="_blank">GitHub</a> · <span class="sn">3</span><a href="https://pypi.org/project/autobatcher/" target="_blank">PyPI</a></div>
+  </section>
+
+  <section>
+    <h2>Batch lifecycle <span class="st c" style="font-size:.5em">↻ 24h only; limits re-confirmed</span></h2>
+    <svg viewBox="0 0 800 70" xmlns="http://www.w3.org/2000/svg" style="max-width:800px">
+      <defs><marker id="ar4" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="7" markerHeight="5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#166534"/></marker><style>.bb{stroke-width:1.2}.bt{fill:#1c1915;font-family:'IBM Plex Sans',-apple-system,system-ui,sans-serif;font-size:11.5px;text-anchor:middle;font-weight:600}.bs{fill:#5c564c;font-family:'IBM Plex Sans',-apple-system,system-ui,sans-serif;font-size:9.3px;text-anchor:middle}.bn{fill:#166534;font-family:'JetBrains Mono',Menlo,monospace;font-size:10px;text-anchor:middle;font-weight:700}.bf{stroke:#166534;stroke-width:1.5;fill:none;stroke-dasharray:5 3;marker-end:url(#ar4)}</style></defs>
+      <rect class="bb" x="4" y="8" width="148" height="54" rx="6" fill="rgba(22,101,52,.06)" stroke="#166534"/><text class="bn" x="78" y="21">1</text><text class="bt" x="78" y="35">Prepare JSONL</text><text class="bs" x="78" y="49">custom_id ≤ 64 chars</text>
+      <path class="bf" d="M154 35 L180 35"/>
+      <rect class="bb" x="182" y="8" width="148" height="54" rx="6" fill="rgba(22,101,52,.06)" stroke="#166534"/><text class="bn" x="256" y="21">2</text><text class="bt" x="256" y="35">Upload</text><text class="bs" x="256" y="49">≤ 200 MB · ≤ 50,000 requests</text>
+      <path class="bf" d="M332 35 L358 35"/>
+      <rect class="bb" x="360" y="8" width="130" height="54" rx="6" fill="rgba(22,101,52,.06)" stroke="#166534"/><text class="bn" x="425" y="21">3</text><text class="bt" x="425" y="35">Create batch</text><text class="bs" x="425" y="49">completion_window "24h"</text>
+      <path class="bf" d="M492 35 L518 35"/>
+      <rect class="bb" x="520" y="8" width="136" height="54" rx="6" fill="rgba(29,78,216,.06)" stroke="#1d4ed8"/><text class="bn" x="588" y="21" fill="#1d4ed8">4</text><text class="bt" x="588" y="35" fill="#1d4ed8">Track</text><text class="bs" x="588" y="49">download partial output</text>
+      <path class="bf" d="M658 35 L684 35"/>
+      <rect class="bb" x="686" y="8" width="110" height="54" rx="6" fill="rgba(22,101,52,.08)" stroke="#166534"/><text class="bn" x="741" y="21">5</text><text class="bt" x="741" y="35">Results</text><text class="bs" x="741" y="49">output + error files</text>
+    </svg>
+    <div class="two">
+      <div>
+        <pre><code>f = client.files.create(file=open("in.jsonl","rb"), purpose="batch")
+b = client.batches.create(
+    input_file_id=f.id,
+    endpoint="/v1/chat/completions",
+    completion_window="24h",
+    metadata={"description": "daily eval job"})
+# output_file_id and error_file_id exist immediately
+
+r = requests.get(f".../v1/files/{b.output_file_id}/content",
+                 headers=H)
+if r.headers.get("X-Incomplete") == "true":
+    resume = r.headers["X-Last-Line"]   # ?offset={resume}</code></pre>
+      </div>
+      <div>
+        <ul class="tight">
+          <li><strong>Partial results while running</strong>: download the output file early; <code>X-Incomplete</code> and <code>X-Last-Line</code> headers tell you where to resume with <code>?offset=</code>. The page notes this differs from OpenAI.</li>
+          <li>Cancel any time: unstarted requests are cancelled and <strong>not charged</strong>; in-flight cancellation is best-effort; finished results stay downloadable.</li>
+          <li>The Console can create a batch by uploading a file; no separate trigger.</li>
+          <li><code>url</code> is typically <code>/v1/chat/completions</code>; <code>/v1/messages</code> is also accepted (Anthropic page).</li>
+        </ul>
+      </div>
+    </div>
+    <div class="review"><div class="rt">Docs review · batch inference <span class="st v">✔ verified</span></div>
+      <div class="rr"><span class="rd">Clarity</span><span class="rs g">A</span><span class="rn">Seven numbered steps, each with Console and API paths; "Common pitfalls" at the end.</span></div>
+      <div class="rr"><span class="rd">Examples</span><span class="rs g">A-</span><span class="rn">Python, JS, cURL per step; downloadable sample JSONL.</span></div>
+      <div class="rsec"><span class="rst">⚠️ Copy-paste hazards:</span> the cURL create-batch body has an unquoted <code>$INPUT_FILE_ID</code> inside single quotes, so it is invalid JSON as written; file and output IDs differ between snippets (a stray character); example model placeholder differs from other pages. <span class="rst">Missing:</span> batch-sizing guidance, retry and error-file handling.</div></div>
+    <div class="sources"><span class="st v">✔ verified</span><span class="sn">1</span><a href="https://docs.doubleword.ai/inference-api/batch-inference" target="_blank">Batch Inference</a> · <span class="sn">2</span><a href="https://docs.doubleword.ai/inference-api/jsonl-files" target="_blank">What is a JSONL file?</a> · <span class="sn">3</span><a href="https://docs.doubleword.ai/inference-api/batch-notifications-and-webhooks" target="_blank">Webhooks</a></div>
+  </section>
+
+  <section>
+    <h2>dw CLI <span class="st o" style="font-size:.5em">◷ pages not read; README facts verified</span></h2>
+    <div class="two">
+      <div>
+        <ul class="tight">
+          <li>The site index lists <strong>16 CLI pages</strong> under <code>/dw-cli</code>: introduction, installation, authentication, quickstart, batches, streaming, real-time, JSONL format, local file tools, projects, examples, command reference, accounts, API keys &amp; webhooks, <strong>usage &amp; analytics</strong>, global flags.</li>
+          <li>The CLI docs also appear at <code>/inference-api/dw-cli</code> and on <a href="https://doublewordai.github.io/dw/commands.html" target="_blank">GitHub Pages</a>: three places.</li>
+          <li>Gotcha from the skill README: with <strong>API-key-only login</strong>, <code>dw whoami</code> may fail because API keys lack admin API access. The skill probes with a tiny realtime call instead.</li>
+        </ul>
+        <pre><code>dw whoami                       # browser login only
+dw models list                  # needs full platform login
+dw realtime "$MODEL" "Reply with OK." \
+   --temperature 0 --max-tokens 2 --no-stream</code></pre>
+      </div>
+      <div>
+        <div class="callout c-am"><strong>Install command not re-verified.</strong> v5 said <code>pip install dw-cli</code> from the March crawl; use the Installation page instead.</div>
+        <div class="callout"><strong>Analytics endpoints (from your project notes):</strong> <code>GET /batches?include=analytics</code> and <code>GET /batches/{id}/analytics</code> were undocumented and needed direct <code>httpx</code> calls. The CLI now has a "Usage &amp; Analytics" page I did not read; <span class="st u">? unverified</span> whether it covers them.</div>
+      </div>
+    </div>
+    <div class="sources"><span class="st o">◷ index + README</span><span class="sn">1</span><a href="https://docs.doubleword.ai/dw-cli" target="_blank">CLI docs</a> · <span class="sn">2</span><a href="https://docs.doubleword.ai/inference-api/dw-cli" target="_blank">DW CLI (inference-api)</a> · <span class="sn">3</span><a href="https://doublewordai.github.io/dw/commands.html" target="_blank">Command reference</a> · <span class="sn">4</span><a href="https://github.com/doublewordai/doubleword-skill" target="_blank">Skill README</a></div>
+  </section>
+
+  <section>
+    <h2>Agent skills <span class="st c" style="font-size:.5em">↻ repo name changed; three versions in circulation</span></h2>
+    <table class="tbl"><thead><tr><th>Source (read 5 Oct)</th><th>Repo</th><th>Agents named</th><th>Contents</th><th>Update command</th></tr></thead><tbody>
+      <tr><td>Docs page, <strong>live fetch</strong></td><td><code>doublewordai/doubleword-skill</code></td><td>Claude Code only</td><td><code>SKILL.md</code> + <code>examples.py</code></td><td><code>npx skills update doubleword-skill</code></td></tr>
+      <tr><td>GitHub <strong>README</strong> (MIT, 5★, 17 commits)</td><td><code>doublewordai/doubleword-skill</code></td><td>Claude Code, Cursor, Codex, Hermes, OpenClaw</td><td><code>SKILL.md</code> + <code>references/</code> (CLI recipes, models &amp; pricing); needs the <code>dw</code> CLI</td><td><code>npx skills update doubleword</code></td></tr>
+      <tr><td>Search-indexed copy of the <em>same docs URL</em></td><td><code>doublewordai/batch-skill</code></td><td>Claude Code, Cursor, Windsurf, Codex</td><td>"12 models", dw CLI, three modes</td><td><code>npx skills update doubleword</code></td></tr>
+      <tr><td>Older staging copy</td><td><code>doublewordai/batch-skill</code></td><td>Claude Code, Cursor, Windsurf, Codex</td><td>batch API + autobatcher</td><td><code>npx skills update doubleword-batch</code></td></tr></tbody></table>
+    <div class="two">
+      <div class="callout c-r"><strong>Use <code>doubleword-skill</code>.</strong> It is the repo the live docs and GitHub both point to. v3–v5 of this deck cited <code>batch-skill</code>; I did not confirm whether that name still redirects.</div>
+      <div class="callout c-am"><strong>Community copies are stale or unverified.</strong> Third-party mirrors (skills.sh, skills.cat, mcp.directory) host older text; the mcp.directory copy uses <code>anthropic/claude-3-5-sonnet</code> in examples, which isn't a Doubleword model. <span class="st o">◷</span> Community skills from the March crawl (NnamdiOdozi/dw_batch_skill, OpenClaw v1/v2, Termo.ai) were not re-checked.</div>
+    </div>
+    <div class="review"><div class="rt">Docs review · skill page <span class="st v">✔ verified</span></div>
+      <div class="rr"><span class="rd">Clarity</span><span class="rs x">C+</span><span class="rn">The docs page, the repo README and the indexed docs copy disagree on agents supported, file layout, update command and whether the CLI is required.</span></div>
+      <div class="rr"><span class="rd">Prerequisites</span><span class="rs o">C</span><span class="rn">Docs page omits that the skill drives the <code>dw</code> CLI and needs <code>DOUBLEWORD_API_KEY</code>; README says both.</span></div>
+      <div class="rsec"><span class="rst">✅ Good:</span> README is excellent: auth readiness paths, progressive-disclosure layout, agent-safe polling advice. <span class="rst">⚠️ Fix:</span> one canonical page, one update command, and a note on community variants.</div></div>
+    <div class="sources"><span class="st v">✔ verified</span><span class="sn">1</span><a href="https://docs.doubleword.ai/inference-api/skill" target="_blank">Docs: API Skill</a> · <span class="sn">2</span><a href="https://github.com/doublewordai/doubleword-skill" target="_blank">doubleword-skill</a> · <span class="sn">3</span><a href="https://skills.sh/doublewordai/batch-skill/doubleword-batch" target="_blank">skills.sh mirror</a> · <span class="sn">4</span><a href="https://mcp.directory/skills/doubleword-batches" target="_blank">mcp.directory mirror</a></div>
+  </section>
+</section>
+
+<!-- ================= S5 INTEGRATIONS ================= -->
+<section>
+  <section class="section-header"><div class="section-num">Section 05</div><h2>26 integrations</h2><p class="small">Framework guides, most with their own prompt-caching section</p></section>
+  <section>
+    <h2>Integration ecosystem <span class="st v" style="font-size:.5em">✔ list verified · 7 pages read via snippets</span></h2>
+    <div class="three" style="font-size:.9em">
+      <div><h3>Agent frameworks</h3><p class="small"><a href="https://docs.doubleword.ai/inference-api/integrations/crewai" target="_blank">CrewAI</a> · <a href="https://docs.doubleword.ai/inference-api/integrations/langchain" target="_blank">LangChain / LangGraph</a> · <a href="https://docs.doubleword.ai/inference-api/integrations/llamaindex" target="_blank">LlamaIndex</a> · <a href="https://docs.doubleword.ai/inference-api/integrations/pydantic-ai" target="_blank">PydanticAI</a> · <a href="https://docs.doubleword.ai/inference-api/integrations/openai-agents" target="_blank">OpenAI Agents SDK</a> · <a href="https://docs.doubleword.ai/inference-api/integrations/microsoft-agent-framework" target="_blank">Microsoft Agent Framework</a> · <a href="https://docs.doubleword.ai/inference-api/integrations/google-adk" target="_blank">Google ADK</a> · <a href="https://docs.doubleword.ai/inference-api/integrations/agno" target="_blank">Agno</a> · <a href="https://docs.doubleword.ai/inference-api/integrations/smolagents" target="_blank">smolagents</a> · <a href="https://docs.doubleword.ai/inference-api/integrations/atomic-agents" target="_blank">atomic-agents</a> · <a href="https://docs.doubleword.ai/inference-api/integrations/mastra" target="_blank">Mastra</a> · <a href="https://docs.doubleword.ai/inference-api/integrations/vercel-ai" target="_blank">Vercel AI SDK</a> · <a href="https://docs.doubleword.ai/inference-api/integrations/rig" target="_blank">Rig (Rust)</a></p></div>
+      <div><h3>Coding agents &amp; sandboxes</h3><p class="small"><a href="https://docs.doubleword.ai/inference-api/integrations/openclaw" target="_blank">OpenClaw</a> · <a href="https://docs.doubleword.ai/inference-api/integrations/opencode" target="_blank">Opencode</a> (GLM-5.2, 1M context) · <a href="https://docs.doubleword.ai/inference-api/integrations/pi" target="_blank">Pi</a> (community provider; toggle realtime/flex) · <a href="https://docs.doubleword.ai/inference-api/integrations/warp" target="_blank">Warp</a> · <a href="https://docs.doubleword.ai/inference-api/integrations/daytona" target="_blank">Daytona</a> (code on flex, run in parallel sandboxes)</p></div>
+      <div><h3>Evals, memory &amp; data</h3><p class="small"><a href="https://docs.doubleword.ai/inference-api/integrations/arize-ax" target="_blank">Arize AX</a> · <a href="https://docs.doubleword.ai/inference-api/integrations/arize-phoenix" target="_blank">Arize Phoenix</a> · <a href="https://docs.doubleword.ai/inference-api/integrations/langsmith" target="_blank">Langsmith</a> · <a href="https://docs.doubleword.ai/inference-api/integrations/qdrant" target="_blank">Qdrant</a> · <a href="https://docs.doubleword.ai/inference-api/integrations/betterdb" target="_blank">BetterDB</a> · <a href="https://docs.doubleword.ai/inference-api/integrations/mem0" target="_blank">mem0</a> · <a href="https://docs.doubleword.ai/inference-api/integrations/supermemory" target="_blank">Supermemory</a> · <a href="https://docs.doubleword.ai/inference-api/integrations/experiential" target="_blank">Experiential</a></p></div>
+    </div>
+    <div class="callout c-a"><strong>Cost claims on these pages are the vendor's own</strong> (from the site index): Arize AX evals "4–6× less"; BetterDB "25% or more"; mem0 "half the cost"; Supermemory "99%"; Rig "roughly 8× less than frontier realtime APIs". Treat them as scenario-specific.</div>
+    <div class="callout c-am"><strong>Caching caveats documented honestly:</strong> Google ADK cannot drive caching today (tested ADK 2.9.1 / litellm 1.101.0); Pi's community provider sends turns to the Responses API, where the marker can't be set; CrewAI needs a <code>before_llm_call</code> hook; Mastra enables it with <code>cache: {ttl}</code> on the provider.</div>
+    <div class="review"><div class="rt">Docs review · integrations <span class="st v">✔ 7 pages read via snippets; rest index-only</span></div>
+      <div class="rr"><span class="rd">Clarity</span><span class="rs g">A-</span><span class="rn">Each page is framework-native: install, config, sample, caching, env vars.</span></div>
+      <div class="rr"><span class="rd">Examples</span><span class="rs g">A</span><span class="rn">Python, TypeScript and Rust, with usage-counter checks for caching.</span></div>
+      <div class="rsec"><span class="rst">⚠️ Open:</span> 8 index descriptions (Agno, atomic-agents, CrewAI, Google ADK, Mastra, OpenAI Agents SDK, PydanticAI, smolagents) still say "Route requests through the Control Layer" although the Control Layer is no longer in the main nav (D4); sidebar lists 24 or 26 integrations depending on the page (D3); no "which framework?" guidance.</div></div>
+    <div class="sources"><span class="st v">✔ verified list</span><span class="sn">1</span><a href="https://docs.doubleword.ai/inference-api/integrations" target="_blank">Integrations index</a> · <span class="sn">2</span><a href="https://docs.doubleword.ai/llms.txt" target="_blank">llms.txt (descriptions)</a></div>
+  </section>
+</section>
+
+<!-- ================= S6 WORKBOOKS ================= -->
+<section>
+  <section class="section-header"><div class="section-num">Section 06</div><h2>Workbooks</h2><p class="small">13 tutorials (index lists them; descriptions from the site index)</p></section>
+  <section>
+    <h2>Workbook gallery <span class="st o" style="font-size:.5em">◷ titles verified; pages not read</span></h2>
+    <table class="tbl"><thead><tr><th>Workbook</th><th>What the index says</th></tr></thead><tbody>
+      <tr><td><a href="https://docs.doubleword.ai/inference-api/async-agents" target="_blank">Async Agents</a></td><td>Agentic workloads on the async tier</td></tr>
+      <tr><td><a href="https://docs.doubleword.ai/inference-api/agent-swarm" target="_blank">Doubleword Agent Swarm</a> <span class="badge b-g">newer</span></td><td>Self-designing swarm: orchestrator, bounded-context workers, adversarial verifiers, synthesizer; Open Responses API with the dw CLI</td></tr>
+      <tr><td><a href="https://docs.doubleword.ai/inference-api/pr-review-bot" target="_blank">Agentic PR Review Bot</a> <span class="badge b-g">newer</span></td><td>Self-hosted GitHub PR review bot on opencode and async inference; chat completions and Open Responses samples</td></tr>
+      <tr><td><a href="https://docs.doubleword.ai/inference-api/data-processing-pipelines" target="_blank">Data Processing Pipelines</a></td><td>LLM steps inside ETL</td></tr>
+      <tr><td><a href="https://docs.doubleword.ai/inference-api/structured-extraction" target="_blank">Structured Data Extraction</a></td><td>Unstructured text to schema</td></tr>
+      <tr><td><a href="https://docs.doubleword.ai/inference-api/semantic-search-without-embeddings" target="_blank">Semantic Search Without Embeddings</a></td><td>Search at scale using LLMs directly instead of embedding models</td></tr>
+      <tr><td><a href="https://docs.doubleword.ai/inference-api/research-summaries" target="_blank">Daily Research Paper Digest</a></td><td>Automated arXiv digest that "costs $1/year" via the Batch API</td></tr>
+      <tr><td><a href="https://docs.doubleword.ai/inference-api/image-summarization" target="_blank">Image Summarization</a></td><td>Vision models in batch</td></tr>
+      <tr><td><a href="https://docs.doubleword.ai/inference-api/embeddings" target="_blank">Embeddings</a></td><td>Batch embeddings for search and RAG</td></tr>
+      <tr><td><a href="https://docs.doubleword.ai/inference-api/model-evals" target="_blank">Model Evals</a></td><td>Evaluation suites</td></tr>
+      <tr><td><a href="https://docs.doubleword.ai/inference-api/synthetic-data-generation" target="_blank">Synthetic Data Generation</a> · <a href="https://docs.doubleword.ai/inference-api/dataset-compilation" target="_blank">Dataset Compilation</a></td><td>Training-data creation and curation</td></tr>
+      <tr><td><a href="https://docs.doubleword.ai/inference-api/bug-detection-ensemble" target="_blank">Classifying Security Vulnerabilities</a></td><td>Model ensembles for vulnerability triage</td></tr></tbody></table>
+    <p class="smaller">The Agent Swarm and PR Review Bot pages are described as new relative to v4; "newer" is my inference from their absence in March, not a dated claim.</p>
+    <div class="sources"><span class="st o">◷ index only</span><span class="sn">1</span><a href="https://docs.doubleword.ai/inference-api/cli-examples" target="_blank">Workbooks index</a> · <span class="sn">2</span><a href="https://docs.doubleword.ai/llms.txt" target="_blank">llms.txt</a></div>
+  </section>
+</section>
+
+<!-- ================= S7 OPERATIONS ================= -->
+<section>
+  <section class="section-header"><div class="section-num">Section 07</div><h2>Operations</h2><p class="small">Billing · organizations · webhooks · support</p></section>
+  <section>
+    <h2>Account, organizations, webhooks, support <span class="st o" style="font-size:.5em">◷ not re-read this round</span></h2>
+    <div class="two">
+      <div>
+        <div class="mc"><div class="mn">Account &amp; billing</div><div class="md">Pages: adding credits, <strong>Auto Top-Up</strong> ("recharge when balance drops below a threshold"), payment methods and invoice history. Marketing: prepaid credits, usage-based pricing, Zero Data Retention included on self-service.</div></div>
+        <div class="mc"><div class="mn">Organizations</div><div class="md">Pages: overview, inviting members, organization API keys, submitting batches as an organization, organization credits &amp; billing. From the March crawl: roles Owner / Admin / Member and per-member keys billed to the org. <span class="st o">◷</span> Re-check before relying on it. Prompt-cache sharing works across an org's keys (verified, caching page).</div></div>
+      </div>
+      <div>
+        <div class="mc"><div class="mn">Notifications &amp; webhooks</div><div class="md">Page exists under "Using the Platform". March crawl noted Standard Webhooks signing and <code>batch.completed</code> / <code>batch.failed</code> events. <span class="st o">◷</span> The old signature-verification snippet is omitted here because it was not re-verified (it contained a likely <code>hmac.new</code> mistake).</div></div>
+        <div class="mc"><div class="mn">Support &amp; tiers</div><div class="md">"Get Support": contact support, request features, or get help optimizing batch workloads. Marketing: Self-Service (pay-as-you-go) vs At-Scale (dedicated capacity, region-locked processing, custom models, volume pricing, MSA / DPA / custom SLAs). <a href="https://trust.doubleword.ai/" target="_blank">Trust Center</a>.</div></div>
+      </div>
+    </div>
+    <div class="sources"><span class="st o">◷ index only</span><span class="sn">1</span><a href="https://docs.doubleword.ai/inference-api/account-and-billing" target="_blank">Account &amp; Billing</a> · <span class="sn">2</span><a href="https://docs.doubleword.ai/inference-api/organizations-overview" target="_blank">Organizations</a> · <span class="sn">3</span><a href="https://docs.doubleword.ai/inference-api/batch-notifications-and-webhooks" target="_blank">Webhooks</a> · <span class="sn">4</span><a href="https://docs.doubleword.ai/inference-api/get-support" target="_blank">Get Support</a> · <span class="sn">5</span><a href="https://doubleword.ai/" target="_blank">Homepage tiers</a></div>
+  </section>
+</section>
+
+<!-- ================= S8 ECOSYSTEM ================= -->
+<section>
+  <section class="section-header"><div class="section-num">Section 08</div><h2>Ecosystem &amp; open source</h2><p class="small">Control Layer · Inference Stack · GitHub · customers · research</p></section>
+
+  <section>
+    <h2>Control Layer and Inference Stack <span class="st c" style="font-size:.5em">↻ "removed from docs" was wrong</span></h2>
+    <div class="two">
+      <div>
+        <h3 style="color:var(--a2)">Control Layer (open-source gateway)</h3>
+        <ul class="tight">
+          <li><strong>Docs are live</strong> at <code>/control-layer</code>. The site's <code>llms.txt</code> lists 11 pages: overview, getting started, 7 how-tos (API, endpoints, users &amp; groups, health monitoring, production, model pricing, payments), configuration reference, "how billing works". It is simply absent from the top nav (<code>Inference API</code> and <code>CLI</code> only).</li>
+          <li>Repo <code>doublewordai/control-layer</code>: Rust, <strong>Apache-2.0</strong>, 92★, updated 13 Aug 2026. Vendor claim: "450× less overhead than LiteLLM" (benchmark not re-run here).</li>
+          <li>Quick start (search snippets of the docs): <code>wget</code> the repo's <code>docker-compose.yml</code>, <code>docker compose up -d</code>, open <code>localhost:3001</code>; needs PostgreSQL; image <code>ghcr.io/doublewordai/control-layer:latest</code>; OpenAI-compatible at <code>/ai/v1</code>. A Helm chart repo exists (<code>control-layer-chart</code>).</li>
+          <li>Set a real <code>SECRET_KEY</code> (<code>openssl rand -base64 32</code>) and change default credentials before exposing it.</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="color:var(--p)">Inference Stack (self-hosted GPU deployment)</h3>
+        <ul class="tight">
+          <li>Still marketed: a product link in the homepage footer, and a public repo <code>doublewordai/inference-stack</code> ("easiest &amp; most performant way to run genAI infrastructure in your private environment"; Go templates, 10★).</li>
+          <li><strong>No Inference Stack pages appear in <code>llms.txt</code></strong>, and a usage page returned 404 in my earlier session. So its docs are gone or moved; I could not confirm which.</li>
+          <li>Related research repos: <code>zerodp</code> (zero-copy data parallel for MoE serving), <code>inference-lab</code> (an LLM <em>inference simulator</em>, not a request daemon as v3/v4 said).</li>
+        </ul>
+        <div class="callout c-am"><strong>What a reader needs to know:</strong> don't write off the Control Layer because the main nav omits it; for Inference Stack, go to the marketing page and GitHub, not the docs.</div>
+      </div>
+    </div>
+    <div class="review"><div class="rt">Docs review · structure <span class="st v">✔ verified via llms.txt + search</span></div>
+      <div class="rr"><span class="rd">Clarity</span><span class="rs x">C</span><span class="rn">A reader following the nav cannot find a documented, active, open-source product; a reader following GitHub can.</span></div>
+      <div class="rsec"><span class="rst">⚠️ Fix:</span> either restore a "Control Layer" tab or say it moved; keep integration copy consistent with the nav; give Inference Stack a status note.</div></div>
+    <div class="sources"><span class="st v">✔ verified</span><span class="sn">1</span><a href="https://docs.doubleword.ai/llms.txt" target="_blank">llms.txt</a> · <span class="sn">2</span><a href="https://docs.doubleword.ai/control-layer" target="_blank">Control Layer docs</a> · <span class="sn">3</span><a href="https://github.com/doublewordai/control-layer" target="_blank">control-layer</a> · <span class="sn">4</span><a href="https://github.com/doublewordai/inference-stack" target="_blank">inference-stack</a> · <span class="sn">5</span><a href="https://doubleword.ai/inference-stack" target="_blank">Inference Stack (marketing)</a></div>
+  </section>
+
+  <section>
+    <h2>GitHub organization <span class="st v" style="font-size:.5em">✔ org page read; 68 repos (v4 said 24)</span></h2>
+    <table class="tbl"><thead><tr><th>Repo</th><th>What GitHub says</th><th>Lang · license · stars</th></tr></thead><tbody>
+      <tr><td><a href="https://github.com/doublewordai/control-layer" target="_blank">control-layer</a></td><td>"World's fastest AI model gateway (450× less overhead than LiteLLM)"; updated 13 Aug 2026</td><td>Rust · Apache-2.0 · 92</td></tr>
+      <tr><td><a href="https://github.com/doublewordai/autobatcher" target="_blank">autobatcher</a></td><td>Drop-in AsyncOpenAI replacement that transparently batches requests</td><td>Python · (license not shown) · 22</td></tr>
+      <tr><td><a href="https://github.com/doublewordai/doubleword-skill" target="_blank">doubleword-skill</a></td><td>Claude Code skill for the Doubleword Batch API</td><td>MIT · 5</td></tr>
+      <tr><td><a href="https://github.com/doublewordai/inference-stack" target="_blank">inference-stack</a></td><td>Run genAI infrastructure in your private environment</td><td>Go Template · 10</td></tr>
+      <tr><td><a href="https://github.com/doublewordai/zerodp" target="_blank">zerodp</a></td><td>Zero-copy data parallelism for MoE serving via CUDA IPC</td><td>Python · 10</td></tr>
+      <tr><td><a href="https://github.com/doublewordai/inference-lab" target="_blank">inference-lab</a></td><td>High-performance LLM inference simulator</td><td>Rust · MIT · 6</td></tr>
+      <tr><td><a href="https://github.com/doublewordai/control-layer-chart" target="_blank">control-layer-chart</a></td><td>Helm chart for the Control Layer</td><td>Go Template · Apache-2.0</td></tr>
+      <tr><td>outlet · outlet-postgres · doubleword-arize · forks (dynamo, kagent, uccl)</td><td>Axum request-capture middleware, Postgres plugin, Arize integration; forks of Dynamo, kagent, UCCL</td><td>various</td></tr></tbody></table>
+    <p class="smaller">Only 10 of 68 repos are visible on the org's first page; the rest were not enumerated. The <code>dw</code> CLI repo and the <code>use-cases</code> / <code>qlm</code> repos listed in v5 were <strong>not confirmed</strong> and have been removed.</p>
+    <div class="sources"><span class="st v">✔ verified</span><span class="sn">1</span><a href="https://github.com/doublewordai" target="_blank">github.com/doublewordai</a></div>
+  </section>
+
+  <section>
+    <h2>Customers, case studies and inference research <span class="st v" style="font-size:.5em">✔ homepage read</span></h2>
+    <div class="two">
+      <div>
+        <h3 style="color:var(--g)">Customers named on the homepage</h3>
+        <p class="small">Detail · nPlan · OpenMed · Ken AI · Element Materials · UnaGo AI · Dataiku · NXL · University of Colorado Boulder. Featured in Sky News, Sifted, Forbes, Bloomberg, TechCrunch.</p>
+        <div class="mc"><div class="mn" style="color:var(--g)">Detail</div><div class="md">"We've run trillions of tokens on Doubleword." <a href="https://doubleword.ai/use-cases/async-agents" target="_blank">Async agents →</a></div></div>
+        <div class="mc"><div class="mn" style="color:var(--g)">OpenMed × SynthVision</div><div class="md">Two annotation passes plus two cross-validation passes over 119K images. <a href="https://doubleword.ai/customer-stories/openmed" target="_blank">Story →</a></div></div>
+        <div class="mc"><div class="mn" style="color:var(--g)">Element Materials</div><div class="md">Doubleword as "our inference layer"; single point of governance. <a href="https://doubleword.ai/use-cases/data-processing" target="_blank">Data processing →</a></div></div>
+        <p class="small"><a href="https://doubleword.ai/case-studies" target="_blank">All case studies</a> (Kelp, NXL, Ken AI, UnaGo AI, Dataiku) · <a href="https://doubleword.ai/seen-in-the-wild" target="_blank">Seen in the Wild</a></p>
+      </div>
+      <div>
+        <h3 style="color:var(--p)">Inference engineering (technical blog)</h3>
+        <div class="mc"><div class="mn" style="color:var(--p)">FlashOffload</div><div class="md">"7× cheaper prefills" <a href="https://blog.doubleword.ai/flashoffload" target="_blank">→</a></div></div>
+        <div class="mc"><div class="mn" style="color:var(--p)">Speculative KV Coding</div><div class="md">"4× KV cache compression" <a href="https://blog.doubleword.ai/speculative-kv-coding" target="_blank">→</a></div></div>
+        <div class="mc"><div class="mn" style="color:var(--p)">Cloudburst</div><div class="md">"70× faster cold starts" <a href="https://blog.doubleword.ai/fast-sglang-starts" target="_blank">→</a></div></div>
+        <p class="small">Multipliers are the vendor's headline claims. The older conceptual pages (why batch matters, batched endpoints, parallel primitives, ZeroDP) now sit in the docs <strong>Archive</strong> section: <a href="https://docs.doubleword.ai/inference-api/why-batch-inference-matters" target="_blank">why batch</a> · <a href="https://docs.doubleword.ai/inference-api/behind-the-stack-batched-endpoints" target="_blank">batched endpoints</a> · <a href="https://docs.doubleword.ai/inference-api/parallel-primitives" target="_blank">parallel primitives</a> · <a href="https://docs.doubleword.ai/inference-api/zerodp-just-in-time-weight-offloading-over-nvlink-for-data-parallelism" target="_blank">ZeroDP</a>. The "Behind the Stack" episodes 4, 8, 9 cited in v4 are not in <code>llms.txt</code>.</p>
+      </div>
+    </div>
+    <div class="sources"><span class="st v">✔ verified</span><span class="sn">1</span><a href="https://doubleword.ai/" target="_blank">Homepage</a> · <span class="sn">2</span><a href="https://blog.doubleword.ai/" target="_blank">Technical blog</a> · <span class="sn">3</span><a href="https://doubleword.ai/case-studies" target="_blank">Case studies</a></div>
+  </section>
+</section>
+
+<!-- ================= S9 AUDIT ================= -->
+<section>
+  <section class="section-header"><div class="section-num">Section 09</div><h2>Docs audit</h2><p class="small">Discrepancies · scorecard · what changed from v5 · what to re-check</p></section>
+
+  <section>
+    <h2>Discrepancy ledger <span class="st v" style="font-size:.5em">✔ each item observed 5 Oct 2026</span></h2>
+    <div class="tscroll" style="max-height:60vh"><table class="tbl"><thead><tr><th>#</th><th>Sev</th><th>Where</th><th>What disagrees</th></tr></thead><tbody>
+      <tr><td>D1</td><td><span class="badge b-r">high</span></td><td>Skill</td><td>Live docs page, GitHub README and the search-indexed copy of the same docs URL differ on repo name (<code>doubleword-skill</code> vs <code>batch-skill</code>), agents supported, file layout and update command.</td></tr>
+      <tr><td>D2</td><td><span class="badge b-r">high</span></td><td>Flex tier</td><td>Async page: starts within a minute, priced above batch. Anthropic page: "~1 hour SLA at batch pricing". Intro: flex works on Responses or Chat Completions; async page shows only Responses.</td></tr>
+      <tr><td>D3</td><td><span class="badge b-am">med</span></td><td>Docs nav</td><td>Sidebar differs between pages (three deploy builds seen): "Dedicated Realtime" missing on some, 24 vs 26 integrations, different model lists.</td></tr>
+      <tr><td>D4</td><td><span class="badge b-am">med</span></td><td>Control Layer / Inference Stack</td><td>Control Layer hidden from nav yet indexed (11 pages), linked from GitHub and marketing, and referenced by 8 integration descriptions. Inference Stack marketed but absent from the docs index.</td></tr>
+      <tr><td>D5</td><td><span class="badge b-am">med</span></td><td>Marketing → docs</td><td>Homepage "Docs" links go to <code>docs.doubleword.ai/batches</code> (older path pattern); <code>/batches/skill</code> is still indexed.</td></tr>
+      <tr><td>D6</td><td><span class="badge b-am">med</span></td><td>Staging site</td><td><code>docs-stag.doubleword.ai</code> is indexed by search engines and serves older and newer variants of pages.</td></tr>
+      <tr><td>D7</td><td><span class="badge b-am">med</span></td><td>Catalog</td><td>Marketing "Popular Models" lists Qwen3.5 35B A3B (not in docs table); docs table has 5 models the marketing list lacks (3 dottxt variants, GPT OSS 120B, Gemma 4 26B).</td></tr>
+      <tr><td>D8</td><td><span class="badge b-am">med</span></td><td>Reasoning</td><td>Support table lists 19 of 36 models; Kimi K3 and 16 others absent, while the DeepSeek V4 Flash page shows its own efforts.</td></tr>
+      <tr><td>D9</td><td><span class="badge b-am">med</span></td><td>Pricing</td><td>Qwen3.5 9B dottxt: async/batch output price above realtime output price.</td></tr>
+      <tr><td>D10</td><td><span class="badge b-g">low</span></td><td>Caching</td><td>7 models show cache-read = input price; unclear if caching unsupported or undiscounted. Support is flagged via catalog metadata not visible in the table.</td></tr>
+      <tr><td>D11</td><td><span class="badge b-g">low</span></td><td>Models page</td><td>Intro still says "Batch API is priced per model"; "—" unexplained; model IDs only on per-model pages.</td></tr>
+      <tr><td>D12</td><td><span class="badge b-g">low</span></td><td>Batch page</td><td>cURL body has unquoted <code>$INPUT_FILE_ID</code> (invalid JSON); IDs inconsistent across snippets.</td></tr>
+      <tr><td>D13</td><td><span class="badge b-g">low</span></td><td>Intro</td><td>No code; cost row qualitative ("Reduced", "Lowest").</td></tr>
+      <tr><td>D14</td><td><span class="badge b-g">low</span></td><td>CLI docs</td><td>Three locations: <code>/dw-cli</code>, <code>/inference-api/dw-cli</code>, GitHub Pages.</td></tr>
+      <tr><td>D15</td><td><span class="badge b-g">low</span></td><td>Skill mirrors</td><td>Third-party mirrors serve stale copies; one uses <code>anthropic/claude-3-5-sonnet</code> in examples.</td></tr></tbody></table></div>
+    <div class="callout c-g"><strong>Strength worth copying:</strong> <code>docs.doubleword.ai/llms.txt</code> indexes every page, each page has a <code>.md</code> twin and a "Copy Markdown" action. That is excellent for agent consumption, and it's only mentioned in the skill README, not the docs intro.</div>
+    <div class="sources"><span class="st v">✔ verified</span> evidence in the slides above · <span class="sn">1</span><a href="https://docs.doubleword.ai/llms.txt" target="_blank">llms.txt</a> · <span class="sn">2</span><a href="https://github.com/doublewordai/doubleword-skill" target="_blank">skill README</a></div>
+  </section>
+
+  <section>
+    <h2>Scorecard <span class="st v" style="font-size:.5em">✔ graded only where read on 5 Oct</span></h2>
+    <table class="tbl"><thead><tr><th>Area</th><th>Clarity</th><th>Examples</th><th>Prereqs</th><th>Basis</th></tr></thead><tbody>
+      <tr><td>Intro / overview</td><td class="num">B+</td><td class="num">C</td><td class="num">B-</td><td>read in full</td></tr>
+      <tr><td>Async inference</td><td class="num">A-</td><td class="num">A</td><td class="num">B</td><td>read in full</td></tr>
+      <tr><td>Batch inference</td><td class="num">A</td><td class="num">A-</td><td class="num">A-</td><td>read in full</td></tr>
+      <tr><td>Models &amp; pricing</td><td class="num">A-</td><td class="num">B-</td><td class="num">B+</td><td>read in full</td></tr>
+      <tr><td>Prompt caching</td><td class="num">A</td><td class="num">A</td><td class="num">A-</td><td>read in full</td></tr>
+      <tr><td>Reasoning effort</td><td class="num">A-</td><td class="num">B</td><td class="num">B+</td><td>read in full</td></tr>
+      <tr><td>Anthropic compatibility</td><td class="num">A</td><td class="num">A-</td><td class="num">A</td><td>read in full</td></tr>
+      <tr><td>Autobatcher</td><td class="num">A</td><td class="num">B+</td><td class="num">A-</td><td>read in full</td></tr>
+      <tr><td>Skill (docs + README)</td><td class="num">C+</td><td class="num">B</td><td class="num">C</td><td>read in full</td></tr>
+      <tr><td>Integrations</td><td class="num">A-</td><td class="num">A</td><td class="num">B+</td><td>7 via snippets</td></tr>
+      <tr><td>Navigation &amp; cross-site consistency</td><td class="num">C</td><td class="num">—</td><td class="num">—</td><td>observed</td></tr>
+      <tr><td>Agent-readiness (llms.txt, .md)</td><td class="num">A</td><td class="num">—</td><td class="num">—</td><td>read llms.txt</td></tr>
+      <tr><td>Control Layer, CLI, webhooks, orgs, data sources, dedicated realtime</td><td class="num" colspan="3">not re-graded</td><td>◷ March scores stale</td></tr></tbody></table>
+    <p class="smaller">Grades are my judgment on clarity of what the page does, presence of runnable examples, and whether prerequisites are stated. They are opinions, not measurements.</p>
+    <div class="sources"><span class="st v">✔ verified</span> see the ☆ Reviews panels on each slide for the reasoning</div>
+  </section>
+
+  <section>
+    <h2>What changed from v5 <span class="st c" style="font-size:.5em">claim ledger</span></h2>
+    <div class="tscroll" style="max-height:62vh"><table class="tbl"><thead><tr><th>v5 claim</th><th>Status</th><th>Evidence / fix</th></tr></thead><tbody>
+      <tr><td>Control Layer and Inference Stack "removed from docs"</td><td><span class="st c">↻ corrected</span></td><td>Control Layer: 11 pages in <code>llms.txt</code>. Inference Stack: not in index (docs location unconfirmed)</td></tr>
+      <tr><td>Async "up to 50% off", batch "up to 75% off"</td><td><span class="st c">↻ removed</span></td><td>Computed from table: ≈25% and ≈50% below realtime</td></tr>
+      <tr><td>Pricing table (several rows from memory)</td><td><span class="st c">↻ rebuilt</span></td><td>All 36 rows copied from the Models page</td></tr>
+      <tr><td>"$30K / $15.8K / $2.1K", "20M free tokens", "miss the SLA, job is free"</td><td><span class="st u">? dropped</span></td><td>Not on any Oct 2026 page read; homepage now cites $5.8K vs $24K</td></tr>
+      <tr><td><code>reasoning_effort</code> low/medium/high; Inkling and Kimi K3 supported</td><td><span class="st c">↻ corrected</span></td><td>Seven levels; Inkling and Kimi K3 are not in the support table</td></tr>
+      <tr><td>Caching "works with Chat Completions"</td><td><span class="st c">↻ corrected</span></td><td>Implicit + explicit; four endpoints; write multipliers; 4 breakpoints</td></tr>
+      <tr><td>Anthropic compat "supports tool use"</td><td><span class="st c">↻ corrected</span></td><td>Not stated on the page; <code>auth_token</code>, no native batch endpoint added</td></tr>
+      <tr><td>Skill repo <code>batch-skill</code>; works in Cursor, Windsurf, Codex</td><td><span class="st c">↻ corrected</span></td><td><code>doubleword-skill</code>; docs say Claude Code only, README lists five agents</td></tr>
+      <tr><td>Autobatcher: Python only, supports Responses, <code>completion_window</code></td><td><span class="st c">↻ corrected</span></td><td>Python + TypeScript; chat + embeddings only; option removed</td></tr>
+      <tr><td>Batch <code>completion_window</code> "1h or 24h"</td><td><span class="st c">↻ corrected</span></td><td>Page: "set the completion window to 24h"</td></tr>
+      <tr><td><code>inference-lab</code> = batched request daemon; <code>dw</code>, <code>qlm</code>, <code>use-cases</code> repos</td><td><span class="st c">↻ corrected</span></td><td>inference-lab is a simulator; the other three repos not confirmed, removed</td></tr>
+      <tr><td>Reasoning example used Inkling model ID</td><td><span class="st c">↻ corrected</span></td><td>Inkling ID was a guess; examples now use a verified ID</td></tr>
+      <tr><td>"Built from 80+ pages"</td><td><span class="st c">↻ removed</span></td><td>14 read in full, ~12 via snippets, ~140 indexed</td></tr>
+      <tr><td>36 models, 26 integrations, 13 workbooks</td><td><span class="st v">✔ held up</span></td><td>Counted from the Models table, sidebar and <code>llms.txt</code></td></tr>
+      <tr><td>Prompt caching, reasoning, Anthropic, S3 data sources "exist"</td><td><span class="st v">✔ held up</span></td><td>Pages found and read (S3 page index-only)</td></tr>
+      <tr><td>Analytics endpoints undocumented</td><td><span class="st u">? unverified</span></td><td>CLI has a "Usage &amp; Analytics" page not yet read</td></tr></tbody></table></div>
+    <div class="sources"><span class="st v">✔ verified</span> each row traces to a source slide in this deck</div>
+  </section>
+
+  <section>
+    <h2>What to re-check next, and how to refresh this hub</h2>
+    <div class="two">
+      <div>
+        <h3>Read these next (highest value)</h3>
+        <ul class="tight">
+          <li><strong>Dedicated Realtime</strong>, <strong>Data Sources / S3 (Beta)</strong>, <strong>Get Support</strong>, <strong>Tool calling</strong></li>
+          <li><strong>CLI pages</strong>, especially install and "Usage &amp; Analytics" (could settle the analytics-endpoint question)</li>
+          <li><strong>Webhooks</strong> and <strong>Organizations</strong> (March data only)</li>
+          <li><strong>Control Layer</strong> how-tos (the nav omits them; re-score them)</li>
+          <li>Whether <code>batch-skill</code> still redirects to <code>doubleword-skill</code></li>
+          <li>The community skills (Nnamdi Odozi, OpenClaw, Termo) which were not re-checked</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Cheapest reliable refresh path</h3>
+        <ul class="tight">
+          <li>Fetch <code>docs.doubleword.ai/llms.txt</code> for the page list; most pages have a <code>.md</code> twin.</li>
+          <li>Re-copy the Models table into the data block of this file; the table, calculator and every discount figure recompute from it.</li>
+          <li>Static doc pages fetch well; the interactive API-reference viewer returns little useful text (from earlier crawl notes).</li>
+          <li>Docs deploys were out of sync on 5 Oct (D3): compare a page's sidebar before trusting one fetch.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout c-am"><strong>Single source of truth?</strong> Closer than v5, but not yet: roughly a third of the platform is carried by index descriptions or March data. Treat any slide without a <span class="st v">✔ verified</span> pill as a pointer, not a fact.</div>
+    <div class="sources"><span class="st v">✔ verified</span><span class="sn">1</span><a href="https://docs.doubleword.ai/llms.txt" target="_blank">llms.txt</a> · <span class="sn">2</span><a href="https://github.com/doublewordai/doubleword-skill" target="_blank">skill README (refresh hints)</a></div>
+  </section>
+</section>
+
+<!-- ================= S10 REFERENCE ================= -->
+<section>
+  <section class="section-header"><div class="section-num">Section 10</div><h2>Quick reference</h2><p class="small">Links checked against the live sidebar and llms.txt</p></section>
+  <section>
+    <h2>All links</h2>
+    <div class="three" style="font-size:.9em">
+      <div><h3>Inference API</h3><p class="small">
+        <a href="https://app.doubleword.ai" target="_blank">Console</a> · <a href="https://docs.doubleword.ai/inference-api/models" target="_blank">Models &amp; pricing</a><br>
+        <a href="https://docs.doubleword.ai/inference-api/intro-to-doubleword-inference" target="_blank">Intro</a> · <a href="https://docs.doubleword.ai/inference-api/dedicated-realtime-inference" target="_blank">Dedicated Realtime</a><br>
+        <a href="https://docs.doubleword.ai/inference-api/realtime-inference" target="_blank">Realtime</a> · <a href="https://docs.doubleword.ai/inference-api/async-inference" target="_blank">Async</a> · <a href="https://docs.doubleword.ai/inference-api/batch-inference" target="_blank">Batch</a><br>
+        <a href="https://docs.doubleword.ai/inference-api/prompt-caching" target="_blank">Prompt caching</a> · <a href="https://docs.doubleword.ai/inference-api/reasoning-controls" target="_blank">Reasoning effort</a><br>
+        <a href="https://docs.doubleword.ai/inference-api/tool-calling" target="_blank">Tool calling</a> · <a href="https://docs.doubleword.ai/inference-api/anthropic-api-compatibility" target="_blank">Anthropic API</a><br>
+        <a href="https://docs.doubleword.ai/inference-api/data-sources" target="_blank">Data Sources</a> · <a href="https://docs.doubleword.ai/inference-api/api-reference" target="_blank">API reference</a><br>
+        <a href="https://docs.doubleword.ai/inference-api/jsonl-files" target="_blank">JSONL files</a> · <a href="https://docs.doubleword.ai/inference-api/creating-an-api-key" target="_blank">API keys</a><br>
+        <a href="https://docs.doubleword.ai/inference-api/batch-notifications-and-webhooks" target="_blank">Webhooks</a> · <a href="https://docs.doubleword.ai/inference-api/get-support" target="_blank">Support</a></p></div>
+      <div><h3>SDKs, tools, workbooks</h3><p class="small">
+        <a href="https://docs.doubleword.ai/inference-api/autobatcher" target="_blank">Autobatcher</a> · <a href="https://docs.doubleword.ai/dw-cli" target="_blank">CLI docs</a> · <a href="https://docs.doubleword.ai/inference-api/skill" target="_blank">Skill</a><br>
+        <a href="https://docs.doubleword.ai/inference-api/cli-examples" target="_blank">Workbooks index</a> · <a href="https://docs.doubleword.ai/inference-api/agent-swarm" target="_blank">Agent Swarm</a> · <a href="https://docs.doubleword.ai/inference-api/pr-review-bot" target="_blank">PR Review Bot</a><br>
+        <a href="https://docs.doubleword.ai/inference-api/integrations" target="_blank">Integrations (26)</a><br>
+        <a href="https://docs.doubleword.ai/inference-api/account-and-billing" target="_blank">Account &amp; billing</a> · <a href="https://docs.doubleword.ai/inference-api/organizations-overview" target="_blank">Organizations</a><br>
+        <strong>Control Layer</strong> (docs): <a href="https://docs.doubleword.ai/control-layer" target="_blank">overview</a> · <a href="https://docs.doubleword.ai/control-layer/getting-started" target="_blank">getting started</a> · <a href="https://docs.doubleword.ai/control-layer/how-to/deploy-to-production" target="_blank">production</a> · <a href="https://docs.doubleword.ai/control-layer/reference/configuration" target="_blank">config</a><br>
+        <strong>Archive:</strong> <a href="https://docs.doubleword.ai/inference-api/why-batch-inference-matters" target="_blank">why batch</a> · <a href="https://docs.doubleword.ai/inference-api/parallel-primitives" target="_blank">parallel primitives</a></p></div>
+      <div><h3>Marketing, GitHub, agents</h3><p class="small">
+        <a href="https://doubleword.ai/" target="_blank">Homepage</a> · <a href="https://doubleword.ai/pricing" target="_blank">Pricing</a> · <a href="https://doubleword.ai/calculator" target="_blank">Savings calculator</a><br>
+        <a href="https://doubleword.ai/case-studies" target="_blank">Case studies</a> · <a href="https://doubleword.ai/seen-in-the-wild" target="_blank">Seen in the Wild</a><br>
+        <a href="https://blog.doubleword.ai/" target="_blank">Technical blog</a> · <a href="https://doubleword.ai/glossary" target="_blank">AI dictionary</a><br>
+        <a href="https://trust.doubleword.ai/" target="_blank">Trust Center</a> · <a href="https://onboarding.doubleword.ai/" target="_blank">Pipeline builder</a><br>
+        <a href="https://github.com/doublewordai" target="_blank">GitHub org</a> · <a href="https://github.com/doublewordai/doubleword-skill" target="_blank">doubleword-skill</a> · <a href="https://github.com/doublewordai/autobatcher" target="_blank">autobatcher</a> · <a href="https://github.com/doublewordai/control-layer" target="_blank">control-layer</a><br>
+        <strong>For agents:</strong> <a href="https://docs.doubleword.ai/llms.txt" target="_blank">docs llms.txt</a> · <a href="https://doubleword.ai/llms.txt" target="_blank">site llms.txt</a> · add <code>.md</code> to any docs URL</p></div>
+    </div>
+    <div class="sources"><span class="st v">✔ verified</span> every docs link is present in the live sidebar or in <code>llms.txt</code>; marketing links come from the homepage footer</div>
+  </section>
+  <section class="title-slide">
+    <h1>Start building</h1><div class="accent-bar"></div>
+    <p style="font-size:.72em;color:#5c564c">Create a key at <a href="https://app.doubleword.ai" target="_blank">app.doubleword.ai</a> · free tokens on signup (amount not confirmed) · <code>pip install autobatcher</code></p>
+    <p class="smaller" style="margin-top:1.2em">v5.1 · verified 5 Oct 2026 · 14 pages read in full · see Section 09 for what is and isn't confirmed</p>
+  </section>
+</section>
+
+</div><!-- /deck -->
+
+<div id="ov"></div>
+<div class="nav-bar"><button id="bp">← Prev</button><span class="nav-counter" id="nc">1 / ?</span><button id="bn">Next →</button></div>
+<div class="progress-bar" id="pb" style="width:3%"></div>
+<button class="ov-toggle" id="ovb">☰ Map</button>
+<button class="review-toggle" id="rvb">☆ Reviews</button>
+
+<script>
+const M=[["DeepSeek V4.1 Flash", "deepseek-ai-deepseek-v4-1-flash", "text", [0.15, 0.01, 0.6], [0.12, 0.01, 0.48], [0.08, 0.01, 0.3], 0], ["GLM 5.3 Flash", "zai-org-glm-5-3-flash", "text", [0.15, 0.03, 0.5], [0.11, 0.02, 0.38], [0.08, 0.02, 0.25], 1], ["GLM 5.3", "zai-org-glm-5-3", "text", [1.4, 0.28, 4.4], [1.05, 0.21, 3.3], [0.7, 0.14, 2.2], 1], ["Qwen3.8 27B", "qwen-qwen3-8-27b-fp8", "text", [0.45, 0.04, 3.0], [0.35, 0.04, 2.25], [0.25, 0.02, 1.5], 0], ["DeepSeek V4 Pro 0813", "deepseek-ai-deepseek-v4-pro-0813", "text", [1.32, 0.13, 3.96], [0.99, 0.1, 2.97], [0.66, 0.07, 1.98], 0], ["Muse Glimmer 30B", "meta-models-muse-glimmer-30b", "text", [0.11, 0.01, 0.32], [0.07, 0.01, 0.24], [0.05, 0.01, 0.15], 0], ["DeepSeek V4 Flash 0731", "deepseek-ai-deepseek-v4-flash-0731", "text", [0.09, 0.02, 0.18], [0.07, 0.01, 0.14], [0.05, 0.01, 0.09], 0], ["Kimi K3", "moonshotai-kimi-k3", "text", [3.0, 0.3, 15.0], [2.15, 0.22, 11.25], [1.5, 0.15, 7.5], 0], ["Inkling", "thinkingmachines-inkling-nvfp4", "text", [1.2, 0.2, 4.0], [0.9, 0.15, 3.0], [0.6, 0.1, 2.0], 0], ["Hy3", "tencent-hy3-fp8", "text", [0.14, 0.14, 0.58], [0.11, 0.11, 0.44], [0.07, 0.07, 0.29], 0], ["GLM 5.2", "zai-org-glm-5-2-fp8", "text", [0.93, 0.19, 3.0], [0.7, 0.14, 2.25], [0.47, 0.09, 1.5], 1], ["Nemotron 3 Ultra 550B A55B", "nvidia-nvidia-nemotron-3-ultra-550b-a55b-nvfp4", "text", [0.5, 0.13, 2.2], [0.38, 0.1, 1.65], [0.25, 0.06, 1.1], 1], ["DeepSeek V4 Pro", "deepseek-ai-deepseek-v4-pro", "text", [1.3, 0.13, 2.6], [0.98, 0.1, 1.95], [0.65, 0.07, 1.3], 1], ["DeepSeek V4 Flash", "deepseek-ai-deepseek-v4-flash", "text", [0.09, 0.02, 0.18], [0.07, 0.01, 0.14], [0.05, 0.01, 0.09], 1], ["MiMo V2.5 Pro", "xiaomimimo-mimo-v2-5-pro", "text", [0.44, 0.01, 0.87], [0.33, 0.01, 0.65], [0.22, 0.01, 0.44], 0], ["Qwen3.6 35B A3B", "qwen-qwen3-6-35b-a3b-fp8", "text", [0.14, 0.14, 1.0], [0.11, 0.11, 0.75], [0.07, 0.07, 0.5], 1], ["Kimi K2.6", "moonshotai-kimi-k2-6", "text", [0.66, 0.13, 3.41], [0.5, 0.1, 2.56], [0.33, 0.07, 1.71], 1], ["GLM 5.1", "zai-org-glm-5-1-fp8", "text", [1.05, 0.26, 3.5], [0.79, 0.2, 2.63], [0.53, 0.13, 1.75], 1], ["Gemma 4 31B IT", "google-gemma-4-31b-it", "text", [0.12, 0.12, 0.35], [0.09, 0.09, 0.26], [0.06, 0.06, 0.18], 1], ["Gemma 4 26B A4B", "google-gemma-4-26b-a4b-it", "text", [0.1, 0.02, 0.35], [0.08, 0.02, 0.25], [0.05, 0.01, 0.17], 0], ["Nemotron 3 Super 120B A12B", "nvidia-nvidia-nemotron-3-super-120b-a12b-nvfp4", "text", [0.08, 0.02, 0.45], [0.06, 0.02, 0.34], [0.04, 0.01, 0.23], 1], ["Qwen3.5 9B", "qwen-qwen3-5-9b", "text", [0.1, 0.02, 0.15], [0.08, 0.02, 0.11], [0.05, 0.01, 0.08], 1], ["Qwen3.5 9B dottxt", "qwen-qwen3-5-9b-dottxt", "text", [0.2, 0.05, 0.3], [0.08, 0.02, 0.7], [0.06, 0.01, 0.58], 1], ["Qwen3.5 4B", "qwen-qwen3-5-4b", "text", null, [0.05, 0.01, 0.08], [0.04, 0.01, 0.06], 1], ["Qwen3.5 35B A3B dottxt", "qwen-qwen3-5-35b-a3b-fp8-dottxt", "text", [0.35, 0.2, 1.2], [0.14, 0.08, 0.6], [0.1, 0.06, 0.4], 1], ["Qwen3.5 397B A17B", "qwen-qwen3-5-397b-a17b-fp8", "text", [0.39, 0.16, 2.45], [0.29, 0.12, 1.84], [0.19, 0.08, 1.23], 1], ["Qwen3.5 397B A17B dottxt", "qwen-qwen3-5-397b-a17b-fp8-dottxt", "text", null, [0.6, 0.24, 3.6], [0.3, 0.12, 2.4], 1], ["DeepSeek OCR 2", "deepseek-ai-deepseek-ocr-2", "ocr", null, [0.08, 0.08, 0.08], [0.05, 0.05, 0.05], 0], ["LightOnOCR 2 1B bbox soup", "lightonai-lightonocr-2-1b-bbox-soup", "ocr", null, [0.08, 0.08, 0.08], [0.05, 0.05, 0.05], 0], ["olmOCR 2 7B 1025", "allenai-olmocr-2-7b-1025-fp8", "ocr", null, [0.15, 0.15, 0.15], [0.1, 0.1, 0.1], 0], ["Qwen3 VL 30B A3B Instruct", "qwen-qwen3-vl-30b-a3b-instruct-fp8", "vision", [0.15, 0.04, 0.6], [0.11, 0.03, 0.45], [0.08, 0.02, 0.3], 0], ["Qwen3 VL 235B A22B Instruct", "qwen-qwen3-vl-235b-a22b-instruct-fp8", "vision", [0.21, 0.12, 1.9], [0.16, 0.09, 1.43], [0.11, 0.06, 0.95], 0], ["GPT OSS 120B", "openai-gpt-oss-120b", "text", [0.15, 0.11, 0.6], [0.11, 0.08, 0.45], [0.08, 0.06, 0.3], 1], ["GPT OSS 20B", "openai-gpt-oss-20b", "text", [0.03, 0.02, 0.13], [0.02, 0.01, 0.1], [0.02, 0.01, 0.07], 2], ["Qwen3 Embedding 8B", "qwen-qwen3-embedding-8b", "embedding", [0.04, 0.04, 0.0], [0.03, 0.03, 0.0], [0.02, 0.02, 0.0], 0], ["Qwen3 14B", "qwen-qwen3-14b-fp8", "text", [0.05, 0.01, 0.6], [0.03, 0.01, 0.3], [0.02, 0.01, 0.2], 0]];
+function fmt(a){return a?'$'+a[0].toFixed(2)+' / $'+a[1].toFixed(2)+' / $'+a[2].toFixed(2):'—'}
+function cacheDisc(m){var a=m[4];if(a[0]<=0)return '—';var d=1-a[1]/a[0];return d<0.005?'none':'−'+Math.round(d*100)+'%'}
+function calcCost(m,tier,inM,outM,share){var p=tier===0?m[3]:tier===1?m[4]:m[5];if(!p)return null;var s=Math.min(Math.max(share,0),100)/100;return inM*((1-s)*p[0]+s*p[1])+outM*p[2]}
+(function(){
+  /* catalog */
+  var tb=document.querySelector('#cat tbody'),flt='all',q='';
+  function render(){
+    var n=0;tb.innerHTML='';
+    M.forEach(function(m){
+      var ok=flt==='all'||m[2]===flt||(flt==='reasoning'&&m[6]>0)||(flt==='norealtime'&&!m[3]);
+      if(ok&&q&&m[0].toLowerCase().indexOf(q)<0)ok=false;
+      if(!ok)return;n++;
+      var tr=document.createElement('tr');
+      var a='<a target="_blank" href="https://docs.doubleword.ai/inference-api/models/'+m[1]+'">'+m[0]+'</a> <span class="smaller">'+m[2]+'</span>';
+      tr.innerHTML='<td>'+a+'</td><td class="num">'+fmt(m[3])+'</td><td class="num">'+fmt(m[4])+'</td><td class="num">'+fmt(m[5])+'</td><td class="num">'+cacheDisc(m)+'</td><td>'+(m[6]===1?'✅':m[6]===2?'low–high only':'—')+'</td>';
+      tb.appendChild(tr);
+    });
+    document.getElementById('catcount').textContent=n+' of '+M.length+' models shown · prices per 1M tokens · source: docs Models & Pricing page, 5 Oct 2026';
+  }
+  document.querySelectorAll('.chip').forEach(function(c){c.addEventListener('click',function(){document.querySelectorAll('.chip').forEach(function(x){x.classList.remove('on')});c.classList.add('on');flt=c.dataset.f;render()})});
+  document.getElementById('mq').addEventListener('input',function(e){q=e.target.value.toLowerCase();render()});
+  render();
+  /* calculator */
+  var sel=document.getElementById('cm');
+  M.forEach(function(m,i){var o=document.createElement('option');o.value=i;o.textContent=m[0];sel.appendChild(o)});
+  sel.value=M.findIndex(function(m){return m[0]==='DeepSeek V4 Flash'});
+  function rc(){
+    var m=M[+sel.value],i=parseFloat(document.getElementById('ci').value)||0,o=parseFloat(document.getElementById('co').value)||0,s=parseFloat(document.getElementById('cc').value)||0;
+    [0,1,2].forEach(function(t){var c=calcCost(m,t,i,o,s);document.getElementById('r'+(t+1)).textContent=c===null?'n/a':'$'+c.toFixed(2)});
+    var a=calcCost(m,1,i,o,s),b=calcCost(m,2,i,o,s),r=calcCost(m,0,i,o,s);
+    var note=r===null?'No realtime price for this model. ':'';
+    if(a>0&&b!==null)note+='Batch is '+Math.round((1-b/a)*100)+'% below async for this workload.';
+    if(m[4][1]>=m[4][0]&&s>0)note+=' Cache read costs the same as input for this model, so the cached share changes nothing.';
+    document.getElementById('cnote').textContent=note;
+  }
+  ['cm','ci','co','cc'].forEach(function(id){document.getElementById(id).addEventListener('input',rc)});rc();
+  /* slide engine: linear navigation, overview, deep links, input guard */
+  var deck=document.getElementById('deck'),tops=Array.from(deck.children).filter(function(e){return e.tagName==='SECTION'}),flat=[];
+  tops.forEach(function(t,hi){var s=Array.from(t.children).filter(function(e){return e.tagName==='SECTION'});if(s.length)s.forEach(function(x){flat.push({t:t,el:x,hi:hi})});else flat.push({t:t,el:t,hi:hi})});
+  var idx=0;
+  function title(f){var h=f.el.querySelector('h1,h2');if(!h)return 'slide';var c=h.cloneNode(true);c.querySelectorAll('.st').forEach(function(x){x.remove()});return c.textContent.replace(/\s+/g,' ').trim()}
+  function show(i,noHash){
+    idx=Math.max(0,Math.min(flat.length-1,i));
+    tops.forEach(function(t){t.classList.remove('active')});flat.forEach(function(f){f.el.classList.remove('active')});
+    var f=flat[idx];f.t.classList.add('active');f.el.classList.add('active');f.el.scrollTop=0;
+    document.getElementById('nc').textContent=(idx+1)+' / '+flat.length;
+    document.getElementById('pb').style.width=((idx+1)/flat.length*100)+'%';
+    if(!noHash)history.replaceState(null,'','#s'+(idx+1));
+  }
+  function buildOv(){
+    var ov=document.getElementById('ov'),h='<h2>Slide map</h2>',last=-1;
+    flat.forEach(function(f,i){if(f.hi!==last){last=f.hi;h+='<h3>Section '+f.hi+'</h3>'}h+='<a data-i="'+i+'" class="'+(i===idx?'cur':'')+'">'+(i+1)+'. '+title(f)+'</a>'});
+    ov.innerHTML=h;ov.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){show(+a.dataset.i);ov.classList.remove('open')})});
+  }
+  function toggleOv(){var ov=document.getElementById('ov');if(!ov.classList.contains('open'))buildOv();ov.classList.toggle('open')}
+  function toggleRv(){var on=false;document.querySelectorAll('.review').forEach(function(r){on=r.classList.toggle('visible')});document.getElementById('rvb').textContent=on?'★ Reviews':'☆ Reviews'}
+  document.addEventListener('keydown',function(e){
+    var t=e.target.tagName;if(t==='INPUT'||t==='SELECT'||t==='TEXTAREA')return;
+    var k=e.key;
+    if(k==='ArrowRight'||k==='ArrowDown'||k==='PageDown'||k===' '){e.preventDefault();show(idx+1)}
+    else if(k==='ArrowLeft'||k==='ArrowUp'||k==='PageUp'||k==='Backspace'){e.preventDefault();show(idx-1)}
+    else if(k==='Home'){show(0)}else if(k==='End'){show(flat.length-1)}
+    else if(k==='Escape'){toggleOv()}else if(k==='r'||k==='R'){toggleRv()}
+  });
+  document.getElementById('bp').addEventListener('click',function(){show(idx-1)});
+  document.getElementById('bn').addEventListener('click',function(){show(idx+1)});
+  document.getElementById('ovb').addEventListener('click',toggleOv);
+  document.getElementById('rvb').addEventListener('click',toggleRv);
+  window.addEventListener('hashchange',function(){var m=/^#s(\d+)$/.exec(location.hash);if(m)show(+m[1]-1,true)});
+  var m0=/^#s(\d+)$/.exec(location.hash);show(m0?+m0[1]-1:0,true);
+})();
+</script>
+</body>
+</html>
