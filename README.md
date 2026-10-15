@@ -14,7 +14,7 @@ Static GitHub Pages site for standalone HTML, live benchmarks, explorers, and sy
 | Doc extract — playground archive (25 snapshots) | https://neomatrix369.github.io/demos/playgroup-202602-docextract/ |
 | Doc extract — Doubleword guide | https://neomatrix369.github.io/demos/playgroup-202602-docextract/extractor-all-doubleword.html |
 | Learning hub — Superlinked SIE | https://neomatrix369.github.io/demos/superlinked-sie-learning-hub/ |
-| Learning hub — Doubleword platform | https://neomatrix369.github.io/demos/doubleword-learning-hub/ |
+| Learning hub — Doubleword | https://neomatrix369.github.io/demos/doubleword-learning-hub/ |
 | Learning hub — Modal | https://neomatrix369.github.io/demos/modal-learning-hub/ |
 | Laguna py-bug-trace — project page | https://neomatrix369.github.io/pages/laguna-py-bug-trace.html |
 | Laguna py-bug-trace — reports & explorer | https://neomatrix369.github.io/demos/laguna-py-bug-trace/ |
