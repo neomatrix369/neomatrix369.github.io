@@ -75,32 +75,6 @@
       ]
     },
     {
-      "title": "Learning hubs",
-      "description": "Dated, version-pinned deep dives on the platforms these builds run on — each with a docs audit.",
-      "kind": "group",
-      "tag": "learning",
-      "children": [
-        {
-          "title": "Superlinked SIE",
-          "description": "The four primitives, the task layer, deployment paths, the model catalogue, and the tiered router AgentVetter routes through.",
-          "href": "demos/superlinked-sie-learning-hub/",
-          "kind": "interactive"
-        },
-        {
-          "title": "Doubleword",
-          "description": "Tiers and what they cost, a 36-model catalogue with a cost calculator, prompt caching, batch and Autobatcher, plus a docs audit.",
-          "href": "demos/doubleword-learning-hub/",
-          "kind": "interactive"
-        },
-        {
-          "title": "Modal",
-          "description": "Five products on one container runtime — Sandbox lifecycle, egress and credential isolation, scaling, and scan-cost maths.",
-          "href": "demos/modal-learning-hub/",
-          "kind": "interactive"
-        }
-      ]
-    },
-    {
       "title": "Projects",
       "description": "Open source repos — AgentVetter, SIE, and more with links to live builds.",
       "href": "pages/projects.html",
