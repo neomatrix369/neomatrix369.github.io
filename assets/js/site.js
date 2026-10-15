@@ -50,6 +50,32 @@ const FALLBACK_PAGES = [
     ],
   },
   {
+    title: "Learning hubs",
+    description: "Dated, version-pinned deep dives on the platforms these builds run on.",
+    kind: "group",
+    tag: "learning",
+    children: [
+      {
+        title: "Superlinked SIE",
+        description: "Four primitives, the task layer, and the tiered router.",
+        href: "demos/superlinked-sie-learning-hub/",
+        kind: "interactive",
+      },
+      {
+        title: "Doubleword",
+        description: "Tiers, 36-model catalogue, cost calculator, docs audit.",
+        href: "demos/doubleword-learning-hub/",
+        kind: "interactive",
+      },
+      {
+        title: "Modal",
+        description: "Sandboxes, isolation, scaling, and scan-cost maths.",
+        href: "demos/modal-learning-hub/",
+        kind: "interactive",
+      },
+    ],
+  },
+  {
     title: "Projects",
     description: "Open source repos with links to live builds on this site.",
     href: "pages/projects.html",
@@ -88,7 +114,7 @@ function renderPageCard(page) {
     return `
       <article class="page-card page-card--group">
         <div class="page-card-group-header">
-          <span class="tag">benchmark</span>
+          <span class="tag">${page.tag || "benchmark"}</span>
           <div class="page-card-group-meta">
             <h3>${page.title}</h3>
             <p>${page.description}</p>
