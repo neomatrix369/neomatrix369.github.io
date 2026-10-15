@@ -1,0 +1,1794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Modal — Developer Learning Hub · neomatrix369</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --mo-ink: #f5f2ea;
+  --mo-accent: #8f3109;
+  --mo-accent-dk: #7a2a08;
+  --mo-accent2: #1d4ed8;
+  --mo-green: #166534;
+  --mo-amber: #9a4708;
+  --mo-purple: #6d28d9;
+  --mo-red: #a81717;
+  --mo-muted: #5c564c;
+  --mo-surface: #efe9dc;
+  --mo-surface2: #e7dfd0;
+  --mo-border: rgba(28,25,21,0.12);
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+body { color: #1c1915; }
+#deck { text-align: left; }
+h1, h2, h3 { text-transform: none; letter-spacing: -0.02em; color: #1c1915; }
+code, pre code { font-family: 'JetBrains Mono','SF Mono','Cascadia Code',Menlo,Consolas,monospace; font-size: 0.62em; }
+pre { width: 100%; margin: 0.5em 0; box-shadow: none; border-radius: 8px; border: 1px solid var(--mo-border); }
+pre code { max-height: 380px; padding: 0.8em 1em; line-height: 1.45; overflow-y: auto; }
+.title-slide { text-align: center !important; background: radial-gradient(ellipse at 30% 50%, #efe9dc 0%, #f5f2ea 70%); }
+.title-slide h1 { font-size: 2.4em; margin-bottom: 0.1em; }
+.accent-bar { width: 120px; height: 4px; background: var(--mo-accent); margin: 0.4em auto; border-radius: 2px; }
+.section-header { text-align: center !important; }
+.section-num { font-family: 'JetBrains Mono','SF Mono','Cascadia Code',Menlo,Consolas,monospace; font-size: 0.55em; color: var(--mo-accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.3em; }
+
+/* Product cards */
+.product-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.6em; margin: 0.6em 0; }
+.product-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+.product-card { background: var(--mo-surface); border: 1px solid var(--mo-border); border-radius: 12px; padding: 0.8em 0.9em; transition: all 0.2s; }
+.product-card:hover { border-color: var(--mo-accent); transform: translateY(-2px); }
+.product-card .pc-tag { font-family: 'JetBrains Mono','SF Mono','Cascadia Code',Menlo,Consolas,monospace; font-size: 0.55em; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.3em; }
+.product-card h3 { margin-top: 0.2em !important; font-size: 0.95em !important; }
+.product-card p { font-size: 0.64em; color: var(--mo-muted); margin: 0.3em 0 0 0; }
+.tag-sandbox { color: var(--mo-accent); }
+.tag-fn { color: var(--mo-accent2); }
+.tag-inf { color: var(--mo-purple); }
+.tag-train { color: var(--mo-amber); }
+.tag-nb { color: #9d174d; }
+
+/* Tables */
+.cmp-table { width: 100%; border-collapse: collapse; font-size: 0.68em; margin: 0.6em 0; }
+.cmp-table th { background: rgba(179,61,11,0.12); color: var(--mo-accent); padding: 0.5em 0.7em; text-align: left; font-weight: 600; border-bottom: 2px solid var(--mo-accent); }
+.cmp-table td { padding: 0.45em 0.7em; border-bottom: 1px solid var(--mo-border); vertical-align: top; }
+.cmp-table tr:hover td { background: rgba(28,25,21,0.045); }
+.cmp-table-blue th { background: rgba(29,78,216,0.12); color: var(--mo-accent2); border-bottom-color: var(--mo-accent2); }
+.cmp-table-purple th { background: rgba(109,40,217,0.12); color: var(--mo-purple); border-bottom-color: var(--mo-purple); }
+.cmp-table-amber th { background: rgba(154,71,8,0.12); color: var(--mo-amber); border-bottom-color: var(--mo-amber); }
+.cmp-table-red th { background: rgba(168,23,23,0.12); color: var(--mo-red); border-bottom-color: var(--mo-red); }
+
+/* Badges */
+.badge { display: inline-block; padding: 0.15em 0.5em; border-radius: 20px; font-size: 0.7em; font-weight: 600; font-family: 'JetBrains Mono','SF Mono','Cascadia Code',Menlo,Consolas,monospace; white-space: nowrap; }
+.badge-green { background: rgba(179,61,11,0.14); color: var(--mo-accent); }
+.badge-amber { background: rgba(154,71,8,0.14); color: var(--mo-amber); }
+.badge-blue { background: rgba(29,78,216,0.14); color: var(--mo-accent2); }
+.badge-red { background: rgba(168,23,23,0.14); color: var(--mo-red); }
+.badge-purple { background: rgba(109,40,217,0.14); color: var(--mo-purple); }
+.badge-grey { background: rgba(28,25,21,0.14); color: #1c1915; }
+
+/* Layouts */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2em; align-items: start; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.8em; align-items: start; }
+.code-output { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7em; margin: 0.5em 0; }
+.code-side { border-radius: 8px; overflow: hidden; border: 1px solid var(--mo-border); }
+.output-side { background: #0d1117; border: 1px solid rgba(179,61,11,0.14); padding: 0.7em 0.9em; border-radius: 8px; font-family: 'JetBrains Mono','SF Mono','Cascadia Code',Menlo,Consolas,monospace; font-size: 0.6em; line-height: 1.5; color: #a5d6a7; }
+.output-label { font-size: 0.6em; font-family: 'JetBrains Mono','SF Mono','Cascadia Code',Menlo,Consolas,monospace; margin-bottom: 0.2em; text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* Callouts */
+.callout { background: rgba(29,78,216,0.08); border-left: 3px solid var(--mo-accent2); padding: 0.6em 0.9em; border-radius: 0 6px 6px 0; margin: 0.5em 0; font-size: 0.75em; }
+.callout-accent { background: rgba(179,61,11,0.08); border-left-color: var(--mo-accent); }
+.callout-amber { background: rgba(154,71,8,0.08); border-left-color: var(--mo-amber); }
+.callout-red { background: rgba(168,23,23,0.08); border-left-color: var(--mo-red); }
+.callout-purple { background: rgba(109,40,217,0.08); border-left-color: var(--mo-purple); }
+
+/* Decision tree */
+.decision-flow { display: flex; flex-direction: column; align-items: center; gap: 0.2em; font-size: 0.72em; }
+.decision-node { background: var(--mo-surface); border: 1px solid var(--mo-border); border-radius: 10px; padding: 0.5em 0.9em; text-align: center; margin: 0.15em; }
+.decision-node.question { border-color: var(--mo-accent2); background: rgba(29,78,216,0.08); }
+.decision-node.answer { border-color: var(--mo-accent); background: rgba(179,61,11,0.08); }
+.decision-row { display: flex; gap: 0.5em; align-items: stretch; justify-content: center; flex-wrap: wrap; }
+.arrow-down { color: var(--mo-muted); font-size: 1.1em; }
+
+/* Calculator */
+.calc-container { background: var(--mo-surface); border: 1px solid var(--mo-border); border-radius: 12px; padding: 0.8em 1em; font-size: 0.72em; }
+.calc-row { display: flex; align-items: center; gap: 0.7em; margin: 0.4em 0; }
+.calc-row label { min-width: 190px; color: var(--mo-muted); font-size: 0.88em; }
+.calc-row input, .calc-row select { background: rgba(28,25,21,0.09); border: 1px solid var(--mo-border); color: #1c1915; padding: 0.35em 0.5em; border-radius: 6px; font-family: 'JetBrains Mono','SF Mono','Cascadia Code',Menlo,Consolas,monospace; font-size: 0.92em; width: 150px; }
+.calc-result { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5em; margin-top: 0.6em; }
+.calc-result-card { background: rgba(28,25,21,0.045); border: 1px solid var(--mo-border); border-radius: 8px; padding: 0.5em 0.7em; text-align: center; }
+.calc-result-card .price { font-family: 'JetBrains Mono','SF Mono','Cascadia Code',Menlo,Consolas,monospace; font-size: 1.3em; font-weight: 600; }
+.calc-result-card .label { font-size: 0.78em; color: var(--mo-muted); margin-top: 0.15em; }
+.price-sb { color: var(--mo-accent); } .price-fn { color: var(--mo-accent2); } .price-ratio { color: var(--mo-amber); }
+.savings-tag { font-family: 'JetBrains Mono','SF Mono','Cascadia Code',Menlo,Consolas,monospace; color: var(--mo-amber); font-size: 0.82em; font-weight: 600; }
+
+/* Steps */
+.step { display: flex; gap: 0.7em; margin: 0.4em 0; align-items: flex-start; }
+.step-num { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: var(--mo-accent-dk); color: white; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono','SF Mono','Cascadia Code',Menlo,Consolas,monospace; font-weight: 700; font-size: 0.7em; }
+.step-num-blue { background: #1d4ed8; }
+.step-num-purple { background: #6d28d9; }
+.step-content { flex: 1; }
+.step-content strong { color: #1c1915; }
+
+/* Helpers */
+.small { font-size: 0.72em; color: var(--mo-muted); }
+.smaller { font-size: 0.6em; color: var(--mo-muted); }
+a { color: var(--mo-accent); text-decoration: underline; text-underline-offset: 3px; }
+a:hover { color: #7a2a08; }
+hr { border: none; border-top: 1px solid var(--mo-border); margin: 0.6em 0; }
+
+/* Insight boxes */
+.insight-box { background: linear-gradient(135deg, rgba(109,40,217,0.06), rgba(29,78,216,0.06)); border: 1px solid rgba(109,40,217,0.14); border-radius: 8px; padding: 0.6em 0.9em; margin: 0.5em 0; font-size: 0.72em; }
+.insight-box .insight-label { font-family: 'JetBrains Mono','SF Mono','Cascadia Code',Menlo,Consolas,monospace; font-size: 0.8em; color: var(--mo-purple); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.2em; }
+.insight-box.tw { background: linear-gradient(135deg, rgba(179,61,11,0.06), rgba(154,71,8,0.06)); border-color: rgba(179,61,11,0.14); }
+.insight-box.tw .insight-label { color: var(--mo-accent); }
+
+/* Stat highlight */
+.stat-row { display: flex; gap: 1.4em; justify-content: center; margin: 0.6em 0; }
+.stat-card { text-align: center; }
+.stat-card .stat-num { font-family: 'Fraunces',Georgia,'Times New Roman',serif; font-size: 2em; color: var(--mo-accent); }
+.stat-card .stat-label { font-size: 0.65em; color: var(--mo-muted); }
+
+/* Sources */
+.sources { margin-top: auto; padding-top: 0.4em; border-top: 1px solid var(--mo-border); font-size: 0.52em; color: #5c564c; line-height: 1.8; }
+.sources a { color: #5c564c; text-decoration: none; border-bottom: 1px dotted #5c564c; transition: color 0.15s; }
+.sources a:hover { color: var(--mo-accent); border-bottom-color: var(--mo-accent); }
+.sources .src-num { display: inline-block; min-width: 1.4em; color: #5c564c; font-family: 'JetBrains Mono','SF Mono','Cascadia Code',Menlo,Consolas,monospace; }
+
+/* Review panel */
+.review { display: none; margin-top: 0.5em; background: rgba(154,71,8,0.06); border: 1px solid rgba(154,71,8,0.14); border-radius: 8px; padding: 0.5em 0.7em; font-size: 0.55em; line-height: 1.6; color: #1c1915; }
+.review.visible { display: block; }
+.review-title { font-family: 'JetBrains Mono','SF Mono','Cascadia Code',Menlo,Consolas,monospace; font-size: 1.05em; color: var(--mo-amber); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3em; }
+.review-row { display: flex; gap: 0.5em; margin: 0.15em 0; align-items: baseline; }
+.review-dim { min-width: 90px; color: #5c564c; font-family: 'JetBrains Mono','SF Mono','Cascadia Code',Menlo,Consolas,monospace; font-size: 0.95em; }
+.review-score { font-family: 'JetBrains Mono','SF Mono','Cascadia Code',Menlo,Consolas,monospace; font-weight: 700; min-width: 28px; }
+.review-score.good { color: #166534; }
+.review-score.ok { color: #9a4708; }
+.review-score.gap { color: #a81717; }
+.review-note { color: #5c564c; }
+.review-section { margin-top: 0.3em; padding-top: 0.3em; border-top: 1px solid rgba(154,71,8,0.14); }
+.review-section-title { color: var(--mo-amber); font-weight: 600; font-size: 0.95em; margin-bottom: 0.15em; }
+.review-toggle { position: fixed; top: calc(8px + env(safe-area-inset-top, 0px)); right: 8px; z-index: 1002; background: rgba(154,71,8,0.14); border: 1px solid rgba(154,71,8,0.14); color: #9a4708; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-family: 'JetBrains Mono','SF Mono','Cascadia Code',Menlo,Consolas,monospace; }
+
+/* Fonts */
+body { font-family: 'IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; font-size: 20px; }
+h1, h2, h3 { font-family: 'Fraunces',Georgia,'Times New Roman',serif; }
+h1 { font-size: 2.2em; line-height: 1.1; }
+h2 { font-size: 1.45em; line-height: 1.2; margin-bottom: 0.3em; }
+h3 { font-size: 1.05em; color: var(--mo-accent); }
+
+/* === SELF-CONTAINED SLIDE ENGINE === */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #f5f2ea; overflow: hidden; font-size: 22px; color: #1c1915; }
+#deck { width: 100vw; height: calc(100% - 39px - env(safe-area-inset-bottom, 0px)); position: relative; }
+html, body { height: 100%; }
+#deck > section { display: none; width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+#deck > section.active { display: block; }
+#deck > section > section { display: none; width: 100%; height: 100%; overflow-y: auto; padding: 28px 48px 16px 48px; }
+#deck > section > section.active { display: flex; flex-direction: column; }
+#deck > section:not(:has(> section)) { display: none; overflow-y: auto; padding: 28px 48px 16px 48px; }
+#deck > section.active:not(:has(> section)) { display: flex; flex-direction: column; }
+#deck > section > section.active .section-header,
+#deck > section.active:not(:has(> section)) .section-header {
+  min-height: calc(100vh - 39px - 56px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+#deck > section.active:not(:has(> section)).title-slide {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: calc(36px + env(safe-area-inset-bottom, 0px)); padding-bottom: env(safe-area-inset-bottom, 0px); background: rgba(245,242,234,0.97); border-top: 1px solid rgba(28,25,21,0.12); display: flex; align-items: center; justify-content: space-between; padding-left: 16px; padding-right: 16px; z-index: 1000; }
+.nav-bar button { background: rgba(28,25,21,0.12); border: 1px solid rgba(28,25,21,0.18); color: #5c564c; padding: 3px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; font-family: inherit; }
+.nav-bar button:hover { background: rgba(28,25,21,0.18); color: #1c1915; }
+.nav-counter { color: #5c564c; font-size: 13px; font-family: 'JetBrains Mono','SF Mono','Cascadia Code',Menlo,Consolas,monospace; }
+.progress-bar { position: fixed; bottom: calc(36px + env(safe-area-inset-bottom, 0px)); left: 0; height: 3px; background: var(--mo-accent); transition: width 0.3s; z-index: 1001; }
+pre { background: #1e1e2e; overflow-x: auto; }
+pre code { display: block; color: #cdd6f4; white-space: pre; }
+kbd { color: #5c564c; background: rgba(28,25,21,0.10); padding: 0.15em 0.4em; border-radius: 4px; font-size: 0.85em; }
+.wide { overflow-x: auto; max-width: 100%; }
+@media (max-width: 900px) {
+  .product-grid { grid-template-columns: 1fr 1fr; }
+  .two-col, .three-col, .code-output, .calc-result { grid-template-columns: 1fr; }
+  #deck > section > section, #deck > section:not(:has(> section)) { padding: 20px 18px 12px 18px; }
+  body { font-size: 17px; }
+}
+/* ===== site skin: geometry + header =====
+   Appended after the artifact's own CSS so the re-skin reads as one block.
+   Mirrors demos/doubleword-learning-hub/index.html. */
+:root { --mo-header-h: 61px; --mo-nav-h: 39px; }
+body { padding-top: var(--mo-header-h); }
+#deck { width: 100%; height: calc(100% - var(--mo-nav-h) - env(safe-area-inset-bottom, 0px)); }
+#deck > section > section.active .section-header,
+#deck > section.active:not(:has(> section)) .section-header {
+  min-height: calc(100vh - var(--mo-header-h) - var(--mo-nav-h) - 56px);
+}
+.review-toggle { top: calc(8px + var(--mo-header-h) + env(safe-area-inset-top, 0px)); }
+
+/* code and terminal panes stay dark: conventional on a light page, and it
+   keeps the syntax colours the artifact was authored against readable */
+pre { background: #1e1e2e; }
+pre code { color: #cdd6f4; }
+.code-side { border-color: rgba(28,25,21,.18); }
+.output-side { background: #0d1117; border-color: rgba(28,25,21,.25); }
+:not(pre) > code { background: rgba(28,25,21,.06); padding: .05em .3em; border-radius: 3px; color: #1c1915; }
+
+/* form controls read as light now */
+.calc-row input, .calc-row select { background: #fff; color: #1c1915; }
+
+/* site header -- mirrors .site-header in assets/css/site.css */
+.mo-site-header { position: fixed; top: 0; left: 0; right: 0; height: var(--mo-header-h);
+  background: rgba(245,242,234,.97); backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(28,25,21,.18); display: flex; align-items: center;
+  justify-content: space-between; gap: 1rem; padding: 0 1.5rem; z-index: 30; }
+.mo-brand { display: inline-flex; align-items: baseline; gap: .5rem; color: #1c1915;
+  font-family: 'Fraunces',Georgia,serif; font-size: 18px; font-weight: 600; text-decoration: none; }
+.mo-brand:hover { color: #1c1915; }
+.mo-brand small { color: #5c564c; font-family: 'JetBrains Mono',monospace; font-size: 12px; font-weight: 500; }
+.mo-site-nav { display: flex; flex-wrap: nowrap; gap: 1rem; }
+.mo-site-nav a { color: #7a5c2e; text-decoration: none; font-size: 15px;
+  font-family: 'IBM Plex Sans',sans-serif; white-space: nowrap; }
+.mo-site-nav a:hover { color: #6b4f24; }
+@media (max-width: 760px) {
+  .mo-site-header { padding: 0 1rem; }
+  .mo-brand { font-size: 15px; }
+  .mo-brand small { display: none; }
+  .mo-site-nav { gap: .7rem; }
+  .mo-site-nav a { font-size: 13px; }
+  .mo-site-nav a[data-optional] { display: none; }
+}
+</style>
+</head>
+<body>
+<header class="mo-site-header">
+  <a class="mo-brand" href="../../">
+    neomatrix369
+    <small>github.io</small>
+  </a>
+  <nav class="mo-site-nav" aria-label="Primary">
+    <a href="../../">Home</a>
+    <a href="../../pages/projects.html">Projects</a>
+    <a href="https://github.com/neomatrix369/agentvetter" rel="noopener" data-optional>AgentVetter</a>
+    <a href="https://github.com/neomatrix369" rel="noopener">GitHub</a>
+  </nav>
+</header>
+<div id="deck">
+
+<!-- ======================== TITLE ======================== -->
+<section class="title-slide">
+  <h1>Modal</h1>
+  <div class="accent-bar"></div>
+  <p style="font-size:0.8em;color:var(--mo-muted);margin-top:0.2em;">Developer Learning Hub &nbsp;·&nbsp; Serverless compute for AI: Sandboxes, Functions, Endpoints, Training</p>
+  <div class="stat-row" style="margin-top:1em;">
+    <div class="stat-card"><div class="stat-num" style="color:var(--mo-accent);">5</div><div class="stat-label">Products</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--mo-accent2);">90+</div><div class="stat-label">Guide pages</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--mo-purple);">1.6.1</div><div class="stat-label">Python SDK</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--mo-amber);">3</div><div class="stat-label">SDKs (Py · JS · Go)</div></div>
+  </div>
+  <p class="small" style="margin-top:0.8em;">Enriched with AgentVetter decisions from Aug–Sep 2026 sessions · verified against modal.com on 5 Oct 2026</p>
+  <p class="smaller" style="margin-top:0.8em;"><kbd>→</kbd> sections &nbsp;·&nbsp; <kbd>↓</kbd> go deeper &nbsp;·&nbsp; <kbd>★ Reviews</kbd> toggles docs-quality notes on every slide</p>
+</section>
+
+<!-- ======================== SECTION 1: PLATFORM ======================== -->
+<section>
+  <section class="section-header">
+    <div class="section-num">Section 01</div>
+    <h2>The Modal Platform</h2>
+    <p class="small">One runtime, five product surfaces: CPU/GPU containers that start in seconds and bill by the second</p>
+  </section>
+
+  <section>
+    <h2>Five Products, One Container Runtime</h2>
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="pc-tag tag-sandbox">Product 1</div>
+        <h3 style="color:var(--mo-accent);">Sandboxes</h3>
+        <p>Containers defined <em>at runtime</em> for untrusted or agent code. gVisor or VM isolation, egress control, snapshots, sidecars.</p>
+        <p style="font-size:0.58em;color:var(--mo-accent);margin-top:0.4em;">~8 guide pages · V2 backend default since SDK 1.6</p>
+      </div>
+      <div class="product-card">
+        <div class="pc-tag tag-fn">Product 2</div>
+        <h3 style="color:var(--mo-accent2);">Functions &amp; Batch</h3>
+        <p>Decorate Python, deploy, call <code>.remote()</code>/<code>.map()</code>. Autoscaling, cron, web endpoints, Servers.</p>
+        <p style="font-size:0.58em;color:var(--mo-accent2);margin-top:0.4em;">~40 guide pages · the original Modal</p>
+      </div>
+      <div class="product-card">
+        <div class="pc-tag tag-inf">Product 3</div>
+        <h3 style="color:var(--mo-purple);">Endpoints</h3>
+        <p>Managed LLM inference from the Model Library or your weights. OpenAI/Anthropic-compatible. Shared (per-token) or Dedicated.</p>
+        <p style="font-size:0.58em;color:var(--mo-purple);margin-top:0.4em;">New in 2026 · <code>modal endpoint</code> CLI</p>
+      </div>
+      <div class="product-card">
+        <div class="pc-tag tag-train">Product 4</div>
+        <h3 style="color:var(--mo-amber);">Training</h3>
+        <p>Fine-tune, RL, eval on GPUs that spin up in seconds. Tinker-compatible API, multi-node clusters.</p>
+        <p style="font-size:0.58em;color:var(--mo-amber);margin-top:0.4em;">T4 → B300 · <code>@modal.clustered()</code></p>
+      </div>
+      <div class="product-card">
+        <div class="pc-tag tag-nb">Product 5</div>
+        <h3 style="color:#9d174d;">Notebooks</h3>
+        <p>Hosted notebooks on Modal compute, priced like Sandboxes. Idle auto-stop, GPU attach.</p>
+        <p style="font-size:0.58em;color:#9d174d;margin-top:0.4em;">Sandbox pricing tier</p>
+      </div>
+    </div>
+    <svg viewBox="0 0 800 150" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:800px;margin:0.4em auto 0;display:block;">
+      <defs>
+        <marker id="arrG" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="7" markerHeight="5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#8f3109"/></marker>
+        <style>
+          .ab { rx: 8; ry: 8; stroke-width: 1.5; }
+          .at { fill: #1c1915; font-family: 'IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; font-size: 12px; font-weight: 600; }
+          .as { fill: #5c564c; font-family: 'IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; font-size: 9.5px; }
+          .al { stroke: #8f3109; stroke-width: 1.5; fill: none; stroke-dasharray: 6 3; }
+        </style>
+      </defs>
+      <rect x="10" y="20" width="150" height="50" class="ab" fill="#efe9dc" stroke="#1d4ed8"/>
+      <text x="85" y="41" text-anchor="middle" class="at">Your code / SDK</text>
+      <text x="85" y="56" text-anchor="middle" class="as">Python · JS · Go · CLI</text>
+      <rect x="210" y="20" width="160" height="50" class="ab" fill="#efe9dc" stroke="#8f3109"/>
+      <text x="290" y="41" text-anchor="middle" class="at">Control plane</text>
+      <text x="290" y="56" text-anchor="middle" class="as">Apps · Images · Secrets · Volumes</text>
+      <rect x="420" y="5" width="170" height="36" class="ab" fill="#efe9dc" stroke="#8f3109"/>
+      <text x="505" y="27" text-anchor="middle" class="at">Sandboxes</text>
+      <rect x="420" y="50" width="170" height="36" class="ab" fill="#efe9dc" stroke="#1d4ed8"/>
+      <text x="505" y="72" text-anchor="middle" class="at">Functions / Servers</text>
+      <rect x="420" y="95" width="170" height="36" class="ab" fill="#efe9dc" stroke="#6d28d9"/>
+      <text x="505" y="117" text-anchor="middle" class="at">Endpoints / Training</text>
+      <rect x="640" y="35" width="150" height="66" class="ab" fill="#efe9dc" stroke="#9a4708"/>
+      <text x="715" y="58" text-anchor="middle" class="at">Multi-cloud pool</text>
+      <text x="715" y="74" text-anchor="middle" class="as">gVisor / KVM · CPU + GPU</text>
+      <text x="715" y="88" text-anchor="middle" class="as">AWS · GCP · OCI · more</text>
+      <line x1="160" y1="45" x2="210" y2="45" class="al" marker-end="url(#arrG)"/>
+      <line x1="370" y1="45" x2="420" y2="23" class="al" marker-end="url(#arrG)"/>
+      <line x1="370" y1="45" x2="420" y2="68" class="al" marker-end="url(#arrG)"/>
+      <line x1="370" y1="45" x2="420" y2="113" class="al" marker-end="url(#arrG)"/>
+      <line x1="590" y1="23" x2="640" y2="55" class="al" marker-end="url(#arrG)"/>
+      <line x1="590" y1="68" x2="640" y2="68" class="al" marker-end="url(#arrG)"/>
+      <line x1="590" y1="113" x2="640" y2="85" class="al" marker-end="url(#arrG)"/>
+    </svg>
+    <div class="review">
+      <div class="review-title">Docs Review — Guide landing + product pages</div>
+      <div class="review-row"><span class="review-dim">Clarity</span><span class="review-score ok">B</span><span class="review-note">The Guide TOC is excellent once you're in it, but the product split (Sandboxes vs Endpoints vs Training) lives on marketing pages, not the docs. Newcomers meet "Functions" first and only discover Sandboxes as a sidebar item.</span></div>
+      <div class="review-row"><span class="review-dim">Prerequisites</span><span class="review-score ok">B</span><span class="review-note">Python ≥3.10 is implied (3.9 was dropped in SDK 1.3) but not stated on the landing page.</span></div>
+      <div class="review-row"><span class="review-dim">Examples</span><span class="review-score good">A</span><span class="review-note">The Examples index is one of the best in the industry — every example is runnable and tagged.</span></div>
+      <div class="review-row"><span class="review-dim">Level</span><span class="review-score good">A</span><span class="review-note">Accessible; jargon is defined inline.</span></div>
+      <div class="review-section">
+        <div class="review-section-title">⚠️ Could improve</div>
+        A single "which Modal product am I looking for?" page mapping use-case → product → first doc would cut the sidebar hunt.
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://modal.com/docs/guide" target="_blank">Modal Guide</a> ·
+      <span class="src-num">2</span> <a href="https://modal.com/products/sandboxes" target="_blank">Sandboxes product</a> ·
+      <span class="src-num">3</span> <a href="https://modal.com/products/inference" target="_blank">Inference product</a> ·
+      <span class="src-num">4</span> <a href="https://modal.com/products/training" target="_blank">Training product</a> ·
+      <span class="src-num">5</span> <a href="https://modal.com/products/notebooks" target="_blank">Notebooks</a> ·
+      <span class="src-num">6</span> <a href="https://modal.com/products/platform" target="_blank">Platform</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Who Uses What?</h2>
+    <table class="cmp-table">
+      <thead><tr><th>You are...</th><th>Start with</th><th>Then add</th></tr></thead>
+      <tbody>
+        <tr><td>Running untrusted / agent-generated code (our case: <strong>AgentVetter</strong> scanning MCP servers &amp; skills)</td><td><span class="badge badge-green">Sandboxes</span></td><td>Named Images, domain allowlists, readiness probes, tags</td></tr>
+        <tr><td>Batch-processing a dataset on GPUs</td><td><span class="badge badge-blue">Functions</span> + <code>.map()</code></td><td>Volumes for weights, <code>@modal.batched</code></td></tr>
+        <tr><td>Serving an open-weights LLM to your app</td><td><span class="badge badge-purple">Endpoints</span></td><td>Dedicated Endpoint for custom weights; affinity routing</td></tr>
+        <tr><td>Fine-tuning / RL with many rollouts</td><td><span class="badge badge-amber">Training</span></td><td>Sandboxes as RL environments, <code>@modal.clustered</code></td></tr>
+        <tr><td>Building a low-latency HTTP/WebSocket app</td><td><span class="badge badge-blue">Servers</span> (<code>@app.server</code>)</td><td>Sticky sessions, proxy tokens</td></tr>
+        <tr><td>Exploring in a notebook with GPU bursts</td><td><span class="badge badge-grey">Notebooks</span></td><td>Promote cells to Functions</td></tr>
+      </tbody>
+    </table>
+    <div class="callout callout-accent">
+      <strong>Mental model:</strong> Functions are <em>declared</em> at import time and deployed; Sandboxes are <em>created</em> at runtime by code that is already running (your CLI, a Function, your backend). Everything else — Images, Secrets, Volumes — is shared between the two.
+    </div>
+    <div class="review">
+      <div class="review-title">Docs Review — Persona mapping</div>
+      <div class="review-row"><span class="review-dim">Clarity</span><span class="review-score ok">B</span><span class="review-note">Inferred from product pages and the Guide; Modal doesn't ship a persona table.</span></div>
+      <div class="review-row"><span class="review-dim">Prerequisites</span><span class="review-score gap">C</span><span class="review-note">No "Functions vs Sandboxes — which one?" page exists. The Sandboxes intro has a bullet list of use-cases, which is the closest thing.</span></div>
+      <div class="review-section">
+        <div class="review-section-title">⚠️ Could improve</div>
+        Add a one-screen comparison of Function vs Sandbox vs Server with the "created at runtime vs declared at deploy" distinction up front.
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://modal.com/docs/guide/sandboxes" target="_blank">Sandboxes guide</a> ·
+      <span class="src-num">2</span> <a href="https://modal.com/docs/guide/functions" target="_blank">Functions</a> ·
+      <span class="src-num">3</span> <a href="https://modal.com/docs/guide/servers" target="_blank">Servers</a> ·
+      <span class="src-num">4</span> <a href="https://modal.com/docs/guide/endpoints" target="_blank">Endpoints</a> ·
+      <span class="src-num">5</span> <a href="https://modal.com/docs/guide/training-quickstart" target="_blank">Training quickstart</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>What Changed Since Our August Guide</h2>
+    <p class="small">Our <code>modal-power-user-guide.md</code> (4 Aug 2026) was built on SDK 1.5.1. Three minor releases later, these are the deltas that matter.</p>
+    <div class="wide">
+    <table class="cmp-table cmp-table-red">
+      <thead><tr><th style="width:22%">Area</th><th style="width:34%">Then (Aug 2026)</th><th>Now (Oct 2026, SDK 1.6.1)</th></tr></thead>
+      <tbody>
+        <tr><td>Sandbox backend</td><td>V1; <code>Sandbox.create()</code> returned immediately</td><td><strong>V2 is default</strong> (1.6.0). <code>create()</code> blocks until scheduled; unsatisfiable placement raises <code>ResourceExhaustedError</code>. &gt;20 creates/sec.</td></tr>
+        <tr><td>Sandbox filesystem API</td><td><code>sb.open()/ls()/mkdir()/rm()</code> deprecated</td><td><strong>Removed</strong> in 1.6.0 — only <code>sb.filesystem.*</code> works (GA 14 Aug).</td></tr>
+        <tr><td>Runtime</td><td>gVisor only</td><td><code>runtime="vm"</code> (KVM) added — Docker-in-Sandbox, FUSE, nested cgroups. gVisor still default "but may change".</td></tr>
+        <tr><td>Egress control</td><td><code>cidr_allowlist</code></td><td><code>outbound_cidr_allowlist</code> + <code>outbound_domain_allowlist</code> (beta); runtime policy swap (alpha); <code>inbound_cidr_allowlist</code>.</td></tr>
+        <tr><td>Secrets in Sandboxes</td><td>Env-var injection only</td><td><strong>Outbound Policy</strong> secret injection (beta) + <strong>Sidecars</strong> (beta, public alpha 28 Aug).</td></tr>
+        <tr><td>Snapshot retention</td><td>FS snapshots kept forever</td><td>30-day default TTL (1.5.0 breaking); <code>ttl=None</code> to keep.</td></tr>
+        <tr><td><code>@app.cls()</code></td><td>Custom <code>__init__</code> allowed</td><td><strong>Removed</strong> — use <code>modal.parameter()</code> + <code>@modal.enter()</code>.</td></tr>
+        <tr><td>Observability</td><td>Dashboard + <code>modal app logs</code></td><td><code>Sandbox.logs</code>, <code>App.logs</code>, <code>modal function/server stats</code>, per-Sandbox CPU/memory/pressure &amp; Exit Reasons charts.</td></tr>
+        <tr><td>New primitives</td><td>—</td><td><code>@app.server()</code>, <code>@modal.sessioned()</code>, <code>@modal.clustered()</code>, <code>modal endpoint</code> CLI, <code>modal skills</code> CLI.</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="review">
+      <div class="review-title">Docs Review — Release notes &amp; changelog</div>
+      <div class="review-row"><span class="review-dim">Clarity</span><span class="review-score good">A</span><span class="review-note">Release notes are detailed, dated, and name breaking changes explicitly. The <code>modal changelog --since=1.5</code> CLI is a genuinely good idea for agents.</span></div>
+      <div class="review-row"><span class="review-dim">Examples</span><span class="review-score good">A</span><span class="review-note">Most entries include a code snippet.</span></div>
+      <div class="review-row"><span class="review-dim">Level</span><span class="review-score ok">B</span><span class="review-note">Two separate feeds (product Changelog vs SDK Release Notes) with no cross-links; features like "V2 Sandboxes" appear in both with different dates.</span></div>
+      <div class="review-section">
+        <div class="review-section-title">⚠️ Could improve</div>
+        A single "breaking changes" page per minor version · Pin the migration guide for 1.6 (there is one for 1.0 only).
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://modal.com/docs/sdk/py/releases" target="_blank">Python SDK Release Notes</a> ·
+      <span class="src-num">2</span> <a href="https://modal.com/changelog" target="_blank">Product Changelog</a> ·
+      <span class="src-num">3</span> <a href="https://modal.com/docs/guide/sandbox-v2" target="_blank">V2 Sandboxes</a> ·
+      <span class="src-num">4</span> <a href="https://modal.com/docs/guide/migrate-sandbox-filesystem" target="_blank">Filesystem API migration</a> ·
+      <span class="src-num">5</span> <a href="https://modal.com/docs/guide/modal-1-0-migration" target="_blank">1.0 migration guide</a>
+    </div>
+  </section>
+</section>
+
+<!-- ======================== SECTION 2: SANDBOXES ======================== -->
+<section>
+  <section class="section-header">
+    <div class="section-num">Section 02 · <span style="color:var(--mo-accent);">Sandboxes</span></div>
+    <h2>Sandboxes</h2>
+    <p class="small">Runtime-defined containers for untrusted code · gVisor or KVM · 5-min default lifetime, up to 24h · the primitive AgentVetter is built on</p>
+  </section>
+
+  <section>
+    <h2>Hello, Sandbox</h2>
+    <div class="code-output">
+      <div class="code-side">
+        <div class="output-label" style="color:var(--mo-accent);padding:0.4em 0.7em 0;">scan_one.py — runs with plain <code>python</code>, no <code>modal run</code></div>
+        <pre><code class="language-python">import modal
+
+app = modal.App.lookup("agentvetter", create_if_missing=True)
+image = modal.Image.from_name("agentvetter-scanners")  # pre-built, see Images
+
+sb = modal.Sandbox.create(
+    app=app, image=image,
+    timeout=10 * 60,          # hard cap (default is only 5 min)
+    idle_timeout=120,         # 2nd safety net for hung scanners
+    tags={"scan_run_id": "sr_01", "batch_id": "b_01"},
+)
+p = sb.exec("skill-scanner", "scan", "/work/skill", "--format", "json")
+p.wait()
+print(p.returncode, p.stdout.read()[:200])
+sb.terminate(wait=True)   # SIGKILL → sb.returncode == 137
+print("sandbox exit:", sb.returncode)</code></pre>
+      </div>
+      <div>
+        <div class="output-label" style="color:var(--mo-green);">Output</div>
+        <div class="output-side">0 {"findings":[{"rule":"curl-pipe-bash","severity":"high", ...<br>sandbox exit: 137</div>
+        <h3 style="margin-top:0.6em;">Quick start</h3>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><code>pip install modal</code> (or <code>uv pip install modal</code>), then <code>modal setup</code></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">A Sandbox needs an <strong>App</strong>: <code>App.lookup(name, create_if_missing=True)</code></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><code>exec()</code> commands, read <code>stdout</code> as a stream or <code>.read()</code></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content">Always <code>terminate()</code> — or you pay until <code>timeout</code></div></div>
+      </div>
+    </div>
+    <div class="callout callout-amber">
+      <strong>1.6 change:</strong> <code>Sandbox.create()</code> now <em>blocks until scheduled</em>. If placement can't be satisfied (region, GPU, resources) it raises <code>modal.exception.ResourceExhaustedError</code> instead of returning a handle that later fails. Wrap creation in the same error handling as <code>exec</code>.
+    </div>
+    <div class="review">
+      <div class="review-title">Docs Review — Sandboxes intro page</div>
+      <div class="review-row"><span class="review-dim">Clarity</span><span class="review-score good">A</span><span class="review-note">Opens with "why" bullets, then a 10-line runnable example with Python / async / JS / Go tabs.</span></div>
+      <div class="review-row"><span class="review-dim">Prerequisites</span><span class="review-score ok">B</span><span class="review-note">Says you can run it with plain <code>python</code> — good — but doesn't say you need <code>modal setup</code> first or which Python versions work.</span></div>
+      <div class="review-row"><span class="review-dim">Examples</span><span class="review-score good">A</span><span class="review-note">Every sub-feature has a snippet in all four language tabs. Rare and valuable.</span></div>
+      <div class="review-row"><span class="review-dim">Level</span><span class="review-score good">A</span><span class="review-note">Junior-friendly.</span></div>
+      <div class="review-section">
+        <div class="review-section-title">✅ What went well</div>
+        Four-language tabs · lifecycle events spelled out · exit-code semantics documented (137 = SIGKILL)
+        <div class="review-section-title" style="margin-top:0.2em;">⚠️ Could improve</div>
+        The page still says "default maximum lifetime of 5 minutes" in one place while vendor comparison articles mention a "15-minute idle auto-stop" for Notebooks — the two products should cross-reference · The 1.6 blocking-create semantic isn't on this page, only in release notes
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://modal.com/docs/guide/sandboxes" target="_blank">Sandboxes guide</a> ·
+      <span class="src-num">2</span> <a href="https://modal.com/docs/sdk/py/latest/Sandbox" target="_blank">modal.Sandbox reference</a> ·
+      <span class="src-num">3</span> <a href="https://modal.com/docs/guide/sandbox-spawn" target="_blank">Running commands</a> ·
+      <span class="src-num">4</span> <a href="https://modal.com/docs/sdk/py/releases" target="_blank">Release notes 1.6.0</a> ·
+      <span class="src-num">5</span> <a href="https://modal.com/docs/guide/getting-started" target="_blank">Getting started</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Lifecycle, Timeouts &amp; Exit Codes</h2>
+    <svg viewBox="0 0 800 70" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:800px;margin:0.2em auto;display:block;">
+      <defs><marker id="arrL" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="6" markerHeight="4" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#5c564c"/></marker></defs>
+      <g font-family="-apple-system,system-ui,sans-serif" font-size="11" fill="#1c1915" text-anchor="middle">
+        <rect x="5" y="15" width="120" height="40" rx="8" fill="#efe9dc" stroke="#5c564c"/><text x="65" y="33">Created</text><text x="65" y="47" font-size="9" fill="#5c564c">ID exists, no compute</text>
+        <rect x="170" y="15" width="120" height="40" rx="8" fill="#efe9dc" stroke="#1d4ed8"/><text x="230" y="33">Scheduled</text><text x="230" y="47" font-size="9" fill="#5c564c">create() returns here (V2)</text>
+        <rect x="335" y="15" width="120" height="40" rx="8" fill="#efe9dc" stroke="#8f3109"/><text x="395" y="33">Started</text><text x="395" y="47" font-size="9" fill="#5c564c">exec() allowed</text>
+        <rect x="500" y="15" width="120" height="40" rx="8" fill="#efe9dc" stroke="#6d28d9"/><text x="560" y="33">Ready</text><text x="560" y="47" font-size="9" fill="#5c564c">only with a probe</text>
+        <rect x="665" y="15" width="130" height="40" rx="8" fill="#efe9dc" stroke="#a81717"/><text x="730" y="33">Finished</text><text x="730" y="47" font-size="9" fill="#5c564c">exit / timeout / OOM</text>
+        <line x1="125" y1="35" x2="170" y2="35" stroke="#5c564c" stroke-width="1.5" marker-end="url(#arrL)"/>
+        <line x1="290" y1="35" x2="335" y2="35" stroke="#5c564c" stroke-width="1.5" marker-end="url(#arrL)"/>
+        <line x1="455" y1="35" x2="500" y2="35" stroke="#5c564c" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrL)"/>
+        <line x1="620" y1="35" x2="665" y2="35" stroke="#5c564c" stroke-width="1.5" marker-end="url(#arrL)"/>
+      </g>
+    </svg>
+    <div class="two-col">
+      <div>
+        <table class="cmp-table">
+          <thead><tr><th>Control</th><th>Default</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td><code>timeout</code></td><td><strong>300 s</strong></td><td>Hard cap; max 24 h. Beyond that: FS snapshot + new Sandbox.</td></tr>
+            <tr><td><code>idle_timeout</code></td><td>none</td><td>Active = running <code>exec</code>, stdin writes, or open Tunnel TCP. Catches hung scanners faster than <code>timeout</code>.</td></tr>
+            <tr><td><code>exec(..., timeout=)</code></td><td>none</td><td>Per-command cap; respected by <code>wait()</code>/<code>poll()</code> since 1.1.0.</td></tr>
+            <tr><td>Readiness probe</td><td>—</td><td>Runs ≤5 min; <code>wait_until_ready()</code> raises <code>modal.exception.TimeoutError</code> (not builtin) and does <em>not</em> terminate the Sandbox.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <h3 style="font-size:0.9em;">Exit code semantics</h3>
+        <table class="cmp-table cmp-table-amber">
+          <thead><tr><th>Where</th><th>Code</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><code>p.returncode</code></td><td>0 / n</td><td>Scanner's own exit status (e.g. Snyk uses non-zero for "findings present")</td></tr>
+            <tr><td><code>sb.returncode</code></td><td><strong>137</strong></td><td>SIGKILL — from <code>terminate()</code>, <code>timeout</code>, or <code>idle_timeout</code></td></tr>
+            <tr><td><code>sb.returncode</code></td><td>OOM</td><td>Dashboard "Exit Reasons" distinguishes memory-limit vs memory-manager kills (Aug 2026)</td></tr>
+            <tr><td><code>sb.poll()</code></td><td><code>None</code></td><td>Still running (fixed in 1.0.1 — used to be 0)</td></tr>
+          </tbody>
+        </table>
+        <div class="insight-box tw" style="margin:0.3em 0 0;">
+          <div class="insight-label">AgentVetter decision (Aug 4)</div>
+          Standardise on 137 = "killed by our timeout" so <code>scan_run_scanners.status</code> can separate it from a scanner crash. Note <code>terminate()</code> no longer waits by default (since 1.0.3) — use <code>terminate(wait=True)</code> before reading <code>returncode</code>.
+        </div>
+      </div>
+    </div>
+    <div class="review">
+      <div class="review-title">Docs Review — Lifecycle section</div>
+      <div class="review-row"><span class="review-dim">Clarity</span><span class="review-score good">A</span><span class="review-note">The five lifecycle events with "what you can do at this point" is exactly what orchestration code needs.</span></div>
+      <div class="review-row"><span class="review-dim">Examples</span><span class="review-score good">A</span><span class="review-note">Return-code example shows both process and Sandbox codes side by side.</span></div>
+      <div class="review-row"><span class="review-dim">Level</span><span class="review-score ok">B</span><span class="review-note">Doesn't say what <code>returncode</code> is after an <code>idle_timeout</code> kill vs a hard <code>timeout</code> kill (both 137? presumably). Verify empirically.</span></div>
+      <div class="review-section">
+        <div class="review-section-title">⚠️ Could improve</div>
+        Add an exit-reason enum to the SDK, not just the dashboard chart · Document OOM exit code numerically
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://modal.com/docs/guide/sandboxes" target="_blank">Sandboxes — Lifecycle, Timeouts, Return Codes</a> ·
+      <span class="src-num">2</span> <a href="https://modal.com/docs/guide/timeouts" target="_blank">Timeouts guide</a> ·
+      <span class="src-num">3</span> <a href="https://modal.com/changelog" target="_blank">Changelog — Exit Reasons chart (26 Aug 2026)</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Readiness Probes — Replace the <code>sleep()</code></h2>
+    <div class="two-col">
+      <div>
+        <p class="small">Modal polls a check inside the Sandbox every <code>interval_ms</code> (default 100) and fires the <strong>Ready</strong> event. Two kinds:</p>
+        <table class="cmp-table cmp-table-blue">
+          <thead><tr><th>Probe</th><th>Succeeds when</th><th>Use for</th></tr></thead>
+          <tbody>
+            <tr><td><code>Probe.with_tcp(port)</code></td><td>Port accepts a connection</td><td>MCP server over HTTP/SSE, Jupyter, any server</td></tr>
+            <tr><td><code>Probe.with_exec(cmd…)</code></td><td>Command exits 0</td><td>File exists, deps installed, <code>docker info</code></td></tr>
+          </tbody>
+        </table>
+        <div class="insight-box tw" style="margin:0.3em 0 0;">
+          <div class="insight-label">AgentVetter application</div>
+          Cisco's <code>mcp-scanner</code> connects to a <em>live</em> MCP server. Boot the server as the Sandbox entrypoint with a TCP probe, call <code>wait_until_ready()</code>, then <code>exec</code> the scanner. No guessed sleep. For stdio servers, use an exec probe on a "ready" marker file written by a wrapper.
+        </div>
+      </div>
+      <div class="code-side">
+        <pre><code class="language-python">sb = modal.Sandbox.create(
+    "npx", "-y", "@modelcontextprotocol/server-everything",
+    "sse", "--port", "3001",
+    readiness_probe=modal.Probe.with_tcp(3001),
+    app=app, image=image, timeout=600,
+)
+try:
+    sb.wait_until_ready()          # ≤ 5 min, then raises
+except modal.exception.TimeoutError:
+    sb.terminate()                 # probe failure does NOT kill it
+    mark_unreachable(scan_run_id)
+    raise
+
+p = sb.exec("mcp-scanner", "config",
+            "--url", "http://localhost:3001/sse",
+            "--format", "json", timeout=240)</code></pre>
+      </div>
+    </div>
+    <div class="review">
+      <div class="review-title">Docs Review — Readiness probes</div>
+      <div class="review-row"><span class="review-dim">Clarity</span><span class="review-score good">A</span><span class="review-note">Motivated by real pain ("you don't have to build the polling yourself"); both probe types have examples.</span></div>
+      <div class="review-row"><span class="review-dim">Prerequisites</span><span class="review-score good">A</span><span class="review-note">Explicitly warns that <code>modal.exception.TimeoutError</code> is not the builtin and that the probe timeout doesn't terminate the Sandbox.</span></div>
+      <div class="review-row"><span class="review-dim">Examples</span><span class="review-score good">A</span><span class="review-note">Includes the try/except pattern.</span></div>
+      <div class="review-section">
+        <div class="review-section-title">✅ What went well</div>
+        Best-documented sub-feature on the page.
+        <div class="review-section-title" style="margin-top:0.2em;">⚠️ Could improve</div>
+        No probe for Sidecars yet · <code>interval_ms</code> upper bound unstated
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://modal.com/docs/guide/sandboxes" target="_blank">Sandboxes — Readiness Probes</a> ·
+      <span class="src-num">2</span> <a href="https://modal.com/docs/sdk/py/latest/Probe" target="_blank">modal.Probe reference</a> ·
+      <span class="src-num">3</span> <a href="https://modal.com/docs/examples/jupyter_sandbox" target="_blank">Example: Jupyter in a Sandbox</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Networking: Three Levels of Egress Control</h2>
+    <table class="cmp-table">
+      <thead><tr><th style="width:18%">Level</th><th style="width:28%">Parameter</th><th>Behaviour</th><th style="width:12%">Maturity</th></tr></thead>
+      <tbody>
+        <tr><td>Full block</td><td><code>block_network=True</code></td><td>Drops all outbound; cannot combine with any allowlist or ports</td><td><span class="badge badge-green">GA</span></td></tr>
+        <tr><td>IP-range allowlist</td><td><code>outbound_cidr_allowlist=[...]</code></td><td>Any protocol to listed CIDRs. (<code>cidr_allowlist</code> is deprecated.)</td><td><span class="badge badge-green">GA</span></td></tr>
+        <tr><td>Domain allowlist</td><td><code>outbound_domain_allowlist=[...]</code></td><td>TLS/443 only, matched on <strong>SNI</strong>; Modal resolves the hostname itself. Non-TLS to non-CIDR IPs is blocked. <strong>Denials are logged</strong> to the Sandbox system stream / App logs.</td><td><span class="badge badge-amber">Beta</span></td></tr>
+        <tr><td>Runtime swap</td><td><code>sb._experimental_set_outbound_network_policy(...)</code></td><td>Replace the policy live — e.g. open during <code>npm install</code>, then lock down. Each list type must be set at create time (<code>["*"]</code> / <code>["0.0.0.0/0"]</code>).</td><td><span class="badge badge-red">Alpha</span></td></tr>
+        <tr><td>Inbound</td><td><code>inbound_cidr_allowlist=[...]</code></td><td>Restricts who can reach Tunnels / Connect Tokens</td><td><span class="badge badge-green">GA</span></td></tr>
+      </tbody>
+    </table>
+    <div class="two-col" style="font-size:0.72em;">
+      <div class="callout callout-red" style="margin:0;font-size:1em;">
+        <strong>Domain fronting caveat (from the docs):</strong> two tenants of one CDN share a TLS endpoint, so a Sandbox can send an allowlisted SNI with a different <code>Host</code> header. The allowlist doesn't stop that; a <strong>Sidecar proxy</strong> that terminates TLS does. ECH connections match only the outer public name.
+      </div>
+      <div class="insight-box tw" style="margin:0;">
+        <div class="insight-label">AgentVetter egress model → Modal mapping</div>
+        Our spec's <em>static per-scanner domains + dynamic per-run target</em> allowlist maps 1:1 onto <code>outbound_domain_allowlist</code> (e.g. <code>["api.snyk.io", "*.cisco.com", "api.tessl.io", "github.com"]</code> + the scan target). The "denied-egress logging" fixture gap closes for free: denials land in App logs since 1.5.0.
+      </div>
+    </div>
+    <div class="review">
+      <div class="review-title">Docs Review — Networking and security</div>
+      <div class="review-row"><span class="review-dim">Clarity</span><span class="review-score good">A</span><span class="review-note">The three-level table at the top is the clearest security doc Modal has. Matching rules shown as a table.</span></div>
+      <div class="review-row"><span class="review-dim">Prerequisites</span><span class="review-score good">A</span><span class="review-note">States incompatibilities (block_network vs allowlists) and the domain-fronting limitation honestly.</span></div>
+      <div class="review-row"><span class="review-dim">Examples</span><span class="review-score ok">B</span><span class="review-note">Snippets exist but there's no end-to-end "observe a denial in logs" example — which is the thing a security product needs to demo.</span></div>
+      <div class="review-row"><span class="review-dim">Level</span><span class="review-score ok">B</span><span class="review-note">Assumes SNI/ECH familiarity.</span></div>
+      <div class="review-section">
+        <div class="review-section-title">⚠️ Could improve</div>
+        Show the exact log line format for a blocked connection · Clarify whether UDP DNS from inside the Sandbox is affected when only a domain allowlist is set
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://modal.com/docs/guide/sandbox-networking" target="_blank">Networking and security</a> ·
+      <span class="src-num">2</span> <a href="https://modal.com/docs/sdk/py/releases" target="_blank">Release notes 1.5.0 — domain allowlists</a> ·
+      <span class="src-num">3</span> <a href="https://modal.com/docs/guide/tunnels" target="_blank">Tunnels</a> ·
+      <span class="src-num">4</span> <a href="https://modal.com/docs/examples/sidecar_traffic_routing" target="_blank">Example: Sidecar as domain allowlist</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Credential Isolation: Three Ways to Give a Sandbox an API Key</h2>
+    <table class="cmp-table cmp-table-purple">
+      <thead><tr><th style="width:18%">Approach</th><th>How</th><th>Key visible inside Sandbox?</th><th>Constraints</th></tr></thead>
+      <tbody>
+        <tr><td>Env-var Secret <span class="badge badge-green">GA</span></td><td><code>secrets=[modal.Secret.from_name("snyk")]</code> → <code>$SNYK_TOKEN</code></td><td><span style="color:var(--mo-red);">Yes</span> — any process can read and exfiltrate it</td><td>Works with everything; simplest</td></tr>
+        <tr><td>Outbound Policy <span class="badge badge-amber">Beta</span></td><td><code>modal.experimental.OutboundPolicy().with_header_replacement(domain, secret, headers)</code> → Modal's proxy terminates TLS and injects <code>Authorization</code> outside the Sandbox</td><td><span style="color:var(--mo-accent);">No</span> — never in env; CA cert at <code>/etc/modal/sandbox-egress-ca.crt</code></td><td>HTTP/1.1 only (no gRPC) · named Secrets only · <strong>cannot combine with <code>outbound_domain_allowlist</code>, <code>block_network</code>, CIDR lists, or memory snapshots</strong> · ≤25 header values</td></tr>
+        <tr><td>Sidecar proxy <span class="badge badge-amber">Beta</span></td><td>Run a trusted mitmproxy-style container next to the Sandbox; <code>proxy_traffic_via_sidecar</code> relays all 443 traffic to it; Secret injected only in the Sidecar</td><td><span style="color:var(--mo-accent);">No</span></td><td>Pre-built images only · Sidecar's own egress policy governs relayed traffic · cannot combine with <code>outbound_domain_allowlist</code> on the main Sandbox</td></tr>
+      </tbody>
+    </table>
+    <div class="two-col" style="font-size:0.72em;">
+      <div class="code-side">
+        <pre><code class="language-python">policy = (modal.experimental.OutboundPolicy()
+  .with_header_replacement(
+      domain="api.snyk.io",
+      secret=modal.Secret.from_name("snyk"),
+      headers={"Authorization": "token $SNYK_TOKEN"})
+  .with_header_replacement(
+      domain="*.cisco.com",
+      secret=modal.Secret.from_name("cisco"),
+      headers={"X-Api-Key": "$CISCO_AI_DEFENSE_API_KEY"}))
+
+sb = modal.Sandbox.create(app=app, image=image,
+        _experimental_outbound_policy=policy)</code></pre>
+      </div>
+      <div class="insight-box tw" style="margin:0;">
+        <div class="insight-label">AgentVetter open decision — this is the one to make</div>
+        Our spec deferred credential isolation to "Modal's built-in Secret handling". That is the <em>env-var</em> row — the scanned (untrusted) MCP server shares an environment with <code>SNYK_TOKEN</code>. The Outbound Policy row fixes that, <strong>but it is mutually exclusive with the domain allowlist we also want</strong>. Options: (a) env Secrets + domain allowlist (today's posture, leak-prone), (b) Outbound Policy, lose the allowlist (every domain open), (c) Sidecar proxy doing <em>both</em> allowlist and injection — most work, only option that gives both. Snyk's CLI may also need the token via env, not header; verify hands-on per scanner.
+      </div>
+    </div>
+    <div class="review">
+      <div class="review-title">Docs Review — Secret Injection page</div>
+      <div class="review-row"><span class="review-dim">Clarity</span><span class="review-score good">A</span><span class="review-note">Threat model is stated in the first paragraph. "How it works" explains the TLS-termination mechanism.</span></div>
+      <div class="review-row"><span class="review-dim">Prerequisites</span><span class="review-score good">A</span><span class="review-note">Limitations list is complete and prominent — the incompatibility with domain allowlists is called out.</span></div>
+      <div class="review-row"><span class="review-dim">Examples</span><span class="review-score ok">B</span><span class="review-note">Linked example exists; the page itself shows only the policy, not a request succeeding through it.</span></div>
+      <div class="review-row"><span class="review-dim">Level</span><span class="review-score ok">B</span><span class="review-note">Needs TLS/CA understanding to debug client trust failures.</span></div>
+      <div class="review-section">
+        <div class="review-section-title">⚠️ Could improve</div>
+        A decision matrix like the one above (env vs policy vs sidecar) belongs in the docs · Explain how to combine allowlisting + injection (the answer is "Sidecar", but only the sidecars page says so)
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://modal.com/docs/guide/sandbox-secret-injection" target="_blank">Sandbox Secret Injection</a> ·
+      <span class="src-num">2</span> <a href="https://modal.com/docs/guide/sandbox-sidecars" target="_blank">Sandbox Sidecars</a> ·
+      <span class="src-num">3</span> <a href="https://modal.com/docs/guide/secrets" target="_blank">Secrets</a> ·
+      <span class="src-num">4</span> <a href="https://modal.com/docs/examples/sandbox_secret_injection" target="_blank">Example: Outbound Policy</a> ·
+      <span class="src-num">5</span> <a href="https://modal.com/docs/examples/sidecar_secrets_injection" target="_blank">Example: Sidecar credential proxy</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Images: Build Once, Name It, Never Block a Scan</h2>
+    <div class="two-col">
+      <div class="code-side">
+        <div class="output-label" style="color:var(--mo-accent2);padding:0.4em 0.7em 0;">build_image.py — run from CI or a cron Function</div>
+        <pre><code class="language-python">image = (
+  modal.Image.debian_slim(python_version="3.12")
+  .apt_install("git", "curl", "nodejs", "npm")      # Node for npx tessl + Node MCP servers
+  .uv_pip_install("uv==0.9.2")
+  .run_commands(
+    "uv tool install cisco-ai-mcp-scanner==4.8.2",   # pin! drifted 4.7.1→4.8.2 in 3 days
+    "uv tool install cisco-ai-skill-scanner==1.3.0",
+    "uv tool install snyk-agent-scan==0.5.1",
+    "npm i -g tessl@0.94.0",
+  )
+  .env({"PATH": "/root/.local/bin:$PATH"})
+)
+with modal.enable_output():
+    image.build(app=app).publish("agentvetter-scanners:2026-10-05")
+
+# scan code — never triggers a build, fails fast with NotFoundError
+image = modal.Image.from_name("agentvetter-scanners:2026-10-05")</code></pre>
+      </div>
+      <div>
+        <table class="cmp-table cmp-table-blue">
+          <thead><tr><th>Feature</th><th>Why it matters</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Named Images</strong> (1.5.0)</td><td><code>publish("name:tag")</code> + <code>from_name()</code> = Modal-native registry. Lookup never builds.</td></tr>
+            <tr><td><code>Image.build(app)</code> (1.2.0)</td><td>Eager build; otherwise the build happens lazily <em>inside</em> <code>Sandbox.create()</code></td></tr>
+            <tr><td><code>uv_pip_install</code> / <code>uv_sync</code></td><td>Up to 50% faster than pip; pin versions — cache may invalidate across SDK bumps</td></tr>
+            <tr><td>Immutable external tags</td><td><code>from_registry("ubuntu:24.04")</code> is cached forever; bump the tag to pull a new upstream</td></tr>
+            <tr><td>2025.06 Image Builder</td><td>Modal client deps isolated from yours → fewer conflicts (the <code>mcp</code> SDK clash we hit)</td></tr>
+            <tr><td><code>Image.from_scratch()</code></td><td>Empty image to mount as a scratch dir via <code>mount_image</code></td></tr>
+          </tbody>
+        </table>
+        <div class="insight-box tw" style="margin:0.3em 0 0;">
+          <div class="insight-label">Pending from Sep 11 session</div>
+          Mani was to share the current <code>modal_app.py</code> install chain so the pinned-dependency syntax and layer order could be drafted. The sketch left is the starting point: <strong>pin every scanner</strong>, one <code>uv tool install</code> per tool (isolated venvs), and tag the image with the build date.
+        </div>
+      </div>
+    </div>
+    <div class="review">
+      <div class="review-title">Docs Review — Images &amp; Named Images</div>
+      <div class="review-row"><span class="review-dim">Clarity</span><span class="review-score good">A</span><span class="review-note">The "Separating Image builds from Sandbox creation" section on the Sandboxes page says exactly why and how.</span></div>
+      <div class="review-row"><span class="review-dim">Prerequisites</span><span class="review-score ok">B</span><span class="review-note">Image Builder Version is a workspace setting that silently changes behaviour; it's mentioned but easy to miss.</span></div>
+      <div class="review-row"><span class="review-dim">Examples</span><span class="review-score good">A</span><span class="review-note">Build-then-publish and from_name shown in all four languages.</span></div>
+      <div class="review-section">
+        <div class="review-section-title">⚠️ Could improve</div>
+        No guidance on <code>uv tool install</code> (CLI tools in isolated venvs) vs <code>uv_pip_install</code> — a common need for scanner-style images · Named-image listing CLI (<code>modal image names</code>) is only in release notes
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://modal.com/docs/guide/images" target="_blank">Defining Images</a> ·
+      <span class="src-num">2</span> <a href="https://modal.com/docs/guide/named-images" target="_blank">Named images</a> ·
+      <span class="src-num">3</span> <a href="https://modal.com/docs/guide/existing-images" target="_blank">Existing container images</a> ·
+      <span class="src-num">4</span> <a href="https://modal.com/docs/guide/fast-pull-from-registry" target="_blank">Fast pull from registry</a> ·
+      <span class="src-num">5</span> <a href="https://modal.com/docs/sdk/py/latest/Image" target="_blank">modal.Image reference</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Snapshots, Runtimes &amp; Sidecars</h2>
+    <div class="three-col" style="font-size:0.74em;">
+      <div>
+        <h3 style="font-size:1em;">Snapshots</h3>
+        <table class="cmp-table" style="font-size:0.9em;">
+          <thead><tr><th>Kind</th><th>TTL</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Filesystem → Image</td><td>30 d (was ∞; <code>ttl=None</code> to keep)</td><td><span class="badge badge-green">GA</span></td></tr>
+            <tr><td>Directory → mountable Image</td><td>30 d</td><td><span class="badge badge-green">GA</span> (12 Aug)</td></tr>
+            <tr><td>Memory (processes too)</td><td>7 d, not extendable</td><td><span class="badge badge-red">Alpha</span></td></tr>
+          </tbody>
+        </table>
+        <p class="small" style="margin-top:0.3em;">Fork: one FS snapshot → N identical Sandboxes. Delete via <code>modal.experimental.image_delete(id)</code> — there's no list API, track IDs yourself. Volumes are <em>not</em> in FS snapshots.</p>
+      </div>
+      <div>
+        <h3 style="font-size:1em;">Runtimes</h3>
+        <table class="cmp-table cmp-table-blue" style="font-size:0.9em;">
+          <thead><tr><th></th><th>gVisor (default)</th><th>VM</th></tr></thead>
+          <tbody>
+            <tr><td>Isolation</td><td>Userspace kernel</td><td>KVM, own Linux kernel</td></tr>
+            <tr><td>GPU</td><td>✅</td><td>❌</td></tr>
+            <tr><td>Docker / FUSE / cgroups</td><td>❌</td><td>✅ (512 GiB root fs)</td></tr>
+            <tr><td>Memory snapshots</td><td>alpha</td><td>enabled customers only</td></tr>
+            <tr><td>Nested virt</td><td>—</td><td>Team/Enterprise on request</td></tr>
+          </tbody>
+        </table>
+        <p class="small" style="margin-top:0.3em;">Docs say the default "may change in the future" — pin <code>runtime="gvisor"</code> explicitly if you depend on it.</p>
+      </div>
+      <div>
+        <h3 style="font-size:1em;">Sidecars <span class="badge badge-amber">Beta</span></h3>
+        <p class="small">Extra containers on the same host, bridged by name (<code>main</code>, <code>web</code>, …). Share the Sandbox's CPU/memory. Up to 250 per Sandbox.</p>
+        <p class="small">Patterns: agent harness ↔ tool executor split; credential-injecting proxy; Redis/DB next to the app; <strong>HTTPS inspection</strong> via <code>proxy_traffic_via_sidecar</code>.</p>
+        <p class="small">Limits: pre-built images only, no stdio on entrypoint, no memory snapshot, VM runtime needs a fixed memory reserve.</p>
+        <div class="insight-box tw" style="margin:0.3em 0 0;">
+          <div class="insight-label">AgentVetter post-MVP</div>
+          The deferred "deeper observability layer" (file/process monitoring beyond egress denials) is a Sidecar job: a mitmproxy sidecar logs every outbound request the scanned MCP server makes, with full URL + body, into Supabase.
+        </div>
+      </div>
+    </div>
+    <div class="review">
+      <div class="review-title">Docs Review — Snapshots / Runtimes / Sidecars</div>
+      <div class="review-row"><span class="review-dim">Clarity</span><span class="review-score good">A</span><span class="review-note">Snapshot retention table and the v1.5 breaking-change warning are front and centre. Sidecars page is long but well sectioned.</span></div>
+      <div class="review-row"><span class="review-dim">Prerequisites</span><span class="review-score ok">B</span><span class="review-note">VM runtime's "may become default" note is buried; GPU-only-on-gVisor is stated twice (good).</span></div>
+      <div class="review-row"><span class="review-dim">Examples</span><span class="review-score good">A</span><span class="review-note">Fork, persist-by-session-ID, and Docker-in-Sandbox examples are all runnable.</span></div>
+      <div class="review-row"><span class="review-dim">Level</span><span class="review-score ok">B</span><span class="review-note">Sidecar resource math on VM runtime (reserve/consume MiB) is fiddly and alpha-ish.</span></div>
+      <div class="review-section">
+        <div class="review-section-title">⚠️ Could improve</div>
+        A snapshot list API (docs admit there isn't one) · Memory snapshots terminate the source Sandbox — surprising; should be a red callout
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://modal.com/docs/guide/sandbox-snapshots" target="_blank">Snapshots</a> ·
+      <span class="src-num">2</span> <a href="https://modal.com/docs/guide/sandboxes" target="_blank">Runtimes (Sandboxes guide)</a> ·
+      <span class="src-num">3</span> <a href="https://modal.com/docs/guide/sandbox-sidecars" target="_blank">Sidecars</a> ·
+      <span class="src-num">4</span> <a href="https://modal.com/docs/guide/memory-snapshots" target="_blank">Memory Snapshots (Functions)</a> ·
+      <span class="src-num">5</span> <a href="https://modal.com/docs/examples/sidecar_agent" target="_blank">Example: Sidecar agent</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Resources, Pricing &amp; a Scan-Cost Calculator</h2>
+    <div class="two-col">
+      <div>
+        <table class="cmp-table cmp-table-amber">
+          <thead><tr><th>Rate (per second)</th><th>Functions</th><th>Sandboxes / Notebooks</th></tr></thead>
+          <tbody>
+            <tr><td>CPU, per physical core</td><td>$0.0000131</td><td><strong>$0.00003942</strong> (≈3.0×)</td></tr>
+            <tr><td>Memory, per GiB</td><td>$0.00000222</td><td><strong>$0.00000667</strong> (≈3.0×)</td></tr>
+            <tr><td>GPU</td><td colspan="2">Same table for both — T4 $0.000164/s … H100 $0.001097/s … B300 $0.001972/s</td></tr>
+            <tr><td>Minimum</td><td colspan="2">0.125 cores per container; billed <code>max(request, actual)</code> — Sandboxes <em>burst</em> above request</td></tr>
+            <tr><td>Plans</td><td colspan="2">Starter $0 + $30/mo credit, 100 containers · Team $250/mo, 5000 containers, custom domains, static-IP proxy, env budgets</td></tr>
+          </tbody>
+        </table>
+        <p class="small">Cap bursts for adversarial workloads: <code>cpu=(0.5, 4.0)</code>, <code>memory=(512, 2048)</code>. Size from the Sandboxes tab: p50–75 CPU, p90–95 memory, watch <em>CPU Pressure</em> and <em>Exit Reasons</em>.</p>
+      </div>
+      <div class="calc-container">
+        <div class="output-label" style="color:var(--mo-amber);">Scan batch cost estimator</div>
+        <div class="calc-row"><label>CPU cores (request)</label><input type="number" id="cCpu" value="0.5" step="0.125" min="0.125" oninput="recalc()"></div>
+        <div class="calc-row"><label>Memory GiB</label><input type="number" id="cMem" value="1" step="0.25" min="0.125" oninput="recalc()"></div>
+        <div class="calc-row"><label>Seconds per sandbox</label><input type="number" id="cSec" value="180" step="10" min="1" oninput="recalc()"></div>
+        <div class="calc-row"><label>Sandboxes (scans)</label><input type="number" id="cN" value="100" step="10" min="1" oninput="recalc()"></div>
+        <div class="calc-result">
+          <div class="calc-result-card"><div class="price price-sb" id="priceSb">$0.00</div><div class="label">as Sandboxes</div></div>
+          <div class="calc-result-card"><div class="price price-fn" id="priceFn">$0.00</div><div class="label">same work as Functions</div></div>
+          <div class="calc-result-card"><div class="price price-ratio" id="priceHr">$0.00</div><div class="label">per sandbox-hour</div></div>
+        </div>
+        <div style="text-align:center;margin-top:0.4em;" class="savings-tag" id="ratioTag"></div>
+        <p class="smaller" style="margin-top:0.4em;">Rates from modal.com/pricing on 5 Oct 2026. Ignores egress ($0.04/GiB beyond 1 TiB free) and the $30/mo Starter credit.</p>
+      </div>
+    </div>
+    <div class="review">
+      <div class="review-title">Docs Review — Pricing &amp; Sandbox resources</div>
+      <div class="review-row"><span class="review-dim">Clarity</span><span class="review-score ok">B</span><span class="review-note">The per-second rates are clear, but the <em>3× Sandbox premium</em> is only discoverable by scrolling to a second table on the pricing page — the Sandbox resources doc page doesn't state the multiplier.</span></div>
+      <div class="review-row"><span class="review-dim">Prerequisites</span><span class="review-score good">A</span><span class="review-note">Burst semantics and <code>max(request, actual)</code> billing are explained with a worked sizing procedure.</span></div>
+      <div class="review-row"><span class="review-dim">Examples</span><span class="review-score ok">B</span><span class="review-note">No cost example for a typical Sandbox job; the pricing FAQ examples are Functions-oriented.</span></div>
+      <div class="review-section">
+        <div class="review-section-title">⚠️ Could improve</div>
+        State "Sandbox CPU/memory is ~3× Function pricing" on the Sandbox resources page · Add a calculator (the Serverless GPU Calculator blog post is Function-only)
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://modal.com/pricing" target="_blank">Pricing</a> ·
+      <span class="src-num">2</span> <a href="https://modal.com/docs/guide/sandbox-resources" target="_blank">Sandbox resources and pricing</a> ·
+      <span class="src-num">3</span> <a href="https://modal.com/docs/guide/resources" target="_blank">CPU, memory, disk</a> ·
+      <span class="src-num">4</span> <a href="https://modal.com/docs/guide/network-egress-billing" target="_blank">Network egress billing</a> ·
+      <span class="src-num">5</span> <a href="https://modal.com/docs/guide/budgets" target="_blank">Budgets</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Observability: Proving What Happened in the Box</h2>
+    <div class="two-col">
+      <div>
+        <table class="cmp-table">
+          <thead><tr><th>Mechanism</th><th>What you get</th></tr></thead>
+          <tbody>
+            <tr><td><code>Sandbox.create(verbose=True)</code></td><td>Every <code>exec</code> and filesystem op appears in the Sandbox log (1.0.4)</td></tr>
+            <tr><td><code>sb.logs.fetch()/tail()</code> (1.5.5)</td><td>Entrypoint-process logs by time range. Exec output is yours to capture via <code>p.stdout</code>.</td></tr>
+            <tr><td><code>modal container logs sb-xxx --all --source system</code></td><td>Includes <strong>system</strong> stream — where egress denials land</td></tr>
+            <tr><td><code>App.logs.stream()</code> (1.5.4)</td><td>All logs for the App programmatically</td></tr>
+            <tr><td><code>tags=</code> + <code>Sandbox.list(app_id, tags=)</code></td><td>Find orphans by <code>batch_id</code>; <code>get_tags()</code> round-trips</td></tr>
+            <tr><td><code>sb.get_dashboard_url()</code> (1.3.2)</td><td>Deep link to the Sandbox page for your evidence panel</td></tr>
+            <tr><td>Dashboard charts (Aug–Sep 2026)</td><td>CPU/Memory/CPU-pressure per Sandbox, Exit Reasons, egress per app, zoomable time ranges</td></tr>
+            <tr><td>Datadog / OTel integrations</td><td>Ship container metrics + logs out (Team+)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="code-side">
+          <pre><code class="language-python"># orphan sweep — a scheduled Function
+@app.function(schedule=modal.Period(minutes=10))
+def reap():
+    for sb in modal.Sandbox.list(app_id=app.app_id,
+                                 tags={"owner": "agentvetter"}):
+        if sb.poll() is None:          # still running
+            run_id = sb.get_tags().get("scan_run_id")
+            if supabase_says_finished(run_id):
+                sb.terminate()</code></pre>
+        </div>
+        <div class="insight-box tw" style="margin:0.3em 0 0;">
+          <div class="insight-label">AgentVetter sandbox evidence panel</div>
+          The demo's evidence panel (sandbox ID · policy phases · denied-egress log · cleanup) maps to: <code>sb.object_id</code> + <code>get_dashboard_url()</code> · the outbound policy you set · <code>container logs --source system</code> · <code>terminate(wait=True)</code> returncode 137. All four are now programmatic; none require screenshots.
+        </div>
+      </div>
+    </div>
+    <div class="review">
+      <div class="review-title">Docs Review — Logs &amp; metrics</div>
+      <div class="review-row"><span class="review-dim">Clarity</span><span class="review-score ok">B</span><span class="review-note">Capabilities are scattered across release notes (1.3.2, 1.4.0, 1.5.4, 1.5.5) and changelog posts; there is no "Sandbox observability" guide page.</span></div>
+      <div class="review-row"><span class="review-dim">Examples</span><span class="review-score ok">B</span><span class="review-note">CLI flags are documented; SDK log APIs have terse signatures only.</span></div>
+      <div class="review-row"><span class="review-dim">Level</span><span class="review-score good">A</span><span class="review-note">Once found, straightforward.</span></div>
+      <div class="review-section">
+        <div class="review-section-title">⚠️ Could improve</div>
+        One page: "Observing Sandboxes" (logs, system stream, tags, charts, exit reasons) · Document that <code>Sandbox.logs</code> only covers the entrypoint, prominently
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://modal.com/docs/sdk/py/releases" target="_blank">Release notes 1.5.5 / 1.5.4 / 1.4.0 / 1.3.2</a> ·
+      <span class="src-num">2</span> <a href="https://modal.com/changelog" target="_blank">Changelog — per-Sandbox charts, Exit Reasons, egress per app</a> ·
+      <span class="src-num">3</span> <a href="https://modal.com/docs/guide/datadog-integration" target="_blank">Datadog</a> ·
+      <span class="src-num">4</span> <a href="https://modal.com/docs/guide/otel-integration" target="_blank">OpenTelemetry</a> ·
+      <span class="src-num">5</span> <a href="https://modal.com/docs/guide/cron" target="_blank">Scheduled Functions</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Which Sandbox Configuration?</h2>
+    <div class="decision-flow">
+      <div class="decision-node question">Does the workload need Docker, FUSE, or nested cgroups?</div>
+      <div class="decision-row">
+        <div class="decision-node answer">Yes → <code>runtime="vm"</code> (no GPU)</div>
+        <div class="decision-node answer">No → gVisor (default; GPU OK)</div>
+      </div>
+      <div class="arrow-down">↓</div>
+      <div class="decision-node question">Does the code need network at all?</div>
+      <div class="decision-row">
+        <div class="decision-node answer">No → <code>block_network=True</code> (Cisco <code>config</code> YARA scan)</div>
+        <div class="decision-node answer">Known hosts → <code>outbound_domain_allowlist</code> (+ CIDR for non-TLS)</div>
+        <div class="decision-node answer">Open then lock → <code>["*"]</code> + runtime policy swap (alpha)</div>
+      </div>
+      <div class="arrow-down">↓</div>
+      <div class="decision-node question">Does it call an authenticated external API?</div>
+      <div class="decision-row">
+        <div class="decision-node answer">Trusted code → env Secret</div>
+        <div class="decision-node answer">Untrusted, no allowlist needed → Outbound Policy</div>
+        <div class="decision-node answer">Untrusted + allowlist → Sidecar proxy</div>
+      </div>
+      <div class="arrow-down">↓</div>
+      <div class="decision-node question">Will it outlive 24 h or need reuse?</div>
+      <div class="decision-row">
+        <div class="decision-node answer">Ephemeral job → <code>timeout</code> + <code>idle_timeout</code>, terminate</div>
+        <div class="decision-node answer">Session → FS/Directory snapshot keyed by session ID</div>
+        <div class="decision-node answer">Exclusive per resource → <code>name=</code> (named Sandbox)</div>
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://modal.com/docs/guide/sandboxes" target="_blank">Sandboxes</a> ·
+      <span class="src-num">2</span> <a href="https://modal.com/docs/guide/sandbox-networking" target="_blank">Networking</a> ·
+      <span class="src-num">3</span> <a href="https://modal.com/docs/guide/sandbox-secret-injection" target="_blank">Secret injection</a> ·
+      <span class="src-num">4</span> <a href="https://modal.com/docs/guide/sandbox-snapshots" target="_blank">Snapshots</a> ·
+      <span class="src-num">5</span> <a href="https://modal.com/docs/examples/safe_code_execution" target="_blank">Example: Safe code execution</a>
+    </div>
+  </section>
+</section>
+
+<!-- ======================== SECTION 3: FUNCTIONS ======================== -->
+<section>
+  <section class="section-header">
+    <div class="section-num">Section 03 · <span style="color:var(--mo-accent2);">Functions, Apps &amp; Scaling</span></div>
+    <h2>Functions, Apps &amp; Scaling</h2>
+    <p class="small">The declarative half of Modal: decorate, deploy, fan out · autoscaler · web endpoints · storage primitives</p>
+  </section>
+
+  <section>
+    <h2>Core Primitives &amp; the CLI</h2>
+    <div class="two-col">
+      <div class="code-side">
+        <pre><code class="language-python">import modal
+
+app = modal.App("agentvetter-orchestrator",
+                tags={"team": "agentvetter"})
+image = modal.Image.from_name("agentvetter-scanners:2026-10-05")
+
+@app.function(image=image, timeout=900, retries=0,
+              secrets=[modal.Secret.from_name("supabase")])
+def run_scan(scan_run_id: str) -> dict:
+    ...   # creates the Sandbox, writes to Supabase
+
+@app.local_entrypoint()
+def main(batch_id: str):
+    ids = fetch_run_ids(batch_id)
+    for result in run_scan.map(ids):   # fan-out, ordered results
+        print(result["scan_run_id"], result["status"])</code></pre>
+      </div>
+      <div>
+        <table class="cmp-table cmp-table-blue">
+          <thead><tr><th>Object</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr><td><code>App</code></td><td>Unit of deployment; owns Functions, Sandboxes, Images. Tags for cost allocation.</td></tr>
+            <tr><td><code>Function</code> / <code>Cls</code></td><td><code>.remote()</code>, <code>.map()</code>, <code>.spawn()</code> → <code>FunctionCall</code> ID you can persist</td></tr>
+            <tr><td><code>Image</code></td><td>Content-hashed, cached, lazily built; now nameable</td></tr>
+            <tr><td><code>Secret</code> · <code>Volume</code> · <code>Dict</code> · <code>Queue</code></td><td>Managed via <code>.objects.create/list/delete</code> (1.1.2)</td></tr>
+            <tr><td><code>Sandbox</code></td><td>Runtime container; needs an App</td></tr>
+          </tbody>
+        </table>
+        <table class="cmp-table" style="margin-top:0.2em;">
+          <thead><tr><th>CLI</th><th>Does</th></tr></thead>
+          <tbody>
+            <tr><td><code>modal run f.py</code></td><td>Ephemeral App; primitive args become flags</td></tr>
+            <tr><td><code>modal serve</code></td><td>Live-reload (uses "recreate" strategy)</td></tr>
+            <tr><td><code>modal deploy</code></td><td>Persistent; <code>--strategy rolling|recreate</code>; rollbacks on Team+</td></tr>
+            <tr><td><code>modal shell sb-xxx</code> / <code>im-xxx</code></td><td>Drop into a Sandbox or an Image</td></tr>
+            <tr><td><code>modal app/function/server info|stats|logs</code></td><td>Agent-friendly introspection (1.6.0)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="callout callout-amber">
+      <strong>1.0+ automount change:</strong> local packages are no longer auto-included — add them with <code>image.add_local_python_source("pkg")</code>, or pass <code>include_source=False</code> when the Image already has them. Use <code>-m</code> for module paths: <code>modal deploy -m agentvetter.app</code>.
+    </div>
+    <div class="review">
+      <div class="review-title">Docs Review — Apps, Functions &amp; entrypoints</div>
+      <div class="review-row"><span class="review-dim">Clarity</span><span class="review-score good">A</span><span class="review-note">Ephemeral vs deployed Apps is explained with the exact CLI matrix.</span></div>
+      <div class="review-row"><span class="review-dim">Prerequisites</span><span class="review-score good">A</span><span class="review-note">Getting-started walks through <code>modal setup</code>.</span></div>
+      <div class="review-row"><span class="review-dim">Examples</span><span class="review-score good">A</span><span class="review-note">Plenty.</span></div>
+      <div class="review-row"><span class="review-dim">Level</span><span class="review-score good">A</span><span class="review-note">Beginner-safe.</span></div>
+      <div class="review-section">
+        <div class="review-section-title">⚠️ Could improve</div>
+        The automount breaking change bites people migrating from pre-1.0 tutorials found via search; a banner on older blog posts would help
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://modal.com/docs/guide/apps" target="_blank">Apps, Functions, and entrypoints</a> ·
+      <span class="src-num">2</span> <a href="https://modal.com/docs/guide/function-invocation-methods" target="_blank">Invocation methods</a> ·
+      <span class="src-num">3</span> <a href="https://modal.com/docs/guide/managing-deployments" target="_blank">Managing deployments</a> ·
+      <span class="src-num">4</span> <a href="https://modal.com/docs/guide/project-structure" target="_blank">File and project structure</a> ·
+      <span class="src-num">5</span> <a href="https://modal.com/docs/guide/developing-debugging" target="_blank">Developing and debugging</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Autoscaling, Concurrency &amp; Container Lifecycle</h2>
+    <div class="two-col">
+      <div>
+        <table class="cmp-table cmp-table-blue">
+          <thead><tr><th>Knob</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><code>min_containers</code></td><td>Warm floor (<del>keep_warm</del> removed in 1.4.0)</td></tr>
+            <tr><td><code>max_containers</code></td><td>Ceiling; plan limit 100 / 5000</td></tr>
+            <tr><td><code>buffer_containers</code></td><td>Headroom kept warm while active</td></tr>
+            <tr><td><code>scaledown_window</code></td><td>Idle linger before scale-in</td></tr>
+            <tr><td><code>@modal.concurrent(max_inputs=N)</code></td><td>N inputs per container (async/threaded)</td></tr>
+            <tr><td><code>@modal.batched(max_batch_size, wait_ms)</code></td><td>Dynamic batching of inputs</td></tr>
+            <tr><td><code>single_use_containers=True</code></td><td>Fresh container per input (<del>max_inputs=1</del>)</td></tr>
+            <tr><td><code>nonpreemptible=True</code></td><td>CPU only; <strong>3×</strong> price</td></tr>
+            <tr><td><code>startup_timeout</code></td><td>Separate from input <code>timeout</code> (1.1.4)</td></tr>
+          </tbody>
+        </table>
+        <p class="small"><code>Function.update_autoscaler(min_containers=…)</code> changes settings without redeploying — returns the full autoscaler state (1.5.4). Rate limit: ~200 calls/s per workspace with a 5-s burst.</p>
+      </div>
+      <div>
+        <div class="code-side">
+          <pre><code class="language-python">@app.cls(image=image, gpu="L4", min_containers=1,
+         scaledown_window=300)
+@modal.concurrent(max_inputs=8)
+class Judge:
+    model_id: str = modal.parameter(default="qwen3-guard")
+
+    @modal.enter()            # once per container
+    def load(self):
+        self.model = load(self.model_id)
+
+    @modal.method()
+    def score(self, finding: dict) -> float: ...
+
+    @modal.exit()             # 30-s grace on preemption
+    def flush(self): ...</code></pre>
+        </div>
+        <div class="callout callout-red" style="margin-top:0.4em;">
+          <strong>1.6.0 breaking:</strong> <code>@app.cls()</code> classes may not define <code>__init__</code>. Parameters go through <code>modal.parameter()</code>; setup goes in <code>@modal.enter()</code>. The old <code>__enter__</code> pattern is long gone.
+        </div>
+        <div class="insight-box tw" style="margin:0.3em 0 0;">
+          <div class="insight-label">AgentVetter open decision (Aug 4)</div>
+          Deployed Apps retry crashed containers with backoff <em>indefinitely</em>; ephemeral Apps stop at a failure-rate threshold. If the fan-out orchestrator is deployed, a broken scanner adapter can crash-loop outside Supabase's view. Decide: ephemeral <code>modal run</code> from the CLI (current), or deployed + <code>retries=0</code> + explicit status writes.
+        </div>
+      </div>
+    </div>
+    <div class="review">
+      <div class="review-title">Docs Review — Scaling out / lifecycle hooks</div>
+      <div class="review-row"><span class="review-dim">Clarity</span><span class="review-score good">A</span><span class="review-note">The autoscaler parameter table is clean; the "6am warm-up cron" example is memorable.</span></div>
+      <div class="review-row"><span class="review-dim">Prerequisites</span><span class="review-score ok">B</span><span class="review-note">Retry semantics for deployed vs ephemeral Apps live on the "Failures and retries" page, not next to the deploy docs.</span></div>
+      <div class="review-row"><span class="review-dim">Examples</span><span class="review-score good">A</span><span class="review-note">Good coverage.</span></div>
+      <div class="review-section">
+        <div class="review-section-title">⚠️ Could improve</div>
+        Still many community posts using <code>keep_warm</code>/<code>web_endpoint</code>; the docs' deprecation translator is release-notes-only
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://modal.com/docs/guide/scale" target="_blank">Scaling out</a> ·
+      <span class="src-num">2</span> <a href="https://modal.com/docs/guide/concurrent-inputs" target="_blank">Input concurrency</a> ·
+      <span class="src-num">3</span> <a href="https://modal.com/docs/guide/lifecycle-functions" target="_blank">Container lifecycle</a> ·
+      <span class="src-num">4</span> <a href="https://modal.com/docs/guide/parametrized-functions" target="_blank">Parametrized Functions</a> ·
+      <span class="src-num">5</span> <a href="https://modal.com/docs/guide/retries" target="_blank">Failures and retries</a> ·
+      <span class="src-num">6</span> <a href="https://modal.com/docs/guide/preemption" target="_blank">Preemption</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Web Endpoints, Servers &amp; Storage Primitives</h2>
+    <div class="two-col">
+      <div>
+        <h3 style="font-size:0.95em;">Serving HTTP</h3>
+        <table class="cmp-table cmp-table-blue">
+          <thead><tr><th>Decorator</th><th>When</th></tr></thead>
+          <tbody>
+            <tr><td><code>@modal.fastapi_endpoint()</code></td><td>One function → one route (<del>web_endpoint</del>)</td></tr>
+            <tr><td><code>@modal.asgi_app()</code> / <code>wsgi_app()</code></td><td>Mount a FastAPI/Flask app (must be nullary)</td></tr>
+            <tr><td><code>@modal.web_server(port)</code></td><td>Any server speaking HTTP on a port</td></tr>
+            <tr><td><code>@app.server()</code> <span class="badge badge-green">1.5.1</span></td><td>Ultra-low-latency HTTP primitive; <code>max_concurrency</code> → 503 when full; <code>@modal.sessioned()</code> sticky sessions for WebSockets</td></tr>
+          </tbody>
+        </table>
+        <p class="small">Auth: <strong>Proxy Tokens</strong> (<code>modal workspace proxy-tokens create</code>) → <code>Authorization: Bearer wk-id.ws-secret</code>. Sep 2026: filter/audit/block <em>unauthenticated</em> endpoints per environment. Request timeout and streaming guides cover SSE.</p>
+      </div>
+      <div>
+        <h3 style="font-size:0.95em;">Storage &amp; coordination</h3>
+        <table class="cmp-table">
+          <thead><tr><th>Primitive</th><th>Use</th><th>Gotcha</th></tr></thead>
+          <tbody>
+            <tr><td><code>Volume</code></td><td>Weights, datasets, scratch; $0.09/GiB/mo (1 TiB free)</td><td>Not safe for concurrent writes to one file; <code>read_only()</code>, <code>sub_path</code></td></tr>
+            <tr><td><code>CloudBucketMount</code></td><td>S3/GCS/R2 as a path; OIDC auth</td><td>Mount in every container that needs it</td></tr>
+            <tr><td><code>Dict</code></td><td>Network KV, cloudpickle values</td><td><strong>Entries expire after 7 days idle</strong>; 100 MiB/obj</td></tr>
+            <tr><td><code>Queue</code></td><td>Work queue, partitions</td><td>Unlimited on all plans</td></tr>
+          </tbody>
+        </table>
+        <div class="insight-box tw" style="margin:0.3em 0 0;">
+          <div class="insight-label">AgentVetter stance</div>
+          Supabase stays the sole system of record — Modal Dict/Volume are never durable state for scans. A Dict is fine for a <em>snapshot-ID cache</em> or the reaper's cursor; nothing a 7-day expiry can hurt.
+        </div>
+      </div>
+    </div>
+    <div class="review">
+      <div class="review-title">Docs Review — HTTP &amp; storage guides</div>
+      <div class="review-row"><span class="review-dim">Clarity</span><span class="review-score good">A</span><span class="review-note">Each primitive has its own page with limits up front (the Dict page states the 7-day expiry).</span></div>
+      <div class="review-row"><span class="review-dim">Prerequisites</span><span class="review-score ok">B</span><span class="review-note">Servers vs web Functions: the new primitive's page doesn't say when to prefer it over <code>asgi_app</code> beyond "ultra-low latency".</span></div>
+      <div class="review-row"><span class="review-dim">Examples</span><span class="review-score good">A</span><span class="review-note">Streaming, WebSockets, proxy auth all have snippets.</span></div>
+      <div class="review-section">
+        <div class="review-section-title">⚠️ Could improve</div>
+        A "Server vs Function vs Sandbox" latency/cost table · Volume consistency model deserves a diagram
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://modal.com/docs/guide/webhooks" target="_blank">Web Functions</a> ·
+      <span class="src-num">2</span> <a href="https://modal.com/docs/guide/servers" target="_blank">Servers</a> ·
+      <span class="src-num">3</span> <a href="https://modal.com/docs/guide/webhook-proxy-auth" target="_blank">Proxy Tokens</a> ·
+      <span class="src-num">4</span> <a href="https://modal.com/docs/guide/volumes" target="_blank">Volumes</a> ·
+      <span class="src-num">5</span> <a href="https://modal.com/docs/guide/dicts" target="_blank">Dicts</a> ·
+      <span class="src-num">6</span> <a href="https://modal.com/docs/guide/queues" target="_blank">Queues</a> ·
+      <span class="src-num">7</span> <a href="https://modal.com/docs/guide/cloud-bucket-mounts" target="_blank">Cloud bucket mounts</a>
+    </div>
+  </section>
+</section>
+
+<!-- ======================== SECTION 4: INFERENCE & TRAINING ======================== -->
+<section>
+  <section class="section-header">
+    <div class="section-num">Section 04 · <span style="color:var(--mo-purple);">Endpoints &amp; Training</span></div>
+    <h2>Endpoints, Training &amp; GPUs</h2>
+    <p class="small">The 2026 products: managed inference from the Model Library, Tinker-compatible training, multi-node clusters</p>
+  </section>
+
+  <section>
+    <h2>Endpoints: Managed Inference in Two Modes</h2>
+    <div class="two-col">
+      <div>
+        <table class="cmp-table cmp-table-purple">
+          <thead><tr><th></th><th>Shared</th><th>Dedicated</th></tr></thead>
+          <tbody>
+            <tr><td>Models</td><td>Selected Library models</td><td>All Library models + custom weights</td></tr>
+            <tr><td>Billing</td><td>Per token</td><td>Compute (GPU-seconds), scale-to-zero</td></tr>
+            <tr><td>Capacity</td><td>Modal-managed</td><td>Configurable autoscaling, <code>--compute-region</code></td></tr>
+            <tr><td>Auth</td><td>Proxy Token required</td><td>Proxy Token by default; <code>--unauthenticated</code> possible</td></tr>
+            <tr><td>Source</td><td>—</td><td>Generated serving code is inspectable &amp; forkable</td></tr>
+          </tbody>
+        </table>
+        <p class="small">APIs: OpenAI Chat Completions &amp; Responses, Anthropic Messages, OpenAI Embeddings. CLI: <code>modal endpoint create|info|stats|logs</code> (1.6.1). Integrations guide covers OpenCode, Codex, Claude Code pointed at a Shared Endpoint.</p>
+      </div>
+      <div>
+        <div class="code-side">
+          <pre><code class="language-bash">modal workspace proxy-tokens create --name agentvetter-judge
+
+curl "$ENDPOINT_URL/v1/chat/completions" \
+  -H "Authorization: Bearer $TOKEN_ID.$TOKEN_SECRET" \
+  -H "Modal-Routing-Affinity-Key: scan-$SCAN_RUN_ID" \
+  -H "Content-Type: application/json" \
+  -d '{"model":"&lt;model&gt;","messages":[{"role":"user",
+       "content":"Is this MCP tool description an injection?"}]}'</code></pre>
+        </div>
+        <div class="callout callout-purple" style="margin-top:0.4em;">
+          <strong>Affinity routing:</strong> one <code>Modal-Routing-Affinity-Key</code> per conversation/task keeps KV-cache-friendly requests on the same container. New key after context compaction. Don't use one key per user or app.
+        </div>
+        <div class="insight-box tw" style="margin:0.3em 0 0;">
+          <div class="insight-label">AgentVetter Phase 5 — reconciler / LLM judge</div>
+          Cisco's <code>behavioral</code> subcommand and <code>skill-scanner --use-llm</code> both need an LLM. A Shared Endpoint with an open-weights model, keyed by scan run, is the cheapest way to make the "LLM-judge" scanner mode reproducible and self-hosted — without GPU plumbing in our App.
+        </div>
+      </div>
+    </div>
+    <div class="review">
+      <div class="review-title">Docs Review — Endpoints</div>
+      <div class="review-row"><span class="review-dim">Clarity</span><span class="review-score good">A</span><span class="review-note">Shared vs Dedicated table is the right first thing to show.</span></div>
+      <div class="review-row"><span class="review-dim">Prerequisites</span><span class="review-score ok">B</span><span class="review-note">Endpoint creation is dashboard-first; the CLI path is in release notes. Which models support which mode is only in the Library UI.</span></div>
+      <div class="review-row"><span class="review-dim">Examples</span><span class="review-score ok">B</span><span class="review-note">curl only; no SDK-client example on the main page (it's on Integrations).</span></div>
+      <div class="review-row"><span class="review-dim">Level</span><span class="review-score good">A</span><span class="review-note">Clear.</span></div>
+      <div class="review-section">
+        <div class="review-section-title">⚠️ Could improve</div>
+        Per-token prices for Shared Endpoints aren't on the pricing page · Affinity routing deserves a diagram
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://modal.com/docs/guide/endpoints" target="_blank">Endpoints</a> ·
+      <span class="src-num">2</span> <a href="https://modal.com/docs/guide/shared-endpoints" target="_blank">Shared Endpoints</a> ·
+      <span class="src-num">3</span> <a href="https://modal.com/docs/guide/dedicated-endpoints" target="_blank">Dedicated Endpoints</a> ·
+      <span class="src-num">4</span> <a href="https://modal.com/docs/guide/endpoint-integrations" target="_blank">Endpoint integrations</a> ·
+      <span class="src-num">5</span> <a href="https://modal.com/library" target="_blank">Model Library</a> ·
+      <span class="src-num">6</span> <a href="https://modal.com/docs/cli/latest/endpoint" target="_blank">modal endpoint CLI</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Training, Clusters &amp; the GPU Menu</h2>
+    <div class="two-col">
+      <div>
+        <table class="cmp-table cmp-table-amber">
+          <thead><tr><th>GPU</th><th>$/sec</th><th>≈ $/hr</th></tr></thead>
+          <tbody>
+            <tr><td>T4</td><td>0.000164</td><td>0.59</td></tr>
+            <tr><td>L4</td><td>0.000222</td><td>0.80</td></tr>
+            <tr><td>A10</td><td>0.000306</td><td>1.10</td></tr>
+            <tr><td>L40S</td><td>0.000542</td><td>1.95</td></tr>
+            <tr><td>A100 40 / 80 GB</td><td>0.000583 / 0.000694</td><td>2.10 / 2.50</td></tr>
+            <tr><td>RTX PRO 6000</td><td>0.000842</td><td>3.03</td></tr>
+            <tr><td>H100 SXM5</td><td>0.001097</td><td>3.95</td></tr>
+            <tr><td>H200 SXM</td><td>0.001261</td><td>4.54</td></tr>
+            <tr><td>B200 / B300</td><td>0.001736 / 0.001972</td><td>6.25 / 7.10</td></tr>
+          </tbody>
+        </table>
+        <p class="smaller">Region pinning 1.15–1.75×; non-preemptible 3× (CPU only). GPU Sandboxes are preemptible — design for interruption.</p>
+      </div>
+      <div>
+        <table class="cmp-table">
+          <thead><tr><th>Capability</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Training quickstart</td><td>Fine-tune, RL, eval; Sandboxes as RL environments (Modal pitches "1M concurrent" for rollouts)</td></tr>
+            <tr><td>Tinker-compatible API ("Spindle")</td><td>Drop-in for Thinking Machines' Tinker client</td></tr>
+            <tr><td>Multi-node training / clusters</td><td><code>@modal.clustered()</code> (1.6.0 GA) + <code>modal.Cluster</code> for rank &amp; private IPs; i6pn private networking; RDMA</td></tr>
+            <tr><td>GPU health &amp; metrics</td><td>GPU health page, GPU Metrics, <code>modal.Cluster</code> diagnostics</td></tr>
+            <tr><td>High-performance LLM inference guide</td><td>vLLM/SGLang/TRT-LLM engine advice; LLM Engine Advisor tool</td></tr>
+          </tbody>
+        </table>
+        <div class="callout callout-amber" style="margin-top:0.4em;">
+          <strong>Not for AgentVetter (yet):</strong> our scanners are CPU-bound. The only GPU touchpoint is an optional self-hosted judge — and Endpoints cover that without us owning GPU code.
+        </div>
+      </div>
+    </div>
+    <div class="review">
+      <div class="review-title">Docs Review — Training &amp; GPU guides</div>
+      <div class="review-row"><span class="review-dim">Clarity</span><span class="review-score good">A</span><span class="review-note">GPU page lists every type with the pricing cross-link; cluster docs explain rank/IP discovery.</span></div>
+      <div class="review-row"><span class="review-dim">Prerequisites</span><span class="review-score ok">B</span><span class="review-note">Assumes you know Tinker's API; no primer.</span></div>
+      <div class="review-row"><span class="review-dim">Examples</span><span class="review-score good">A</span><span class="review-note">Examples index has many fine-tuning and multi-node samples.</span></div>
+      <div class="review-row"><span class="review-dim">Level</span><span class="review-score ok">B</span><span class="review-note">Advanced; appropriate.</span></div>
+      <div class="review-section">
+        <div class="review-section-title">⚠️ Could improve</div>
+        State GPU-concurrency plan limits (10 / 50) on the GPU page, not just pricing
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://modal.com/docs/guide/gpu" target="_blank">GPU acceleration</a> ·
+      <span class="src-num">2</span> <a href="https://modal.com/docs/guide/training-quickstart" target="_blank">Training quickstart</a> ·
+      <span class="src-num">3</span> <a href="https://modal.com/docs/guide/spindle" target="_blank">Tinker-compatible API</a> ·
+      <span class="src-num">4</span> <a href="https://modal.com/docs/guide/multi-node-clusters" target="_blank">Multi-node Clusters</a> ·
+      <span class="src-num">5</span> <a href="https://modal.com/docs/guide/high-performance-llm-inference" target="_blank">High-performance LLM inference</a> ·
+      <span class="src-num">6</span> <a href="https://modal.com/pricing" target="_blank">Pricing</a>
+    </div>
+  </section>
+</section>
+
+<!-- ======================== SECTION 5: ENGINEERING ======================== -->
+<section>
+  <section class="section-header">
+    <div class="section-num">Section 05</div>
+    <h2>Engineering Deep Dives</h2>
+    <p class="small">What Modal has published about how the thing works — and how to read their comparison guides</p>
+  </section>
+
+  <section>
+    <h2>Under the Hood &amp; Reading the Vendor Guides</h2>
+    <div class="three-col" style="font-size:0.72em;">
+      <div class="insight-box" style="margin:0;">
+        <div class="insight-label">Scaling to 1M concurrent Sandboxes</div>
+        The engineering post behind V2: a rebuilt scheduler and filesystem path that pushed creation rates past 20/s per workspace and demonstrated a million concurrent Sandboxes. This is why <code>create()</code> now blocks until scheduled — placement became the real cost.
+      </div>
+      <div class="insight-box" style="margin:0;">
+        <div class="insight-label">gVisor vs microVMs</div>
+        Modal's isolation story: gVisor intercepts syscalls in userspace (fast start, dense packing); competitors (E2B, Vercel) use Firecracker microVMs. Modal added a KVM "vm" runtime in 1.6 for workloads that need a real kernel — so you now choose per Sandbox.
+      </div>
+      <div class="insight-box" style="margin:0;">
+        <div class="insight-label">SWE-bench upstream</div>
+        Modal contributed a <code>--modal</code> flag to SWE-bench; the 500-task Verified set runs in ~7 minutes. Useful precedent for AgentVetter: a benchmark harness that fans out one Sandbox per task is a solved pattern.
+      </div>
+    </div>
+    <hr>
+    <div class="two-col" style="font-size:0.72em;">
+      <div>
+        <h3 style="font-size:1.05em;">Security &amp; compliance posture</h3>
+        SOC 2 Type II (all plans) · HIPAA via BAA (Enterprise) · Audit logs (Enterprise) · Data residency and region selection · Customer-supplied encryption keys (alpha) · Restricted Functions / private Environments · Sandboxes cannot touch other workspace resources by default.
+      </div>
+      <div>
+        <h3 style="font-size:1.05em;">The "Best Sandboxes for X in 2026" series</h3>
+        Modal's <em>resources</em> section carries ~10 vendor-authored comparison guides (tool-calling agents, RL, notebooks, IDEs, SWE-bench…). They're accurate about Modal's own limits (24 h, 50k–100k concurrency, GPU list) and reasonably fair on E2B/Daytona/Vercel/Cloudflare — but every one concludes "Modal stands out". Treat as a feature checklist, not a verdict.
+      </div>
+    </div>
+    <div class="review">
+      <div class="review-title">Docs Review — Blog &amp; resources</div>
+      <div class="review-row"><span class="review-dim">Clarity</span><span class="review-score good">A</span><span class="review-note">Engineering posts are substantive; the GPU Glossary is a standout reference.</span></div>
+      <div class="review-row"><span class="review-dim">Prerequisites</span><span class="review-score ok">B</span><span class="review-note">Comparison guides don't disclose their publication cadence or review process.</span></div>
+      <div class="review-row"><span class="review-dim">Examples</span><span class="review-score ok">B</span><span class="review-note">Blog is narrative; code lives in Examples.</span></div>
+      <div class="review-row"><span class="review-dim">Level</span><span class="review-score good">A</span><span class="review-note">Well pitched.</span></div>
+      <div class="review-section">
+        <div class="review-section-title">⚠️ Could improve</div>
+        Mark the comparison guides as sponsored/vendor content more clearly · Link each guide's claims to the doc page that backs them
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://modal.com/blog/scaling-to-1-million-concurrent-sandboxes-in-seconds" target="_blank">Scaling to 1M concurrent sandboxes</a> ·
+      <span class="src-num">2</span> <a href="https://modal.com/resources/best-code-execution-sandboxes-tool-calling-ai-agents" target="_blank">Best sandboxes for tool-calling agents</a> ·
+      <span class="src-num">3</span> <a href="https://modal.com/resources/best-sandboxes-swe-bench-coding-agents" target="_blank">Best sandboxes for SWE-bench agents</a> ·
+      <span class="src-num">4</span> <a href="https://modal.com/docs/guide/security" target="_blank">Security and privacy</a> ·
+      <span class="src-num">5</span> <a href="https://modal.com/gpu-glossary" target="_blank">GPU Glossary</a> ·
+      <span class="src-num">6</span> <a href="https://modal.com/blog" target="_blank">Blog</a>
+    </div>
+  </section>
+</section>
+
+<!-- ======================== SECTION 6: TOOLING ======================== -->
+<section>
+  <section class="section-header">
+    <div class="section-num">Section 06 · <span style="color:var(--mo-green);">Developer Tooling</span></div>
+    <h2>SDKs, Agents &amp; Workspace Ops</h2>
+    <p class="small">JS/Go SDKs · the Modal agent skill · agent-friendly CLI · RBAC, budgets, OIDC</p>
+  </section>
+
+  <section>
+    <h2>Three SDKs, One Agent Skill</h2>
+    <div class="two-col">
+      <div>
+        <table class="cmp-table">
+          <thead><tr><th>SDK</th><th>Status</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Python <code>modal</code> 1.6.1</td><td><span class="badge badge-green">GA</span></td><td>Pin minor: <code>modal~=1.6.0</code>; breaking changes only in <code>1.Y.0</code>. Python 3.10–3.14 (3.14t experimental).</td></tr>
+            <tr><td>JavaScript <code>modal</code></td><td><span class="badge badge-amber">Beta</span></td><td><code>new ModalClient()</code>; full Sandbox API incl. probes, policies, sidecars. Needs Python-SDK ≥1.2 deployed Apps.</td></tr>
+            <tr><td>Go <code>modal-client/go</code></td><td><span class="badge badge-amber">Beta</span></td><td>Same surface; build logs stream automatically.</td></tr>
+          </tbody>
+        </table>
+        <div class="insight-box tw" style="margin:0.3em 0 0;">
+          <div class="insight-label">AgentVetter CLI is Node</div>
+          The AgentVetter CLI (Node) currently shells out to the Python sandbox layer. The JS SDK is now capable enough that the CLI could create Sandboxes directly — one fewer runtime in the loop. Worth a spike only after the P0 adapter verification; it's expansion, not correctness.
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size:0.95em;">Built for coding agents</h3>
+        <table class="cmp-table cmp-table-blue">
+          <thead><tr><th>Tool</th><th>What</th></tr></thead>
+          <tbody>
+            <tr><td><code>modal skills install</code> / <code>update</code></td><td>Installs Modal's foundational agent skill (1.5.0) — keep Claude Code / Cursor on current API names</td></tr>
+            <tr><td><code>modal changelog --since=1.5</code></td><td>Query changelog from the CLI (1.3.5)</td></tr>
+            <tr><td><code>modal app logs --since 4h --search "denied"</code></td><td>Historical, filterable logs; <code>--source system</code></td></tr>
+            <tr><td><code>modal function|server|app info|stats|logs</code></td><td>Structured introspection; <code>--json</code> with normalised keys</td></tr>
+            <tr><td><code>modal curl</code></td><td>Hit authenticated endpoints without juggling proxy tokens</td></tr>
+            <tr><td><code>pty=True</code></td><td>Sandbox PTY "for better Claude Code support"</td></tr>
+          </tbody>
+        </table>
+        <p class="small">Examples worth cloning: <em>coding agent with LangGraph</em>, <em>Claude Managed Agents on Modal Sandboxes</em> (GitHub), <em>Sandbox pool</em>, <em>safe code execution</em>.</p>
+      </div>
+    </div>
+    <div class="review">
+      <div class="review-title">Docs Review — JS/Go SDKs &amp; agent tooling</div>
+      <div class="review-row"><span class="review-dim">Clarity</span><span class="review-score good">A</span><span class="review-note">Four-language tabs across the Sandbox docs mean the JS/Go story is as discoverable as Python.</span></div>
+      <div class="review-row"><span class="review-dim">Prerequisites</span><span class="review-score ok">B</span><span class="review-note">JS/Go are "Beta" but the maturity page doesn't list which Sandbox features lag (e.g. logs API).</span></div>
+      <div class="review-row"><span class="review-dim">Examples</span><span class="review-score good">A</span><span class="review-note">Agent examples are complete repos.</span></div>
+      <div class="review-row"><span class="review-dim">Level</span><span class="review-score good">A</span><span class="review-note">Good.</span></div>
+      <div class="review-section">
+        <div class="review-section-title">⚠️ Could improve</div>
+        Publish the skill's contents in the docs so non-CLI users can read it · A JS/Go feature-parity matrix
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://modal.com/docs/guide/sdk-javascript-go" target="_blank">JavaScript/Go SDKs</a> ·
+      <span class="src-num">2</span> <a href="https://modal.com/docs/cli/latest/skills" target="_blank">modal skills CLI</a> ·
+      <span class="src-num">3</span> <a href="https://modal.com/docs/examples/agent" target="_blank">Example: coding agent (LangGraph)</a> ·
+      <span class="src-num">4</span> <a href="https://github.com/modal-labs/claude-managed-agents-modal-sandbox" target="_blank">Claude Managed Agents on Modal</a> ·
+      <span class="src-num">5</span> <a href="https://modal.com/docs/examples/sandbox_pool" target="_blank">Example: Sandbox pool</a> ·
+      <span class="src-num">6</span> <a href="https://modal.com/docs/guide/feature-maturity" target="_blank">Feature maturity</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Workspace Ops: RBAC, Budgets, Identity</h2>
+    <table class="cmp-table">
+      <thead><tr><th style="width:22%">Capability</th><th>Detail</th><th style="width:14%">Plan</th></tr></thead>
+      <tbody>
+        <tr><td>Environments</td><td>dev/staging/prod split inside a workspace; Restricted Environments with configurable default roles → private envs (Aug 2026)</td><td>All</td></tr>
+        <tr><td>RBAC + User groups</td><td>Environment roles per member/service user; groups synced via SCIM (Sep 2026)</td><td>Team+</td></tr>
+        <tr><td>Budgets</td><td>Workspace and per-Environment monthly caps; usage limits redesigned Aug 2026</td><td>Team+</td></tr>
+        <tr><td>Billing APIs</td><td><code>Workspace.billing.report()/summary()/rates()</code>, <code>modal billing …</code> — cost by App tag, by resource</td><td>Team+</td></tr>
+        <tr><td>OIDC identity tokens</td><td><code>include_oidc_identity_token=True</code> → <code>$MODAL_IDENTITY_TOKEN</code>; federate to AWS/GCP without static keys; works in Sandboxes &amp; Sidecars</td><td>All</td></tr>
+        <tr><td>Service users &amp; tokens</td><td><code>modal token new --expires-in</code>; named proxy tokens; <code>modal token info</code></td><td>All</td></tr>
+        <tr><td>SSO / SCIM / audit logs</td><td>Okta, Entra, SAML (XML metadata upload Sep 2026); audit logs</td><td>Enterprise</td></tr>
+        <tr><td>Static-IP Proxies</td><td>Egress via fixed IPs, region-selectable (Aug 2026); usable from Sandboxes and Sidecars</td><td>Team+</td></tr>
+        <tr><td>Notifications</td><td>Slack per app/environment, in-app follows (Sep 2026)</td><td>Beta</td></tr>
+      </tbody>
+    </table>
+    <div class="insight-box tw" style="margin:0.3em 0 0;">
+      <div class="insight-label">AgentVetter multi-tenancy (deferred)</div>
+      When RLS/auth lands, Modal's side is already there: one Environment per tenant tier, Environment Budgets to cap a runaway batch, and OIDC tokens so the Sandbox writes to Supabase Storage via a short-lived federated credential instead of a long-lived service key in a Secret.
+    </div>
+    <div class="review">
+      <div class="review-title">Docs Review — Workspace &amp; account settings</div>
+      <div class="review-row"><span class="review-dim">Clarity</span><span class="review-score good">A</span><span class="review-note">Each feature has a page; plan gating is mostly stated.</span></div>
+      <div class="review-row"><span class="review-dim">Prerequisites</span><span class="review-score ok">B</span><span class="review-note">Several items are "Beta" with no listed limitations (SCIM, user groups).</span></div>
+      <div class="review-row"><span class="review-dim">Examples</span><span class="review-score ok">B</span><span class="review-note">OIDC guide has AWS examples; GCP is thinner.</span></div>
+      <div class="review-section">
+        <div class="review-section-title">⚠️ Could improve</div>
+        A single plan-feature matrix in the docs (it exists only on the pricing page)
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://modal.com/docs/guide/rbac" target="_blank">RBAC</a> ·
+      <span class="src-num">2</span> <a href="https://modal.com/docs/guide/budgets" target="_blank">Budgets</a> ·
+      <span class="src-num">3</span> <a href="https://modal.com/docs/guide/oidc-integration" target="_blank">OIDC integration</a> ·
+      <span class="src-num">4</span> <a href="https://modal.com/docs/guide/environments" target="_blank">Environments</a> ·
+      <span class="src-num">5</span> <a href="https://modal.com/docs/guide/proxy-ips" target="_blank">Proxies</a> ·
+      <span class="src-num">6</span> <a href="https://modal.com/docs/guide/audit-logs" target="_blank">Audit logs</a>
+    </div>
+  </section>
+</section>
+
+<!-- ======================== SECTION 7: MODAL x AGENTVETTER ======================== -->
+<section>
+  <section class="section-header">
+    <div class="section-num">Section 07 · <span style="color:var(--mo-accent);">Modal × AgentVetter</span></div>
+    <h2>Modal × AgentVetter</h2>
+    <p class="small">Every locked AgentVetter decision that touches Modal, re-checked against the October docs</p>
+  </section>
+
+  <section>
+    <h2>Decision Audit: Spec vs Current Modal</h2>
+    <div class="wide">
+    <table class="cmp-table">
+      <thead><tr><th style="width:26%">AgentVetter decision / assumption</th><th style="width:30%">Modal feature today</th><th style="width:12%">Verdict</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td>Ephemeral Sandbox per scan, prebuilt image, content copied at runtime</td><td>Named Images + <code>Image.from_name()</code>; <code>sb.filesystem.copy_from_local()</code> (2.5× faster since 1.5.3)</td><td><span class="badge badge-green">Holds</span></td><td>Publish image with a dated tag; migrate any <code>sb.open()</code> usage — removed in 1.6</td></tr>
+        <tr><td>Static per-scanner + dynamic per-target egress allowlist</td><td><code>outbound_domain_allowlist</code> (beta) with denials logged</td><td><span class="badge badge-green">Better</span></td><td>Replace any CIDR lists with domains; close the "denied-egress logging" fixture gap using <code>--source system</code> logs</td></tr>
+        <tr><td>Credentials via Modal Secrets (env) — "revisit if insufficient"</td><td>Outbound Policy injection; Sidecar proxies</td><td><span class="badge badge-amber">Revisit</span></td><td>Decide env vs policy vs sidecar (slide 2.6). Policy and domain allowlist are mutually exclusive.</td></tr>
+        <tr><td>Fixed sleep before Cisco MCP live scan</td><td>Readiness probes (TCP / exec)</td><td><span class="badge badge-green">Better</span></td><td>Adopt; handle <code>modal.exception.TimeoutError</code> → <code>unreachable</code></td></tr>
+        <tr><td>Hard timeout → exit 137 = "killed by us"</td><td>Unchanged; <code>terminate(wait=True)</code> needed to read it</td><td><span class="badge badge-green">Holds</span></td><td>Add <code>idle_timeout</code>; verify 137 on idle kill empirically</td></tr>
+        <tr><td>Sandbox tagging for orphan detection</td><td><code>tags=</code> at create, <code>Sandbox.list(tags=)</code></td><td><span class="badge badge-green">Holds</span></td><td>Add a 10-min reaper Function (slide 2.9)</td></tr>
+        <tr><td>Sandbox default 5 min lifetime; <code>.map()</code> fan-out</td><td>Unchanged. V2: <code>create()</code> blocks; <code>ResourceExhaustedError</code></td><td><span class="badge badge-amber">Adjust</span></td><td>Treat create failures as a 5th status (<code>not_scheduled</code>?) — this is the "5th error status" fixture gap</td></tr>
+        <tr><td>Sandbox cost assumed ≈ Function cost</td><td>Sandbox CPU/mem ≈ <strong>3×</strong> Functions</td><td><span class="badge badge-red">Wrong</span></td><td>Budget with the calculator; request 0.25–0.5 cores and let bursting cover peaks</td></tr>
+        <tr><td>Node.js in base image for <code>npx tessl</code> + Node MCP servers</td><td>No change</td><td><span class="badge badge-green">Holds</span></td><td>Keep; 2025.06 Image Builder reduces dep conflicts</td></tr>
+        <tr><td>Deeper observability (file/process) deferred</td><td>Sidecars + <code>proxy_traffic_via_sidecar</code>; <code>verbose=True</code></td><td><span class="badge badge-amber">Unlocked</span></td><td>Post-MVP: mitmproxy sidecar for full request capture</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> AgentVetter spec &amp; <code>STATUS.md</code> (neomatrix369/agentvetter) ·
+      <span class="src-num">2</span> Modal power-user guide (4 Aug 2026 session) ·
+      <span class="src-num">3</span> <a href="https://modal.com/docs/guide/sandboxes" target="_blank">Sandboxes</a> ·
+      <span class="src-num">4</span> <a href="https://modal.com/docs/guide/sandbox-networking" target="_blank">Networking</a> ·
+      <span class="src-num">5</span> <a href="https://modal.com/docs/sdk/py/releases" target="_blank">Release notes</a> ·
+      <span class="src-num">6</span> <a href="https://modal.com/pricing" target="_blank">Pricing</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>The Scan Path on Modal, End to End</h2>
+    <svg viewBox="0 0 800 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:800px;margin:0.2em auto;display:block;">
+      <defs><marker id="arrT" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="6" markerHeight="4" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#8f3109"/></marker></defs>
+      <g font-family="-apple-system,system-ui,sans-serif" font-size="10.5" fill="#1c1915">
+        <rect x="5" y="20" width="130" height="52" rx="8" fill="#efe9dc" stroke="#1d4ed8"/>
+        <text x="70" y="40" text-anchor="middle" font-weight="600">agentvetter CLI (Node)</text>
+        <text x="70" y="55" text-anchor="middle" font-size="9" fill="#5c564c">scan → batch_id + run_ids</text>
+        <rect x="175" y="20" width="150" height="52" rx="8" fill="#efe9dc" stroke="#1d4ed8"/>
+        <text x="250" y="40" text-anchor="middle" font-weight="600">Orchestrator Function</text>
+        <text x="250" y="55" text-anchor="middle" font-size="9" fill="#5c564c">.map(run_ids) · ephemeral App</text>
+        <rect x="365" y="5" width="200" height="82" rx="8" fill="#efe9dc" stroke="#8f3109" stroke-width="1.5"/>
+        <text x="465" y="24" text-anchor="middle" font-weight="600" fill="#8f3109">Sandbox (gVisor)</text>
+        <text x="465" y="39" text-anchor="middle" font-size="9" fill="#5c564c">Image.from_name · timeout 600 · idle 120</text>
+        <text x="465" y="52" text-anchor="middle" font-size="9" fill="#5c564c">outbound_domain_allowlist[scanner + target]</text>
+        <text x="465" y="65" text-anchor="middle" font-size="9" fill="#5c564c">probe → exec snyk / cisco / tessl</text>
+        <text x="465" y="78" text-anchor="middle" font-size="9" fill="#5c564c">tags{scan_run_id, batch_id}</text>
+        <rect x="605" y="20" width="190" height="52" rx="8" fill="#efe9dc" stroke="#6d28d9"/>
+        <text x="700" y="40" text-anchor="middle" font-weight="600">Supabase (system of record)</text>
+        <text x="700" y="55" text-anchor="middle" font-size="9" fill="#5c564c">findings · scan_run_scanners · Storage</text>
+        <rect x="365" y="110" width="200" height="40" rx="8" fill="#efe9dc" stroke="#9a4708"/>
+        <text x="465" y="127" text-anchor="middle" font-weight="600" fill="#9a4708">Modal Secrets / Outbound Policy</text>
+        <text x="465" y="141" text-anchor="middle" font-size="9" fill="#5c564c">SNYK_TOKEN · CISCO key · TESSL_TOKEN</text>
+        <rect x="175" y="110" width="150" height="40" rx="8" fill="#efe9dc" stroke="#5c564c"/>
+        <text x="250" y="127" text-anchor="middle" font-weight="600">Reaper (cron 10 min)</text>
+        <text x="250" y="141" text-anchor="middle" font-size="9" fill="#5c564c">Sandbox.list(tags) → terminate</text>
+        <rect x="605" y="110" width="190" height="40" rx="8" fill="#efe9dc" stroke="#5c564c"/>
+        <text x="700" y="127" text-anchor="middle" font-weight="600">Dashboard (Next.js)</text>
+        <text x="700" y="141" text-anchor="middle" font-size="9" fill="#5c564c">Realtime heatmap · evidence panel</text>
+        <rect x="5" y="165" width="790" height="36" rx="8" fill="#efe9dc" stroke="#a81717" stroke-dasharray="4 3"/>
+        <text x="400" y="187" text-anchor="middle" font-size="10" fill="#a81717">Evidence: sb.object_id · get_dashboard_url() · container logs --source system (egress denials) · returncode 137 on cleanup</text>
+        <line x1="135" y1="46" x2="175" y2="46" stroke="#8f3109" stroke-width="1.5" marker-end="url(#arrT)"/>
+        <line x1="325" y1="46" x2="365" y2="46" stroke="#8f3109" stroke-width="1.5" marker-end="url(#arrT)"/>
+        <line x1="565" y1="46" x2="605" y2="46" stroke="#8f3109" stroke-width="1.5" marker-end="url(#arrT)"/>
+        <line x1="465" y1="110" x2="465" y2="87" stroke="#9a4708" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrT)"/>
+        <line x1="325" y1="130" x2="365" y2="90" stroke="#5c564c" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrT)"/>
+        <line x1="700" y1="110" x2="700" y2="72" stroke="#6d28d9" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrT)"/>
+      </g>
+    </svg>
+    <div class="two-col" style="font-size:0.72em;">
+      <div class="callout callout-accent" style="margin:0;font-size:1em;">
+        <strong>What's new on this diagram vs the August .tldr:</strong> readiness probe before the live-server scan; <code>idle_timeout</code> beside the hard timeout; domain allowlist instead of CIDR; a reaper cron; the Secrets box is now a <em>choice</em> (env vs Outbound Policy); evidence is fully programmatic.
+      </div>
+      <div class="callout callout-amber" style="margin:0;font-size:1em;">
+        <strong>Still open (ask before locking):</strong> ① ephemeral vs deployed orchestrator; ② env-Secret vs Outbound-Policy vs Sidecar; ③ whether a V2 <code>ResourceExhaustedError</code> becomes the 5th <code>scan_run_scanners</code> status; ④ snapshot TTL for the scanner image (named Images don't expire; FS snapshots do).
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> AgentVetter architecture .tldr &amp; ARCHITECTURE.md (C4 L1/L2) ·
+      <span class="src-num">2</span> <a href="https://modal.com/docs/guide/sandboxes" target="_blank">Sandboxes</a> ·
+      <span class="src-num">3</span> <a href="https://modal.com/docs/guide/cron" target="_blank">Scheduled Functions</a> ·
+      <span class="src-num">4</span> <a href="https://modal.com/docs/guide/sandbox-secret-injection" target="_blank">Secret injection</a>
+    </div>
+  </section>
+</section>
+
+<!-- ======================== SECTION 8: QUICK REFERENCE ======================== -->
+<section>
+  <section class="section-header">
+    <div class="section-num">Section 08</div>
+    <h2>Quick Reference</h2>
+    <p class="small">Sandbox cheat sheet · rename map · every link in one place</p>
+  </section>
+
+  <section>
+    <h2>Sandbox Cheat Sheet (SDK 1.6.1)</h2>
+    <div class="two-col" style="font-size:0.74em;">
+      <div>
+        <h3 style="font-size:1em;">Create</h3>
+        <pre><code class="language-python">modal.Sandbox.create(
+  *entrypoint_cmd, app=, name=, tags=,
+  image=, env=, secrets=, volumes=,
+  cpu=(req, lim), memory=(req, lim), gpu=,
+  timeout=300, idle_timeout=None, workdir=,
+  runtime="gvisor"|"vm",
+  block_network=, outbound_cidr_allowlist=,
+  outbound_domain_allowlist=, inbound_cidr_allowlist=,
+  encrypted_ports=, unencrypted_ports=, h2_ports=,
+  readiness_probe=modal.Probe.with_tcp(p)|with_exec(..),
+  proxy=, custom_domain=, pty=, verbose=,
+  include_oidc_identity_token=, region=, cloud=,
+  _experimental_outbound_policy=,
+  _experimental_enable_snapshot=,
+  experimental_options={"proxy_traffic_via_sidecar": ..})</code></pre>
+        <h3 style="font-size:1em;margin-top:0.4em;">Lookup</h3>
+        <pre><code class="language-python">Sandbox.from_id(id) · Sandbox.from_name(app, name)
+Sandbox.list(app_id=, tags=)</code></pre>
+      </div>
+      <div>
+        <h3 style="font-size:1em;">Use</h3>
+        <pre><code class="language-python">p = sb.exec(*cmd, timeout=, pty=, workdir=)
+p.stdout / p.stderr / p.stdin · p.wait() · p.returncode
+sb.wait_until_ready() · sb.poll() · sb.wait()
+sb.filesystem.read_text/write_text/read_bytes/write_bytes
+sb.filesystem.copy_from_local/copy_to_local
+sb.filesystem.list_files/stat/make_directory/remove/watch
+sb.tunnels() · sb.create_connect_token(user_metadata=, port=)
+sb.set_tags() · sb.get_tags() · sb.get_dashboard_url()
+sb.logs.fetch(since=, until=) · sb.logs.tail()
+sb.snapshot_filesystem(ttl=) · sb.snapshot_directory(path, ttl=)
+sb.mount_image(path, img) · sb.unmount_image(path)
+sb.reload_volumes(timeout=55)
+sb._experimental_set_outbound_network_policy(...)
+sb._experimental_update_outbound_policy(policy)
+sb._experimental_sidecars.create/list/get
+sb.terminate(wait=False) · sb.returncode · sb.detach()</code></pre>
+        <h3 style="font-size:1em;margin-top:0.4em;">CLI</h3>
+        <pre><code class="language-bash">modal shell sb-xxx            # jump in
+modal container logs sb-xxx --all --source system
+modal container stop sb-xxx --yes
+modal image names             # published named images
+modal sandbox list            # per app</code></pre>
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://modal.com/docs/sdk/py/latest/Sandbox" target="_blank">modal.Sandbox</a> ·
+      <span class="src-num">2</span> <a href="https://modal.com/docs/guide/sandbox-files" target="_blank">File access</a> ·
+      <span class="src-num">3</span> <a href="https://modal.com/docs/sdk/py/latest/container_process" target="_blank">ContainerProcess</a> ·
+      <span class="src-num">4</span> <a href="https://modal.com/docs/cli/latest" target="_blank">CLI reference</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Rename &amp; Removal Map (what old tutorials get wrong)</h2>
+    <table class="cmp-table cmp-table-red">
+      <thead><tr><th style="width:32%">You'll see</th><th style="width:32%">Use instead</th><th>Since</th></tr></thead>
+      <tbody>
+        <tr><td><code>modal.Stub</code></td><td><code>modal.App</code></td><td>1.0.0 (now <code>AttributeError</code>)</td></tr>
+        <tr><td><code>keep_warm=</code>, <code>concurrency_limit=</code></td><td><code>min_containers=</code>, <code>max_containers=</code></td><td>removed 1.4.0</td></tr>
+        <tr><td><code>@modal.web_endpoint</code></td><td><code>@modal.fastapi_endpoint</code></td><td>1.0</td></tr>
+        <tr><td><code>max_inputs=1</code> on function</td><td><code>single_use_containers=True</code></td><td>1.3.0</td></tr>
+        <tr><td><code>cidr_allowlist=</code></td><td><code>outbound_cidr_allowlist=</code></td><td>1.4.3 (deprecated)</td></tr>
+        <tr><td><code>sb.open()/ls()/mkdir()/rm()/watch()</code>, <code>FileIO</code></td><td><code>sb.filesystem.*</code></td><td>removed 1.6.0</td></tr>
+        <tr><td><code>__init__</code> in <code>@app.cls</code>; <code>__enter__</code></td><td><code>modal.parameter()</code> + <code>@modal.enter()</code></td><td>1.6.0</td></tr>
+        <tr><td><code>modal.Mount</code>, <code>mounts=</code></td><td><code>image.add_local_dir()</code> / <code>add_local_python_source()</code></td><td>1.0.0</td></tr>
+        <tr><td><code>Volume.delete()</code>, <code>create_deployed()</code></td><td><code>Volume.objects.delete()/create()</code></td><td>1.5.0</td></tr>
+        <tr><td><code>modal.billing.workspace_billing_report()</code></td><td><code>Workspace.billing.report()</code></td><td>1.5.1</td></tr>
+        <tr><td><code>modal bootstrap</code></td><td><code>modal endpoint create</code></td><td>1.6.0</td></tr>
+        <tr><td><code>Environment.members</code></td><td><code>Environment.roles</code></td><td>1.5.3</td></tr>
+        <tr><td>Snapshots kept forever</td><td><code>ttl=None</code> to opt out of 30-day expiry</td><td>1.5.0</td></tr>
+        <tr><td><code>Function.from_name(app, "Cls.method")</code></td><td><code>Cls.from_name(app, "Cls")</code></td><td>1.4.0</td></tr>
+        <tr><td><code>modal deploy project.app</code></td><td><code>modal deploy -m project.app</code></td><td>1.4.0</td></tr>
+      </tbody>
+    </table>
+    <p class="small">Our own August guide already had the first three. Everything below that line is new since.</p>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://modal.com/docs/sdk/py/releases" target="_blank">Python SDK Release Notes</a> ·
+      <span class="src-num">2</span> <a href="https://modal.com/docs/guide/modal-1-0-migration" target="_blank">1.0 migration guide</a> ·
+      <span class="src-num">3</span> <a href="https://modal.com/docs/guide/migrate-sandbox-filesystem" target="_blank">Sandbox filesystem migration</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>All Links</h2>
+    <div class="three-col" style="font-size:0.68em;line-height:1.9;">
+      <div>
+        <strong style="color:var(--mo-accent);">Sandboxes</strong><br>
+        <a href="https://modal.com/docs/guide/sandboxes" target="_blank">Sandboxes</a> · <a href="https://modal.com/docs/guide/sandbox-spawn" target="_blank">Running commands</a><br>
+        <a href="https://modal.com/docs/guide/sandbox-networking" target="_blank">Networking &amp; security</a><br>
+        <a href="https://modal.com/docs/guide/sandbox-files" target="_blank">File access</a> · <a href="https://modal.com/docs/guide/sandbox-snapshots" target="_blank">Snapshots</a><br>
+        <a href="https://modal.com/docs/guide/sandbox-resources" target="_blank">Resources &amp; pricing</a><br>
+        <a href="https://modal.com/docs/guide/sandbox-sidecars" target="_blank">Sidecars</a> · <a href="https://modal.com/docs/guide/sandbox-secret-injection" target="_blank">Secret injection</a><br>
+        <a href="https://modal.com/docs/guide/sandbox-v2" target="_blank">V2 Sandboxes</a> · <a href="https://modal.com/docs/sdk/py/latest/Sandbox" target="_blank">API reference</a><br>
+        <a href="https://modal.com/docs/examples/safe_code_execution" target="_blank">Ex: safe code execution</a><br>
+        <a href="https://modal.com/docs/examples/sandbox_pool" target="_blank">Ex: Sandbox pool</a> · <a href="https://modal.com/docs/examples/agent" target="_blank">Ex: coding agent</a><br>
+        <a href="https://modal.com/docs/examples/sidecar_traffic_routing" target="_blank">Ex: sidecar traffic routing</a><br>
+        <a href="https://modal.com/docs/examples/sandbox_secret_injection" target="_blank">Ex: outbound policy</a>
+      </div>
+      <div>
+        <strong style="color:var(--mo-accent2);">Functions &amp; platform</strong><br>
+        <a href="https://modal.com/docs/guide" target="_blank">Guide home</a> · <a href="https://modal.com/docs/guide/getting-started" target="_blank">Getting started</a><br>
+        <a href="https://modal.com/docs/guide/apps" target="_blank">Apps &amp; entrypoints</a> · <a href="https://modal.com/docs/guide/images" target="_blank">Images</a><br>
+        <a href="https://modal.com/docs/guide/named-images" target="_blank">Named images</a> · <a href="https://modal.com/docs/guide/secrets" target="_blank">Secrets</a><br>
+        <a href="https://modal.com/docs/guide/scale" target="_blank">Scaling out</a> · <a href="https://modal.com/docs/guide/cron" target="_blank">Scheduled Functions</a><br>
+        <a href="https://modal.com/docs/guide/webhooks" target="_blank">Web Functions</a> · <a href="https://modal.com/docs/guide/servers" target="_blank">Servers</a><br>
+        <a href="https://modal.com/docs/guide/volumes" target="_blank">Volumes</a> · <a href="https://modal.com/docs/guide/dicts" target="_blank">Dicts</a> · <a href="https://modal.com/docs/guide/queues" target="_blank">Queues</a><br>
+        <a href="https://modal.com/docs/guide/retries" target="_blank">Retries</a> · <a href="https://modal.com/docs/guide/preemption" target="_blank">Preemption</a> · <a href="https://modal.com/docs/guide/timeouts" target="_blank">Timeouts</a><br>
+        <a href="https://modal.com/docs/guide/troubleshooting" target="_blank">Troubleshooting</a> · <a href="https://modal.com/docs/guide/async" target="_blank">Async usage</a><br>
+        <a href="https://modal.com/docs/guide/sdk-javascript-go" target="_blank">JS/Go SDKs</a> · <a href="https://modal.com/docs/cli/latest" target="_blank">CLI</a>
+      </div>
+      <div>
+        <strong style="color:var(--mo-purple);">Products, ops &amp; news</strong><br>
+        <a href="https://modal.com/docs/guide/endpoints" target="_blank">Endpoints</a> · <a href="https://modal.com/library" target="_blank">Model Library</a><br>
+        <a href="https://modal.com/docs/guide/training-quickstart" target="_blank">Training</a> · <a href="https://modal.com/docs/guide/gpu" target="_blank">GPUs</a><br>
+        <a href="https://modal.com/docs/guide/notebooks" target="_blank">Notebooks</a> · <a href="https://modal.com/playground" target="_blank">Playground</a><br>
+        <a href="https://modal.com/docs/guide/rbac" target="_blank">RBAC</a> · <a href="https://modal.com/docs/guide/budgets" target="_blank">Budgets</a> · <a href="https://modal.com/docs/guide/oidc-integration" target="_blank">OIDC</a><br>
+        <a href="https://modal.com/docs/guide/security" target="_blank">Security</a> · <a href="https://modal.com/docs/guide/feature-maturity" target="_blank">Feature maturity</a><br>
+        <a href="https://modal.com/pricing" target="_blank">Pricing</a> · <a href="https://modal.com/changelog" target="_blank">Changelog</a> · <a href="https://modal.com/docs/sdk/py/releases" target="_blank">Release notes</a><br>
+        <a href="https://modal.com/blog" target="_blank">Blog</a> · <a href="https://modal.com/gpu-glossary" target="_blank">GPU Glossary</a> · <a href="https://modal.com/llm-almanac" target="_blank">LLM Engine Advisor</a><br>
+        <a href="https://modal.com/slack" target="_blank">Slack community</a> · <a href="https://github.com/modal-labs" target="_blank">GitHub</a> · <a href="https://status.modal.com/" target="_blank">Status</a>
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> All links verified reachable on 5 Oct 2026 via modal.com navigation
+    </div>
+  </section>
+
+  <section class="title-slide">
+    <h1>Start Building</h1>
+    <div class="accent-bar"></div>
+    <p style="font-size:0.75em;color:var(--mo-muted);margin-top:0.3em;"><strong style="color:var(--mo-accent);">$30/month free compute</strong> on Starter · 100 containers · 10 GPU concurrency</p>
+    <div class="three-col" style="margin-top:0.8em;font-size:0.72em;text-align:center;">
+      <div>
+        <span class="badge badge-green" style="font-size:0.9em;">Sandboxes</span><br>
+        <code style="font-size:0.85em;">pip install modal &amp;&amp; modal setup</code><br>
+        <a href="https://modal.com/docs/guide/sandboxes" target="_blank" style="font-size:0.85em;">Sandboxes guide</a>
+      </div>
+      <div>
+        <span class="badge badge-blue" style="font-size:0.9em;">Functions</span><br>
+        <code style="font-size:0.85em;">modal run hello.py</code><br>
+        <a href="https://modal.com/docs/guide/getting-started" target="_blank" style="font-size:0.85em;">Getting started</a>
+      </div>
+      <div>
+        <span class="badge badge-purple" style="font-size:0.9em;">Endpoints</span><br>
+        <code style="font-size:0.85em;">modal endpoint create</code><br>
+        <a href="https://modal.com/docs/guide/endpoints" target="_blank" style="font-size:0.85em;">Endpoints guide</a>
+      </div>
+    </div>
+    <p class="small" style="margin-top:1.2em;">Next for AgentVetter: share the <code>modal_app.py</code> install chain → pin scanner versions → decide the credential-isolation option → verify adapters against real output (P0).</p>
+    <p class="smaller" style="margin-top:1em;">v1 &nbsp;·&nbsp; Built from 30+ Modal guide pages, release notes 1.0→1.6.1, changelog, pricing, and the AgentVetter session history &nbsp;·&nbsp; 34 issues tracked &nbsp;·&nbsp; 5 October 2026</p>
+  </section>
+</section>
+
+</div>
+
+<div class="nav-bar">
+  <button id="btnPrev">← Prev</button>
+  <span class="nav-counter" id="navCounter">1 / 1</span>
+  <button id="btnNext">Next →</button>
+</div>
+<div class="progress-bar" id="progressBar" style="width:3%;"></div>
+
+<script>
+(function() {
+  var deck = document.getElementById('deck');
+  var topSections = Array.from(deck.children).filter(function(el) { return el.tagName === 'SECTION'; });
+  var hIndex = 0, vIndex = 0;
+  function getSubSlides(section) {
+    var subs = Array.from(section.children).filter(function(el) { return el.tagName === 'SECTION'; });
+    return subs.length > 0 ? subs : null;
+  }
+  function totalSlides() { var c = 0; topSections.forEach(function(s){ var subs = getSubSlides(s); c += subs ? subs.length : 1; }); return c; }
+  function currentSlideNum() { var c = 0; for (var i = 0; i < hIndex; i++) { var subs = getSubSlides(topSections[i]); c += subs ? subs.length : 1; } return c + vIndex + 1; }
+  function show() {
+    topSections.forEach(function(s, i) {
+      s.classList.toggle('active', i === hIndex);
+      var subs = getSubSlides(s);
+      if (subs) subs.forEach(function(sub, j) { sub.classList.toggle('active', j === vIndex); });
+    });
+    document.getElementById('navCounter').textContent = currentSlideNum() + ' / ' + totalSlides();
+    document.getElementById('progressBar').style.width = (currentSlideNum() / totalSlides()) * 100 + '%';
+    try { localStorage.setItem('modal-hub-pos', hIndex + ',' + vIndex); } catch (e) {}
+  }
+  function goRight() { if (hIndex < topSections.length - 1) { hIndex++; vIndex = 0; show(); } }
+  function goLeft() { if (hIndex > 0) { hIndex--; vIndex = 0; show(); } }
+  function goDown() { var subs = getSubSlides(topSections[hIndex]); if (subs && vIndex < subs.length - 1) { vIndex++; show(); } else { goRight(); } }
+  function goUp() { if (vIndex > 0) { vIndex--; show(); } else { goLeft(); } }
+  document.addEventListener('keydown', function(e) {
+    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT')) return;
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goDown(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'Backspace') { e.preventDefault(); goUp(); }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); goDown(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); goUp(); }
+  });
+  document.getElementById('btnPrev').addEventListener('click', goUp);
+  document.getElementById('btnNext').addEventListener('click', goDown);
+  // touch swipe
+  var tx = null;
+  document.addEventListener('touchstart', function(e){ tx = e.touches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', function(e){ if (tx === null) return; var dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 60) { dx < 0 ? goDown() : goUp(); } tx = null; }, {passive:true});
+  try {
+    var saved = localStorage.getItem('modal-hub-pos');
+    if (saved) { var p = saved.split(','); var h = +p[0], v = +p[1];
+      if (h >= 0 && h < topSections.length) { hIndex = h; var subs = getSubSlides(topSections[h]); vIndex = (subs && v < subs.length) ? v : 0; } }
+  } catch (e) {}
+  show();
+})();
+
+function recalc() {
+  var cpu = parseFloat(document.getElementById('cCpu').value) || 0;
+  var mem = parseFloat(document.getElementById('cMem').value) || 0;
+  var sec = parseFloat(document.getElementById('cSec').value) || 0;
+  var n = parseFloat(document.getElementById('cN').value) || 0;
+  cpu = Math.max(cpu, 0.125);
+  var sbRate = cpu * 0.00003942 + mem * 0.00000667;   // $/s Sandbox
+  var fnRate = cpu * 0.0000131 + mem * 0.00000222;    // $/s Functions
+  var sb = sbRate * sec * n, fn = fnRate * sec * n;
+  document.getElementById('priceSb').textContent = '$' + sb.toFixed(sb < 1 ? 4 : 2);
+  document.getElementById('priceFn').textContent = '$' + fn.toFixed(fn < 1 ? 4 : 2);
+  document.getElementById('priceHr').textContent = '$' + (sbRate * 3600).toFixed(4);
+  document.getElementById('ratioTag').textContent = fn > 0 ? 'Sandbox premium: ' + (sb / fn).toFixed(1) + '× · ' + n + ' scans ≈ ' + (sec * n / 3600).toFixed(1) + ' sandbox-hours' : 'Enter values above';
+}
+recalc();
+</script>
+<button class="review-toggle" onclick="document.querySelectorAll('.review').forEach(r=>r.classList.toggle('visible'));this.textContent=this.textContent==='☆ Reviews'?'★ Reviews':'☆ Reviews'">☆ Reviews</button>
+</body>
+</html>
