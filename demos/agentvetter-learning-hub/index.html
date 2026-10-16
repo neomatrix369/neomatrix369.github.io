@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AgentVetter · Security · SIE — Integration Hub</title>
+<meta name="description" content="How AgentVetter routes agent-artifact security scanning through the Superlinked Inference Engine: the tiered router, the security model catalogue, and the integration map.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --av-ink: #1c1915;
+  --av-paper: #f5f2ea;
+  --av-accent: #b33d0b;   /* encode */
+  --av-accent2: #1d4ed8;  /* score */
+  --av-green: #166534;    /* extract */
+  --av-amber: #9a4708;
+  --av-purple: #6d28d9;   /* generate */
+  --av-teal: #115e59;     /* cloud */
+  --av-muted: #5c564c;
+  --av-surface: #efe9dc;
+  --av-surface2: #e7dfd0;
+  --av-border: rgba(28, 25, 21, 0.12);
+  --av-header-h: 61px;
+  --av-nav-h: 36px;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+html { scroll-padding-top: env(safe-area-inset-top, 0px); height: 100%; }
+body { color: #1c1915; height: 100%; }
+#deck { text-align: left; }
+h1, h2, h3 { text-transform: none; letter-spacing: -0.02em; color: #1c1915; }
+code, pre code { font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 0.62em; }
+pre { width: 100%; margin: 0.5em 0; box-shadow: none; border-radius: 8px; border: 1px solid var(--av-border); }
+pre code { max-height: 380px; padding: 0.8em 1em; line-height: 1.45; overflow-y: auto; }
+.title-slide { text-align: center !important; background: radial-gradient(ellipse at 30% 50%, #efe9dc 0%, #f5f2ea 70%); }
+.title-slide h1 { font-size: 2.4em; margin-bottom: 0.1em; }
+.accent-bar { width: 120px; height: 4px; background: var(--av-accent); margin: 0.4em auto; border-radius: 2px; }
+.section-header { text-align: center !important; }
+.section-num { font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace; font-size: 0.55em; color: var(--av-accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.3em; }
+
+/* Product picker cards */
+.product-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.8em; margin: 0.6em 0; }
+.product-grid.four { grid-template-columns: 1fr 1fr 1fr 1fr; }
+.product-card { background: var(--av-surface); border: 1px solid var(--av-border); border-radius: 12px; padding: 1em 1.2em; transition: all 0.2s; }
+.product-card:hover { border-color: var(--av-accent); transform: translateY(-2px); }
+.product-card .pc-tag { font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace; font-size: 0.6em; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.3em; }
+.product-card h3 { margin-top: 0.2em !important; font-size: 1.1em !important; }
+.product-card p { font-size: 0.72em; color: var(--av-muted); margin: 0.3em 0 0 0; }
+.tag-encode { color: var(--av-accent); }
+.tag-score { color: var(--av-accent2); }
+.tag-extract { color: var(--av-green); }
+.tag-generate { color: var(--av-purple); }
+.tag-cloud { color: var(--av-teal); }
+
+/* Tables */
+.cmp-table { width: 100%; border-collapse: collapse; font-size: 0.68em; margin: 0.6em 0; }
+.cmp-table th { background: rgba(196,69,15,0.1); color: var(--av-accent); padding: 0.5em 0.7em; text-align: left; font-weight: 600; border-bottom: 2px solid var(--av-accent); }
+.cmp-table td { padding: 0.45em 0.7em; border-bottom: 1px solid var(--av-border); vertical-align: top; }
+.cmp-table tr:hover td { background: rgba(28,25,21,0.04); }
+.cmp-table-blue th { background: rgba(29,78,216,0.1); color: var(--av-accent2); border-bottom-color: var(--av-accent2); }
+.cmp-table-purple th { background: rgba(124,58,237,0.1); color: var(--av-purple); border-bottom-color: var(--av-purple); }
+.cmp-table-green th { background: rgba(22,163,74,0.1); color: var(--av-green); border-bottom-color: var(--av-green); }
+.cmp-table-teal th { background: rgba(13,148,136,0.1); color: var(--av-teal); border-bottom-color: var(--av-teal); }
+.cmp-table.dense { font-size: 0.6em; }
+.cmp-table.dense td, .cmp-table.dense th { padding: 0.3em 0.5em; }
+
+/* Badges */
+.badge { display: inline-block; padding: 0.15em 0.5em; border-radius: 20px; font-size: 0.7em; font-weight: 600; font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace; }
+.badge-green { background: rgba(22,163,74,0.12); color: #166534; }
+.badge-amber { background: rgba(180,83,9,0.12); color: #9a4708; }
+.badge-blue { background: rgba(29,78,216,0.12); color: #1d4ed8; }
+.badge-red { background: rgba(185,28,28,0.12); color: #b91c1c; }
+.badge-purple { background: rgba(124,58,237,0.12); color: #6d28d9; }
+.badge-teal { background: rgba(13,148,136,0.12); color: #115e59; }
+.badge-new { background: rgba(196,69,15,0.15); color: #96330a; }
+
+/* Layouts */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2em; align-items: start; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.8em; align-items: start; }
+.code-output { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7em; margin: 0.5em 0; }
+.code-side { border-radius: 8px; overflow: hidden; border: 1px solid var(--av-border); }
+.output-side { background: #1e1e2e; border: 1px solid rgba(22,163,74,0.3); padding: 0.7em 0.9em; border-radius: 8px; font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace; font-size: 0.6em; line-height: 1.5; color: #a5d6a7; }
+.output-label { font-size: 0.6em; font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace; margin-bottom: 0.2em; text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* Callouts */
+.callout { background: rgba(29,78,216,0.07); border-left: 3px solid var(--av-accent2); padding: 0.6em 0.9em; border-radius: 0 6px 6px 0; margin: 0.5em 0; font-size: 0.75em; }
+.callout-accent { background: rgba(196,69,15,0.07); border-left-color: var(--av-accent); }
+.callout-green { background: rgba(22,163,74,0.07); border-left-color: var(--av-green); }
+.callout-purple { background: rgba(124,58,237,0.07); border-left-color: var(--av-purple); }
+.callout-teal { background: rgba(13,148,136,0.07); border-left-color: var(--av-teal); }
+.callout-amber { background: rgba(180,83,9,0.07); border-left-color: var(--av-amber); }
+
+/* Model cards */
+.model-card { background: var(--av-surface); border: 1px solid var(--av-border); border-radius: 10px; padding: 0.6em 0.9em; margin: 0.3em 0; }
+.model-card .model-name { font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace; font-size: 0.68em; color: var(--av-accent); }
+.model-card .model-desc { font-size: 0.64em; color: var(--av-muted); }
+.model-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4em; font-size: 0.75em; }
+.model-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+
+/* Decision tree */
+.decision-flow { display: flex; flex-direction: column; align-items: center; gap: 0.2em; font-size: 0.75em; }
+.decision-node { background: var(--av-surface); border: 1px solid var(--av-border); border-radius: 10px; padding: 0.6em 1em; text-align: center; margin: 0.2em; }
+.decision-node.question { border-color: var(--av-accent2); background: rgba(29,78,216,0.07); }
+.decision-node.answer { border-color: var(--av-green); background: rgba(22,163,74,0.07); }
+.decision-row { display: flex; gap: 0.5em; align-items: stretch; justify-content: center; flex-wrap: wrap; }
+.arrow-down { color: var(--av-muted); font-size: 1.1em; }
+
+/* Steps */
+.step { display: flex; gap: 0.7em; margin: 0.4em 0; align-items: flex-start; }
+.step-num { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: var(--av-accent); color: white; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace; font-weight: 700; font-size: 0.7em; }
+.step-num-blue { background: var(--av-accent2); }
+.step-num-purple { background: var(--av-purple); }
+.step-num-green { background: var(--av-green); }
+.step-num-teal { background: var(--av-teal); }
+.step-content { flex: 1; }
+.step-content strong { color: #1c1915; }
+
+/* Helpers */
+.small { font-size: 0.72em; color: var(--av-muted); }
+.smaller { font-size: 0.6em; color: var(--av-muted); }
+a { color: #7a5c2e; text-decoration: underline; text-underline-offset: 3px; }
+a:hover { color: #6b4f24; }
+hr { border: none; border-top: 1px solid var(--av-border); margin: 0.6em 0; }
+
+/* Insight boxes */
+.insight-box { background: linear-gradient(135deg, rgba(124,58,237,0.05), rgba(29,78,216,0.05)); border: 1px solid rgba(124,58,237,0.18); border-radius: 8px; padding: 0.6em 0.9em; margin: 0.5em 0; font-size: 0.72em; }
+.insight-box .insight-label { font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace; font-size: 0.8em; color: var(--av-purple); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.2em; }
+
+/* Stat highlight */
+.stat-row { display: flex; gap: 1em; justify-content: center; margin: 0.6em 0; flex-wrap: wrap; }
+.stat-card { text-align: center; }
+.stat-card .stat-num { font-family: 'Fraunces', Georgia, 'Times New Roman', serif; font-size: 2em; color: var(--av-accent); }
+.stat-card .stat-label { font-size: 0.65em; color: var(--av-muted); }
+
+/* Delta (what changed) rows */
+.delta { display: grid; grid-template-columns: 150px 1fr 1fr; gap: 0.5em; font-size: 0.62em; align-items: start; padding: 0.35em 0; border-bottom: 1px solid var(--av-border); }
+.delta .d-key { color: #1c1915; font-weight: 600; }
+.delta .d-old { color: #6b645a; }
+.delta .d-new { color: var(--av-green); }
+.delta-head { font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace; text-transform: uppercase; letter-spacing: 0.08em; color: var(--av-muted); font-size: 0.9em; }
+
+/* Source citations */
+.sources { margin-top: auto; padding-top: 0.4em; border-top: 1px solid var(--av-border); font-size: 0.52em; color: #5c564c; line-height: 1.8; }
+.sources a { color: #6b645a; text-decoration: none; border-bottom: 1px dotted #5c564c; transition: color 0.15s; }
+.sources a:hover { color: var(--av-accent); border-bottom-color: var(--av-accent); }
+.sources .src-num { display: inline-block; min-width: 1.4em; color: #6b645a; font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace; }
+
+/* Review panel */
+.review { display: none; margin-top: 0.5em; background: rgba(180,83,9,0.06); border: 1px solid rgba(180,83,9,0.25); border-radius: 8px; padding: 0.5em 0.7em; font-size: 0.55em; line-height: 1.6; color: #1c1915; }
+.review.visible { display: block; }
+.review-title { font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace; font-size: 1.05em; color: var(--av-amber); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3em; }
+.review-row { display: flex; gap: 0.5em; margin: 0.15em 0; align-items: baseline; }
+.review-dim { min-width: 90px; color: #5c564c; font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace; font-size: 0.95em; }
+.review-score { font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace; font-weight: 700; min-width: 28px; }
+.review-score.good { color: #166534; }
+.review-score.ok { color: #9a4708; }
+.review-score.gap { color: #b91c1c; }
+.review-note { color: #5c564c; }
+.review-section { margin-top: 0.3em; padding-top: 0.3em; border-top: 1px solid rgba(180,83,9,0.15); }
+.review-section-title { color: var(--av-amber); font-weight: 600; font-size: 0.95em; margin-bottom: 0.15em; }
+.review-toggle { position: fixed; top: calc(8px + var(--av-header-h) + env(safe-area-inset-top, 0px)); right: 8px; z-index: 1002; background: rgba(180,83,9,0.1); border: 1px solid rgba(180,83,9,0.3); color: #9a4708; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace; }
+
+/* Site font stack */
+body { font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; }
+h1, h2, h3 { font-family: 'Fraunces', Georgia, 'Times New Roman', serif; }
+h1 { font-size: 2.2em; line-height: 1.1; }
+h2 { font-size: 1.45em; line-height: 1.2; margin-bottom: 0.3em; }
+h3 { font-size: 1.05em; color: var(--av-accent); }
+code, pre code, .badge, .step-num, .section-num, .pc-tag, .output-label, .model-name, .insight-label { font-family: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', 'Fira Code', Menlo, Consolas, monospace; }
+
+/* === SELF-CONTAINED SLIDE ENGINE === */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #f5f2ea; overflow: hidden; font-size: 22px; color: #1c1915; padding-top: var(--av-header-h); }
+
+/* Site chrome — mirrors assets/css/site.css header */
+.av-site-header { position: fixed; top: 0; left: 0; right: 0; height: var(--av-header-h); background: rgba(245,242,234,0.97); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(28,25,21,0.18); display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0 1.5rem; z-index: 30; }
+.av-brand { display: inline-flex; align-items: baseline; gap: 0.5rem; color: #1c1915; font-family: 'Fraunces', Georgia, serif; font-size: 18px; font-weight: 600; text-decoration: none; }
+.av-brand:hover { color: #1c1915; }
+.av-brand small { color: #6b645a; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; }
+.av-site-nav { display: flex; flex-wrap: nowrap; gap: 1rem; }
+.av-site-nav a { color: #7a5c2e; text-decoration: none; font-size: 15px; font-family: 'IBM Plex Sans', sans-serif; white-space: nowrap; }
+.av-site-nav a:hover { color: #6b4f24; }
+@media (max-width: 760px) {
+  .av-site-header { padding: 0 1rem; }
+  .av-brand { font-size: 15px; }
+  .av-brand small { display: none; }
+  .av-site-nav { gap: 0.7rem; }
+  .av-site-nav a { font-size: 13px; }
+  .av-site-nav a[data-optional] { display: none; }
+}
+/* Very narrow: drop the contextual site link too. Home reaches it in one tap,
+   while the sibling hub links have no other route. */
+@media (max-width: 430px) {
+  .av-site-nav a[data-secondary] { display: none; }
+  /* the brand already links home, so the Home link is a duplicate here */
+  .av-site-nav a[data-home] { display: none; }
+  .av-site-nav { gap: 0.5rem; }
+}
+/* smallest phones: tighten type so the full hub names still fit */
+@media (max-width: 360px) {
+  .av-brand { font-size: 13px; }
+  .av-site-nav { gap: 0.4rem; }
+  .av-site-nav a { font-size: 11.5px; }
+}
+
+#deck { width: 100%; height: calc(100% - 39px); position: relative; }
+#deck > section { display: none; width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+#deck > section.active { display: block; }
+#deck > section > section { display: none; width: 100%; height: 100%; overflow-y: auto; padding: 28px 48px 16px 48px; }
+#deck > section > section.active { display: flex; flex-direction: column; }
+#deck > section:not(:has(> section)) { display: none; overflow-y: auto; padding: 28px 48px 16px 48px; }
+#deck > section.active:not(:has(> section)) { display: flex; flex-direction: column; }
+#deck > section > section.active .section-header,
+#deck > section.active:not(:has(> section)) .section-header {
+  min-height: calc(100vh - var(--av-header-h) - 39px - 56px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+#deck > section.active:not(:has(> section)).title-slide { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: calc(36px + env(safe-area-inset-bottom, 0px)); padding-bottom: env(safe-area-inset-bottom, 0px); background: rgba(245,242,234,0.97); border-top: 1px solid rgba(28,25,21,0.18); display: flex; align-items: center; justify-content: space-between; padding-left: 16px; padding-right: 16px; z-index: 1000; }
+.nav-bar button { background: rgba(28,25,21,0.06); border: 1px solid rgba(28,25,21,0.18); color: #5c564c; padding: 3px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; font-family: inherit; }
+.nav-bar button:hover { background: rgba(28,25,21,0.12); color: #1c1915; }
+.nav-counter { color: #6b645a; font-size: 13px; font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace; }
+.progress-bar { position: fixed; bottom: calc(36px + env(safe-area-inset-bottom, 0px)); left: 0; height: 3px; background: #b33d0b; transition: width 0.3s; z-index: 1001; }
+pre { background: #1e1e2e; overflow-x: auto; }
+pre code { display: block; color: #cdd6f4; white-space: pre; }
+kbd { background: rgba(28,25,21,0.08); border: 1px solid rgba(28,25,21,0.18); padding: 0.15em 0.4em; border-radius: 4px; font-size: 0.85em; }
+.tbl-wrap { overflow-x: auto; max-width: 100%; }
+img, svg { max-width: 100%; }
+@media (max-width: 760px) {
+  body { font-size: 16px; }
+  #deck > section > section, #deck > section:not(:has(> section)) { padding: 20px 16px 12px 16px; }
+  .product-grid, .product-grid.four, .two-col, .three-col, .code-output, .model-grid, .model-grid.three { grid-template-columns: 1fr; }
+  .delta { grid-template-columns: 1fr; }
+}
+</style>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+<header class="av-site-header">
+  <a class="av-brand" href="../../">
+    neomatrix369
+    <small>github.io</small>
+  </a>
+  <nav class="av-site-nav" aria-label="Primary">
+    <a href="../../" data-home>Home</a>
+    <a href="../../pages/projects.html#sie" data-secondary>SIE project</a>
+    <a href="../superlinked-sie-learning-hub/">Superlinked SIE</a>
+    <a href="../doubleword-learning-hub/" data-optional>Doubleword</a>
+    <a href="../modal-learning-hub/" data-optional>Modal</a>
+    <a href="https://github.com/neomatrix369/agentvetter" rel="noopener" data-optional>AgentVetter repo</a>
+    <a href="https://github.com/neomatrix369" rel="noopener">GitHub</a>
+  </nav>
+</header>
+<div id="deck">
+
+<!-- ======================== TITLE ======================== -->
+<section class="title-slide">
+  <h1>AgentVetter<br>Security &amp; SIE</h1>
+  <div class="accent-bar"></div>
+  <p class="small" style="max-width:760px;margin:0.6em auto 0;">
+    How AgentVetter routes agent-artifact scanning through the Superlinked Inference Engine &nbsp;·&nbsp;
+    the tiered router, the security-relevant model catalogue, and the integration map
+  </p>
+  <div class="stat-row" style="margin-top:1em;">
+    <div class="stat-card"><div class="stat-num">T1&nbsp;→&nbsp;T2</div><div class="stat-label">Tiered routing</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--av-accent2);">#66</div><div class="stat-label">PR merged</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--av-green);">0016</div><div class="stat-label">ADR accepted</div></div>
+  </div>
+  <p class="small" style="margin-top:1em;">
+    Platform detail lives in the <a href="../superlinked-sie-learning-hub/">Superlinked SIE learning hub</a>.
+    This doc covers only what AgentVetter and the security work depend on.
+  </p>
+  <p class="smaller" style="margin-top:0.8em;">
+    <kbd>→</kbd> sections &nbsp;·&nbsp; <kbd>↓</kbd> go deeper &nbsp;·&nbsp; <kbd>←</kbd> back
+  </p>
+</section>
+
+<!-- ======================== SECTION 01 ======================== -->
+<section>
+  <section class="section-header">
+    <div class="section-num">Section 01 · <span style="color:var(--av-accent);">Router</span></div>
+    <h2>The Tiered Router</h2>
+    <p class="small">What AgentVetter sends to SIE, what it escalates, and why</p>
+  </section>
+
+  <section>
+    <h2>Tiered Router — Shipped (PR #66 merged · ADR-0016 Accepted) in AgentVetter (formerly tripwire)</h2>
+    <svg viewBox="0 0 1050 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:1050px;margin:0.2em auto;display:block;">
+      <defs>
+        <marker id="arrP" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="7" markerHeight="5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#6d28d9"/></marker>
+        <marker id="arrG" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="7" markerHeight="5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#166534"/></marker>
+        <style>
+          .rb { rx: 8; ry: 8; stroke-width: 1.5; fill: #efe9dc; }
+          .rt { fill: #1c1915; font-family: 'IBM Plex Sans', -apple-system, system-ui, sans-serif; font-size: 12px; font-weight: 600; }
+          .rs { fill: #5c564c; font-family: 'IBM Plex Sans', -apple-system, system-ui, sans-serif; font-size: 9.5px; }
+          .rl { stroke-width: 1.5; fill: none; stroke-dasharray: 6 3; animation: dl2 1.6s linear infinite; }
+          @keyframes dl2 { from { stroke-dashoffset: 36; } to { stroke-dashoffset: 0; } }
+        </style>
+      </defs>
+      <rect class="rb" x="10" y="55" width="215" height="80" stroke="#5c564c"/>
+      <text class="rt" x="117" y="80" text-anchor="middle">scan_runs (batch)</text>
+      <text class="rs" x="117" y="97" text-anchor="middle">Snyk · Cisco · Tessl · DepShield · Ossprey</text>
+      <text class="rs" x="117" y="110" text-anchor="middle">Modal sandbox → Supabase</text>
+      <text class="rs" x="117" y="123" text-anchor="middle">agentvetter route --batch-id</text>
+      <line class="rl" x1="225" y1="95" x2="262" y2="95" stroke="#166534" marker-end="url(#arrG)"/>
+      <rect class="rb" x="262" y="40" width="290" height="110" stroke="#b33d0b"/>
+      <text class="rt" x="407" y="62" text-anchor="middle">T1 · Superlinked SIE (every item)</text>
+      <text class="rs" x="407" y="80" text-anchor="middle">/v1/embeddings → semantic_novelty (cos &lt; 0.6)</text>
+      <text class="rs" x="407" y="94" text-anchor="middle">/v1/chat/completions → low_confidence judgment</text>
+      <text class="rs" x="407" y="108" text-anchor="middle">pre-computed: conflicting · unusual_status</text>
+      <text class="rs" x="407" y="124" text-anchor="middle">SIE_ENDPOINT · SIE_API_KEY · SIE_MODEL (default gen-4b)</text>
+      <text class="rs" x="407" y="138" text-anchor="middle">SIE_EMBEDDING_MODEL = all-MiniLM-L6-v2</text>
+      <line class="rl" x1="552" y1="75" x2="608" y2="75" stroke="#6d28d9" marker-end="url(#arrP)"/>
+      <text class="rs" x="580" y="68" text-anchor="middle" style="fill:#9a4708;">escalate?</text>
+      <rect class="rb" x="608" y="40" width="255" height="70" stroke="#6d28d9"/>
+      <text class="rt" x="735" y="62" text-anchor="middle">T2 · Alibaba Model Studio</text>
+      <text class="rs" x="735" y="79" text-anchor="middle">qwen3.8-max · Arbitration (findings disagree)</text>
+      <text class="rs" x="735" y="93" text-anchor="middle">qwen3.8-max · Triage (no findings / incomplete)</text>
+      <line class="rl" x1="552" y1="125" x2="608" y2="140" stroke="#166534" marker-end="url(#arrG)"/>
+      <text class="rs" x="580" y="162" text-anchor="middle" style="fill:#166534;">SIE-only ■</text>
+      <rect class="rb" x="608" y="125" width="255" height="50" stroke="#166534"/>
+      <text class="rt" x="735" y="145" text-anchor="middle">findings row: tiered_router</text>
+      <text class="rs" x="735" y="161" text-anchor="middle">JSON envelope in message · dashboard drawer + chips</text>
+      <line class="rl" x1="863" y1="80" x2="898" y2="140" stroke="#6d28d9" marker-end="url(#arrP)"/>
+      <rect class="rb" x="883" y="125" width="155" height="50" stroke="#1d4ed8"/>
+      <text class="rt" x="960" y="145" text-anchor="middle">Dashboard</text>
+      <text class="rs" x="960" y="161" text-anchor="middle">Escalated vs SIE-only</text>
+    </svg>
+    <div class="three-col" style="font-size:0.72em;">
+      <div class="callout callout-accent" style="margin:0;font-size:1em;"><strong>Scope decision that held:</strong> batch-scoped routing (<code>scan_runs.item_id NOT NULL</code> audited in <code>db/schema.sql</code>), not per-run. Four signals; three pre-computed, one judged by SIE.</div>
+      <div class="callout callout-purple" style="margin:0;font-size:1em;"><strong>Env map:</strong> SIE → <code>SIE_ENDPOINT</code>, <code>SIE_API_KEY</code>; chat → <code>ALIBABA_OPENAI_BASE_URL</code>, <code>DASHSCOPE_API_KEY</code>; visuals → <code>DASHSCOPE_HOST</code>, <code>ALIBABA_DASH_SCOPE_API_URL</code>. <code>MODEL_STUDIO_MODEL</code> defaults to <code>qwen3.8-max</code>; <code>SIE_MODEL</code> to <code>gen-4b</code>. Router rows carry <code>scanner_source=tiered_router</code> and are <strong>excluded from severity rollups</strong>; a prior router row is replaced only after a successful SIE decision (never batch-delete first), so a SIE outage cannot wipe dashboard strips.</div>
+      <div class="callout callout-green" style="margin:0;font-size:1em;"><strong>What SIE now gives you for free:</strong> <code>/v1/score</code> schema is documented (reranking upgrade un-deferred) · <code>/v1/generate</code> + chat with JSON-schema output (typed envelope straight from the model) · <code>X-Trace-ID</code> + timing headers to log per decision.</div>
+    </div>
+    <div class="review">
+      <div class="review-title">Design Review — Router vs SIE's Own Patterns</div>
+      <div class="review-row"><span class="review-dim">Alignment</span><span class="review-score good">A</span><span class="review-note">Superlinked's May posts ("Route different AI agent tasks to the right model", "Carve off tasks, not models") and the recap's framing ("use the larger model only where it changes the result") describe exactly this design.</span></div>
+      <div class="review-row"><span class="review-dim">Gap</span><span class="review-score ok">B</span><span class="review-note">Darwin Router stores low-confidence outcomes as new routing examples (self-updating). The AgentVetter reference set is static (~8–10 hand-authored texts). The request-routing example shows how to verify a classifier at 3,000 cases.</span></div>
+      <div class="review-row"><span class="review-dim">Risk</span><span class="review-score good">A</span><span class="review-note">Resolved 5 Oct: <code>SIE_MODEL</code> now defaults to <code>gen-4b</code> (a Cloud alias; see <code>prototypes/sie-studio/models.json</code>), missing keys warn-and-skip rather than fail the scan, and the never-batch-delete rule is in the ADR.</span></div>
+      <div class="review-section">
+        <div class="review-section-title">⚠️ Next moves</div>
+        Grow the reference set from logged escalations (Darwin pattern) · Replace cosine-vs-reference with <code>/v1/score</code> against the reference set · Emit the §5 envelope via structured output instead of post-parsing
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://github.com/neomatrix369/AgentVetter/pull/66" target="_blank">AgentVetter PR #66 (merged)</a> · <a href="https://github.com/neomatrix369/AgentVetter/blob/main/docs/adr/0016-tiered-router-sie-model-studio.md" target="_blank">ADR-0016</a> · <a href="https://github.com/neomatrix369/AgentVetter/blob/main/docs/user-guide/env-vars.md" target="_blank">env-vars.md</a> ·
+      <span class="src-num">2</span> <a href="https://superlinked.com/blog/route-ai-agent-tasks-right-model" target="_blank">Route AI agent tasks to the right model</a> ·
+      <span class="src-num">3</span> <a href="https://superlinked.com/blog/carve-off-tasks-not-models" target="_blank">Carve Off Tasks, Not Models</a> ·
+      <span class="src-num">4</span> <a href="https://github.com/superlinked/sie/tree/main/examples/request-routing" target="_blank">examples/request-routing</a> ·
+      <span class="src-num">5</span> <a href="https://superlinked.com/docs/reference/api" target="_blank">API reference — /v1/score, headers</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Superlinked's Reference Pipeline vs the AgentVetter Router</h2>
+    <p class="small">The Native Inference page draws a five-stage pipeline "on SIE Cluster, one endpoint". It lines up closely with the router you built — and shows what is still missing.</p>
+    <div class="tbl-wrap"><table class="cmp-table cmp-table-purple dense">
+      <thead><tr><th style="width:5%">#</th><th>Superlinked reference stage</th><th>Model named</th><th>AgentVetter today</th><th>Gap / idea (mine unless noted)</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><strong>Safety and PII gate</strong> — blocks unsafe prompts, masks personal data</td><td>Qwen3Guard 4B</td><td>Third-party scanners (Cisco, Snyk, Tessl, DepShield, Ossprey); no semantic guard or PII step</td><td>T1 (Qwen3Guard) + <code>superlinked/pii-redact</code> (v0.10.1) to sanitise findings before logging</td></tr>
+        <tr><td>2</td><td><strong>Semantic cache</strong> — answers a repeated question at once</td><td>Qwen3-Embedding-4B</td><td><code>semantic_novelty</code> (cosine &lt; 0.6 to a reference set) with all-MiniLM-L6-v2</td><td>Same embedding call, opposite use: AgentVetter wants <em>novelty</em>, a cache wants <em>similarity</em>. Reusing prior arbitration notes for near-duplicate findings is T2</td></tr>
+        <tr><td>3</td><td><strong>Intent and complexity</strong> — "picks the skill, and how strong a model it needs"</td><td>GLiNER2.5 Decide</td><td>SIE chat judgement (<code>low_confidence</code>) via <code>gen-4b</code></td><td><strong>T9</strong> — typed Decide call; 13 ms vs ~1 s; −8 points accuracy vs frontier, so gate rather than replace</td></tr>
+        <tr><td>4</td><td><strong>LLM</strong> — plans and answers, calling SIE tasks as tools</td><td>Qwen3.8 27B</td><td>Model Studio <code>qwen3.8-max</code> (Arbitration/Triage) on escalation only</td><td>The 27B is the open-model option for the second hop if Model Studio must be avoided (T6/C3 theme)</td></tr>
+        <tr><td>5</td><td><strong>Verify</strong> — checks the answer before it goes out</td><td>Granite Guardian 2B</td><td>Router envelope logged; no post-check</td><td>A guard pass on the arbitration note before it reaches the dashboard; or the threat-mapper's "re-check the exact quote" step</td></tr>
+        <tr><td>+</td><td>Cost routing (gallery <code>request-routing/cost</code>)</td><td>bge-m3 kNN</td><td>Four fixed escalation signals</td><td><strong>T11</strong> — similarity-weighted success over a graded bank; threshold chosen on the bank; −38.6 % cost at 95.8 % quality in their study</td></tr>
+        <tr><td>+</td><td>Data governance (SIE Relay)</td><td>—</td><td>Not addressed</td><td><strong>T10</strong> — <code>remote="forbid"</code>, explicit base URL, log <code>served_by</code></td></tr>
+      </tbody>
+    </table></div>
+    <div class="insight-box"><div class="insight-label">📝 Why this matters</div>
+      Superlinked is now selling <em>this shape</em> — cheap gate → cheap classifier → one strong model → verify — as the reference design for enterprise AI platforms, and published the evidence for each stage. AgentVetter's recap write-up already uses the same split (SIE reads everything; the larger model "only where it changes the result"). A short "AgentVetter as a worked security-triage example" write-up would fit the <code>/security</code> solution page, which today showcases the ATT&amp;CK mapper instead.</div>
+    <div class="review">
+      <div class="review-title">Self-Review — Mapping Confidence</div>
+      <div class="review-row"><span class="review-dim">Evidence</span><span class="review-score ok">B</span><span class="review-note">Stage names and models are Superlinked's (Native Inference page); the AgentVetter column is from ADR-0016 and env-vars (5 Oct); gaps and numbering T9–T11 are my suggestions, not decisions.</span></div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://superlinked.com/native-inference" target="_blank">/native-inference (pipeline diagram)</a> ·
+      <span class="src-num">2</span> <a href="https://github.com/superlinked/sie/tree/main/examples/request-routing/cost" target="_blank">examples/request-routing/cost</a> ·
+      <span class="src-num">3</span> <a href="https://github.com/neomatrix369/AgentVetter/blob/main/docs/adr/0016-tiered-router-sie-model-studio.md" target="_blank">ADR-0016</a> ·
+      <span class="src-num">4</span> <a href="https://superlinked.com/security" target="_blank">/security</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>The T2 Tier: Alibaba Cloud Model Studio (from the merged Aug-12 report)</h2>
+    <p class="small">The hub is Superlinked-first, but the router has two tiers and the merged Alibaba + Superlinked report is the only place the Model Studio side was inventoried. Kept here so this document is the single source of truth.</p>
+    <div class="two-col">
+      <div>
+        <h3 style="color:var(--av-purple);">Model Studio surface, as surveyed</h3>
+        <table class="cmp-table cmp-table-purple dense">
+          <thead><tr><th>Category</th><th>What's there</th></tr></thead>
+          <tbody>
+            <tr><td>Models / serving</td><td>Qwen family (qwen-max, qwen-plus …), OpenAI-compatible endpoint (<code>ALIBABA_OPENAI_BASE_URL</code> + <code>DASHSCOPE_API_KEY</code>)</td></tr>
+            <tr><td>RAG &amp; retrieval</td><td>Managed Knowledge Base, <code>text-embedding-v4</code>, <code>gte-rerank</code>, RAG optimisation playbook; <strong>batch embedding API at 50% discount</strong></td></tr>
+            <tr><td>Agents</td><td>Assistant API, Agent apps, multi-agent composition</td></tr>
+            <tr><td>Fine-tuning &amp; eval</td><td>Fine-Tuning API with baseline-vs-tuned harness</td></tr>
+            <tr><td>AI Guardrails</td><td>Prompt-injection / jailbreak / sensitive-data detection, malicious file &amp; URL risk, code-vuln / credential-leak scan, content moderation (text/image/video), PII detection</td></tr>
+            <tr><td>Visual (hackathon track)</td><td><code>qwen-image-2.0-pro</code>, <code>qwen-image-plus</code>, <code>qwen-image-edit</code>; Wan <code>wan2.7-image-pro</code>, <code>wan2.6-image</code> (<code>DASHSCOPE_HOST</code>, <code>ALIBABA_DASH_SCOPE_API_URL</code>)</td></tr>
+            <tr><td>Auth / regions</td><td>API key + AK/SK signature; region-gated — Singapore recommended for International accounts; free quota, savings plans</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <h3 style="color:var(--av-amber);">Opportunities &amp; cross-platform combos</h3>
+        <table class="cmp-table dense">
+          <thead><tr><th>#</th><th>Idea</th><th>E·C·R</th></tr></thead>
+          <tbody>
+            <tr><td>MS-T1</td><td>Guardrails prompt-injection → new <code>Finding</code> source; register <code>"alibaba-guardrails"</code> in <code>scan_run_scanners</code></td><td>2·2·2</td></tr>
+            <tr><td>MS-T2</td><td>File/URL risk detection on MCP-manifest URLs → <code>Finding.evidence</code></td><td>2·2·2</td></tr>
+            <tr><td>MS-T3</td><td>Code-vuln / credential-leak scan as a 4th adapter (steps partially recovered)</td><td>2·2·2</td></tr>
+            <tr><td>MS-R5</td><td>Batch embedding API (50% off) for sweep re-validation</td><td>1·1·1</td></tr>
+            <tr><td>MS-R8</td><td>PII detection as pre-ingestion sanitisation for real-customer sweep data</td><td>2·1·1</td></tr>
+            <tr><td>MS-C1–C6</td><td>Self-auditing RAG agent · sweep-engine transfer to scanner selection · fine-tuned Qwen classifier vs Guardrails · multi-agent bridge over both repos' tools · watermarked synthetic corpora · multimodal scanning of MCP <em>outputs</em> (needs <code>Finding.modality</code>)</td><td>2–3</td></tr>
+            <tr><td>M1</td><td><strong>SIE Guard as default path; Model Studio Guardrails as optional "cloud second opinion"</strong> for ambiguous / high-severity findings — the most consequential platform call in the report</td><td>—</td></tr>
+            <tr><td>M2</td><td>"Explore cheap, confirm managed": SIE Encode for bulk sweeps, re-validate top-N on <code>text-embedding-v4</code> batch</td><td>—</td></tr>
+            <tr><td>M3 · M4</td><td>SIE Extract pre-filters spans before Guardrails code-scan · two independent classifier baselines (C3 vs SIE Guard)</td><td>—</td></tr>
+          </tbody>
+        </table>
+        <p class="smaller">MS-C7 = shared batch-evaluation infrastructure across both repos; MS-C8 = a "Coding Plan" for contributor tooling (titles only — their card bodies were never recovered). MS-T4–T8 / MS-R1–R3 remain title-level; the 31-row unified scope matrix in the merged report is the fuller source.</p>
+      </div>
+    </div>
+    <div class="review">
+      <div class="review-title">Self-Review — Two-Tier Trade-off</div>
+      <div class="review-row"><span class="review-dim">Philosophy</span><span class="review-score ok">B</span><span class="review-note">AgentVetter's design is sandboxed and self-contained; every Model Studio call reintroduces a cloud + region dependency. The shipped router keeps that dependency on the escalation path only, which is consistent with M1.</span></div>
+      <div class="review-row"><span class="review-dim">Docs drift</span><span class="review-score good">A</span><span class="review-note">Resolved 5 Oct: ADR-0016 and <code>env-vars.md</code> now state it precisely — routing is optional for scans; once routing runs, both key sets are required and validated up front; Model Studio is <em>called</em> only on escalation.</span></div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://claude.ai/chat/c5da118b-23c6-4e51-8fa8-086c150c8c9e" target="_blank">Session: Combining Alibaba Cloud and Superlinked integration artifacts (12 Aug)</a> ·
+      <span class="src-num">2</span> <a href="https://github.com/neomatrix369/AgentVetter/blob/main/docs/adr/0016-tiered-router-sie-model-studio.md" target="_blank">AgentVetter ADR-0016</a> ·
+      <span class="src-num">3</span> <a href="https://raw.githubusercontent.com/superlinked/sie/main/examples/agentvetter/README.md" target="_blank">examples/agentvetter README (key requirements)</a>
+    </div>
+  </section>
+
+</section>
+
+<!-- ======================== SECTION 02 ======================== -->
+<section>
+  <section class="section-header">
+    <div class="section-num">Section 02 · <span style="color:var(--av-accent);">Security</span></div>
+    <h2>The Security Surface in SIE</h2>
+    <p class="small">The SIE examples, models and defaults the router actually leans on</p>
+  </section>
+
+  <section>
+    <h2>Routing &amp; Security References — Re-ranked (Oct 2026)</h2>
+    <p class="small">Your Aug session ranked nine docs examples for the tiered-router idea (Stripe Link Fraud 8/10, Regulatory RAG 6/10, Document OCR 5/10 …). The gallery has since gained examples that are closer fits. New ranking against the <em>same</em> question: "what should I read before touching the router gate?"</p>
+    <div class="tbl-wrap"><table class="cmp-table">
+      <thead><tr><th style="width:4%">#</th><th style="width:26%">Example</th><th style="width:12%">Primitives</th><th>Why it matters to AgentVetter / the router</th><th style="width:9%">Fit</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><a href="https://github.com/superlinked/sie/tree/main/examples/request-routing" target="_blank">request-routing</a> <span class="badge badge-new">new</span></td><td>encode · chat</td><td>Qwen3-Embedding-4B + frozen classifier (threshold 0.29) routes directly; below threshold Qwen3.8-27B answers under a JSON schema. On 3,000 paired cases: <strong>76.8 % of requests avoid generation</strong>, 89.6 % accuracy vs 90.6 % (GPT-6 Luna) / 89.0 % (Sonnet 5), modeled cost ≤ $0.101 per 1k vs ≥ $3.697 for Sonnet. Honest caveat in the README: non-inferiority to <em>both</em> rivals does not pass — it supports a cost claim, not parity. This is the tiered router's T1 shape with evidence.</td><td><span class="badge badge-green">9/10</span></td></tr>
+        <tr><td>2</td><td><a href="https://github.com/superlinked/sie/tree/main/examples/typed-decisions" target="_blank">typed-decisions</a> <span class="badge badge-new">new</span></td><td>extract · chat</td><td>Three typed questions per CVE (weakness class, attack vector, remote-unauthenticated) against NVD gold, pre-registered on 224 dev records, scored on 160. <strong>Smart lane</strong> (GLiClass-large, one call) answers all three in 28 ms median — 96× faster than the Qwen3-4B LLM lane and with probabilities the LLM cannot give; GLiNER2.5-Decide scores 146/160 on weakness. Recorded on an L4. Directly maps to Arbitration/Triage lanes.</td><td><span class="badge badge-green">9/10</span></td></tr>
+        <tr><td>2b</td><td><a href="https://github.com/superlinked/sie/tree/main/examples/request-routing/cost" target="_blank">request-routing/cost</a> <span class="badge badge-new">new</span></td><td>encode</td><td>bge-m3 nearest-neighbour <strong>cost router</strong> on SIE Serverless: 20 nearest of a 729-request graded bank, similarity-weighted cheap-model success, threshold set for 98 % quality. On 728 held-out requests GPT-6 Luna→Sol cost <strong>$3.19 per 1,000, 38.6 % less than always-Sol at 95.8 % of its quality</strong> (77.2 % sent to Luna); Haiku 5.5→Sonnet 5.5 saved 11.7 % at 99.0 %. Router cost $0.013 per 1,000. Directly reusable as the <em>escalate?</em> decision.</td><td><span class="badge badge-green">8/10</span></td></tr>
+        <tr><td>3</td><td><a href="https://github.com/superlinked/sie/tree/main/examples/agent-action-monitor" target="_blank">agent-action-monitor</a></td><td>encode · score · extract</td><td>The <strong>DUSK</strong> project's gate (github.com/TFT444/DUSK): judges the <em>proposed action</em> against a per-agent behavioural baseline, with enforce vs watch modes. Docker Compose: gate service, self-hosted SIE, n8n, mock downstream; keyless by default. Runnable reference for T6/C3.</td><td><span class="badge badge-green">8/10</span></td></tr>
+        <tr><td>4</td><td><a href="https://superlinked.com/docs/examples/stripe-link-fraud" target="_blank">stripe-link-fraud</a></td><td>extract · encode · score</td><td>Multi-signal → gate → escalate inside one request round-trip. Still the cleanest <em>gate</em> code; now outranked on domain by 1–3.</td><td><span class="badge badge-green">8/10</span></td></tr>
+        <tr><td>5</td><td><a href="https://github.com/superlinked/sie/tree/main/examples/guardrails" target="_blank">guardrails</a> <span class="badge badge-new">new</span></td><td>chat · extract</td><td>Seven screens on 4,768 human-labelled prompts, paired bootstrap, pre-registered bars: <strong>Qwen3Guard 4B 82.7 % F1</strong> beats GPT-6 Sol (76.1 %) and Haiku 4.5 (76.2 %); GLiGuard 77.7 % at $4.68/M prompts. The methodology to borrow for T1 model selection (mind the ToxicChat non-commercial licence).</td><td><span class="badge badge-green">7/10</span></td></tr>
+        <tr><td>6</td><td><a href="https://github.com/superlinked/sie/tree/main/examples/threat-report-attck-mapper" target="_blank">threat-report-attck-mapper</a></td><td>generate · extract · encode · score</td><td>ATT&amp;CK Enterprise 19.2 mapping with the exact source quote beside every suggestion; every mapping stays <code>needs_analyst_review</code>. Ensemble: Qwen3.6-27B (strict-JSON extraction + verification), GLiNER2, Qwen3-Embedding-8B + jina-colbert-v2 (dense + late interaction), Qwen3-Reranker-4B over 75 fused candidates. Reference for T8.</td><td><span class="badge badge-amber">7/10</span></td></tr>
+        <tr><td>7</td><td><a href="https://github.com/superlinked/sie/tree/main/examples/classify" target="_blank">classify</a> · <a href="https://github.com/superlinked/sie/tree/main/examples/redact" target="_blank">redact</a></td><td>extract</td><td>GLiClass action routing with overlapping labels; PII masking vs Presidio with per-model price. Cheap building blocks for T4 and for sanitising findings before logging.</td><td><span class="badge badge-amber">6/10</span></td></tr>
+        <tr><td>8</td><td><a href="https://github.com/superlinked/sie/tree/main/examples/support-assistant-policy" target="_blank">support-assistant-policy</a> · <a href="https://github.com/superlinked/sie/tree/main/examples/incident-status-updates" target="_blank">incident-status-updates</a></td><td>chat</td><td>Policy-adherence under pressure (275 attempts) and leak-checking generated text. Patterns for the SIE "reasoning" field AgentVetter logs.</td><td><span class="badge badge-amber">5/10</span></td></tr>
+        <tr><td>9b</td><td><a href="https://github.com/superlinked/sie/tree/main/examples/coding-agent-opencode" target="_blank">coding-agent-opencode</a> <span class="badge badge-new">new</span></td><td>chat</td><td>Points OpenCode at a laptop server, a self-hosted cluster or SIE Cloud (GLM-5.3-Flash served <em>via SIE Relay</em>) and runs an agent-loop conformance check: streaming tool-call deltas, parallel calls, 64K+ prompts, finish reasons, usage, reasoning field. Relevant to T6.</td><td><span class="badge badge-amber">5/10</span></td></tr>
+        <tr><td>9</td><td><a href="https://superlinked.com/docs/examples/regulatory-intelligence-rag" target="_blank">regulatory-rag</a> · <a href="https://superlinked.com/docs/examples/benchmark" target="_blank">retrieval-ablation</a></td><td>encode · score</td><td>LoRA encoder hot-loading; eight retrieval strategies by NDCG@10 on 1,854 SEC queries. rag-params-finder's R2/R4 cross-check baselines.</td><td><span class="badge badge-blue">5/10 (R-side)</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="review">
+      <div class="review-title">Docs Review — Gallery Curation</div>
+      <div class="review-row"><span class="review-dim">Clarity</span><span class="review-score good">A</span><span class="review-note">The repo gallery table has "Best for / primitives / setup / status" columns and a recorded-evidence policy (pinned HF dataset revision, never <code>main</code>). Reproducibility without API spend is a real differentiator.</span></div>
+      <div class="review-row"><span class="review-dim">Discoverability</span><span class="review-score gap">C</span><span class="review-note">Nothing groups examples by domain (security, finance, retail). request-routing and typed-decisions — the two most relevant to routing — have no docs page and no blog post.</span></div>
+      <div class="review-section">
+        <div class="review-section-title">⚠️ Could improve</div>
+        Tag examples by vertical and task · Publish docs pages for request-routing / typed-decisions / guardrails · Link each example from the task page it provides evidence for
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://raw.githubusercontent.com/superlinked/sie/main/examples/README.md" target="_blank">examples/README.md (53 rows)</a> · <a href="https://github.com/TFT444/DUSK" target="_blank">TFT444/DUSK</a> ·
+      <span class="src-num">2</span> <a href="https://superlinked.com/docs/examples" target="_blank">Docs examples index</a> ·
+      <span class="src-num">3</span> <a href="https://superlinked.com/blog/agent-action-monitor" target="_blank">agent-action-monitor (blog)</a> ·
+      <span class="src-num">4</span> <a href="https://huggingface.co/datasets/superlinked/sie-task-evidence" target="_blank">superlinked/sie-task-evidence (HF)</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>What the Router Uses from SIE</h2>
+    <p class="small">The SIE task layer has ten tasks. Seven of them have a touchpoint in AgentVetter or rag-params-finder; three do not. Task definitions live in the <a href="../superlinked-sie-learning-hub/">Superlinked SIE hub</a> — this is only the mapping.</p>
+    <div class="two-col">
+      <div>
+        <div class="tbl-wrap">
+          <table class="cmp-table dense">
+            <tr><th>SIE task</th><th>AgentVetter / rag-params-finder touchpoint</th></tr>
+            <tr><td>Search</td><td>rag-params-finder sweep axes; <code>semantic_novelty</code> signal</td></tr>
+            <tr><td>Document to markdown</td><td>T7 bundled-docs scanning</td></tr>
+            <tr><td>Structured output</td><td>T4 scanner-output normalisation; the routing envelope</td></tr>
+            <tr><td>Decide <span class="badge badge-new">new</span></td><td>Candidate for the router's judgement step (T9 on the opportunity map)</td></tr>
+            <tr><td>Classify <span class="badge badge-new">new</span></td><td>Finding-category triage (T4/T5)</td></tr>
+            <tr><td>Guard content</td><td>T1 semantic content-safety scanner</td></tr>
+            <tr><td>Run the agent loop</td><td>T6 PreToolUse hook; router T1 judgement</td></tr>
+            <tr><td>Translate · See images · Transcribe audio</td><td>— no touchpoint today</td></tr>
+          </table>
+        </div>
+      </div>
+      <div>
+        <div class="output-label" style="color:var(--av-accent);">Models the router pins</div>
+        <div class="model-card"><div class="model-name">sentence-transformers/all-MiniLM-L6-v2</div><div class="model-desc">AgentVetter's <code>SIE_EMBEDDING_MODEL</code> default (384-d)</div></div>
+        <div class="model-card"><div class="model-name">alias <code>gen-4b</code> (default) · <code>gen-27b</code></div><div class="model-desc">Cloud aliases in AgentVetter's models.json: embed-4b, rerank-0.6b, rerank-4b, vl-rerank-2b, colqwen, gen-4b, gen-27b</div></div>
+        <div class="model-card"><div class="model-name">BAAI/bge-reranker-v2-m3</div><div class="model-desc">the one rag-params-finder's <code>provider='sie'</code> already maps to</div></div>
+        <div class="callout callout-accent" style="margin-top:0.6em;">OpenAI-compatible <code>/v1/embeddings</code> plus Cohere-compatible <code>/v1/rerank</code> and <code>/v2/rerank</code> are exactly the primitives the <code>semantic_novelty</code> signal relies on — the migration is a base-URL swap, not a rewrite.</div>
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://github.com/superlinked/sie/blob/main/README.md" target="_blank">SIE README — task layer</a> ·
+      <span class="src-num">2</span> <a href="https://github.com/neomatrix369/AgentVetter/blob/main/docs/user-guide/env-vars.md" target="_blank">AgentVetter env-vars.md</a> ·
+      <span class="src-num">3</span> <a href="https://github.com/neomatrix369/rag-params-finder" target="_blank">rag-params-finder</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Cautions: Privacy, Upgrades &amp; Model Choice</h2>
+    <p class="small">Three things that bite when wiring a security scanner to a shared inference server.</p>
+    <div class="callout callout-accent"><strong>Privacy — the one that matters most:</strong> scanner findings and skill text can be sensitive. Set <code>remote="forbid"</code> on the router's SIE client, log <code>served_by</code> next to the existing timing headers, and keep Model Studio as the only intentionally external hop. The relay default is <em>on</em>, so today a cold start could route router traffic to a partner.</div>
+    <div class="callout callout-amber"><strong>Upgrades:</strong> (1) the Helm/NATS/Ingress breaks in 0.9.0 affect people running their own cluster, not hosted callers; (2) the router passes <code>SIE_ENDPOINT</code> + <code>SIE_API_KEY</code> explicitly, but with the 0.9.0 env behaviour and the 0.10.1 hosted fallback, <strong>pin the base URL explicitly and re-test</strong> before upgrading the SDK; (3) <code>Qwen3Guard-Gen-4B</code> and <code>GLiNER2.5-Decide</code> — both on the integration map — changed defaults in 0.10.1.</div>
+    <div class="callout callout-purple"><strong>Model choice for the three SIE-adjacent jobs:</strong> guard (Qwen3Guard, F1 0.827 — best, but Haiku 5.5 is cheaper per check), typed decisions (Decide: far faster, ~8 points less accurate than frontier models — which is why it should <em>gate</em>, not replace, the escalation), redact (SIE composition 0.909 — good enough to sanitise findings before logging, not a compliance control).</div>
+    <div class="insight-box">
+      <div class="insight-label">Sandbox note</div>
+      AgentVetter's sandbox already runs on Modal, and a migration guide exists for Modal → SIE. The honest framing from Superlinked's own comparison: Modal wins on bursty compute, SIE wins on sustained inference. Both can be true at once — the sandbox and the router are different workloads.
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://docs.superlinked.com/sie-cloud/cold-starts" target="_blank">SIE Relay &amp; cold starts</a> ·
+      <span class="src-num">2</span> <a href="https://github.com/superlinked/sie/releases/tag/v0.10.1" target="_blank">v0.10.1 release notes</a> ·
+      <span class="src-num">3</span> <a href="https://superlinked.com/blog/sie-vs-modal" target="_blank">SIE vs Modal (blog)</a>
+    </div>
+  </section>
+
+</section>
+
+<!-- ======================== SECTION 03 ======================== -->
+<section>
+  <section class="section-header">
+    <div class="section-num">Section 03 · <span style="color:var(--av-accent);">Integration</span></div>
+    <h2>Integration Map &amp; Gallery</h2>
+    <p class="small">Where the two projects already touch, and what is still open</p>
+  </section>
+
+  <section>
+    <h2>Integration Opportunity Map — Refreshed</h2>
+    <p class="small">The T1–T8 / R1–R6 / A·B·C lists from the deep-dive artifact, with effort · cost · risk (1–3) and what changed. Items where SIE now ships a runnable reference are marked.</p>
+    <div class="tbl-wrap"><table class="cmp-table dense">
+      <thead><tr><th>#</th><th>Repo</th><th>Opportunity</th><th>Primitive</th><th>E·C·R</th><th>Oct 2026 status</th></tr></thead>
+      <tbody>
+        <tr><td>T1</td><td>AgentVetter</td><td>Semantic content-safety scanner adapter in <code>sandbox/scanners.py</code></td><td>Guard</td><td>2·2·2</td><td><span class="badge badge-new">ref exists</span> examples/guardrails: Qwen3Guard 4B 82.7 % F1 leads, GLiGuard 77.7 % is the cheap option; granite-guardian untested there</td></tr>
+        <tr><td>T2</td><td>AgentVetter</td><td>Embedding-based finding de-duplication before the heatmap</td><td>Encode</td><td>2·1·1</td><td>Unchanged; Qwen3-Embedding-4B now the obvious model</td></tr>
+        <tr><td>T3</td><td>AgentVetter</td><td>Known-bad semantic fingerprint index</td><td>Encode</td><td>3·2·3</td><td>Partly shipped as <code>semantic_novelty</code>; lookalike-search example shows the hard-negative problem</td></tr>
+        <tr><td>T4</td><td>AgentVetter</td><td>Structured extraction from raw scanner output</td><td>Extract</td><td>2·1·1</td><td><span class="badge badge-new">ref exists</span> structured-output + named-entity-extraction examples</td></tr>
+        <tr><td>T5</td><td>AgentVetter</td><td>Score-based finding triage against an operator risk query</td><td>Score</td><td>2·1·1</td><td>/v1/score schema now documented — unblocked</td></tr>
+        <tr><td>T6</td><td>AgentVetter</td><td>Local agent-loop for the Agent Guard PreToolUse hook</td><td>Generate</td><td>3·3·3</td><td><span class="badge badge-new">ref exists</span> agent-action-monitor (Docker Compose)</td></tr>
+        <tr><td>T7</td><td>AgentVetter</td><td>Document-to-markdown for bundled docs</td><td>Extract/OCR</td><td>2·2·1</td><td>docling example + MCP server make this a tool call</td></tr>
+        <tr><td>T8</td><td>AgentVetter</td><td>Evidence-grounded mapping onto CWE / OWASP-LLM / ATLAS</td><td>4 primitives</td><td>2·2·2</td><td><strong>Now productised</strong> on superlinked.com/security: 697 ATT&amp;CK definitions searched by dense + ColBERT, 75 candidates reranked, 27B verifier re-checks the quote; worked example separates cookie <em>reuse</em> (T1550.004) from <em>theft</em> (T1539). typed-decisions adds the CVE lane pattern</td></tr>
+        <tr><td>T9 <span class="badge badge-new">new</span></td><td>AgentVetter</td><td><strong>Replace the SIE <code>low_confidence</code> chat judgement with a typed <code>Decide</code> call</strong> (e.g. GLiNER2.5-Decide: severity class, "scanners contradict?" yes/no) — returns probabilities, ~28 ms in typed-decisions vs ~2.7 s for a small LLM</td><td>Extract (Decide)</td><td>2·1·2</td><td>My suggestion from this pass, not in any prior session. Needs a CVE-style dev/test split and pre-registration like typed-decisions; keep the LLM lane as fallback. <strong>Corroborated 13 Oct:</strong> Superlinked's own native-inference reference pipeline uses GLiNER2.5 Decide for "Intent and complexity — picks the skill, and how strong a model it needs". On /serverless it scores 0.875 accuracy at 13.1 ms and $0.0035 per 1,000 messages vs GPT-6.1 Sol 0.973 at ~1.5 s and $0.53</td></tr>
+        <tr><td>T10 <span class="badge badge-new">new</span></td><td>AgentVetter</td><td><strong>Pin <code>remote="forbid"</code> and an explicit base URL</strong> on the SIE client: scanned skill/MCP content is sensitive, and SIE Relay may answer generation/extraction through a third-party partner during cold starts; v0.10.1 also adds a hosted-service SDK fallback</td><td>config</td><td>1·1·1</td><td>My suggestion; needs SDK ≥ 0.10.0. Check <code>X-SIE-Served-By</code> in logs. Note embeddings/rerank and grammar-constrained output are never relayed</td></tr>
+        <tr><td>T11 <span class="badge badge-new">new</span></td><td>AgentVetter</td><td><strong>Neighbour-weighted escalation score</strong> (request-routing/cost pattern): bank of past findings with graded "SIE answer held up?" outcomes → escalate when similarity-weighted success &lt; threshold</td><td>Encode</td><td>3·2·2</td><td>My suggestion; generalises Darwin Router's self-updating examples with a pre-registered threshold</td></tr>
+        <tr><td>R1</td><td>rag-params-finder</td><td>Expand reranker sweep axis (<code>provider='sie'</code>)</td><td>Score</td><td>1·1·1</td><td><span class="badge badge-new">verified</span> <code>_rerank_sie()</code> calls <code>score_documents_sie()</code> for real; whether CI smoke tests still mock the HTTP call was not checked</td></tr>
+        <tr><td>R2</td><td>rag-params-finder</td><td>Self-hosted embedding sweep axis</td><td>Encode</td><td>3·2·2</td><td><span class="badge badge-new">shipped</span> gallery guide: BGE-M3 / Stella-v5 / SPLADE-v3 via <code>example-sie.yaml</code></td></tr>
+        <tr><td>R3</td><td>rag-params-finder</td><td>Golden-dataset auto-tagging</td><td>Extract</td><td>2·1·1</td><td>knowledge-graph example (GLiNER2 with offsets)</td></tr>
+        <tr><td>R4</td><td>rag-params-finder</td><td>Cross-check vs SIE retrieval-ablation benchmark</td><td>—</td><td>1·1·1</td><td>Docs-only pass; NDCG@10 on 1,854 SEC queries</td></tr>
+        <tr><td>R5</td><td>rag-params-finder</td><td>Guard-content as an <code>sc_</code> diagnostic</td><td>Guard</td><td>2·1·2</td><td>Needs the "non-LLM evals only" principle check; GLiGuard is a classifier, which may satisfy it</td></tr>
+        <tr><td>R6</td><td>rag-params-finder</td><td>OpenAI-compatible endpoint as drop-in</td><td>Encode</td><td>1·1·1</td><td>Effectively what the gallery guide documents</td></tr>
+        <tr><td>A1</td><td>AgentVetter</td><td>Extract → Encode → Score as one triage pipeline (T4+T2+T5)</td><td>multi</td><td>2·1·2</td><td>contract-review-agent is the canonical "ten calls, one cluster" chain; risk compounds across stages</td></tr>
+        <tr><td>A2</td><td>AgentVetter</td><td>Guard verdict + fingerprint match merged into one <code>Finding</code></td><td>Guard+Encode</td><td>2·1·2</td><td>Schema/UI merge of T1+T3 outputs, not new inference</td></tr>
+        <tr><td>A3</td><td>rag-params-finder</td><td>Fully self-hosted SIE-only sweep profile (no external APIs)</td><td>Encode+Score</td><td>3·2·2</td><td>Largely delivered by <code>example-sie.yaml</code> + self-hosted Docker on :8720</td></tr>
+        <tr><td>A4</td><td>rag-params-finder</td><td>Generate-based query rewriting as a sweep axis</td><td>Generate</td><td>3·2·2</td><td>First use of Generate in the project; Qwen3.5-4B / Qwen3-4B-Instruct are cheap candidates</td></tr>
+        <tr><td>B1</td><td>both</td><td>Sweep AgentVetter's own model/threshold choices with rag-params-finder's Optuna methodology</td><td>multi</td><td>3·2·2</td><td>Methodology transplant, needs its own harness; request-routing's <code>score.py</code> is a template</td></tr>
+        <tr><td>B2</td><td>both</td><td>Point AgentVetter's scanners at rag-params-finder's plugin ecosystem</td><td>—</td><td>2·1·2</td><td>Config-level; real supply-chain value</td></tr>
+        <tr><td>B3</td><td>both</td><td>Transplant golden-dataset eval philosophy into AgentVetter</td><td>—</td><td>3·1·2</td><td>typed-decisions' pre-registration file is the model to copy</td></tr>
+        <tr><td>B4</td><td>both</td><td>Shared internal SIE client/config layer</td><td>—</td><td>2·1·1</td><td>Consolidates glue in <code>sie_embedder.py</code> and <code>cli/src/router.js</code></td></tr>
+        <tr><td>C1</td><td>beyond</td><td>Standalone, project-agnostic SIE developer guide</td><td>—</td><td>1·1·1</td><td><span class="badge badge-green">this hub</span> + the gallery onboarding pages</td></tr>
+        <tr><td>C2</td><td>beyond</td><td>Generalised semantic fingerprint-match micro-library</td><td>Encode</td><td>3·1·2</td><td>Three potential homes; lookalike-search example documents the hard-negative trap</td></tr>
+        <tr><td>C3</td><td>beyond</td><td>Standalone PreToolUse safety-gate package (Guard + Generate, no cloud on hot path)</td><td>Guard+Generate</td><td>3·2·3</td><td>agent-action-monitor is the runnable starting point; safety-critical, earliest-stage idea</td></tr>
+      </tbody>
+    </table></div>
+    <div class="review">
+      <div class="review-title">Self-Review — Map Provenance</div>
+      <div class="review-row"><span class="review-dim">Provenance</span><span class="review-score good">A</span><span class="review-note">T1–T8, R1–R6 and A1–A4 / B1–B4 / C1–C3 titles, bodies and E·C·R scores were recovered from the deep-dive artifact's matrix and the merged report's SL-A/B/C cards via conversation search (excerpts, not the original files). T9 is new in this pass. Remaining thin spots: a few SL-T/R step lists.</span></div>
+      <div class="review-section">
+        <div class="review-section-title">⚠️ Residual</div>
+        SL-T1–T3/T5/T7 minimal-step lists were never pulled in full — titles and E·C·R only · Graphiti saves failed in two sessions; the Oct-05 episode body is exported in this session's chat as backup
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://github.com/superlinked/sie/tree/main/examples/contract-review-agent" target="_blank">contract-review-agent</a> ·
+      <span class="src-num">2</span> <a href="https://github.com/superlinked/sie/tree/main/examples/structured-output" target="_blank">structured-output</a> ·
+      <span class="src-num">3</span> <a href="https://github.com/superlinked/sie/tree/main/examples/lookalike-search" target="_blank">lookalike-search</a> ·
+      <span class="src-num">4</span> <a href="https://github.com/superlinked/sie/tree/main/examples/knowledge-graph" target="_blank">knowledge-graph</a> ·
+      <span class="src-num">5</span> <a href="https://superlinked.com/docs/examples/benchmark" target="_blank">Retrieval-ablation benchmark</a>
+    </div>
+  </section>
+
+
+  <section>
+    <h2>Your Repos Are in the Gallery</h2>
+    <div class="two-col">
+      <div class="product-card" style="border-color:rgba(232,93,38,0.5);">
+        <div class="pc-tag tag-encode">examples/agentvetter · External project guide</div>
+        <h3 style="color:var(--av-accent);">Scan AI skills and MCP servers, then triage with SIE</h3>
+        <p>"Tripwire is a metal detector for AI tools." Primitives: <code>generate</code> (chat completions via <code>/v1/chat/completions</code> for post-scan triage). Mock demo and Live scans work without routing; <code>agentvetter route</code> / auto-route need <strong>both</strong> <code>SIE_*</code> and Model Studio keys.</p>
+        <p style="font-size:0.62em;margin-top:0.4em;">Pages: getting-started · sie-integration · what-sie-does · troubleshooting. Ports: dashboard <code>8765</code>; SIE hosted (<code>api.superlinked.com</code> / EU). The guide says upstream setup docs "may still call Model Studio optional"; <code>env-vars.md</code> and ADR-0016 now say the same — routing is <em>optional</em> for scans, but <strong>both key sets are required once you route</strong> (<code>resolveRouteConfig()</code> validates up front). The gallery folder was renamed to <code>examples/agentvetter</code> between 5 and 14 Oct (old path now 404); the guide now uses the AgentVetter name and <code>agentvetter route</code>, but still lists only <code>generate</code> as the primitive.</p>
+      </div>
+      <div class="product-card" style="border-color:rgba(37,99,235,0.5);">
+        <div class="pc-tag tag-score">examples/rag-params-finder · External project guide</div>
+        <h3 style="color:var(--av-accent2);">Find the best RAG config before you build</h3>
+        <p>Sweep embeddings × chunking × retrieval on your data. Primitives: <code>encode</code> (BGE-M3 / Stella-v5 / SPLADE-v3), optional <code>score</code> (SIE rerank). SIE is <strong>opt-in</strong> — default stack runs without it. MIT. Repo README now also offers Postgres/pgvector (incl. Supabase-hosted) alongside Atlas, and links an "SIE ecosystem demos" page.</p>
+        <p style="font-size:0.62em;margin-top:0.4em;">Ports: API <code>8001</code>, dashboard <code>5374</code>, self-hosted SIE <code>8720</code> (not started by <code>./start-services.sh</code>). Happy path: Mongo stack → dashboard → remote SIE gateway → one <code>example-sie.yaml</code> sweep.</p>
+      </div>
+    </div>
+    <div class="insight-box"><div class="insight-label">📝 Hackathon recap — AgentVetter (named "AgentVetter" in the post), as Superlinked wrote it up (18 Aug 2026)</div>
+      Three scanners, then review. <code>Qwen3.5-4B</code> on SIE reads every result and calls <code>qwen-max</code> when scanners contradict one another, coverage is incomplete or the evidence does not support a clear severity. The dashboard records the full chain including the arbitration note; in one test it returned <strong>amber instead of red</strong> for a tool-poisoning finding because two of five scanners were unreachable. The post groups AgentVetter (as "AgentVetter") with Darwin Router (Superlinked-track winner, 82.5% routing accuracy, ~60% cost cut) as the two projects that "made the split easiest to see". <strong>All nine teams:</strong> Darwin Router (Superlinked-track winner), AliBC (Alibaba visual-track winner), Echo (social-media prize), Aida (Mythic; Raspberry Pi Zero 2 W), Sieve (ShieldTech), <strong>AgentVetter (TheSandbox; "AgentVetter" in the post) — yours</strong>, RentalFinder (Octuple), Venue Visualiser, Yappy.</div>
+    <div class="callout callout-accent"><strong>Status drift to reconcile:</strong> your memory says AgentVetter's T1 reads <em>every</em> item via SIE and T2 escalates on four signals (conflicting, unusual_status, semantic_novelty, low_confidence). The gallery guide lists only <code>generate</code> as the primitive used — the <code>/v1/embeddings</code>-based <code>semantic_novelty</code> signal (Encode) isn't credited. Worth a one-line PR to <code>examples/agentvetter/what-sie-does.md</code>.</div>
+    <div class="review">
+      <div class="review-title">Docs Review — External Project Guides</div>
+      <div class="review-row"><span class="review-dim">Clarity</span><span class="review-score good">A</span><span class="review-note">Four short pages, a "who this is for" table and a ports cheat sheet. Consistent template across both guides.</span></div>
+      <div class="review-row"><span class="review-dim">Accuracy</span><span class="review-score ok">B</span><span class="review-note">AgentVetter guide under-reports primitives (generate only) (the rename itself is now done upstream); rag-params-finder guide names the reranker as optional but not the shipped <code>provider='sie'</code> → <code>score_documents_sie()</code> path (verified in <code>server/core/rerank/reranker.py</code> on 5 Oct).</span></div>
+      <div class="review-section">
+        <div class="review-section-title">⚠️ Could improve</div>
+        Credit <code>encode</code> in the AgentVetter guide · Link the hackathon blog post from both guides · Neither is visible on the docs Examples page
+      </div>
+    </div>
+    <div class="sources">
+      <span class="src-num">1</span> <a href="https://raw.githubusercontent.com/superlinked/sie/main/examples/agentvetter/README.md" target="_blank">examples/agentvetter</a> ·
+      <span class="src-num">2</span> <a href="https://raw.githubusercontent.com/superlinked/sie/main/examples/rag-params-finder/README.md" target="_blank">examples/rag-params-finder</a> ·
+      <span class="src-num">3</span> <a href="https://superlinked.com/blog/qwen-hackathon-london" target="_blank">Hackathon recap</a> ·
+      <span class="src-num">4</span> <a href="https://github.com/neomatrix369/AgentVetter" target="_blank">neomatrix369/AgentVetter</a> ·
+      <span class="src-num">5</span> <a href="https://github.com/hashkanna/darwin-router" target="_blank">darwin-router (track winner)</a>
+    </div>
+  </section>
+</section>
+
+<!-- ======================== SECTION 04 ======================== -->
+<section>
+  <section class="section-header">
+    <div class="section-num">Section 04 · <span style="color:var(--av-accent);">Reference</span></div>
+    <h2>Links</h2>
+    <p class="small">Everything this doc cites, plus where the platform detail lives</p>
+  </section>
+
+  <section>
+    <h2>All Links</h2>
+    <div class="two-col">
+      <div>
+        <h3 style="color:var(--av-purple);">AgentVetter &amp; the router</h3>
+        <a href="https://github.com/neomatrix369/AgentVetter" target="_blank">neomatrix369/AgentVetter</a> · <a href="https://github.com/neomatrix369/AgentVetter/pull/66" target="_blank">PR #66 (merged)</a> · <a href="https://github.com/neomatrix369/AgentVetter/blob/main/docs/adr/0016-tiered-router-sie-model-studio.md" target="_blank">ADR-0016</a><br>
+        <a href="https://github.com/neomatrix369/AgentVetter/blob/main/docs/user-guide/env-vars.md" target="_blank">env-vars.md</a> · <a href="https://github.com/neomatrix369/AgentVetter/blob/main/prototypes/model-studio/model_studio.py" target="_blank">model_studio.py</a><br>
+        <a href="https://github.com/superlinked/sie/tree/main/examples/agentvetter" target="_blank">examples/agentvetter</a> (gallery guide)<br>
+        <a href="../agentvetter-dashboard/">AgentVetter dashboard (hosted demo)</a>
+      </div>
+      <div>
+        <h3 style="color:var(--av-accent2);">Related &amp; adjacent</h3>
+        <a href="https://github.com/neomatrix369/rag-params-finder" target="_blank">neomatrix369/rag-params-finder</a><br>
+        <a href="https://github.com/superlinked/sie/tree/main/examples/rag-params-finder" target="_blank">examples/rag-params-finder</a> (gallery guide)<br>
+        <a href="https://superlinked.com/blog/qwen-hackathon-london" target="_blank">Hackathon recap (AgentVetter section)</a><br>
+        <a href="https://github.com/hashkanna/darwin-router" target="_blank">darwin-router</a> · <a href="https://github.com/ShieldTech-Ltd/sieve" target="_blank">sieve</a> · <a href="https://github.com/yakivets/superlinked_hack" target="_blank">echo</a>
+      </div>
+    </div>
+    <div class="callout callout-teal" style="margin-top:0.8em;">
+      <strong>Looking for the platform itself?</strong> SIE's surfaces, the four primitives, the task layer, deployment paths, the model catalogue and the HTTP API cheat sheet are all in the
+      <a href="../superlinked-sie-learning-hub/">Superlinked SIE learning hub</a>. This doc deliberately does not repeat them.
+    </div>
+    <p class="smaller" style="margin-top:1.2em;">Split out of the Superlinked SIE learning hub so the platform reference and the AgentVetter integration can be read — and updated — independently &nbsp;·&nbsp; 16 October 2026</p>
+  </section>
+</section>
+
+</div>
+
+<div class="nav-bar">
+  <button id="btnPrev">← Prev</button>
+  <span class="nav-counter" id="navCounter">1 / 1</span>
+  <button id="btnNext">Next →</button>
+</div>
+<div class="progress-bar" id="progressBar" style="width:3%;"></div>
+
+<script>
+(function() {
+  var deck = document.getElementById('deck');
+  var topSections = Array.from(deck.children).filter(function(el) { return el.tagName === 'SECTION'; });
+  var hIndex = 0, vIndex = 0;
+  function getSubSlides(section) {
+    var subs = Array.from(section.children).filter(function(el) { return el.tagName === 'SECTION'; });
+    return subs.length > 0 ? subs : null;
+  }
+  function totalSlides() { var c = 0; topSections.forEach(function(s){ var subs = getSubSlides(s); c += subs ? subs.length : 1; }); return c; }
+  function currentSlideNum() { var c = 0; for (var i = 0; i < hIndex; i++) { var subs = getSubSlides(topSections[i]); c += subs ? subs.length : 1; } return c + vIndex + 1; }
+  function show() {
+    topSections.forEach(function(s, i) {
+      s.classList.toggle('active', i === hIndex);
+      var subs = getSubSlides(s);
+      if (subs) { subs.forEach(function(sub, j) { sub.classList.toggle('active', j === vIndex); if (j === vIndex) sub.scrollTop = 0; }); }
+    });
+    document.getElementById('navCounter').textContent = currentSlideNum() + ' / ' + totalSlides();
+    document.getElementById('progressBar').style.width = (currentSlideNum() / totalSlides()) * 100 + '%';
+    try { localStorage.setItem('agentvetter-hub-pos', hIndex + ',' + vIndex); } catch (e) {}
+  }
+  function goRight() { if (hIndex < topSections.length - 1) { hIndex++; vIndex = 0; show(); } }
+  function goLeft() { if (hIndex > 0) { hIndex--; vIndex = 0; show(); } }
+  function goDown() { var subs = getSubSlides(topSections[hIndex]); if (subs && vIndex < subs.length - 1) { vIndex++; show(); } else { goRight(); } }
+  function goUp() { if (vIndex > 0) { vIndex--; show(); } else { goLeft(); } }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goDown(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'Backspace') { e.preventDefault(); goUp(); }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); goDown(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); goUp(); }
+  });
+  document.getElementById('btnPrev').addEventListener('click', goUp);
+  document.getElementById('btnNext').addEventListener('click', goDown);
+  try {
+    var saved = localStorage.getItem('agentvetter-hub-pos');
+    if (saved) { var p = saved.split(','); var h = +p[0], v = +p[1];
+      if (h >= 0 && h < topSections.length) { hIndex = h; var subs = getSubSlides(topSections[h]); vIndex = (subs && v < subs.length) ? v : 0; } }
+  } catch (e) {}
+  show();
+})();
+</script>
+<button class="review-toggle" onclick="document.querySelectorAll('.review').forEach(function(r){r.classList.toggle('visible')});this.textContent=this.textContent==='☆ Reviews'?'★ Reviews':'☆ Reviews'">☆ Reviews</button>
+</body>
+</html>
