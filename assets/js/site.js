@@ -53,7 +53,7 @@ const FALLBACK_PAGES = [
   },
   {
     title: "Projects",
-    description: "Open source repos with links to live builds on this site.",
+    description: "11 open source repos & benchmarks — AgentVetter, SIE, rag-params-finder, FalsifyBench, Self-Improving Teams, RagCheck, and more.",
     href: "pages/projects.html",
     kind: "static",
   },

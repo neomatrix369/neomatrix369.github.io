@@ -288,7 +288,7 @@ img, svg { max-width: 100%; }
   </section>
 
   <section>
-    <h2>Tiered Router — Shipped (PR #66 merged · ADR-0016 Accepted) in AgentVetter (formerly tripwire)</h2>
+    <h2>Tiered Router — Shipped (PR #66 merged · ADR-0016 Accepted) in AgentVetter</h2>
     <svg viewBox="0 0 1050 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:1050px;margin:0.2em auto;display:block;">
       <defs>
         <marker id="arrP" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="7" markerHeight="5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#6d28d9"/></marker>
@@ -600,7 +600,7 @@ img, svg { max-width: 100%; }
       <div class="product-card" style="border-color:rgba(232,93,38,0.5);">
         <div class="pc-tag tag-encode">examples/agentvetter · External project guide</div>
         <h3 style="color:var(--av-accent);">Scan AI skills and MCP servers, then triage with SIE</h3>
-        <p>"Tripwire is a metal detector for AI tools." Primitives: <code>generate</code> (chat completions via <code>/v1/chat/completions</code> for post-scan triage). Mock demo and Live scans work without routing; <code>agentvetter route</code> / auto-route need <strong>both</strong> <code>SIE_*</code> and Model Studio keys.</p>
+        <p>"AgentVetter is a metal detector for AI tools." Primitives: <code>generate</code> (chat completions via <code>/v1/chat/completions</code> for post-scan triage). Mock demo and Live scans work without routing; <code>agentvetter route</code> / auto-route need <strong>both</strong> <code>SIE_*</code> and Model Studio keys.</p>
         <p style="font-size:0.62em;margin-top:0.4em;">Pages: getting-started · sie-integration · what-sie-does · troubleshooting. Ports: dashboard <code>8765</code>; SIE hosted (<code>api.superlinked.com</code> / EU). The guide says upstream setup docs "may still call Model Studio optional"; <code>env-vars.md</code> and ADR-0016 now say the same — routing is <em>optional</em> for scans, but <strong>both key sets are required once you route</strong> (<code>resolveRouteConfig()</code> validates up front). The gallery folder was renamed to <code>examples/agentvetter</code> between 5 and 14 Oct (old path now 404); the guide now uses the AgentVetter name and <code>agentvetter route</code>, but still lists only <code>generate</code> as the primitive.</p>
       </div>
       <div class="product-card" style="border-color:rgba(37,99,235,0.5);">
