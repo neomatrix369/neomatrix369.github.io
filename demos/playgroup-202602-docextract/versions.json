@@ -763,5 +763,37 @@
       "openrouter": 0.788,
       "v7": 0.833
     }
+  },
+  {
+    "stamp": "2026-10-22T0821Z",
+    "commit": "fd437d0a",
+    "iso": "2026-10-22T09:21:25+01:00",
+    "subject": "docs: update playground and Key Findings for dw-muse-spark-open global #1",
+    "file": "2026-10-22T0821Z-which-models-extracted-playground.html",
+    "size_kb": 1424,
+    "models": 124,
+    "f1": 124,
+    "tabs": [
+      "Rankings",
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Provider Analysis",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 46,
+      "doubleword": 45,
+      "v7": 33
+    },
+    "tab_count": 8,
+    "avg_f1": {
+      "doubleword": 0.832,
+      "openrouter": 0.788,
+      "v7": 0.833
+    }
   }
 ]
