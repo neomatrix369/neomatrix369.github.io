@@ -10,6 +10,7 @@ node_modules/
 .serve/
 .vercel/
 .cursor/
+.claude/*
 .gate-cache/
 
 .omc
