@@ -270,7 +270,7 @@ pre code { color: #cdd6f4; }
     <a href="../superlinked-sie-learning-hub/">Superlinked SIE</a>
     <a href="../agentvetter-learning-hub/" data-optional>AgentVetter</a>
     <a href="../doubleword-learning-hub/" data-optional>Doubleword</a>
-    <a href="https://github.com/neomatrix369/agentvetter" rel="noopener" data-optional>AgentVetter</a>
+    <a href="https://github.com/neomatrix369/agentvetter" rel="noopener" data-optional>AV GitHub</a>
     <a href="https://github.com/neomatrix369" rel="noopener">GitHub</a>
   </nav>
 </header>
@@ -284,10 +284,10 @@ pre code { color: #cdd6f4; }
   <div class="stat-row" style="margin-top:1em;">
     <div class="stat-card"><div class="stat-num" style="color:var(--mo-accent);">5</div><div class="stat-label">Products</div></div>
     <div class="stat-card"><div class="stat-num" style="color:var(--mo-accent2);">90+</div><div class="stat-label">Guide pages</div></div>
-    <div class="stat-card"><div class="stat-num" style="color:var(--mo-purple);">1.6.1</div><div class="stat-label">Python SDK</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--mo-purple);">1.6.3</div><div class="stat-label">Python SDK</div></div>
     <div class="stat-card"><div class="stat-num" style="color:var(--mo-amber);">3</div><div class="stat-label">SDKs (Py · JS · Go)</div></div>
   </div>
-  <p class="small" style="margin-top:0.8em;">Enriched with AgentVetter decisions from Aug–Sep 2026 sessions · verified against modal.com on 5 Oct 2026</p>
+  <p class="small" style="margin-top:0.8em;">Enriched with AgentVetter decisions from Aug–Sep 2026 sessions · verified against modal.com on 28 Oct 2026</p>
   <p class="smaller" style="margin-top:0.8em;"><kbd>→</kbd> sections &nbsp;·&nbsp; <kbd>↓</kbd> go deeper &nbsp;·&nbsp; <kbd>★ Reviews</kbd> toggles docs-quality notes on every slide</p>
 </section>
 
@@ -427,17 +427,18 @@ pre code { color: #cdd6f4; }
     <p class="small">Our <code>modal-power-user-guide.md</code> (4 Aug 2026) was built on SDK 1.5.1. Three minor releases later, these are the deltas that matter.</p>
     <div class="wide">
     <table class="cmp-table cmp-table-red">
-      <thead><tr><th style="width:22%">Area</th><th style="width:34%">Then (Aug 2026)</th><th>Now (Oct 2026, SDK 1.6.1)</th></tr></thead>
+      <thead><tr><th style="width:22%">Area</th><th style="width:34%">Then (Aug 2026)</th><th>Now (Oct 2026, SDK 1.6.3)</th></tr></thead>
       <tbody>
         <tr><td>Sandbox backend</td><td>V1; <code>Sandbox.create()</code> returned immediately</td><td><strong>V2 is default</strong> (1.6.0). <code>create()</code> blocks until scheduled; unsatisfiable placement raises <code>ResourceExhaustedError</code>. &gt;20 creates/sec.</td></tr>
         <tr><td>Sandbox filesystem API</td><td><code>sb.open()/ls()/mkdir()/rm()</code> deprecated</td><td><strong>Removed</strong> in 1.6.0 — only <code>sb.filesystem.*</code> works (GA 14 Aug).</td></tr>
         <tr><td>Runtime</td><td>gVisor only</td><td><code>runtime="vm"</code> (KVM) added — Docker-in-Sandbox, FUSE, nested cgroups. gVisor still default "but may change".</td></tr>
         <tr><td>Egress control</td><td><code>cidr_allowlist</code></td><td><code>outbound_cidr_allowlist</code> + <code>outbound_domain_allowlist</code> (beta); runtime policy swap (alpha); <code>inbound_cidr_allowlist</code>.</td></tr>
         <tr><td>Secrets in Sandboxes</td><td>Env-var injection only</td><td><strong>Outbound Policy</strong> secret injection (beta) + <strong>Sidecars</strong> (beta, public alpha 28 Aug).</td></tr>
-        <tr><td>Snapshot retention</td><td>FS snapshots kept forever</td><td>30-day default TTL (1.5.0 breaking); <code>ttl=None</code> to keep.</td></tr>
+        <tr><td>Snapshot retention</td><td>FS snapshots kept forever</td><td>30-day default TTL (1.5.0 breaking); <code>ttl=None</code> to keep. Directory 30 d, <strong>memory 7 d</strong> (VM only). <strong>Exit Snapshots</strong> auto-capture the fs on exit (beta, 27 Oct).</td></tr>
         <tr><td><code>@app.cls()</code></td><td>Custom <code>__init__</code> allowed</td><td><strong>Removed</strong> — use <code>modal.parameter()</code> + <code>@modal.enter()</code>.</td></tr>
-        <tr><td>Observability</td><td>Dashboard + <code>modal app logs</code></td><td><code>Sandbox.logs</code>, <code>App.logs</code>, <code>modal function/server stats</code>, per-Sandbox CPU/memory/pressure &amp; Exit Reasons charts.</td></tr>
-        <tr><td>New primitives</td><td>—</td><td><code>@app.server()</code>, <code>@modal.sessioned()</code>, <code>@modal.clustered()</code>, <code>modal endpoint</code> CLI, <code>modal skills</code> CLI.</td></tr>
+        <tr><td>Observability</td><td>Dashboard + <code>modal app logs</code></td><td><code>Sandbox.logs</code>, <code>App.logs</code>, <code>modal function/server stats</code>, per-Sandbox CPU/memory/pressure &amp; Exit Reasons charts. New <code>metrics</code> surface, CLI + SDK (1.6.2).</td></tr>
+        <tr><td>New primitives</td><td>—</td><td><code>@app.server()</code>, <code>@modal.sessioned()</code>, <code>@modal.clustered()</code>, <code>modal endpoint</code> CLI, <code>modal skills</code> CLI, <code>App.stop()</code> (1.6.3).</td></tr>
+        <tr><td>Autoscaler API</td><td><code>.update_autoscaler()</code></td><td><strong>Deprecated</strong> in 1.6.2 — use <code>Function.autoscaler.update()</code> / <code>.settings()</code>.</td></tr>
       </tbody>
     </table>
     </div>
@@ -764,7 +765,7 @@ image = modal.Image.from_name("agentvetter-scanners:2026-10-05")</code></pre>
             <tr><td><code>Image.build(app)</code> (1.2.0)</td><td>Eager build; otherwise the build happens lazily <em>inside</em> <code>Sandbox.create()</code></td></tr>
             <tr><td><code>uv_pip_install</code> / <code>uv_sync</code></td><td>Up to 50% faster than pip; pin versions — cache may invalidate across SDK bumps</td></tr>
             <tr><td>Immutable external tags</td><td><code>from_registry("ubuntu:24.04")</code> is cached forever; bump the tag to pull a new upstream</td></tr>
-            <tr><td>2025.06 Image Builder</td><td>Modal client deps isolated from yours → fewer conflicts (the <code>mcp</code> SDK clash we hit)</td></tr>
+            <tr><td>Image Builder <strong>2026.10</strong> (1.6.3)</td><td>Modal client deps isolated from yours → fewer conflicts (the <code>mcp</code> SDK clash we hit). Refreshes base Debian + Python; <code>from_dockerfile()</code> caches <code>FROM</code> separately. Set per Environment via CLI.</td></tr>
             <tr><td><code>Image.from_scratch()</code></td><td>Empty image to mount as a scratch dir via <code>mount_image</code></td></tr>
           </tbody>
         </table>
@@ -816,7 +817,7 @@ image = modal.Image.from_name("agentvetter-scanners:2026-10-05")</code></pre>
             <tr><td>Isolation</td><td>Userspace kernel</td><td>KVM, own Linux kernel</td></tr>
             <tr><td>GPU</td><td>✅</td><td>❌</td></tr>
             <tr><td>Docker / FUSE / cgroups</td><td>❌</td><td>✅ (512 GiB root fs)</td></tr>
-            <tr><td>Memory snapshots</td><td>alpha</td><td>enabled customers only</td></tr>
+            <tr><td>Memory snapshots</td><td>❌</td><td>alpha · 7-day TTL</td></tr>
             <tr><td>Nested virt</td><td>—</td><td>Team/Enterprise on request</td></tr>
           </tbody>
         </table>
@@ -881,7 +882,7 @@ image = modal.Image.from_name("agentvetter-scanners:2026-10-05")</code></pre>
           <div class="calc-result-card"><div class="price price-ratio" id="priceHr">$0.00</div><div class="label">per sandbox-hour</div></div>
         </div>
         <div style="text-align:center;margin-top:0.4em;" class="savings-tag" id="ratioTag"></div>
-        <p class="smaller" style="margin-top:0.4em;">Rates from modal.com/pricing on 5 Oct 2026. Ignores egress ($0.04/GiB beyond 1 TiB free) and the $30/mo Starter credit.</p>
+        <p class="smaller" style="margin-top:0.4em;">Rates from modal.com/pricing on 28 Oct 2026 (unchanged since 5 Oct). Ignores egress ($0.04/GiB beyond 1 TiB free) and the $30/mo Starter credit.</p>
       </div>
     </div>
     <div class="review">
@@ -1091,7 +1092,7 @@ def main(batch_id: str):
             <tr><td><code>startup_timeout</code></td><td>Separate from input <code>timeout</code> (1.1.4)</td></tr>
           </tbody>
         </table>
-        <p class="small"><code>Function.update_autoscaler(min_containers=…)</code> changes settings without redeploying — returns the full autoscaler state (1.5.4). Rate limit: ~200 calls/s per workspace with a 5-s burst.</p>
+        <p class="small"><code>Function.autoscaler.update(min_containers=…)</code> changes settings without redeploying; <code>.settings()</code> reads them back (1.6.2). Rate limit: ~200 calls/s per workspace with a 5-s burst. The older <code>Function.update_autoscaler()</code> (1.5.4) still works but is <strong>deprecated</strong> as of 1.6.2.</p>
       </div>
       <div>
         <div class="code-side">
@@ -1390,7 +1391,7 @@ curl "$ENDPOINT_URL/v1/chat/completions" \
         <table class="cmp-table">
           <thead><tr><th>SDK</th><th>Status</th><th>Notes</th></tr></thead>
           <tbody>
-            <tr><td>Python <code>modal</code> 1.6.1</td><td><span class="badge badge-green">GA</span></td><td>Pin minor: <code>modal~=1.6.0</code>; breaking changes only in <code>1.Y.0</code>. Python 3.10–3.14 (3.14t experimental).</td></tr>
+            <tr><td>Python <code>modal</code> 1.6.3</td><td><span class="badge badge-green">GA</span></td><td>Pin minor: <code>modal~=1.6.0</code>; breaking changes only in <code>1.Y.0</code>. Python 3.10–3.15 (3.14t experimental); 3.15 added in 1.6.2.</td></tr>
             <tr><td>JavaScript <code>modal</code></td><td><span class="badge badge-amber">Beta</span></td><td><code>new ModalClient()</code>; full Sandbox API incl. probes, policies, sidecars. Needs Python-SDK ≥1.2 deployed Apps.</td></tr>
             <tr><td>Go <code>modal-client/go</code></td><td><span class="badge badge-amber">Beta</span></td><td>Same surface; build logs stream automatically.</td></tr>
           </tbody>
@@ -1500,7 +1501,7 @@ curl "$ENDPOINT_URL/v1/chat/completions" \
         <tr><td>Sandbox tagging for orphan detection</td><td><code>tags=</code> at create, <code>Sandbox.list(tags=)</code></td><td><span class="badge badge-green">Holds</span></td><td>Add a 10-min reaper Function (slide 2.9)</td></tr>
         <tr><td>Sandbox default 5 min lifetime; <code>.map()</code> fan-out</td><td>Unchanged. V2: <code>create()</code> blocks; <code>ResourceExhaustedError</code></td><td><span class="badge badge-amber">Adjust</span></td><td>Treat create failures as a 5th status (<code>not_scheduled</code>?) — this is the "5th error status" fixture gap</td></tr>
         <tr><td>Sandbox cost assumed ≈ Function cost</td><td>Sandbox CPU/mem ≈ <strong>3×</strong> Functions</td><td><span class="badge badge-red">Wrong</span></td><td>Budget with the calculator; request 0.25–0.5 cores and let bursting cover peaks</td></tr>
-        <tr><td>Node.js in base image for <code>npx tessl</code> + Node MCP servers</td><td>No change</td><td><span class="badge badge-green">Holds</span></td><td>Keep; 2025.06 Image Builder reduces dep conflicts</td></tr>
+        <tr><td>Node.js in base image for <code>npx tessl</code> + Node MCP servers</td><td>No change</td><td><span class="badge badge-green">Holds</span></td><td>Keep; Image Builder 2026.10 (1.6.3) refreshes Debian + Python and caches <code>FROM</code> separately</td></tr>
         <tr><td>Deeper observability (file/process) deferred</td><td>Sidecars + <code>proxy_traffic_via_sidecar</code>; <code>verbose=True</code></td><td><span class="badge badge-amber">Unlocked</span></td><td>Post-MVP: mitmproxy sidecar for full request capture</td></tr>
       </tbody>
     </table>
@@ -1580,7 +1581,7 @@ curl "$ENDPOINT_URL/v1/chat/completions" \
   </section>
 
   <section>
-    <h2>Sandbox Cheat Sheet (SDK 1.6.1)</h2>
+    <h2>Sandbox Cheat Sheet (SDK 1.6.3)</h2>
     <div class="two-col" style="font-size:0.74em;">
       <div>
         <h3 style="font-size:1em;">Create</h3>
@@ -1708,7 +1709,7 @@ modal sandbox list            # per app</code></pre>
       </div>
     </div>
     <div class="sources">
-      <span class="src-num">1</span> All links verified reachable on 5 Oct 2026 via modal.com navigation
+      <span class="src-num">1</span> All 104 external links HTTP-200 verified on 28 Oct 2026
     </div>
   </section>
 
