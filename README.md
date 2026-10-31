@@ -11,7 +11,7 @@ Static GitHub Pages site for standalone HTML, live benchmarks, explorers, and sy
 | Home — all builds & pages | https://neomatrix369.github.io/ |
 | Projects hub (AgentVetter, SIE, rag-params-finder, …) | https://neomatrix369.github.io/pages/projects.html |
 | Doc extract — project write-up | https://neomatrix369.github.io/pages/playgroup-202602-docextract.html |
-| Doc extract — playground archive (26 snapshots) | https://neomatrix369.github.io/demos/playgroup-202602-docextract/ |
+| Doc extract — playground archive (28 snapshots) | https://neomatrix369.github.io/demos/playgroup-202602-docextract/ |
 | Doc extract — Doubleword guide | https://neomatrix369.github.io/demos/playgroup-202602-docextract/extractor-all-doubleword.html |
 | Learning hub — Superlinked SIE | https://neomatrix369.github.io/demos/superlinked-sie-learning-hub/ |
 | Learning hub — Doubleword | https://neomatrix369.github.io/demos/doubleword-learning-hub/ |

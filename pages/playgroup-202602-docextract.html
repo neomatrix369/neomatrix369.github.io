@@ -82,12 +82,12 @@
     <div class="cta-row">
       <a class="button button--primary" href="../demos/doubleword-learning-hub/">Open the Doubleword learning hub</a>
       <a class="button" href="../demos/playgroup-202602-docextract/latest/">Open latest playground</a>
-      <a class="button" href="../demos/playgroup-202602-docextract/">All 26 snapshots</a>
+      <a class="button" href="../demos/playgroup-202602-docextract/">All 28 snapshots</a>
       <a class="button" href="https://github.com/neomatrix369/playgroup_202602_docextract" rel="noopener">View on GitHub</a>
       <a class="button" href="https://github.com/neomatrix369/playgroup_202602_docextract/blob/main/QUICKSTART.md" rel="noopener">QUICKSTART</a>
     </div>
 
-    <p class="snapshot">Results snapshot: <strong>2026-10-22</strong> · 124 scored runs · playground <code>2026-10-22T0821Z</code> (26 archived versions from git history)</p>
+    <p class="snapshot">Results snapshot: <strong>2026-10-31</strong> · 136 scored runs · playground <code>2026-10-31T1912Z</code> (28 archived versions from git history)</p>
 
     <h2>Who is this for?</h2>
     <ul>
@@ -100,7 +100,7 @@
     <h2>Key findings</h2>
     <p>
       Provider aggregates match <code>python score.py</code> over every <code>data/*_dev_extracted__*.tsv</code> file on
-      <strong>2026-10-22</strong>: <strong>124</strong> scored runs
+      <strong>2026-10-31</strong>: <strong>136</strong> scored runs
       (46 OpenRouter, 45 Doubleword, 33 V7 Go). Registries: 39 OpenRouter keys, 36 Doubleword models, 32 V7 keys.
     </p>
 
@@ -142,7 +142,7 @@
             <td class="num">0.946</td>
             <td>gemini-3-pro</td>
             <td class="num">59.9/85 (71%)</td>
-            <td class="num">1000s</td>
+            <td class="num">874s</td>
             <td class="num">$0.158</td>
           </tr>
           <tr>
@@ -195,7 +195,7 @@
 
     <h2>Takeaways</h2>
     <ul>
-      <li><strong>Doubleword holds 6 of the global top 10.</strong> Retains the global leader (<code>dw-muse-spark-open</code>, 0.948); <code>gemini-3-pro</code> is 3rd at 0.946. <code>dw-deepseek-v4-pro-0813</code> is rank 2 at F1 0.947.</li>
+      <li><strong>Doubleword holds 4 of the global top 10.</strong> Retains the global leader (<code>dw-muse-spark-open</code>, 0.948); <code>gemini-3-pro</code> is 3rd at 0.946. <code>dw-deepseek-v4-pro-0813</code> is rank 2 at F1 0.947.</li>
       <li><strong>43 of 45 Doubleword models</strong> produced usable results (F1 range 0.832–0.948 for standard text LLMs).</li>
       <li><strong>Free-tier models universally failed</strong> — the zero-score runs are free-tier or had context/format issues.</li>
       <li><strong>Precision is consistently high</strong> (0.96–0.97); recall differentiates leaders.</li>
@@ -235,7 +235,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="latest-row"><td class="num">2026-10-22T0821Z</td><td class="num">124</td><td class="num">124</td><td>Latest — 124 scored runs</td><td><a href="../demos/playgroup-202602-docextract/2026-10-22T0821Z-which-models-extracted-playground.html">Open</a></td></tr>
+          <tr class="latest-row"><td class="num">2026-10-31T1912Z</td><td class="num">136</td><td class="num">136</td><td>Latest — 136 scored runs</td><td><a href="../demos/playgroup-202602-docextract/2026-10-31T1912Z-which-models-extracted-playground.html">Open</a></td></tr>
           <tr><td class="num">2026-09-11T0000Z</td><td class="num">121</td><td class="num">121</td><td>DW/OR catalog prices &amp; cost backfill</td><td><a href="../demos/playgroup-202602-docextract/2026-09-11T0000Z-which-models-extracted-playground.html">Open</a></td></tr>
           <tr><td class="num">2026-09-10T2232Z</td><td class="num">121</td><td class="num">121</td><td>OpenRouter Gemini, Kimi, GLM results</td><td><a href="../demos/playgroup-202602-docextract/2026-09-10T2232Z-which-models-extracted-playground.html">Open</a></td></tr>
           <tr><td class="num">2026-09-09T2357Z</td><td class="num">115</td><td class="num">115</td><td>Four new Doubleword model results</td><td><a href="../demos/playgroup-202602-docextract/2026-09-09T2357Z-which-models-extracted-playground.html">Open</a></td></tr>
@@ -251,7 +251,7 @@
         </tbody>
       </table>
     </div>
-    <p><a href="../demos/playgroup-202602-docextract/">View all 26 snapshots with search and filters →</a></p>
+    <p><a href="../demos/playgroup-202602-docextract/">View all 28 snapshots with search and filters →</a></p>
 
     <h2>Dataset &amp; fields</h2>
     <p>
@@ -301,7 +301,7 @@ python playground.py</code></pre>
   </main>
 
   <footer class="site-footer">
-    Benchmark data snapshot 2026-10-22 ·
+    Benchmark data snapshot 2026-10-31 ·
     <a href="https://github.com/neomatrix369/playgroup_202602_docextract" rel="noopener">source repo</a>
   </footer>
   <script src="../assets/js/social-bar.js"></script>
