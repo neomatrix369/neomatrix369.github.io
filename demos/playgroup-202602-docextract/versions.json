@@ -795,5 +795,73 @@
       "openrouter": 0.788,
       "v7": 0.833
     }
+  },
+  {
+    "stamp": "2026-10-31T1550Z",
+    "commit": "d9acd826",
+    "iso": "2026-10-31T15:50:19Z",
+    "subject": "feat(google): extract and score google-gemini-3.1-pro (gemini-3.1-pro-preview)",
+    "file": "2026-10-31T1550Z-which-models-extracted-playground.html",
+    "size_kb": 1459,
+    "models": 127,
+    "f1": 127,
+    "tabs": [
+      "Rankings",
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Provider Analysis",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 46,
+      "doubleword": 45,
+      "google": 3,
+      "v7": 33
+    },
+    "tab_count": 8,
+    "avg_f1": {
+      "doubleword": 0.832,
+      "google": 0.942,
+      "openrouter": 0.788,
+      "v7": 0.833
+    }
+  },
+  {
+    "stamp": "2026-10-31T1912Z",
+    "commit": "05fb2fdf",
+    "iso": "2026-10-31T19:12:39Z",
+    "subject": "docs(results): update playground and README for 9 new Google thinking-level models",
+    "file": "2026-10-31T1912Z-which-models-extracted-playground.html",
+    "size_kb": 1557,
+    "models": 136,
+    "f1": 136,
+    "tabs": [
+      "Rankings",
+      "Field Heatmap",
+      "Document Analysis",
+      "Error Breakdown",
+      "Deep Dive",
+      "Recommendations",
+      "Provider Analysis",
+      "Project Evolution"
+    ],
+    "docs": 11,
+    "providers": {
+      "openrouter": 46,
+      "doubleword": 45,
+      "google": 12,
+      "v7": 33
+    },
+    "tab_count": 8,
+    "avg_f1": {
+      "doubleword": 0.832,
+      "google": 0.94,
+      "openrouter": 0.788,
+      "v7": 0.833
+    }
   }
 ]
