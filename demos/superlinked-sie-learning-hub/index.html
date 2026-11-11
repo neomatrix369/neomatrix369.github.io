@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Superlinked SIE — Developer Learning Hub v1.5</title>
+<title>Superlinked SIE — Developer Learning Hub v1.6</title>
 <meta name="description" content="Interactive deep dive into the Superlinked Inference Engine: the four primitives, the task layer, deployment paths and the model catalogue.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -261,15 +261,15 @@ img, svg { max-width: 100%; }
 <section class="title-slide">
   <h1>Superlinked<br>Inference Engine</h1>
   <div class="accent-bar"></div>
-  <p style="font-size:0.8em;color:var(--sl-muted);margin-top:0.2em;">Developer Learning Hub &nbsp;·&nbsp; The Platform &nbsp;·&nbsp; v1.5 (16 Oct 2026)</p>
+  <p style="font-size:0.8em;color:var(--sl-muted);margin-top:0.2em;">Developer Learning Hub &nbsp;·&nbsp; The Platform &nbsp;·&nbsp; v1.6 (11 Nov 2026)</p>
   <div class="stat-row" style="margin-top:1em;">
     <div class="stat-card"><div class="stat-num" style="color:var(--sl-accent);">4</div><div class="stat-label">Primitives</div></div>
-    <div class="stat-card"><div class="stat-num" style="color:var(--sl-accent2);">129</div><div class="stat-label">Models (serverless page)</div></div>
-    <div class="stat-card"><div class="stat-num" style="color:#166534;">53</div><div class="stat-label">Gallery entries</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--sl-accent2);">149</div><div class="stat-label">Models (serverless page)</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:#166534;">74</div><div class="stat-label">Gallery entries</div></div>
     <div class="stat-card"><div class="stat-num" style="color:var(--sl-purple);">3.4K</div><div class="stat-label">GitHub ★</div></div>
-    <div class="stat-card"><div class="stat-num" style="color:var(--sl-teal);">v0.10.1</div><div class="stat-label">Latest release</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--sl-teal);">v0.11.0</div><div class="stat-label">Latest release</div></div>
   </div>
-  <p class="small" style="margin-top:0.8em;max-width:720px;">Built from the live docs, GitHub README, examples gallery, GitHub releases (to v0.9.0) and blog <em>plus</em> three prior Superlinked sessions in this project. <strong style="color:#9a4708;">v1.4 adds v0.10.0/v0.10.1, the Serverless / Native Inference pages, SIE Relay and the 13 Oct community update</strong> — see “Source verification log” for exactly what was and was not opened. Toggle <strong style="color:#9a4708;">★ Reviews</strong> (top right) for a docs critique on every slide.</p>
+  <p class=”small” style=”margin-top:0.8em;max-width:720px;”>Built from the live docs, GitHub README, examples gallery, GitHub releases (to v0.9.0) and blog <em>plus</em> three prior Superlinked sessions in this project. <strong style=”color:#9a4708;”>v1.6 adds v0.11.0, bumps models to 149 and gallery to 74 entries</strong> — see “Source verification log” for exactly what was and was not opened. Toggle <strong style=”color:#9a4708;”>★ Reviews</strong> (top right) for a docs critique on every slide.</p>
   <p class="small" style="margin-top:0.8em;max-width:720px;">
     This hub covers the platform. The tiered router, the security-relevant model choices and the
     AgentVetter integration map now live in <a href="../agentvetter-learning-hub/">AgentVetter · Security &amp; SIE</a>.
@@ -369,7 +369,7 @@ img, svg { max-width: 100%; }
     <p class="small">Your three prior sessions (12–20 Aug) surveyed SIE at ~2.1–2.4K ★ and v0.7.0-ish. Here is the delta against the live surfaces on 5 Oct 2026.</p>
     <div class="delta"><span class="delta-head">Area</span><span class="delta-head">Then (Aug 2026)</span><span class="delta-head">Now (Oct 2026)</span></div>
     <div class="delta"><span class="d-key">Adoption</span><span class="d-old">2.1k–2.4k ★, "growing"</span><span class="d-new">Site nav 3.4K ★ (14 Oct); "#5 Repository Of The Day" GitHub Trending badge on the new product pages. GitHub HTML counts (3,360 ★ / 317 forks / 18 issues on 5 Oct) could not be re-parsed on 14 Oct.</span></div>
-    <div class="delta"><span class="d-key">Releases</span><span class="d-old">v0.7.0 (8 Aug) — Generate still "preview"</span><span class="d-new"><strong style="color:#b33d0b;">v0.10.1 (13 Oct)</strong> is current — <strong>ten releases after the v0.7.3 (3 Sep)</strong> of the Aug–Sep sessions: v0.8.0–0.8.3 (23–26 Sep), v0.9.0 (30 Sep, breaking Helm/auth), <strong>v0.10.0 (9 Oct)</strong>, <strong>v0.10.1 (13 Oct)</strong>. See the releases slide.</span></div>
+    <div class="delta"><span class="d-key">Releases</span><span class="d-old">v0.7.0 (8 Aug) — Generate still "preview"</span><span class="d-new"><strong style="color:#b33d0b;">v0.11.0 (4 Nov)</strong> is current — <strong>eleven releases after the v0.7.3 (3 Sep)</strong> of the Aug–Sep sessions: v0.8.0–0.8.3 (23–26 Sep), v0.9.0 (30 Sep, breaking Helm/auth), v0.10.0 (9 Oct), v0.10.1 (13 Oct), <strong>v0.11.0 (4 Nov)</strong>. See the releases slide.</span></div>
     <div class="delta"><span class="d-key">Examples</span><span class="d-old">~9 docs examples + agent-action-monitor + threat-report-attck-mapper</span><span class="d-new">53 gallery rows in <code>examples/README.md</code>; most are "recorded examples" with pinned HF evidence. <strong style="color:#b33d0b;">External project guides are now a listed category.</strong> Docs page still shows only 8 + 12.</span></div>
     <div class="delta"><span class="d-key">Routing references</span><span class="d-old">Stripe Link Fraud (8/10) was the closest architectural fit</span><span class="d-new"><code>examples/request-routing</code> (embedding classifier + conditional generation, 3,000-case verification) and <code>examples/typed-decisions</code> (CVE triage with fast/smart/LLM lanes) are now <em>direct</em> references for the tiered router</span></div>
     <div class="delta"><span class="d-key">Guard models</span><span class="d-old">granite-guardian-2b; GLiGuard 300M "cheaper alternative"</span><span class="d-new"><code>examples/guardrails</code> scores seven screens on 4,768 human-labelled prompts: <strong>Qwen3Guard 4B 82.7 % harmful-F1</strong> vs GPT-6 Sol 76.1 %, Claude Haiku 4.5 76.2 %, GLiGuard 77.7 % ($4.68 per million prompts), OpenAI Moderation 66.3 %. README Guard row now lists qwen3guard-gen-4b first, then granite-guardian-2b, opir-multitask-large, opir-edge. granite-guardian is <em>not</em> in the benchmark table.</span></div>
@@ -400,8 +400,8 @@ img, svg { max-width: 100%; }
   </section>
 
   <section>
-    <h2>Releases Since the August Sessions: v0.7.x → v0.10.1</h2>
-    <p class="small">Docs release-notes page (current: "Latest version v0.10.1, 2026-10-13") plus GitHub release pages. v0.8.x–v0.10.1 were <strong>missing from hub v1.0–v1.2</strong>; v0.10.x from v1.3.</p>
+    <h2>Releases Since the August Sessions: v0.7.x → v0.11.0</h2>
+    <p class="small">Docs release-notes page (current: "Latest version v0.11.0, 2026-11-04") plus GitHub release pages. v0.8.x–v0.10.1 were <strong>missing from hub v1.0–v1.2</strong>; v0.10.x from v1.3; v0.11.0 from v1.6.</p>
     <div class="tbl-wrap"><table class="cmp-table cmp-table-teal dense">
       <thead><tr><th style="width:11%">Release</th><th style="width:9%">Date</th><th>What matters to a builder</th></tr></thead>
       <tbody>
@@ -412,6 +412,7 @@ img, svg { max-width: 100%; }
         <tr><td><strong>v0.10.0</strong></td><td>9 Oct</td><td><strong>New models:</strong> SAM 3 (boxes, needs HF token + Meta licence), GLiNER2.5 small/base, GLiNER2 PII multi, OpenAI privacy-filter, Parakeet-TDT 0.6B v3 (25 EU languages), Qdrant SPLADE-ecommerce, Qwen3.5-122B-A10B-FP8 (2×80 GB, text-only), <strong>Qwen3Guard-Gen-0.6B and -4B</strong>, ZeRank 2 · <strong>self-hosted remote profiles</strong> (SIE or OpenAI-compatible upstreams, cold-model fallback; threshold routing and saturation spill opt-in) · long-document fixes for GLiNER/GLiNER2 · Whisper concurrency · SIGTERM drain</td></tr>
         <tr><td></td><td></td><td><span class="badge badge-amber">0.10.0 upgrade notes</span> LoRAs with PEFT <code>bias="all"/"lora_only"</code> no longer load · grammar-constrained generation now defaults temperature and penalties to <strong>0</strong> · gliner-biomed default threshold 0.8 · GLiNER2 returns per-item <code>INPUT_TOO_LONG</code> instead of partial success · config writes reject undefined upstreams · Qwen3.8 JSON-schema output compact, single image up to 3,211,264 px · OWLv2 fast processor</td></tr>
         <tr><td><strong>v0.10.1</strong></td><td>13 Oct</td><td><strong>LightOnOCR-3-4B</strong> (grounding / no custom prompt) · <strong><code>superlinked/pii-redact</code></strong> (combined GLiNER + NuNER spans in one extract call) · opt-in <code>include_reasoning: true</code> returns <code>reasoning_content</code> (buffered and streaming) · Gemma 4 31B high-res thinking profiles · GLM-5.3-Flash tool calling · remote profiles can declare <code>max_seq_length</code> · OCR pages complete independently · Laya <code>graphs</code> and Qwen3-reranker <code>fast</code> profiles (opt-in; scores can shift) · TypeScript extract no longer needs labels</td></tr>
+        <tr><td><strong>v0.11.0</strong></td><td>4 Nov</td><td><strong>New models:</strong> Google EmbeddingGemma 2 (text embeddings, transformers5 bundle) · IBM Granite Speech 5.0 2B (audio) · Perplexity Decider Flash v1.2 and 27B (typed decisions) · SauerkrautLM MoEdernColBERT 115M (multivector) · Xiaomi OCR 0 (documents, tables, formulas) · <strong>Anthropic Messages API</strong> at <code>/v1/messages</code> (gateway + single server) · opt-in runtime LoRA (BERT, XLM-R, GLiNER2) · opt-in token auth for self-hosted servers · <span class="badge badge-red">breaking</span> Candle ZIP 9 (may affect NPZ/PTH names) · LoRA must select adapters declared by chosen profile · local Sentence Transformers need <code>trust_remote_code: true</code> · chat tool names: 1–64 ASCII chars · Qwen3-Embedding defaults → SGLang · BGE Flash → FP16 · GLiNER2 prompt counts compiled prompts</td></tr>
         <tr><td></td><td></td><td><span class="badge badge-red">0.10.1 upgrade notes</span> local chat now <strong>adds <code>json_schema</code> to the prompt by default</strong> (<code>schema_in_prompt: false</code> to opt out) · <strong>self-hosted SDK users must set <code>SIE_BASE_URL</code> or an explicit base URL with their key to avoid the new hosted-service fallback</strong> · TypeScript <code>threshold</code> now actually applies · GLiNER2.5-Decide uses CUDA graphs by default (scores may change; <code>cuda_graphs: off</code>) · GLM-OCR fast image processor default (−44 % GPU time per photo, text may change) · Qwen3Guard-Gen-4B streams every 16 decode steps · profile validation rejects output caps above the served context window</td></tr>
       </tbody>
     </table></div>
@@ -422,7 +423,7 @@ img, svg { max-width: 100%; }
       <div class="review-section"><div class="review-section-title">⚠️ Could improve</div>Surface "breaking" in the docs Upgrade Runbook for each minor</div>
     </div>
     <div class="sources">
-      <span class="src-num">1</span> <a href="https://superlinked.com/docs/reference/release-notes" target="_blank">Docs release notes (v0.10.1 on top)</a> · <a href="https://github.com/superlinked/sie/releases/tag/v0.10.1" target="_blank">v0.10.1</a> · <a href="https://github.com/superlinked/sie/releases/tag/v0.10.0" target="_blank">v0.10.0</a> · <a href="https://github.com/superlinked/sie/releases/tag/v0.9.0" target="_blank">v0.9.0</a> ·
+      <span class="src-num">1</span> <a href="https://superlinked.com/docs/reference/release-notes" target="_blank">Docs release notes (v0.11.0 on top)</a> · <a href="https://github.com/superlinked/sie/releases/tag/v0.11.0" target="_blank">v0.11.0</a> · <a href="https://github.com/superlinked/sie/releases/tag/v0.10.1" target="_blank">v0.10.1</a> · <a href="https://github.com/superlinked/sie/releases/tag/v0.10.0" target="_blank">v0.10.0</a> · <a href="https://github.com/superlinked/sie/releases/tag/v0.9.0" target="_blank">v0.9.0</a> ·
       <span class="src-num">2</span> <a href="https://github.com/superlinked/sie/releases/tag/v0.8.3" target="_blank">v0.8.3</a> ·
       <span class="src-num">3</span> <a href="https://github.com/superlinked/sie/releases/tag/v0.8.0" target="_blank">v0.8.0</a> ·
       <span class="src-num">4</span> <a href="https://pypi.org/project/sie-sdk/" target="_blank">sie-sdk on PyPI</a> ·
@@ -432,13 +433,13 @@ img, svg { max-width: 100%; }
 
   <section>
     <h2>Serverless, Native Inference &amp; the Launch Plan</h2>
-    <p class="small">From superlinked.com/serverless, /native-inference and the 13 Oct community-channel update. <span class="badge badge-amber">pre-launch</span> both product pages carry <code>noindex</code>; the community post is not public documentation.</p>
+    <p class="small">From superlinked.com/serverless, /native-inference and the 13 Oct community-channel update. Re-read 11 Nov 2026: 149 models. <span class="badge badge-amber">pre-launch</span> both product pages carry <code>noindex</code>; the community post is not public documentation.</p>
     <div class="two-col">
       <div>
         <table class="cmp-table cmp-table-teal dense">
           <thead><tr><th>Option</th><th>What it is (their words, condensed)</th></tr></thead>
           <tbody>
-            <tr><td><strong>Serverless</strong></td><td>"Pay per call, no GPUs to run": one API, <strong>21 task recipes</strong>, 129 models, 9 integrations. SOC 2 Type 2, US or EU residency, SDK/API/CLI/MCP, "zero lock-in — self-host the same stack". Live code runner is a waitlist; example: <strong>$50 credit ≈ 1.3B tokens embedded, 120k pages parsed, 27M tokens generated</strong>. Migration snippets from OpenAI, Anthropic, Bedrock and Textract.</td></tr>
+            <tr><td><strong>Serverless</strong></td><td>"Pay per call, no GPUs to run": one API, <strong>21 task recipes</strong>, 149 models, 9 integrations. SOC 2 Type 2, US or EU residency, SDK/API/CLI/MCP, "zero lock-in — self-host the same stack". Live code runner is a waitlist; example: <strong>$50 credit ≈ 1.3B tokens embedded, 120k pages parsed, 27M tokens generated</strong>. Migration snippets from OpenAI, Anthropic, Bedrock and Textract.</td></tr>
             <tr><td><strong>Native Inference</strong></td><td>A platform licence for SIE Cluster with Superlinked engineers in a shared Slack, helping answer customers' <strong>security reviews</strong>; SIE stays Apache-2.0. Loop: Eval → Choose → Post-train → Ship. Deploy in your cloud <em>or your customer's</em>, incl. air-gapped; Terraform for AWS, GCP, Azure, <strong>Alibaba Cloud</strong>; per-tenant worker pools. Case study: GoodData (founder interview "coming soon").</td></tr>
             <tr><td><strong>SIE Cluster / Local</strong></td><td>Cluster: Terraform + Helm, scale-to-zero, Apache-2.0. Local: <code>pip install "sie-server[local]" &amp;&amp; sie-server serve</code> (Apple Silicon / NVIDIA) or <code>ghcr.io/superlinked/sie-server:latest-cuda13-sglang-cu130</code>.</td></tr>
           </tbody>
@@ -457,7 +458,7 @@ img, svg { max-width: 100%; }
     <div class="review">
       <div class="review-title">Docs Review — New Product Pages</div>
       <div class="review-row"><span class="review-dim">Clarity</span><span class="review-score good">A</span><span class="review-note">Native Inference leads with the buyer's pain (four security-review findings: FINMA, CMMC L2, NHS DSPT, Nova Scotia PIIDPA) and a clear "licence + engineers, engine stays Apache-2.0" model. Serverless shows a runnable snippet in Python, TypeScript, curl and an agent prompt for every task.</span></div>
-      <div class="review-row"><span class="review-dim">Consistency</span><span class="review-score gap">C</span><span class="review-note">Task counts: meta description "21 task recipes", the picker shows 22 (adds Translation), the nav lists 23 (adds typed-decisions and request-routing, drops Translation). Model counts: 129 here, "100+" in docs, 85+ in the catalog footer. Run-time model ids also differ: the migration panel uses <code>Qwen/Qwen3.5-4B</code> while the recipes use <code>Qwen3.8-27B-FP8</code>.</span></div>
+      <div class="review-row"><span class="review-dim">Consistency</span><span class="review-score gap">C</span><span class="review-note">Task counts: meta description "21 task recipes", the picker shows 22 (adds Translation), the nav lists 23 (adds typed-decisions and request-routing, drops Translation). Model counts: 149 here (11 Nov), "100+" in docs, 85+ in the catalog footer. Run-time model ids also differ: the migration panel uses <code>Qwen/Qwen3.5-4B</code> while the recipes use <code>Qwen3.8-27B-FP8</code>.</span></div>
       <div class="review-row"><span class="review-dim">Pricing</span><span class="review-score gap">D</span><span class="review-note">No price list. Only per-task comparisons and the "$50 example balance"; the Guardrails card on the same page shows <em>"No verdict returned"</em> in its output panel (a rendering gap, 14 Oct).</span></div>
       <div class="review-section"><div class="review-section-title">⚠️ Could improve</div>One canonical task and model count, generated from the catalog · A public price list before launch · Link each task page to its gallery example and its docs page · Publish the Relay data-handling statement on the Native Inference page (it is the security-review page)</div>
     </div>
@@ -912,6 +913,7 @@ helm upgrade --install sie-cluster \
         <div class="model-card"><div class="model-name">ibm-granite/granite-guardian-3.0-2b · opir-multitask-large · opir-edge</div><div class="model-desc">configs verified; not in the benchmark table</div></div>
         <div class="model-card"><div class="model-name">knowledgator/gliclass-large-v1.0 · fastino/GLiNER2.5-Decide · Laya</div><div class="model-desc">typed decisions: 142 / 146 / 134-145 of 160 on weakness class; GLiClass answers three questions in 28 ms</div></div>
         <div class="model-card"><div class="model-name">New in v0.10.x</div><div class="model-desc">Qwen3Guard-Gen-0.6B · ZeRank 2 reranker · Parakeet-TDT 0.6B v3 (25 EU languages) · SAM 3 (boxes; needs HF token + Meta licence) · OpenAI privacy-filter · GLiNER2.5 small/base · Qwen3.5-122B-A10B-FP8 · SPLADE-ecommerce · <strong>LightOnOCR-3-4B</strong> · <strong>superlinked/pii-redact</strong> (GLiNER + NuNER in one call)</div></div>
+        <div class="model-card"><div class="model-name">New in v0.11.0</div><div class="model-desc">EmbeddingGemma 2 (text; transformers5) · IBM Granite Speech 5.0 2B (audio) · Perplexity Decider Flash v1.2 + 27B (decisions) · SauerkrautLM MoEdernColBERT 115M (multivector) · Xiaomi OCR 0 (documents, tables, formulas) · <strong>Anthropic Messages API at <code>/v1/messages</code></strong> (gateway + single server) · opt-in runtime LoRA · opt-in token auth (self-hosted)</div></div>
         <div class="model-card"><div class="model-name">google/madlad400-3b-mt</div><div class="model-desc">400+ languages via CTranslate2; config verified; translation recipe covers 55 target locales on /serverless</div></div>
       </div>
     </div>
@@ -1001,12 +1003,12 @@ helm upgrade --install sie-cluster \
 
   <section>
     <h2>Coverage Checklist — Is This the Single Source of Truth?</h2>
-    <p class="small">v1.4, 14 Oct 2026. <span class="badge badge-green">✓</span> checked against a live source in this or the previous pass · <span class="badge badge-amber">partial</span> real gaps · <span class="badge badge-red">open</span> needs you.</p>
+    <p class="small">v1.6, 11 Nov 2026. <span class="badge badge-green">✓</span> checked against a live source in this or the previous pass · <span class="badge badge-amber">partial</span> real gaps · <span class="badge badge-red">open</span> needs you.</p>
     <div class="tbl-wrap"><table class="cmp-table cmp-table-green dense">
       <thead><tr><th>Area</th><th>Covered in</th><th>Status</th><th>What is still thin</th></tr></thead>
       <tbody>
         <tr><td>Product packaging: Serverless, Native Inference, Cluster, Local</td><td>§01</td><td><span class="badge badge-green">✓</span></td><td>Pages are pre-launch (<code>noindex</code>); no price list; <code>/home-next</code> unopened</td></tr>
-        <tr><td>Releases to v0.10.1 incl. breaking/upgrade notes</td><td>§01</td><td><span class="badge badge-green">✓</span></td><td>—</td></tr>
+        <tr><td>Releases to v0.11.0 incl. breaking/upgrade notes</td><td>§01</td><td><span class="badge badge-green">✓</span></td><td>—</td></tr>
         <tr><td>Community update 13 Oct (launch plan, asks, events)</td><td>§01</td><td><span class="badge badge-amber">partial</span></td><td>Only the pasted message; replies and thread context unseen; not public documentation</td></tr>
         <tr><td>Task recipes with evals (23 task pages)</td><td>§02</td><td><span class="badge badge-amber">partial</span></td><td>All eval cards read from <code>/serverless</code>; the 23 task pages themselves, 7 industry pages, <code>/sre</code> and <code>/home-next</code> not opened</td></tr>
         <tr><td>Four primitives, API schemas, error codes</td><td>§02, §08</td><td><span class="badge badge-green">✓</span></td><td>API reference not re-fetched since 5 Oct; new 0.10.x request fields come from release notes</td></tr>
@@ -1025,22 +1027,22 @@ helm upgrade --install sie-cluster \
   </section>
 
   <section>
-    <h2>Source Verification Log (14 Oct 2026)</h2>
+    <h2>Source Verification Log (11 Nov 2026)</h2>
     <div class="two-col">
       <div>
         <h3 style="color:#166534;">Opened and checked this pass</h3>
         <table class="cmp-table cmp-table-green dense">
           <thead><tr><th>Source</th><th>Result</th></tr></thead>
           <tbody>
-            <tr><td>Docs release-notes page</td><td>Current to v0.10.1; includes new SIE Cloud nav section</td></tr>
+            <tr><td>Docs release-notes page</td><td>Current to v0.11.0 (4 Nov 2026); includes SIE Cloud nav section</td></tr>
             <tr><td>/serverless, /native-inference, /security</td><td>Read in full; eval tables, deploy options, reference pipeline captured</td></tr>
             <tr><td>docs/cloud/sie-relay</td><td>Read in full</td></tr>
             <tr><td>GitHub: gallery README, README, raw guides</td><td>53 rows; request-routing/cost and coding-agent-opencode read</td></tr>
-            <tr><td>PyPI / npm</td><td>sie-sdk, sie-server and @superlinked/sie-sdk = 0.10.1 (13 Oct)</td></tr>
-            <tr><td>GitHub release tags</td><td>v0.10.0 and v0.10.1 present</td></tr>
+            <tr><td>PyPI / npm</td><td>sie-sdk, sie-server and @superlinked/sie-sdk = 0.10.1 (13 Oct); v0.11.0 release notes read from docs page (4 Nov)</td></tr>
+            <tr><td>GitHub release tags</td><td>v0.10.0, v0.10.1, v0.11.0 present</td></tr>
           </tbody>
         </table>
-        <p class="small">Carried from 5 Oct: docs nav (77 pages), blog index, /tasks, /models, docs/examples, recap.</p>
+        <p class="small">Carried from 5 Oct: docs nav (77 pages), blog index, /tasks, /models, docs/examples, recap. /serverless re-read 11 Nov (149 models).</p>
       </div>
       <div>
         <h3 style="color:#b91c1c;">Not verified</h3>
@@ -1056,7 +1058,7 @@ helm upgrade --install sie-cluster \
           </tbody>
         </table>
         <h3 style="color:var(--sl-amber);margin-top:0.5em;">Corrections made in v1.4</h3>
-        <p class="small">"Latest release v0.9.0" → v0.10.1 · "docs have no Cloud section" → one-page SIE Cloud section · "docs release-notes page lags GitHub" (wrong: stale fetch) · v0.7.0 date 9 Aug → 8 Aug (docs) · Gemma 4 31B now verified · model count 129 / 100+ / 85+ made explicit · 51 → 53 gallery rows.</p>
+        <p class="small">"Latest release v0.9.0" → v0.10.1 (v1.4) · "docs have no Cloud section" → one-page SIE Cloud section · "docs release-notes page lags GitHub" (wrong: stale fetch) · v0.7.0 date 9 Aug → 8 Aug (docs) · Gemma 4 31B now verified · model count 129 / 100+ / 85+ made explicit · 51 → 53 gallery rows (v1.4). v1.5 → v1.6: v0.10.1 → v0.11.0 · 129 → 149 models · 53 → 74 gallery rows · all five Trap 1 date/version markers updated.</p>
       </div>
     </div>
   </section>
@@ -1160,7 +1162,7 @@ helm upgrade --install sie-cluster \
         <a href="https://superlinked.com/docs/deployment" target="_blank" style="font-size:0.85em;">Deployment</a>
       </div>
     </div>
-    <p class="smaller" style="margin-top:1.5em;">v1.4 &nbsp;·&nbsp; Built from the live docs nav (77 pages) and release notes to v0.10.1, /serverless + /native-inference + /security, SIE Relay docs, a 53-row gallery (9 read), 57 blog posts (recap read in full), the 13 Oct community update + 3 prior project sessions &nbsp;·&nbsp; 54 issues tracked &nbsp;·&nbsp; 14 October 2026</p>
+    <p class="smaller" style="margin-top:1.5em;">v1.6 &nbsp;·&nbsp; Built from the live docs nav (77 pages) and release notes to v0.11.0, /serverless + /native-inference + /security, SIE Relay docs, a 74-row gallery (9 read), 57 blog posts (recap read in full), the 13 Oct community update + 3 prior project sessions &nbsp;·&nbsp; 54 issues tracked &nbsp;·&nbsp; 11 November 2026</p>
   </section>
 </section>
 
